@@ -1,0 +1,18 @@
+<div class="pt-20 px-20 h-full flex flex-col items-center">
+	<p class="w-full text-right color-gray-2">
+		{{ "AUTH.ALREADY_HAVE" | translate }} <span class="underline color-blue-1">{{ "AUTH.LOG_IN" | translate }}</span>
+	</p>
+
+	<div class="w-2/4 pt-64">
+		<h2 class="title-2 text-center font-weight-bold color-black-1 mb-10">{{ "AUTH.PLEASE_CONFIRM" | translate }}</h2>
+		<p class="title-6 color-black-3 mb-5 leading-5">
+			{{ "AUTH.CONFIRM_DESCRIPTION" | translate }}
+		</p>
+
+		<button b2bNgxButton [theme]="B2bNgxButtonThemeEnum.BACKGROUND_BLACK" class="mb-8">{{ "AUTH.CONFIRM" | translate }}</button>
+
+		<p class="text-center color-gray-2">
+			{{ "AUTH.OR_VERIFY" | translate }} <span class="underline color-blue-1">{{ "AUTH.LINK" | translate }}</span>
+		</p>
+	</div>
+</div>

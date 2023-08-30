@@ -1,0 +1,10 @@
+<div class="chips">
+	<div
+		*ngFor="let chip of chipsService.filterChips$ | async"
+		class="chips__item">
+		<div class="chips__item-label">{{getChipsLabel(chip.label) }}</div>
+		<img
+			(click)="removeChip(chip)"
+			class="chips__item-icon" b2bNgxIcon name="cancel">
+	</div>
+</div>

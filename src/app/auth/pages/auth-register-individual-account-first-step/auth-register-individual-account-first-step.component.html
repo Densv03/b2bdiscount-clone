@@ -1,0 +1,34 @@
+<div>
+	<div class="security-data" [formGroup]="form">
+		<input
+			b2bNgxInput
+			[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+			[label]="'LABELS.EMAIL' | translate"
+			labelClass="auth-register-individual-account__main-input"
+			formControlName="email"
+			[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate" />
+		<input
+			b2bNgxInput
+			[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+			type="password"
+			autocomplete="new-password"
+			[label]="'LABELS.PASSWORD' | translate"
+			labelClass="auth-register-individual-account__main-input"
+			formControlName="password"
+			[placeholder]="'PLACEHOLDERS.CREATE_PASSWORD' | translate" />
+		<!--    <p-->
+		<!--      [@fadeInOut]-->
+		<!--      class="auth-register-individual-account__main-input-error"-->
+		<!--      *ngIf="formGroup.get('securityData').get('password').errors?.password">-->
+		<!--      Create password  more than 8 symbols-->
+		<!--    </p>-->
+	</div>
+	<button
+		(click)="secondStep()"
+		b2bNgxButton
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+		[disabled]="isNextStepDisabled$ | async"
+		class="auth-register-individual-account__create-account-button">
+		{{ "BUTTONS.NEXT_STEP" | translate }}
+	</button>
+</div>

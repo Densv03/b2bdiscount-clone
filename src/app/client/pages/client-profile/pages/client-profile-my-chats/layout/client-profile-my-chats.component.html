@@ -1,0 +1,34 @@
+<div class="client-profile-chats">
+
+	<h3 class="client-profile-chats-title">{{ "PAGES.MY_CHATS" | translate }}</h3>
+
+	<div class="client-profile-chats-container">
+		<ng-container *ngIf="chats$ | async as chats; else noChats">
+			<b2b-ngx-chats-list
+				*ngIf="chats.length > 0; else noChats"
+				[options]="chats"
+				[sellerOptions]="sellerOptions"
+				[baseUrl]="b2bNgxLinkService.getLink('/chats/') | async"
+				[buyerOptions]="buyerOptions"></b2b-ngx-chats-list>
+		</ng-container>
+
+		<ng-template #noChats>
+			<div class="client-profile-chats-no-chats" *ngIf="!loading">
+				<p class="client-profile-chats-no-chats-title">
+					{{ "OFFERS.NO_CHATS" | translate }}
+				</p>
+				<a
+					b2bNgxLink
+					[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
+					class="client-profile-chats-no-chats-button"
+					[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
+					>{{ "BUTTONS.LATEST_OFFERS" | translate }}</a
+				>
+			</div>
+		</ng-template>
+
+		<ng-container *ngIf="loading">
+			<b2b-ngx-skeleton [option]="chatsSkeletonOptions"></b2b-ngx-skeleton>
+		</ng-container>
+	</div>
+</div>

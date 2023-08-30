@@ -1,0 +1,69 @@
+<div class="wrapper">
+
+	<h1 class="title">Basic info</h1>
+
+	<form [formGroup]="form" (ngSubmit)="send()">
+	<input
+		type="text"
+		id="fullName"
+		name="fullName"
+		b2bNgxInput
+		[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+		[label]="'LABELS.FULL_NAME' | translate"
+		labelClass="auth-register-individual-account__main-input"
+		[placeholder]="'PLACEHOLDERS.YOUR_FULL_NAME' | translate"
+		formControlName="fullName" />
+
+	<p class="auth-register-individual-account__main-input-error"
+		 *ngIf="form.get('fullName')?.errors?.['fullName']">
+		{{ "ERRORS.USER_ENGLISH_NAME" | translate }}
+	</p>
+
+	<p class="auth-register-individual-account__main-input-error"
+		 *ngIf="form.get('fullName')?.errors?.['latin'] && !form.get('fullName')?.errors?.['fullName']">
+		{{ "ERRORS.USER_ENGLISH_LETTERS" | translate }}
+	</p>
+
+	<b2b-ngx-tel
+		[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+		class="auth-register-individual-account__main-input"
+		[errors]="form.get('phone').errors"
+		formControlName="phone">
+		{{ "LABELS.PHONE" | translate }}
+	</b2b-ngx-tel>
+
+	<input
+		type="company"
+		id="company"
+		name="company"
+		b2bNgxInput
+		[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+		[label]="'LABELS.COMPANY_NAME' | translate"
+		labelClass="auth-register-individual-account__main-input"
+		[placeholder]="'PLACEHOLDERS.COMPANY_NAME' | translate"
+		formControlName="company" />
+
+
+	<p class="auth-register-individual-account__main-input-error"
+     *ngIf="form.get('company')?.errors?.['latin']">
+		{{ "ERRORS.USER_ENGLISH_LETTERS" | translate }}
+	</p>
+
+	<b2b-ngx-country-select
+		[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+		class="auth-register-individual-account__main-input"
+		placeholder="Select Country"
+		formControlName="country"
+	>Company’s country
+	</b2b-ngx-country-select>
+
+	<button
+		b2bNgxButton
+		[disabled]="form.invalid"
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+		class="auth-register-individual-account__create-account-button"
+		type="submit">
+		{{ "BUTTONS.CREATE_ACCOUNT" | translate }}
+	</button>
+</form>
+</div>

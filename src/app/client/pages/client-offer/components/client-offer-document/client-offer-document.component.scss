@@ -1,0 +1,31 @@
+@import "projects/shared/src/styles";
+
+:host {
+	display: block;
+	height: 100%;
+}
+::ng-deep {
+	.client-offer-document {
+		height: 100%;
+
+		img {
+			object-fit: contain;
+		}
+	}
+	.ngneat-close-dialog {
+		right: 60px !important;
+		top: 21px !important;
+	}
+}
+
+.no-file {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+
+	h1 {
+		font-size: 32px;
+		font-weight: 500;
+	}
+}

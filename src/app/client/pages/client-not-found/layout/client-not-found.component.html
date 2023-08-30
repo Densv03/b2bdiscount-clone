@@ -1,0 +1,12 @@
+<div class="not-found">
+	<img class="not-found-image" b2bNgxImage name="not-found" />
+	<p class="not-found__title">{{ "NOT_FOUND.TITLE" | translate }}</p>
+
+	<a
+		b2bNgxLink
+		[routerLink]="b2bNgxLinkService.getLink('/') | async"
+		[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
+		class="not-found__link"
+		>{{ "LINKS.BACK" | translate }}</a
+	>
+</div>

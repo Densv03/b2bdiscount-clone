@@ -1,0 +1,40 @@
+<form [formGroup]="formGroup">
+	<h6>{{ "OFFERS_SETTINGS.TITLE" | translate }}</h6>
+	<p>{{ "OFFERS_SETTINGS.DESCRIPTION" | translate }}</p>
+
+	<ul>
+		<li>
+			<span>{{ "LABELS.COMPANY_NAME" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityCompanyName"></b2b-ngx-toggle>
+		</li>
+		<li>
+			<span>{{ "LABELS.CONTACT_PERSON" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityContactPerson"></b2b-ngx-toggle>
+		</li>
+		<li>
+			<span>{{ "LABELS.PHONE_NUMBER" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityPhone"></b2b-ngx-toggle>
+		</li>
+		<li>
+			<span>{{ "LABELS.EMAIL" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityEmail"></b2b-ngx-toggle>
+		</li>
+		<li>
+			<span>{{ "LABELS.CONTAINER" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityContainer"></b2b-ngx-toggle>
+		</li>
+		<li>
+			<span>{{ "LABELS.DOCUMENTS" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityDocuments"></b2b-ngx-toggle>
+		</li>
+		<li>
+			<span>{{ "LABELS.ALL_VISIBLE" | translate }}</span>
+			<b2b-ngx-toggle formControlName="visibilityAll"></b2b-ngx-toggle>
+		</li>
+	</ul>
+
+	<div class="buttons">
+		<button b2bNgxButton type="button" (click)="closeDialog(false)" [theme]="b2bNgxButtonThemEnum.BACKGROUND_BLACK">Close</button>
+		<button b2bNgxButton type="button" (click)="closeDialog(true)" [theme]="b2bNgxButtonThemEnum.BACKGROUND_BLACK">{{ "BUTTONS.POST_THIS_LOT" | translate }}</button>
+	</div>
+</form>

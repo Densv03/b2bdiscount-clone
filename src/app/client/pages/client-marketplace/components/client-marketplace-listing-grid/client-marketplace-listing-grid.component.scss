@@ -1,0 +1,13 @@
+@import "projects/shared/src/styles";
+
+.marketplace-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(274px, 1fr));
+	@include breakpoint('3') {
+		padding: 0 15px;
+	}
+	gap: 15px;
+	.grid-item {
+		margin-bottom: 15px;
+	}
+}

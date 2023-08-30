@@ -1,0 +1,32 @@
+<div class="add-payment-method">
+	<p class="title" *ngIf="!data">Add payment method</p>
+	<p class="title" *ngIf="data">Edit payment method</p>
+
+	<form errorTailor (ngSubmit)="submit()" [formGroup]="formGroup">
+		<div class="input-container">
+			<input
+				b2bNgxInput
+				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+				[label]="'LABELS.CARD_NUMBER' | translate"
+				formControlName="cardNum" />
+		</div>
+		<div class="inputs-container">
+			<div class="input-container" *ngIf="!data">
+				<input
+					b2bNgxInput
+					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+					[label]="'LABELS.POST_CODE' | translate"
+					formControlName="expDate" />
+			</div>
+			<div class="input-container">
+				<input
+					b2bNgxInput
+					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+					[label]="'LABELS.CVV' | translate"
+					formControlName="cardCode" />
+			</div>
+		</div>
+
+		<button b2bNgxButton class="save" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">Save</button>
+	</form>
+</div>

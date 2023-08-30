@@ -1,0 +1,30 @@
+<div class="wrapper">
+	<h1 class="title">{{title}}</h1>
+
+	<div class="latest-block-content" [class.bigger]="isBigger">
+
+		<a [routerLink]="['/blog/', (blog?.path ? blog.path : blog._id)]" *ngFor="let blog of articles; let i = index"
+			 class="latest-block-content-block">
+
+			<div class="latest-block-content-block-item">
+				<img *ngIf="blog.image?.lg" class="article-img" [ngSrc]="domain + blog.image?.lg" priority width="464"
+						 height="188">
+
+				<h3>{{blog.title}}</h3>
+
+				<p class="article-description">{{blog?.shortDescription}}</p>
+
+				<div class="latest-block-content-block-item-footer">
+					<p>
+						<a (click)="$event.stopPropagation()" b2bNgxLink [theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
+							 [routerLink]="[isAuthorsPage ? '../samantha-greene' : 'samantha-greene']">Samantha Greene</a>
+						/
+						<span>{{blog.createdAt | date}}</span>
+					</p>
+
+					<a b2bNgxLink [theme]="b2bNgxLinkThemeEnum.TEXT_BLUE">{{blog?.category}}</a>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>

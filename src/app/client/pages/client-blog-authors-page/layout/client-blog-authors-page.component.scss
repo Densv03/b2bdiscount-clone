@@ -1,0 +1,108 @@
+@import "projects/shared/src/styles";
+
+.page-wrapper {
+	background-color: white;
+	height: 100%;
+	padding: 90px 99px;
+
+	.mobile {
+		display: none;
+	}
+
+	@include breakpoint("3") {
+		padding: 0 18px;
+	}
+
+	.authors-block {
+		display: flex;
+		justify-content: space-between;
+		padding: 32px 61px;
+		border-radius: 14px;
+		box-shadow: 4px 4px 8px 0 #E5F2FD, -4px -4px 8px 0 #E5F2FD;
+
+		@include breakpoint("3") {
+			padding: 0;
+			box-shadow: none;
+		}
+
+		img {
+			border-radius: 14px;
+			width: 168px;
+			height: 168px;
+			object-fit: cover;
+
+			@include breakpoint("3") {
+				width: 100px;
+				height: 100px;
+			}
+		}
+
+		.authors-info {
+			padding-left: 34px;
+
+			&-name {
+				font-size: 32px;
+				line-height: 43px;
+				font-weight: 700;
+				margin: 0;
+
+				@include breakpoint("3") {
+					font-size: 24px;
+					line-height: 32px;
+				}
+			}
+
+			@include breakpoint("3") {
+				padding-left: 16px;
+			}
+
+			&-text {
+				font-size: 16px;
+				line-height: 23px;
+				font-weight: 400;
+				padding: 8px 0 16px;
+				margin: 0;
+
+				span {
+					color: #979797;
+
+					@include breakpoint("3") {
+						display: block;
+						padding-bottom: 8px;
+
+						&:last-of-type {
+							padding: 0;
+						}
+					}
+				}
+
+				@include breakpoint("3") {
+					padding-bottom: 0;
+				}
+
+				&:last-of-type {
+					padding: 0;
+				}
+			}
+		}
+	}
+
+	.latest-block {
+		padding-top: 128px;
+
+		@include breakpoint("3") {
+			padding-top: 32px;
+		}
+	}
+}
+
+@include breakpoint('3') {
+	.desktop {
+		display: none;
+	}
+
+	.mobile {
+		padding-top: 16px;
+		display: block !important;
+	}
+}

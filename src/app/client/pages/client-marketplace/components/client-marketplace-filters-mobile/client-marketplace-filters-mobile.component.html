@@ -1,0 +1,236 @@
+<!--<div class="overlay-container" [@slideInOut]="animationState">-->
+<!--	<div class="backdrop" #backdrop>-->
+<!--		<div class="content">-->
+<!--			<div class="modal-header">-->
+<!--				<button (click)="toggleShowPopUp()">-->
+<!--					<img b2bNgxIcon name="close" />-->
+<!--				</button>-->
+<!--			</div>-->
+
+<!--			<div class="filters">-->
+<!--				<ng-container *ngFor="let filter of filtersState; let filterIndex = index">-->
+<!--					<b2b-filters-dropdown-->
+<!--						(changeOption)="chooseFilter($event, filterIndex, filter.hiddenLabel, true)"-->
+<!--						[menuIsOpen]="filter.isOpen"-->
+<!--						[openIsRestricted]="restrictOpen(filter, filtersState)"-->
+<!--						[selectedOption]="filter.selectedOption.getValue()"-->
+<!--						[title]="filter.name">-->
+<!--						<ng-container>-->
+<!--							<div *ngIf="!filter.selectedOption.getValue(); else selectedOption" class="options">-->
+<!--								<div-->
+<!--									*ngFor="let option of filter.options; let idx = index"-->
+<!--									(click)="chooseFilter(option, filterIndex, filter.hiddenLabel, false)"-->
+<!--									class="item">-->
+<!--									<div class="circle">-->
+<!--										<div-->
+<!--											class="inner-circle"-->
+<!--											[class.selected]="isOptionSelected(option, filterIndex, filtersState)"></div>-->
+<!--									</div>-->
+
+<!--									<div *ngIf="filter.hiddenLabel !== 'country[]'; else countryLabel" class="label">-->
+<!--										{{option.name}}-->
+<!--										<ng-container *ngIf="option.count">-->
+<!--											({{option.count}})-->
+<!--										</ng-container>-->
+<!--									</div>-->
+<!--									<ng-template #countryLabel>-->
+<!--										<label>-->
+<!--											<img b2bNgxIcon group="flags/" [name]="option.name | uppercase">-->
+<!--											{{getCountryName(option.name)}}-->
+<!--											({{option.count}})-->
+<!--										</label>-->
+<!--									</ng-template>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</ng-container>-->
+<!--						<ng-template #selectedOption>-->
+<!--							<div class="item">-->
+<!--								<div class="circle">-->
+<!--									<div class="inner-circle selected"></div>-->
+<!--								</div>-->
+<!--								<ng-container *ngIf="filtersState[filterIndex].name !== 'Country'; else selectedCountryFilter">-->
+<!--									<div class="label">{{filtersState[filterIndex].selectedOption.getValue()[0].name}}</div>-->
+<!--									({{filtersState[filterIndex].selectedOption.getValue()[0].count}})-->
+<!--								</ng-container>-->
+<!--								<ng-template #selectedCountryFilter>-->
+<!--									<img b2bNgxIcon group="flags/" [name]="filtersState[filterIndex].selectedOption.getValue()[0].name | uppercase">-->
+<!--									{{getCountryName(filtersState[filterIndex].selectedOption.getValue()[0].name)}}-->
+<!--									({{filtersState[filterIndex].selectedOption.getValue()[0].count}})-->
+<!--								</ng-template>-->
+<!--							</div>-->
+<!--						</ng-template>-->
+<!--					</b2b-filters-dropdown>-->
+
+<!--				</ng-container>-->
+
+<!--				&lt;!&ndash;		<form [formGroup]="desktopFilters">&ndash;&gt;-->
+<!--				&lt;!&ndash;			<b2b-client-marketplace-filters&ndash;&gt;-->
+<!--				&lt;!&ndash;			[filterValues]="filterValue"&ndash;&gt;-->
+<!--				&lt;!&ndash;				formControlName="filters"&ndash;&gt;-->
+<!--				&lt;!&ndash;				class="marketplace-filters-component"&ndash;&gt;-->
+<!--				&lt;!&ndash;				></b2b-client-marketplace-filters>&ndash;&gt;-->
+<!--				&lt;!&ndash;		</form>&ndash;&gt;-->
+
+<!--			</div>-->
+
+<!--&lt;!&ndash;			<div class="modal-footer">&ndash;&gt;-->
+<!--&lt;!&ndash;				<button&ndash;&gt;-->
+<!--&lt;!&ndash;					(click)="clearFilters()"&ndash;&gt;-->
+<!--&lt;!&ndash;					b2bNgxButton&ndash;&gt;-->
+<!--&lt;!&ndash;					[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"&ndash;&gt;-->
+<!--&lt;!&ndash;					class="modal-footer__btn">&ndash;&gt;-->
+<!--&lt;!&ndash;					<img b2bNgxIcon name="delete" class="d-block mx-2" />&ndash;&gt;-->
+<!--&lt;!&ndash;					<div>Clear all</div>&ndash;&gt;-->
+<!--&lt;!&ndash;				</button>&ndash;&gt;-->
+<!--&lt;!&ndash;				<button&ndash;&gt;-->
+<!--&lt;!&ndash;					(click)="applyFilters()"&ndash;&gt;-->
+<!--&lt;!&ndash;					b2bNgxButton&ndash;&gt;-->
+<!--&lt;!&ndash;					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"&ndash;&gt;-->
+<!--&lt;!&ndash;					class="modal-footer__btn">&ndash;&gt;-->
+<!--&lt;!&ndash;					Filter&ndash;&gt;-->
+<!--&lt;!&ndash;				</button>&ndash;&gt;-->
+<!--&lt;!&ndash;			</div>&ndash;&gt;-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
+
+
+
+<div class="overlay" id="popupOverlay" [@slideInOut]="animationState" #backdrop>
+	<div class="popup">
+		<div class="popup-content" id="popupContent">
+			<div class="content">
+				<div class="modal-header">
+					<button (click)="toggleShowPopUp()">
+						<img b2bNgxIcon name="close" />
+					</button>
+				</div>
+			<div class="filters">
+				<ng-container *ngFor="let filter of filtersState; let filterIndex = index">
+					<b2b-filters-dropdown
+						customWidth="100%"
+						(changeOption)="chooseFilter($event, filterIndex, filter.hiddenLabel, true)"
+						[menuIsOpen]="filter.isOpen"
+						[openIsRestricted]="restrictOpen(filter, filtersState)"
+						[selectedOption]="filter.selectedOption.getValue()"
+						[title]="filter.name">
+						<ng-container>
+							<div *ngIf="!filter.selectedOption.getValue(); else selectedOption" class="options">
+								<div
+									*ngFor="let option of filter.options; let idx = index"
+									(click)="chooseFilter(option, filterIndex, filter.hiddenLabel, false)"
+									class="item">
+									<div class="circle">
+										<div
+											class="inner-circle"
+											[class.selected]="isOptionSelected(option, filterIndex, filtersState)"></div>
+									</div>
+
+									<div *ngIf="filter.hiddenLabel !== 'country[]'; else countryLabel" class="label">
+										{{option.name}}
+										<ng-container *ngIf="option.count">
+											({{option.count}})
+										</ng-container>
+									</div>
+									<ng-template #countryLabel>
+										<label>
+											<img b2bNgxIcon group="flags/" [name]="option.name | uppercase">
+											{{getCountryName(option.name)}}
+											({{option.count}})
+										</label>
+									</ng-template>
+								</div>
+							</div>
+						</ng-container>
+						<ng-template #selectedOption>
+							<div class="item">
+								<div class="circle">
+									<div class="inner-circle selected"></div>
+								</div>
+								<ng-container *ngIf="filtersState[filterIndex].name !== 'Country'; else selectedCountryFilter">
+									<div class="label">{{filtersState[filterIndex].selectedOption.getValue()[0].name}}</div>
+									({{filtersState[filterIndex].selectedOption.getValue()[0].count}})
+								</ng-container>
+								<ng-template #selectedCountryFilter>
+									<img b2bNgxIcon group="flags/" [name]="filtersState[filterIndex].selectedOption.getValue()[0].name | uppercase">
+									{{getCountryName(filtersState[filterIndex].selectedOption.getValue()[0].name)}}
+									({{filtersState[filterIndex].selectedOption.getValue()[0].count}})
+								</ng-template>
+							</div>
+						</ng-template>
+					</b2b-filters-dropdown>
+				</ng-container>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<form [formGroup]="form">-->
+<!--	<mat-accordion class="accordion-wrapper">-->
+<!--		<mat-expansion-panel>-->
+<!--			<mat-expansion-panel-header>-->
+<!--				<mat-panel-title> Product categories</mat-panel-title>-->
+<!--			</mat-expansion-panel-header>-->
+<!--			<b2b-categories-dialog formControlName="categories[]" [disableClose]="true" [required]="false">-->
+<!--			</b2b-categories-dialog>-->
+<!--		</mat-expansion-panel>-->
+<!--		<mat-expansion-panel [ngStyle]="{'overflow': 'visible'}">-->
+<!--			<mat-expansion-panel-header>-->
+<!--				<mat-panel-title> Suppliers country</mat-panel-title>-->
+<!--			</mat-expansion-panel-header>-->
+<!--			<div class="select">-->
+<!--				<b2b-ngx-country-select-->
+<!--					formControlName="country"-->
+<!--					placeholder="Enter country"-->
+<!--					(openSelect)="openCountrySelect()"-->
+<!--					(closeSelect)="closeCountrySelect()"-->
+<!--					[class.mb-4]="isCountrySelectOpen$ | async"-->
+<!--					[class.d-block]="isCountrySelectOpen$ | async">-->
+<!--				</b2b-ngx-country-select>-->
+<!--			</div>-->
+<!--		</mat-expansion-panel>-->
+<!--		<mat-expansion-panel>-->
+<!--			<mat-expansion-panel-header>-->
+<!--				<mat-panel-title> Suppliers type</mat-panel-title>-->
+<!--			</mat-expansion-panel-header>-->
+<!--			&lt;!&ndash;						TODO: specify to BE about a few suppliers type&ndash;&gt;-->
+<!--			<div class="px-2 py-2 accordion-wrapper__checkbox">-->
+<!--				<b2b-ngx-checkbox>Manufacturer</b2b-ngx-checkbox>-->
+<!--			</div>-->
+<!--			<div class="px-2 py-2 accordion-wrapper__checkbox">-->
+<!--				<b2b-ngx-checkbox>Trader</b2b-ngx-checkbox>-->
+<!--			</div>-->
+<!--		</mat-expansion-panel>-->
+<!--	</mat-accordion>-->
+<!--</form>-->

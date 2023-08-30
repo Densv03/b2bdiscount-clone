@@ -1,0 +1,21 @@
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	&__item {
+		padding: 7px 10px;
+		background: #FFFFFF;
+		display: inline-flex;
+		border-radius: 20px;
+		gap: 10px;
+		&-label {
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 18px;
+			letter-spacing: 0.28px;
+		}
+		&-icon {
+			cursor: pointer;
+		}
+	}
+}

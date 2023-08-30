@@ -1,0 +1,18 @@
+<div class="client-offer-document">
+	<div *ngIf="isPath; else noFile" style="height: 100%">
+		<img *ngIf="data?.isImage" [src]="data?.fullPath" style="width: 100%; height: 100%"/>
+
+		<ngx-doc-viewer
+			*ngIf="data?.isDocument && !!data.fullPath"
+			[url]="data?.fullPath"
+			viewer="google"
+			style="width: 100%; height: 100%">
+		</ngx-doc-viewer>
+	</div>
+
+	<ng-template #noFile>
+		<div class="no-file">
+			<h1>Sorry for the inconvenience, this file is corrupt or missing.</h1>
+		</div>
+	</ng-template>
+</div>

@@ -1,0 +1,28 @@
+image: node:16
+
+
+pipelines:
+  default:
+    - step:
+        name: Installing dependencies
+        size: 2x
+        caches:
+          - node
+        script:
+          - echo "Installing dependencies..."
+          - npm install --legacy-peer-deps
+          - echo "Building Angular app..."
+          - npm run build:ssr
+          - echo "Successfully built"
+    - step:
+        name: Deploy to Server
+        deployment: dev
+        script:
+          - echo "Setting up SSH..."
+          - ssh-keyscan -H 159.89.4.114 >> ~/.ssh/known_hosts
+          - ssh discount@159.89.4.114 'sh build-fe.sh'
+          - echo "DEPLOYED"
+        branches:
+          only:
+            - dev
+

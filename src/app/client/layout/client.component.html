@@ -1,0 +1,6 @@
+<!--<b2b-material-treeview></b2b-material-treeview>-->
+<main class="client-router-outlet-container">
+	<router-outlet (activate)="onActivate()"></router-outlet>
+</main>
+
+<b2b-client-footer [options]="options" [user]="user$ | async" [socialMedias]="socialMedias"></b2b-client-footer>
