@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { B2bNgxIconModule } from "@b2b/ngx-icon";
 import { B2bNgxButtonModule } from "@b2b/ngx-button";
 import { B2bNgxImageModule } from "@b2b/ngx-image";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
 	declarations: [ClientMarketplaceProductItemComponent],
@@ -14,7 +15,8 @@ import { B2bNgxImageModule } from "@b2b/ngx-image";
 		RouterModule,
 		B2bNgxIconModule,
 		B2bNgxButtonModule,
-		B2bNgxImageModule
+		B2bNgxImageModule,
+		MatDialogModule
 	]
 })
 

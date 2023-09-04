@@ -33,31 +33,37 @@ import { CompanyInformationComponent } from "./company-information/company-infor
 import {PaginationModule} from "../../shared/components/pagination/pagination.module";
 import {B2bNgxTextareaModule} from "../../../../../projects/ngx-textarea/src";
 import {TranslateModule} from "@ngx-translate/core";
+import {B2bNgxSkeletonModule} from "@b2b/ngx-skeleton";
+import {
+    RfqExplanationBannerModule
+} from "./client-tradebid-listing/rfq-explanation-banner/rfq-explanation-banner.module";
 // import {PaginationModule} from "../../../shared/components/pagination/pagination.module";
 
 @NgModule({
-	imports: [
-		ClientTradebidRoutingModule,
-		B2bNgxButtonModule,
-		B2bNgxImageModule,
-		RouterModule,
-		CommonModule,
-		B2bNgxInputModule,
-		ReactiveFormsModule,
-		B2bNgxSelectModule,
-		// B2bNgxTextareaModule,
-		// B2bNgxFileModule,
-		B2bNgxCountrySelectModule,
-		B2bNgxCheckboxModule,
-		// B2bNgxPaginationModule,
-		B2bNgxIconModule,
-		// B2bNgxTelModule,
-		ClientTradebidQuotationFormModule,
-		PaginationModule,
-		B2bNgxTextareaModule,
-		TranslateModule,
-		// PaginationModule,
-	],
+    imports: [
+        ClientTradebidRoutingModule,
+        B2bNgxButtonModule,
+        B2bNgxImageModule,
+        RouterModule,
+        CommonModule,
+        B2bNgxInputModule,
+        ReactiveFormsModule,
+        B2bNgxSelectModule,
+        // B2bNgxTextareaModule,
+        // B2bNgxFileModule,
+        B2bNgxCountrySelectModule,
+        B2bNgxCheckboxModule,
+        // B2bNgxPaginationModule,
+        B2bNgxIconModule,
+        // B2bNgxTelModule,
+        ClientTradebidQuotationFormModule,
+        PaginationModule,
+        B2bNgxTextareaModule,
+        TranslateModule,
+        B2bNgxSkeletonModule,
+        RfqExplanationBannerModule,
+        // PaginationModule,
+    ],
 	exports: [],
 	declarations: [
 		ClientTradebidComponent,

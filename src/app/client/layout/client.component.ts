@@ -48,7 +48,6 @@ export class ClientComponent implements OnInit, AfterViewInit {
 		private readonly platformService: PlatformService
 	) {
 		this.route.queryParams.pipe(untilDestroyed(this)).subscribe((data) => {
-			console.log('change ')
 			if (data["ref"]) {
 				localStorage.removeItem("ref");
 				localStorage.setItem("ref", data["ref"]);
@@ -91,12 +90,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
 	}
 
 	private initRefSubscription(): void {
-		console.log('initRefSubscription')
 		this.route.url
 			.pipe(
 				startWith(null),
 				switchMap(() => {
-					console.log('SUBSCRIPTION')
 					const isLoggedIn$ = this.userService.getToken$().pipe(map(token => !!token))
 
 					console.log('isAuth', this.userService.isAuth());

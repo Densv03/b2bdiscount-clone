@@ -10,6 +10,10 @@ import { Observable, of } from "rxjs";
 import { AuthService } from "../../../../../auth/services/auth/auth.service";
 import { map } from "rxjs/operators";
 import {User} from "../../../../../core/models/user/user.model";
+import { MatDialog } from "@angular/material/dialog";
+import {
+	ContactSupplierFormDialogComponent
+} from "src/app/client/pages/client-marketplace/components/contact-supplier-form-dialog/contact-supplier-form-dialog.component";
 
 const URLS_WITHOUT_CHATS = ["supplier-listing", "products"];
 
@@ -33,7 +37,8 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		private readonly userService: UserService,
 		private readonly route: ActivatedRoute,
 		private readonly router: Router,
-		private readonly authService: AuthService
+		private readonly authService: AuthService,
+		private readonly dialog: MatDialog
 	) {
 	}
 
@@ -72,26 +77,34 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
-		if (!this.userService.getUser()) {
-			this.router.navigate(["/auth/log-in"]);
-			return;
-		}
-
-		if (this.product.user === this.userService.getUser()?._id) {
-			this.goTo("/b2bmarket/products/" + this.product._id);
-			return;
-		}
-
-		this.openConnection(this.token);
-		this._socket.emit("start_chat", {
-			userId: this.product.user,
-			productId: this.product._id,
-			typeRoom: "product",
-		});
-
-		this._socket.on("chat_info", (data: any) => {
-			this.goTo("profile/your-workspace/b2bmarket/chat/" + data._id);
-		});
+		this.dialog.open(ContactSupplierFormDialogComponent,
+			{
+				data: {
+					product: this.product
+				},
+				maxWidth: '728px',
+				maxHeight: '515px'
+			})
+		// if (!this.userService.getUser()) {
+		// 	this.router.navigate(["/auth/log-in"]);
+		// 	return;
+		// }
+		//
+		// if (this.product.user === this.userService.getUser()?._id) {
+		// 	this.goTo("/b2bmarket/products/" + this.product._id);
+		// 	return;
+		// }
+		//
+		// this.openConnection(this.token);
+		// this._socket.emit("start_chat", {
+		// 	userId: this.product.user,
+		// 	productId: this.product._id,
+		// 	typeRoom: "product",
+		// });
+		//
+		// this._socket.on("chat_info", (data: any) => {
+		// 	this.goTo("profile/your-workspace/b2bmarket/chat/" + data._id);
+		// });
 	}
 
 	private checkCardForOpenChatPossibility(): void {

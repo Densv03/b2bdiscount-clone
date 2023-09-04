@@ -9,6 +9,16 @@ import { Observable } from "rxjs";
 })
 export class RfqListComponent implements OnInit {
 	public rfqList$: Observable<any> = this.tradeBidService.rfqList$;
+	skeletonOptions: any = {
+		count: 5,
+		appearance: 'line',
+		loadingText: '',
+		ariaLabel: '',
+		animation: 'progress',
+		theme: {
+			height: '120px',
+		}
+	};
 
 	constructor(private tradeBidService: TradebidService) {}
 

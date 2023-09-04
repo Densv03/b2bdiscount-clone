@@ -1,0 +1,32 @@
+@import "projects/shared/src/styles/colors";
+
+:host {
+	.banner {
+		border-radius: 8px;
+		border: 2px solid #D3DFFF;
+		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.10);
+		max-width: 1170px;
+		margin: auto;
+		text-align: center;
+		padding: 8px 0;
+		&__title {
+			color: $color-black-900;
+			font-size: 18px;
+			font-weight: 700;
+			letter-spacing: 0.18px;
+		}
+		&__subtitle {
+			font-size: 14px;
+			font-weight: 400;
+			letter-spacing: 0.14px;
+			margin-left: 8px;
+		}
+		&__button {
+			text-decoration: underline;
+			color: $color-blue-500;
+			font-weight: 600;
+			margin-left: 16px;
+			cursor: pointer;
+		}
+	}
+}
