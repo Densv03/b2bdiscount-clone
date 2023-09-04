@@ -1,3 +1,5 @@
+@import "projects/shared/src/styles";
+
 .content {
     width: 100%;
     position: relative;
@@ -9,8 +11,18 @@
     }
 
     .supplier-info {
-        padding-left: 40px;
+        padding-left: 64px;
         padding-right: 65px;
+
+        @include breakpoint("3") {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        @include breakpoint("2") {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
 
         &__title {
             font-size: 18px;
@@ -73,8 +85,21 @@
 
         }
 
+        .supplier-info__more-bids__wrapper {
+            display: flex;
+
+            @include breakpoint("2") {
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+
         .supplier-info__more-bids {
             color: #000000;
+
+            @include breakpoint("2") {
+                margin-top: 5px;
+            }
         }
 
         .supplier-info__btn {
@@ -84,6 +109,72 @@
             margin: 32px auto;
             border-radius: 8px;
             background-color: #A2A6AB;
+        }
+
+        .supplier-info__expanded-form {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 16px;
+
+            .supplier-info__budget-range {
+                width: 50%;
+                margin-bottom: 16px;
+                padding-right: 8px;
+
+                @include breakpoint("2") {
+                    width: 100%;
+                    padding-right: 0px;
+                }
+
+                &__text {
+                    color: #0F0F11;
+                }
+            }
+
+            .supplier-info__delivery-location {
+                width: 50%;
+                margin-bottom: 16px;
+                padding-left: 8px;
+
+                @include breakpoint("2") {
+                    width: 100%;
+                    padding-left: 0px;
+                }
+
+                &__text {
+                    color: #0F0F11;
+                }
+            }
+
+            .supplier-info__terms-of-delivery {
+                width: 50%;
+                padding-right: 8px;
+
+                @include breakpoint("2") {
+                    width: 100%;
+                    padding-right: 0px;
+                    margin-bottom: 16px;
+                }
+
+                &__text {
+                    color: #0F0F11;
+                }
+            }
+
+            .supplier-info__terms-of-delivery-2 {
+                width: 50%;
+                padding-left: 8px;
+
+                @include breakpoint("2") {
+                    width: 100%;
+                    padding-left: 0px;
+                }
+
+                &__text {
+                    color: #0F0F11;
+                }
+            }
+
         }
     }
 }
