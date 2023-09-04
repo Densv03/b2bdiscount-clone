@@ -6,66 +6,48 @@
 			<h3 class="supplier-info__content__company-info">{{data.product.company[0].companyName}}</h3>
 			<p class="supplier-info__content__suppliers-type">{{data.product.suppliersType}}</p>
 			<div class="supplier-info__content__country">
-				<img b2bNgxIcon group="flags/" [name]="data.product.country | uppercase" alt=""/>
-				<p>{{getCountryName(data.product.company[0].country)}}</p>
+				<img b2bNgxIcon group="flags/" [name]="data.product.country | uppercase" alt="" />
+				<p class="supplier-info__content__text">{{getCountryName(data.product.company[0].country)}}</p>
 			</div>
 		</div>
 		<div class="supplier-info__base-form" formGroupName="baseForm">
-			<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-											[options]="productNames$ | async"
-											bindLabel="label"
-											bindValue="value"
-											placeholder="Product name"
-											formControlName="productName"></b2b-ngx-select>
+			<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY" [options]="productNames$ | async"
+				bindLabel="label" bindValue="value" placeholder="Product name"
+				formControlName="productName"></b2b-ngx-select>
 			<div class="supplier-info__requirements">
 				<p class="supplier-info__requirements__text">Describe your requirements</p>
-				<textarea b2bNgxTextarea
-									[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-									formControlName="requirements"
-									class="supplier-info__requirements__textarea"
-									placeholder="Describe your requirements in detail to recieve a better response
+				<textarea b2bNgxTextarea [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY" formControlName="requirements"
+					class="supplier-info__requirements__textarea" placeholder="Describe your requirements in detail to recieve a better response
 - Name of the product/service sought
 - Quantity/ weight
 - Size/volume
-- Materials"
-									rows="5"></textarea>
+- Materials" rows="5"></textarea>
 			</div>
 		</div>
-		<b2b-ngx-checkbox (change)="toggleExpandForm()" [checked]="isFormExpanded$ | async">I would like to get more bids from other suppliers on this product.
+		<b2b-ngx-checkbox (change)="toggleExpandForm()" [checked]="isFormExpanded$ | async">
+			<div class="supplier-info__more-bids">I would like to get more
+				bids from other suppliers on this product.</div>
 		</b2b-ngx-checkbox>
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" [disabled]="!(isFormValid$ | async)">Send</button>
+		<button b2bNgxButton class="supplier-info__btn" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+			[disabled]="!(isFormValid$ | async)">Send</button>
 		<div *ngIf="isFormExpanded$ | async" class="supplier-info__expanded-form" formGroupName="expandedForm">
 			<div class="supplier-info__budget-range">
-				<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-												[options]="productNames$ | async"
-												bindLabel="label"
-												bindValue="value"
-												placeholder="Type or select"
-												formControlName="budgetRange">Budget range</b2b-ngx-select>
+				<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY" [options]="productNames$ | async"
+					bindLabel="label" bindValue="value" placeholder="Type or select"
+					formControlName="budgetRange">Budget range</b2b-ngx-select>
 			</div>
 			<div class="supplier-info__delivery-location">
-				<input type="text"
-							 b2bNgxInput
-							 [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-							 placeholder="Location"
-							 label="Delivery location"
-							 formControlName="deliveryLocation">
+				<input type="text" b2bNgxInput [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY" placeholder="Location"
+					label="Delivery location" formControlName="deliveryLocation">
 			</div>
 			<div class="supplier-info__terms-of-delivery">
-				<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-												[options]="productNames$ | async"
-												bindLabel="label"
-												bindValue="value"
-												placeholder="Type or select"
-												formControlName="termsOfDelivery">Budget range</b2b-ngx-select>
+				<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY" [options]="productNames$ | async"
+					bindLabel="label" bindValue="value" placeholder="Type or select"
+					formControlName="termsOfDelivery">Budget range</b2b-ngx-select>
 			</div>
 			<div class="supplier-info__terms-of-delivery">
-				<input type="text"
-							 b2bNgxInput
-							 [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-							 placeholder="Required amount"
-							 label="Required amount"
-							 formControlName="requiredAmount">
+				<input type="text" b2bNgxInput [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+					placeholder="Required amount" label="Required amount" formControlName="requiredAmount">
 			</div>
 		</div>
 	</form>
