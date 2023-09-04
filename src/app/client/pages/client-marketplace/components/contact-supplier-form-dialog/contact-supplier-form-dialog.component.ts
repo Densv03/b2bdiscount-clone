@@ -59,8 +59,10 @@ export class ContactSupplierFormDialogComponent {
 	public toggleExpandForm(): void {
 		this.isFormExpandedSource.next(!this.isFormExpandedSource.getValue());
 		if (this.getIsFormExpanded()) {
+			this.dialogRef.updateSize(undefined, '711px')
 			this.supplierForm.addControl('expandedForm', this.getExpandedForm());
 		} else {
+			this.dialogRef.updateSize(undefined, '515px')
 			this.supplierForm.removeControl('expandedForm')
 		}
 	}

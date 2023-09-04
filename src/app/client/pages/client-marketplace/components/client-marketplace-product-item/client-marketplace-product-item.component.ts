@@ -82,8 +82,8 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 				data: {
 					product: this.product
 				},
-				maxWidth: '728px',
-				maxHeight: '515px'
+				width: '728px',
+				height: '515px'
 			})
 		// if (!this.userService.getUser()) {
 		// 	this.router.navigate(["/auth/log-in"]);
