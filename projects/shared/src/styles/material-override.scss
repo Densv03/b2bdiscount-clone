@@ -107,3 +107,12 @@
 	@include styleStepLine(2);
 	@include styleStepLine(4);
 }
+
+// Dialog
+::ng-deep {
+	.contact-supplier-form-dialog {
+		.mat-dialog-container {
+			border-radius: 15px;
+		}
+	}
+}

@@ -83,8 +83,9 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 					product: this.product
 				},
 				width: '728px',
-				height: '515px'
-			})
+				height: '515px',
+				panelClass: 'contact-supplier-form-dialog',
+			});
 		// if (!this.userService.getUser()) {
 		// 	this.router.navigate(["/auth/log-in"]);
 		// 	return;
