@@ -142,6 +142,10 @@ export class ClientLatestOffersComponent implements OnInit {
     this.showMoreMode = this.showMoreMode === ShowMoreModeEnum.OUT ? 'in' : 'out';
   }
 
+	public setSearch(searchValue: string): void {
+		this.formGroup.controls['q'].setValue(searchValue);
+	}
+
   public groupValueFn(value: any, ...args: any[]) {
     return value.value;
   }

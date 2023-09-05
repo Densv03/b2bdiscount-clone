@@ -20,25 +20,27 @@ import {ClientLatestOffersComponent} from "./layout/client-latest-offers.compone
 import {PaginationModule} from "ngx-bootstrap/pagination";
 import { TreeviewModule } from "@b2b/ngx-treeview";
 import {TranslateModule} from "@ngx-translate/core";
+import {SharedModule} from "../../shared/components/shared.module";
 @NgModule({
 	declarations: [ClientLatestOffersComponent, ClientLatestOffersGridComponent, ClientLatestOffersListComponent],
-	imports: [
-		CommonModule,
-		ClientLatestOffersRoutingModule,
-		ReactiveFormsModule,
-		B2bNgxInputModule,
-		B2bNgxSelectModule,
-		B2bNgxButtonModule,
-		B2bNgxIconModule,
-		// B2bNgxSkeletonModule,
-		B2bNgxCountrySelectModule,
-		// B2bNgxPaginationModule,
-		B2bNgxImageModule,
-		B2bNgxLinkModule,
-		// NgxTippyModule,
-		PaginationModule,
-		TreeviewModule,
-		TranslateModule
-	],
+    imports: [
+        CommonModule,
+        ClientLatestOffersRoutingModule,
+        ReactiveFormsModule,
+        B2bNgxInputModule,
+        B2bNgxSelectModule,
+        B2bNgxButtonModule,
+        B2bNgxIconModule,
+        // B2bNgxSkeletonModule,
+        B2bNgxCountrySelectModule,
+        // B2bNgxPaginationModule,
+        B2bNgxImageModule,
+        B2bNgxLinkModule,
+        // NgxTippyModule,
+        PaginationModule,
+        TreeviewModule,
+        TranslateModule,
+        SharedModule
+    ],
 })
 export class ClientLatestOffersModule {}

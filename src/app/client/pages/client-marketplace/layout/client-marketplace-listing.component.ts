@@ -174,6 +174,10 @@ export class ClientMarketplaceListingComponent implements OnInit, AfterViewInit 
 		}
 	}
 
+	public setSearch(searchValue: string): void {
+		this.formGroup.controls['q'].setValue(searchValue);
+	}
+
 	public searchProducts(): void {
 		this.clientMarketplaceService.updateMarketplaceProducts({q: this.formGroup.value.q});
 	}

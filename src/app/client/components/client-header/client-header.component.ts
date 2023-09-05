@@ -45,9 +45,6 @@ export class ClientHeaderComponent implements OnInit {
 	public readonly formControl: FormControl;
 	public readonly linkDropdown: FormControl;
 	public headerLinks$: Observable<any> = of([]);
-	public addOfferUrl: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-	public makeRfqUrl: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-	public addProductUrl: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 	private isAuthPageSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 	public isAuthPage$: Observable<boolean> = this.isAuthPageSource.asObservable();
 	public isAuth$: Observable<boolean> = of(false);
@@ -72,19 +69,6 @@ export class ClientHeaderComponent implements OnInit {
 	public ngOnInit(): void {
 		this.checkIsAuthPage();
 		this.checkUser();
-		this.router.events.pipe(filter((event) => event instanceof NavigationStart)).subscribe((el: any) => {
-			el.url.includes("offers") ? this.addOfferUrl.next(true) : this.addOfferUrl.next(false);
-			el.url.includes("tradebid/listing") ? this.makeRfqUrl.next(true) : this.makeRfqUrl.next(false);
-			el.url.includes("b2bmarket") ? this.addProductUrl.next(true) : this.addProductUrl.next(false);
-		});
-
-		this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-			this.checkIsAuthPage();
-		});
-
-		this.router.url.includes("offers") ? this.addOfferUrl.next(true) : this.addOfferUrl.next(false);
-		this.router.url.includes("tradebid/listing") ? this.makeRfqUrl.next(true) : this.makeRfqUrl.next(false);
-		this.router.url.includes("b2bmarket") ? this.addProductUrl.next(true) : this.addProductUrl.next(false);
 
 		this.i18nService.setActiveLang(this.formControl.value);
 		this.b2bNgxLinkService.setLanguage(this.formControl.value);
@@ -125,8 +109,6 @@ export class ClientHeaderComponent implements OnInit {
 		if (link !== "/latest-offers") {
 			return;
 		}
-
-		// this.ampService.logEvent("Click on latest offers");
 	}
 
 	public processSignUpClick(): void {
@@ -145,17 +127,6 @@ export class ClientHeaderComponent implements OnInit {
 		if (link !== undefined) {
 			this.router.navigate([link.link]);
 			this.b2bNgxSelectComponent.clearSelect();
-		}
-	}
-
-	@HostListener("window:scroll", ["$event"])
-	private onWindowScroll(): void {
-		const element = document.querySelector("header") as HTMLElement;
-
-		if (window.pageYOffset > 0) {
-			element.classList.remove("transparent");
-		} else {
-			element.classList.add("transparent");
 		}
 	}
 
@@ -181,10 +152,6 @@ export class ClientHeaderComponent implements OnInit {
 
 	@ViewChild(B2bNgxSelectComponent)
 	private b2bNgxSelectComponent!: B2bNgxSelectComponent;
-
-	public goTo(link: string): void {
-		this.router.navigate([link]);
-	}
 
 	private checkIsAuthPage(): void {
 		this.isAuthPageSource.next(this.router.url.includes('auth'));

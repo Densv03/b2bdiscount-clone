@@ -31,25 +31,6 @@
 	</div>
 
 	<div class="header__buttons" [class.d-none]="isAuthPage$ | async">
-		<button
-			*ngIf="makeRfqUrl | async"
-			routerLink="/tradebid/add-rfq"
-			b2bNgxButton
-			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-			type="submit"
-			class="header__button">
-			Make RFQ
-		</button>
-		<button
-			*ngIf="(addProductUrl | async) && (rootRole$ | async)"
-			b2bNgxButton
-			[id]="(isAuth$ | async) ? 'add-product' : 'add-company'"
-			[routerLink]="(isAuth$ | async) === true ? '/b2bmarket/product' : '/profile/your-account/company-information'"
-			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-			type="submit"
-			class="header__button">
-			{{ (isAuth$ | async) ? "Add product" : "Add my company" }}
-		</button>
 		<!--		<b2b-ngx-select-->
 		<!--			[formControl]="formControl"-->
 		<!--			[options]="[-->
@@ -80,15 +61,7 @@
 					</ng-container>
 				</a>
 			</div>
-			<button
-				*ngIf="(addOfferUrl | async) && (rootRole$ | async)"
-				id="add-offer-header"
-				(click)="goTo('/offer')"
-				b2bNgxButton
-				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-				class="header__buttons-add-offer">
-				Add offer
-			</button>
+
 		</ng-container>
 		<ng-template #withoutUser>
 			<a

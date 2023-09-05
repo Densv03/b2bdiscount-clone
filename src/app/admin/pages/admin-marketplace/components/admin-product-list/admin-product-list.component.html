@@ -28,4 +28,7 @@
 	</li>
 </ul>
 
-<b2b-ngx-pagination [length]="productsLength$ | async" [perPage]="PRODUCTS_LIMIT" (togglePageNumber)="togglePage($event)"></b2b-ngx-pagination>
+<b2b-ngx-pagination [length]="productsLength$ | async"
+										[perPage]="PRODUCTS_LIMIT"
+										(togglePageNumber)="togglePage($event)"
+										[currentPage]="currentPage$ | async"></b2b-ngx-pagination>

@@ -108,7 +108,7 @@
 					</div>
 					<div class="title">Vendor sourcing and procurement.</div>
 					<div class="text">Create RFQ and collect vendor’s offers from all around the globe.</div>
-					<button [routerLink]="'/tradebid/add-rfq'" id="tradeBid_make-RFQ">Make RFQ</button>
+					<button (click)="openCreateRfqDialog()" id="tradeBid_make-RFQ">Make RFQ</button>
 				</div>
 				<div class="tradebid__container__main__buttons__item">
 					<div class="subtitle">
@@ -129,7 +129,9 @@
 					<p>{{ "TRADEBID.WHAT_IS_2" | translate }}</p>
 					<p>{{ "TRADEBID.WHAT_IS_3" | translate }}</p>
 
-					<button [routerLink]="'/tradebid/add-rfq'" b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+					<button b2bNgxButton
+									[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+									(click)="openCreateRfqDialog()">
 						Make RFQ
 					</button>
 				</div>

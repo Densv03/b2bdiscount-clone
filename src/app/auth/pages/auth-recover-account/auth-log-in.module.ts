@@ -11,19 +11,21 @@ import { B2bNgxLinkModule} from "@b2b/ngx-link";
 import { AuthResetPasswordModalComponent } from "../auth-log-in/components/auth-reset-password-modal/auth-reset-password-modal.component";
 import { B2bNgxImageModule } from "@b2b/ngx-image";
 import { AuthRecoverAccountComponent} from "./auth-recover-account.component";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
 	declarations: [AuthLogInComponent, AuthResetPasswordModalComponent, AuthRecoverAccountComponent],
-	imports: [
-		CommonModule,
-		AuthLogInRoutingModule,
-		FormsModule,
-		ReactiveFormsModule,
-		B2bNgxInputModule,
-		B2bNgxButtonModule,
-		B2bNgxDividerModule,
-		B2bNgxLinkModule,
-		B2bNgxImageModule,
-	],
+    imports: [
+        CommonModule,
+        AuthLogInRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        B2bNgxInputModule,
+        B2bNgxButtonModule,
+        B2bNgxDividerModule,
+        B2bNgxLinkModule,
+        B2bNgxImageModule,
+        TranslateModule,
+    ],
 })
 export class AuthLogInModule {}

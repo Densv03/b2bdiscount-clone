@@ -1,0 +1,62 @@
+@import "projects/shared/src/styles";
+
+.subheader-wrapper {
+	position: relative;
+	background: #EEF3FF;
+	padding: 16px 0;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+
+	.add-button {
+		border-radius: 8px;
+		position: absolute;
+		left: 100px;
+		top: 16px;
+		font-size: 18px;
+		line-height: 25px;
+		padding: 5.5px 31px;
+
+		@include breakpoint('3') {
+			display: none;
+		}
+	}
+
+	@include breakpoint('3') {
+		padding: 18px 8px;
+	}
+
+	.search-wrapper {
+		width: 40%;
+		position: relative;
+		@include breakpoint("3") {
+			width: 100%;
+		}
+		@include breakpoint('2') {
+			margin-top: 0;
+		}
+
+		.subheader-search {
+			display: block;
+			border-radius: 8px;
+			height: 38px;
+
+			@include breakpoint("3") {
+				width: 100%;
+				height: 48px;
+			}
+		}
+
+		img {
+			position: absolute;
+			right: 15px;
+			cursor: pointer;
+			top: 11px;
+
+			@include breakpoint("3") {
+				top: 17px;
+			}
+		}
+	}
+
+}

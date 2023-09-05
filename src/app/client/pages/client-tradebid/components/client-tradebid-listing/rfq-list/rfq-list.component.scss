@@ -1,0 +1,14 @@
+:host {
+	div {
+		padding-top: 30px;
+	}
+	.rfq-list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+	.loader {
+		max-width: 860px;
+		margin: auto;
+	}
+}

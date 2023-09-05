@@ -1,3 +1,8 @@
+<b2b-client-subheader
+	[searchControl]="formGroup.controls?.['q'].value"
+	(searchValue)="setSearch($event)">
+</b2b-client-subheader>
+
 <b2b-breadcrumbs></b2b-breadcrumbs>
 
 <form [formGroup]="mobileFilters">

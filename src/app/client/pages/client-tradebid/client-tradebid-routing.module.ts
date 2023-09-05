@@ -1,13 +1,13 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ClientTradebidComponent } from "./client-tradebid.component";
-import { ClientTradeBidAddRfqComponent } from "./client-tradebid-add-rfq/client-trade-bid-add-rfq.component";
-import { ClientTradebidListingComponent } from "./client-tradebid-listing/client-tradebid-listing.component";
-import { AuthGuard } from "../../../auth/guards/auth/auth.guard";
-import { ClientTradebidRfqDetailsComponent } from "./client-tradebid-listing/client-tradebid-rfq-details/client-tradebid-rfq-details.component";
-import { ClientTradebidQuotationFormComponent } from "./client-tradebid-listing/client-tradebid-quotation-form/layout/client-tradebid-quotation-form.component";
-import { CompanyInformationGuard } from "../../../auth/guards/companyInformation/company-information.guard";
-import { CompanyInformationComponent } from "./company-information/company-information.component";
+import { ClientTradeBidAddRfqComponent } from "src/app/client/pages/client-tradebid/components/client-tradebid-add-rfq/client-trade-bid-add-rfq.component";
+import { ClientTradebidListingComponent } from "src/app/client/pages/client-tradebid/components/client-tradebid-listing/client-tradebid-listing.component";
+import { AuthGuard } from "src/app/auth/guards/auth/auth.guard";
+import { ClientTradebidRfqDetailsComponent } from "src/app/client/pages/client-tradebid/components/client-tradebid-listing/client-tradebid-rfq-details/client-tradebid-rfq-details.component";
+import { ClientTradebidQuotationFormComponent } from "src/app/client/pages/client-tradebid/components/client-tradebid-listing/client-tradebid-quotation-form/layout/client-tradebid-quotation-form.component";
+import { CompanyInformationGuard } from "src/app/auth/guards/companyInformation/company-information.guard";
+import { CompanyInformationComponent } from "src/app/client/pages/client-tradebid/components/company-information/company-information.component";
 
 const routes: Routes = [
 	{

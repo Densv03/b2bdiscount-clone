@@ -323,7 +323,12 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 				})
 			)
 			.subscribe(() => {
-				this.router.navigate(["/admin/b2bmarket"]);
+				const page = this.activatedRoute.snapshot.queryParams['page']
+				this.router.navigate(["/admin/b2bmarket"], {
+					queryParams: {
+						page
+					}
+				});
 			});
 	}
 

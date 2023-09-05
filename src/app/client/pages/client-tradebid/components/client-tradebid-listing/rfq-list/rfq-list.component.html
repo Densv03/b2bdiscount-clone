@@ -1,0 +1,9 @@
+<div *ngIf="(rfqList$ | async).length; else listLoader"
+	class="rfq-list">
+	<b2b-rfq-item *ngFor="let rfqItem of rfqList$ | async" [rfqItem]="rfqItem"></b2b-rfq-item>
+</div>
+<ng-template #listLoader>
+	<div class="loader">
+		<b2b-ngx-skeleton [option]="skeletonOptions"></b2b-ngx-skeleton>
+	</div>
+</ng-template>

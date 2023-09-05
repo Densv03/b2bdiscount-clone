@@ -3,6 +3,10 @@ import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { B2bNgxLinkService } from "@b2b/ngx-link";
 import { Observable } from "rxjs";
+import { MatDialog } from "@angular/material/dialog";
+import {
+	CreateRfqDialogComponent
+} from "src/app/client/pages/client-tradebid/components/create-rfq-dialog/create-rfq-dialog.component";
 
 @Component({
 	selector: "b2b-client-tradebid",
@@ -14,12 +18,22 @@ export class ClientTradebidComponent implements OnInit {
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public tradebidWhatIsSafeUrl: SafeResourceUrl;
 
-	constructor(domSanitizer: DomSanitizer, private linkService: B2bNgxLinkService) {
+	constructor(domSanitizer: DomSanitizer,
+							private linkService: B2bNgxLinkService,
+							private dialog: MatDialog) {
 		this.tradebidWhatIsSafeUrl = domSanitizer.bypassSecurityTrustResourceUrl(`assets/images/tradebid_what-is.svg`);
 	}
 
 	public getLink(link: string): Observable<string> {
 		return this.linkService.getLink(link);
+	}
+
+	public openCreateRfqDialog(): void {
+		this.dialog.open(CreateRfqDialogComponent, {
+			maxHeight: '652px',
+			maxWidth: '950px',
+			panelClass: 'add-rfq-popup'
+		});
 	}
 
 	ngOnInit() {}

@@ -11,22 +11,24 @@ import {B2bNgxSelectModule} from "@b2b/ngx-select";
 import {B2bNgxInputModule} from "@b2b/ngx-input";
 import {ReactiveFormsModule} from "@angular/forms";
 import { B2bBreadcrumbsModule } from "@b2b/breadcrumbs";
+import {SharedModule} from "../../../../shared/components/shared.module";
 
 const routes: Routes = [{path: '', component: ClientMarketplaceMainComponent}]
 @NgModule({
 	declarations: [ClientMarketplaceMainComponent, CompaniesCounterComponent],
-	imports: [
-		CommonModule,
-		RouterModule.forChild(routes),
-		CategoryItemModule,
-		// SwiperModule,
-		B2bNgxButtonModule,
-		MatTabsModule,
-		B2bNgxSelectModule,
-		B2bNgxInputModule,
-		ReactiveFormsModule,
-		B2bBreadcrumbsModule
-	],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CategoryItemModule,
+        // SwiperModule,
+        B2bNgxButtonModule,
+        MatTabsModule,
+        B2bNgxSelectModule,
+        B2bNgxInputModule,
+        ReactiveFormsModule,
+        B2bBreadcrumbsModule,
+        SharedModule
+    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 

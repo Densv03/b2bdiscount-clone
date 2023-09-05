@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {CategoriesService} from "../../../../../client/services/categories/categories.service";
 import {ClientMarketplaceService} from "../../../../../client/pages/client-marketplace/client-marketplace.service";
 import {PaginationParamsModel} from "../../../../../core/models/pagination-params.model";
-import {Observable} from "rxjs";
-import {Router} from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import { ConfirmationDialogComponent} from "../../../../../client/shared/components/confirmation-dialog/confirmation-dialog.component";
 import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
@@ -34,6 +34,8 @@ export class AdminProductListComponent implements OnInit {
 	public menuOptions = this.getMenuOptions();
 	private filteredQueryObj: PaginationParamsModel = {limit: this.PRODUCTS_LIMIT, offset: 0};
 	private socket: any;
+	private currentPageSource: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+	public currentPage$: Observable<number> = this.currentPageSource.asObservable();
 
 	constructor(private fb: FormBuilder,
 							private categoriesService: CategoriesService,
@@ -42,24 +44,34 @@ export class AdminProductListComponent implements OnInit {
 							private dialog: MatDialog,
 							private hotToastService: HotToastService,
 							private userService: UserService,
-							private readonly mixpanelService: MixpanelService) {
+							private readonly mixpanelService: MixpanelService,
+							private activatedRoute: ActivatedRoute) {
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		this.categoriesService.getCategories$();
-		this.marketService.updateProductsByAdmin(this.filteredQueryObj)
-
+		this.initPagination();
 		this.form.get('categories[]').valueChanges.subscribe((categories: Category[]) => {
 			this.marketService.updateProductsByAdmin(this.filteredQueryObj, {'categories[]': categories})
 		});
 	}
 
 	public redirectToProductDetails(product: any): void {
-		this.router.navigate(["/b2bmarket", "products", product._id]);
+		this.router.navigate(['b2bmarket','listing', 'products', product?.path || product._id])
+	}
+
+	private redirectToProductEdit(product: any): void {
+		this.router.navigate(['profile', 'your-workspace', 'b2bmarket','edit', product._id], {
+			queryParams: {
+				admin: true,
+				page: this.currentPageSource.getValue(),
+			},
+			queryParamsHandling: 'merge'
+		});
 	}
 
 
-	private getMenuOptions() {
+	private getMenuOptions(): any[] {
 		return [
 			{
 				label: "Delete",
@@ -86,6 +98,7 @@ export class AdminProductListComponent implements OnInit {
 								'Posting Date': marketplaceItem.updatedAt
 							});
 							this.deleteProductByAdmin(marketplaceItem._id);
+							this.marketService.updateProductsByAdmin(this.filteredQueryObj)
 						});
 				},
 			},
@@ -127,7 +140,7 @@ export class AdminProductListComponent implements OnInit {
 				},
 			},
 			{
-				label: "decline by admin",
+				label: "Decline by admin",
 				icon: "cross",
 				onClick: (offer: { _id: string; category: { name: any; }[]; company: { country: any; }[]; amount: { count: string; unit: { name: string; }; }; updatedAt: any; }) => {
 					this.marketService
@@ -145,6 +158,11 @@ export class AdminProductListComponent implements OnInit {
 						});
 				},
 			},
+			{
+				label: 'Edit',
+				icon: 'edit',
+				onClick: (product: any) => this.redirectToProductEdit(product)
+			}
 		];
 	}
 
@@ -159,7 +177,7 @@ export class AdminProductListComponent implements OnInit {
 					error: "Error while deleting",
 				})
 			)
-			.subscribe();
+			.subscribe(() => this.marketService.updateProductsByAdmin(this.filteredQueryObj));
 	}
 
 	private archiveProductByAdmin(id: string): void {
@@ -188,7 +206,7 @@ export class AdminProductListComponent implements OnInit {
 			});
 	}
 
-	private openConnection(token: string) {
+	private openConnection(token: string): void {
 		this.socket = io(environment.apiUrl, {
 			path: "/chat",
 			auth: {
@@ -198,6 +216,25 @@ export class AdminProductListComponent implements OnInit {
 	}
 
 	public togglePage(page: number): void {
-		this.marketService.updateProductsByAdmin({limit: this.PRODUCTS_LIMIT, offset: (page - 1) * this.PRODUCTS_LIMIT});
+		if (isNaN(+page)) {
+			throw new Error('Invalid page');
+		}
+		this.currentPageSource.next(+page);
+		this.filteredQueryObj['offset'] = (page - 1) * this.PRODUCTS_LIMIT;
+		this.marketService.updateProductsByAdmin(this.filteredQueryObj);
+		this.router.navigate([], {
+			queryParams: {
+				page: +page === 1 ? undefined : this.currentPageSource.getValue(),
+			}
+		})
+	}
+
+	private initPagination(): void {
+		const page = this.activatedRoute.snapshot.queryParams['page'];
+		if (page) {
+			this.togglePage(page);
+		} else {
+			this.togglePage(1);
+		}
 	}
 }

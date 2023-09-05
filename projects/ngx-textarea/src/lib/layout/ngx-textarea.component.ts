@@ -23,12 +23,12 @@ import { idGenerator } from "@b2b/id-generator";
 	],
 })
 export class B2bNgxTextareaComponent implements ControlValueAccessor, OnInit, OnChanges {
-	@Input() public readonly placeholder: string;
-	@Input() public readonly label: string;
-	@Input() public readonly name: string;
-	@Input() public readonly cols: number;
-	@Input() public readonly rows: number;
-	@Input() public readonly theme: string;
+	@Input() public placeholder: string;
+	@Input() public label: string;
+	@Input() public name: string;
+	@Input() public cols: number;
+	@Input() public rows: number;
+	@Input() public theme: string;
 
 	@Input() errors: ValidationErrors;
 

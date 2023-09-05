@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminComponent } from "./layout/admin.component";
-import { ClientTradeBidAddRfqComponent } from "../client/pages/client-tradebid/client-tradebid-add-rfq/client-trade-bid-add-rfq.component";
 import { CompanyInformationGuard } from "../auth/guards/companyInformation/company-information.guard";
+import { ClientTradeBidAddRfqComponent } from "src/app/client/pages/client-tradebid/components/client-tradebid-add-rfq/client-trade-bid-add-rfq.component";
 
 const routes: Routes = [
 	{

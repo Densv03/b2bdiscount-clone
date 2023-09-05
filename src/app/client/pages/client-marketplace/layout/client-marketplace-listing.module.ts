@@ -16,24 +16,26 @@ import {
 	ClientMarketplaceListingGridModule
 } from "../components/client-marketplace-listing-grid/client-marketplace-listing-grid.module";
 import {PaginationModule} from "../../../shared/components/pagination/pagination.module";
+import {SharedModule} from "../../../shared/components/shared.module";
 
 
 @NgModule({
   declarations: [ClientMarketplaceListingComponent],
-	imports: [
-		CommonModule,
-		ClientMarketplaceListingRoutingModule,
-		B2bBreadcrumbsModule,
-		ReactiveFormsModule,
-		ClientMarketplaceModule,
-		B2bNgxInputModule,
-		B2bNgxIconModule,
-		B2bNgxSelectModule,
-		B2bNgxButtonModule,
-		FiltersDropdownModule,
-		FilterChipsModule,
-		ClientMarketplaceListingGridModule,
-		PaginationModule
-	]
+    imports: [
+        CommonModule,
+        ClientMarketplaceListingRoutingModule,
+        B2bBreadcrumbsModule,
+        ReactiveFormsModule,
+        ClientMarketplaceModule,
+        B2bNgxInputModule,
+        B2bNgxIconModule,
+        B2bNgxSelectModule,
+        B2bNgxButtonModule,
+        FiltersDropdownModule,
+        FilterChipsModule,
+        ClientMarketplaceListingGridModule,
+        PaginationModule,
+        SharedModule
+    ]
 })
 export class ClientMarketplaceListingModule { }

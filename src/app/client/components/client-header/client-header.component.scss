@@ -123,7 +123,6 @@
 					display: grid;
 					grid-template-columns: repeat(2, auto);
 					grid-template-rows: repeat(2, auto);
-					gap: 5px;
 					padding: 4px 24px 4px 0;
 
 					.header__buttons-profile-text {
@@ -144,6 +143,10 @@
 						letter-spacing: 0;
 						text-align: left;
 						color: #9fa4bb;
+
+						&:first-letter {
+							text-transform: uppercase;
+						}
 					}
 
 					.unread-messages {
@@ -207,10 +210,6 @@
 					display: none;
 				}
 			}
-		}
-
-		&.transparent {
-			background-color: transparent;
 		}
 
 		@include breakpoint("4") {

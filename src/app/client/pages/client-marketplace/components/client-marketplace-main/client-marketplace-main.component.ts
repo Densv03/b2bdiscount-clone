@@ -152,6 +152,10 @@ export class ClientMarketplaceMainComponent implements OnInit {
     });
   }
 
+	public setSearch(searchValue: string): void {
+		this.formGroup.controls['q'].setValue(searchValue);
+	}
+
   public getOffersSkeletonOptions() {
     return [
       {
