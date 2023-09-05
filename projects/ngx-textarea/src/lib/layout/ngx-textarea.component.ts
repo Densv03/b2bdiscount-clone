@@ -29,6 +29,7 @@ export class B2bNgxTextareaComponent implements ControlValueAccessor, OnInit, On
 	@Input() public cols: number;
 	@Input() public rows: number;
 	@Input() public theme: string;
+	@Input() public customClass: string;
 
 	@Input() errors: ValidationErrors;
 
@@ -68,6 +69,13 @@ export class B2bNgxTextareaComponent implements ControlValueAccessor, OnInit, On
 		if (changes["errors"]) {
 			this.formControl.setErrors(changes["errors"].currentValue);
 		}
+	}
+
+	public get classNames(): string {
+		if (this.customClass) {
+			return `ngx-textarea ${this.customClass}`;
+		}
+		return 'ngx-textarea'
 	}
 
 	public validate(): ValidationErrors | null {
