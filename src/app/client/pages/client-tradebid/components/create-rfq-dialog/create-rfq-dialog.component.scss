@@ -175,8 +175,5 @@
 	color: #FFF;
 	font-size: 14px;
 	font-weight: 400;
-
-	@include breakpoint("3") {
-		margin-bottom: 6px;
-	}
+	margin-bottom: 6px;
 }
