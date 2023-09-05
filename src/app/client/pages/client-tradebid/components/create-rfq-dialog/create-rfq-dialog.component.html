@@ -12,7 +12,7 @@
 		</div>
 		<div class="product-sector">
 			<p class="label">Product name</p>
-			<b2b-ngx-select [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
 				formControlName="productSector" placeholder="Product sector"></b2b-ngx-select>
 		</div>
 		<div class="product-category">
@@ -32,8 +32,9 @@
 		</div>
 		<div class="delivery-location">
 			<p class="label">Delivery location</p>
-			<b2b-ngx-select [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="deliveryTerms" placeholder="Location"></b2b-ngx-select>
+			<b2b-ngx-country-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+															formControlName="location"
+															placeholder="Location"></b2b-ngx-country-select>
 		</div>
 		<div class="required-amount">
 			<p class="label">Required amount</p>

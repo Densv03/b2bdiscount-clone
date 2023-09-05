@@ -9,6 +9,7 @@ import { B2bNgxButtonModule, B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
 import { CommonModule } from "@angular/common";
 import { B2bNgxIconModule } from "@b2b/ngx-icon";
 import { MatDialogModule } from "@angular/material/dialog";
+import { B2bNgxCountrySelectModule } from "@b2b/ngx-country-select";
 
 @Component({
 	selector: 'b2b-create-rfq-dialog',
@@ -22,7 +23,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 		B2bNgxTextareaModule,
 		B2bNgxButtonModule,
 		B2bNgxIconModule,
-		MatDialogModule
+		MatDialogModule,
+		B2bNgxCountrySelectModule
 	],
 	standalone: true
 })
