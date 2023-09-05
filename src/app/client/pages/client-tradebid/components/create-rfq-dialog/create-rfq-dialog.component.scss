@@ -18,12 +18,13 @@
 
 	@include breakpoint("3") {
 		width: 500px;
-		padding: 8px 10px 8px 10px;
+		height: 986px;
+		padding: 0px 10px 0px 10px;
 	}
 
 	@include breakpoint("2") {
 		width: 400px;
-		padding: 8px 0px 8px 0px;
+		padding: 0px 0px 0px 0px;
 	}
 
 	@include breakpoint("1") {
@@ -97,6 +98,10 @@
 
 			.comments__textarea {
 				border-radius: 14px;
+
+				@include breakpoint("3") {
+					height: 96px;
+				}
 			}
 		}
 
