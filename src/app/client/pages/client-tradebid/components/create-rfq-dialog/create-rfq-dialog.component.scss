@@ -42,13 +42,16 @@
 		color: #FFF;
 		text-align: center;
 		margin-bottom: 24px;
+		line-height: 32px;
 
 		@include breakpoint("3") {
 			font-size: 20px;
+			line-height: 28px;
 		}
 
 		@include breakpoint("2") {
 			font-size: 18px;
+			line-height: 24px;
 		}
 	}
 
