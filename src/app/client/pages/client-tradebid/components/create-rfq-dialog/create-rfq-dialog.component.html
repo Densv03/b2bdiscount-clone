@@ -17,7 +17,7 @@
 		</div>
 		<div class="product-category">
 			<p class="label">Product category</p>
-			<b2b-ngx-select [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
 				formControlName="productCategory" placeholder="Product category"></b2b-ngx-select>
 		</div>
 		<div class="comments">
@@ -27,27 +27,27 @@
 		</div>
 		<div class="terms-of-delivery">
 			<p class="label">Fill in sourcing requirements</p>
-			<b2b-ngx-select [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
 				formControlName="deliveryTerms" placeholder="Type or select" [searchable]="true"></b2b-ngx-select>
 		</div>
 		<div class="delivery-location">
 			<p class="label">Delivery location</p>
-			<b2b-ngx-country-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-															formControlName="location"
-															placeholder="Location"></b2b-ngx-country-select>
+			<b2b-ngx-country-select className="border-radius-14" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				formControlName="location" placeholder="Location"></b2b-ngx-country-select>
 		</div>
 		<div class="required-amount">
 			<p class="label">Required amount</p>
-			<b2b-ngx-select [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
 				formControlName="requiredAmount" placeholder="Product category"></b2b-ngx-select>
 		</div>
 		<div class="unit">
 			<p class="label">Unit</p>
-			<b2b-ngx-select [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
 				formControlName="deliveryTerms" placeholder="Tones"></b2b-ngx-select>
 		</div>
-		<div class="btn-submit">
-			<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" [disabled]="!(isValid$ | async)">Send
+		<div class="btn-submit-wrapper">
+			<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" [disabled]="!(isValid$ | async)"
+				class="btn-submit">Send
 			</button>
 		</div>
 	</form>
