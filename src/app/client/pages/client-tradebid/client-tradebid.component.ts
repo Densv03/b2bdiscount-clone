@@ -30,7 +30,7 @@ export class ClientTradebidComponent implements OnInit {
 
 	public openCreateRfqDialog(): void {
 		this.dialog.open(CreateRfqDialogComponent, {
-			maxHeight: '652px',
+			maxHeight: '705px',
 			maxWidth: '950px',
 			panelClass: 'add-rfq-popup'
 		});
