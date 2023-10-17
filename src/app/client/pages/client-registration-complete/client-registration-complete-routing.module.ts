@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientRegistrationCompleteComponent } from "./layout/client-registration-complete.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientRegistrationCompleteComponent } from './layout/client-registration-complete.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientRegistrationCompleteComponent,
 	},
 ];

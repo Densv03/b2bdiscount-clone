@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.marketplace-main {
@@ -19,7 +19,7 @@
 				width: 50%;
 				margin: 0 auto;
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					width: 95%;
 				}
 
@@ -30,15 +30,15 @@
 					margin-top: 70px;
 					text-align: center;
 					line-height: 100%;
-					@include breakpoint("4") {
+					@include breakpoint('4') {
 						font-size: 90px;
 						margin-top: 35px;
 					}
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						font-size: 60px;
 					}
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						margin-top: 25px;
 						font-size: 48px;
 					}
@@ -52,14 +52,12 @@
 					letter-spacing: 0.01em;
 					color: #0f0f11;
 					margin-top: 10px;
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						padding: 0 10px;
 						line-height: 25px;
 						font-size: 16px;
 					}
 				}
-
-
 
 				form {
 					margin-top: 30px;
@@ -116,7 +114,7 @@
 					font-size: 24px;
 					line-height: 24px;
 					letter-spacing: 0.01em;
-					color: #0F0F11;
+					color: #0f0f11;
 				}
 
 				&__text {
@@ -139,7 +137,7 @@
 
 				.block {
 					width: 48%;
-					background: #F3F6F8;
+					background: #f3f6f8;
 					border-radius: 4px;
 					padding: 40px;
 					position: relative;
@@ -157,11 +155,11 @@
 			width: 70%;
 			margin: auto;
 			padding: 70px 0 30px 0;
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 90%;
 				padding-bottom: 15px;
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 80%;
 			}
 			.title {
@@ -178,13 +176,13 @@
 				.swiper-button-next {
 					position: absolute;
 					top: 200px !important;
-          width: 27px;
-          height: 44px;
-          svg {
-            width: 100%;
-            height: 100%;
-            fill: #007aff;
-          }
+					width: 27px;
+					height: 44px;
+					svg {
+						width: 100%;
+						height: 100%;
+						fill: #007aff;
+					}
 				}
 				.swiper-button-prev {
 					left: -65px;
@@ -192,7 +190,7 @@
 				.swiper-button-next {
 					right: -65px;
 				}
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					.swiper-button-prev {
 						left: -40px;
 					}
@@ -200,7 +198,7 @@
 						right: -40px;
 					}
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					.swiper-button-prev {
 						left: -28px;
 					}
@@ -233,7 +231,7 @@
 	.swiper {
 		min-height: 200px;
 		padding-bottom: 70px;
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			padding-bottom: 50px;
 		}
 
@@ -383,7 +381,4 @@
 			}
 		}
 	}
-
 }
-
-

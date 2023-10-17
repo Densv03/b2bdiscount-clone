@@ -6,6 +6,8 @@ export interface Category {
 	name: string;
 	path: string;
 	productsCount: number;
+	description?: string;
+	descriptionTitle?: string;
 }
 
 interface CategoryChildren {
@@ -15,4 +17,6 @@ interface CategoryChildren {
 	_id: string;
 	children: CategoryChildren[];
 	productsCount: number;
+	description?: string;
+	descriptionTitle?: string;
 }

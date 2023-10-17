@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 ::ng-deep {
 	.mat-tab-group {
@@ -8,7 +8,7 @@
 			//@include breakpoint('4') {
 			//	margin: auto;
 			//}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 100%;
 				font-size: 12px;
 
@@ -23,23 +23,23 @@
 			.mat-ink-bar {
 				background-color: #0f0f11;
 				width: 160px !important;
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					width: 115px !important;
 					transform: translate(20%);
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					width: 80px !important;
 					transform: translate(20%);
 				}
 			}
 			.mat-ripple-element {
 				display: none;
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					display: none;
 				}
 			}
 			.mat-tab-list {
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					width: 100%;
 				}
 			}

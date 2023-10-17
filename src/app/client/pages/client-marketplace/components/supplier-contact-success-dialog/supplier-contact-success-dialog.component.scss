@@ -1,0 +1,24 @@
+@import 'projects/shared/src/styles/breakpoints';
+@import 'projects/shared/src/styles/success-modal';
+.content {
+	&__buttons {
+		justify-content: center;
+		&:first-child:hover {
+			color: white !important;
+		}
+	}
+}
+
+::ng-deep {
+	.rfq-created-pop-up .mat-dialog-container {
+		border-radius: 8px;
+		position: relative;
+		//padding: 0;
+
+		.cross-icon {
+			position: absolute;
+			right: 16px;
+			top: 16px;
+		}
+	}
+}

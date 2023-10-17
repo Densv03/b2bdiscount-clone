@@ -1,3 +1,7 @@
 <div class="chats" *ngFor="let item of chatsList$ | async">
-	<b2b-chats-item (deleteChat)="updateComponent()" [chatsItem]="item" [chatType]="'my-rfq'"> </b2b-chats-item>
+	<b2b-chats-item
+		(deleteChat)="updateComponent()"
+		[chatsItem]="item"
+		[chatType]="'my-rfq'">
+	</b2b-chats-item>
 </div>

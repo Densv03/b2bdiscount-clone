@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientHowItWorks3Component } from "./layout/client-how-it-works-3.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientHowItWorks3Component } from './layout/client-how-it-works-3.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientHowItWorks3Component,
 	},
 ];

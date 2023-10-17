@@ -22,40 +22,40 @@
 			<span class="latest-offers-header-title-text">All offers</span>
 			<span class="latest-offers-header-icon"></span>
 		</h3>
-		<div class="search-wrapper">
-			<input
-				b2bNgxInput
-				formControlName="q"
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-				class="latest-offers-header-search"
-				placeholder="Search"/>
-			<img b2bNgxIcon name="search"/>
-		</div>
+		<!--		<div class="search-wrapper">-->
+		<!--			<input-->
+		<!--				b2bNgxInput-->
+		<!--				formControlName="q"-->
+		<!--				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"-->
+		<!--				class="latest-offers-header-search"-->
+		<!--				placeholder="Search"/>-->
+		<!--			<img b2bNgxIcon name="search"/>-->
+		<!--		</div>-->
 		<div class="latest-offers-header-filters">
-			<p *ngIf="false" class="latest-offers-header-show-filter">
-				<span class="latest-offers-header-show-filter-text">Show:</span>
-				<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_TRANSPARENT" placeholder="show by"></b2b-ngx-select>
-			</p>
-			<p class="latest-offers-header-sort-filter">
-				<span class="latest-offers-header-sort-filter-text">Sort by:</span>
-				<b2b-ngx-select
-					[theme]="b2bNgxSelectThemeEnum.BACKGROUND_TRANSPARENT"
-					[options]="sortTypes"
-					(changed)="updateSortType($event)"
-					formControlName="sort"
-					placeholder="Recent"
-					bindValue="value"
-					bindLabel="label">
-				</b2b-ngx-select>
-			</p>
-			<div class="latest-offers-header-display-type">
-				<button b2bNgxButton (click)="changeListingView('grid')">
-					<img b2bNgxIcon name="view-grid"/>
-				</button>
-				<button b2bNgxButton (click)="changeListingView('list')">
-					<img b2bNgxIcon name="view-list"/>
-				</button>
-			</div>
+			<!--			<p *ngIf="false" class="latest-offers-header-show-filter">-->
+			<!--				<span class="latest-offers-header-show-filter-text">Show:</span>-->
+			<!--				<b2b-ngx-select [theme]="b2bNgxSelectThemeEnum.BACKGROUND_TRANSPARENT" placeholder="show by"></b2b-ngx-select>-->
+			<!--			</p>-->
+			<!--			<p class="latest-offers-header-sort-filter">-->
+			<!--				<span class="latest-offers-header-sort-filter-text">Sort by:</span>-->
+			<!--				<b2b-ngx-select-->
+			<!--					[theme]="b2bNgxSelectThemeEnum.BACKGROUND_TRANSPARENT"-->
+			<!--					[options]="sortTypes"-->
+			<!--					(changed)="updateSortType($event)"-->
+			<!--					formControlName="sort"-->
+			<!--					placeholder="Recent"-->
+			<!--					bindValue="value"-->
+			<!--					bindLabel="label">-->
+			<!--				</b2b-ngx-select>-->
+			<!--			</p>-->
+			<!--			<div class="latest-offers-header-display-type">-->
+			<!--				<button b2bNgxButton (click)="changeListingView('grid')">-->
+			<!--					<img b2bNgxIcon name="view-grid"/>-->
+			<!--				</button>-->
+			<!--				<button b2bNgxButton (click)="changeListingView('list')">-->
+			<!--					<img b2bNgxIcon name="view-list"/>-->
+			<!--				</button>-->
+			<!--			</div>-->
 		</div>
 
 		<!--		<div class="latest-offers-header-filters__mobile">-->
@@ -87,38 +87,61 @@
 
 <div class="main-content">
 	<div class="filters">
-		<ng-container *ngFor="let filter of filtersArr$ | async as filtersArr; let filterIndex = index">
+		<!--		<span class="offers-title">All offers</span>-->
+		<div *ngIf="chipsService.getChipsLength()" class="selection-title">
+			{{
+				chipsService.getChipsLength() > 1 ? 'Your Selections' : 'Your Selection'
+			}}
+		</div>
+		<ng-container
+			*ngFor="
+				let filter of filtersArr$ | async as filtersArr;
+				let filterIndex = index
+			">
 			<b2b-filters-dropdown
-				(changeOption)="chooseFilter($event, filterIndex, filter.hiddenLabel, true)"
+				(changeOption)="
+					chooseFilter($event, filterIndex, filter.hiddenLabel, true)
+				"
 				[menuIsOpen]="filter.isOpen"
 				[openIsRestricted]="restrictOpen(filter, filtersArr)"
 				[selectedOption]="filter.selectedOption.getValue()"
 				[title]="filter.name">
 				<ng-container>
-					<div *ngIf="!filter.selectedOption.getValue(); else selectedOption" class="options">
+					<div
+						*ngIf="!filter.selectedOption.getValue(); else selectedOption"
+						class="options">
 						<div
 							*ngFor="let option of filter.options"
-							(click)="chooseFilter(option, filterIndex, filter.hiddenLabel, false)"
+							(click)="
+								chooseFilter(option, filterIndex, filter.hiddenLabel, false)
+							"
 							class="item">
 							<div class="circle-wrapper">
 								<div class="circle">
 									<div
 										class="inner-circle"
-										[class.selected]="isOptionSelected(option, filterIndex, filtersArr)"></div>
+										[class.selected]="
+											isOptionSelected(option, filterIndex, filtersArr)
+										"></div>
 								</div>
 							</div>
 
-							<div *ngIf="filter.hiddenLabel !== 'country[]'; else countryLabel" class="label">
-								{{option.name}}
+							<div
+								*ngIf="filter.hiddenLabel !== 'country[]'; else countryLabel"
+								class="label">
+								{{ option.name }}
 								<ng-container *ngIf="option.count">
-									({{option.count}})
+									({{ option.count }})
 								</ng-container>
 							</div>
 							<ng-template #countryLabel>
 								<label>
-									<img b2bNgxIcon group="flags/" [name]="option.name | uppercase">
-									{{getCountryName(option.name)}}
-									({{option.count}})
+									<img
+										b2bNgxIcon
+										group="flags/"
+										[name]="option.name | uppercase" />
+									{{ getCountryName(option.name) }}
+									({{ option.count }})
 								</label>
 							</ng-template>
 						</div>
@@ -142,15 +165,31 @@
 						<div class="circle">
 							<div class="inner-circle selected"></div>
 						</div>
-						<ng-container *ngIf="filtersArr[filterIndex].name !== 'Country'; else selectedCountryFilter">
-							<div class="label">{{filtersArr[filterIndex].selectedOption.getValue()[0].name}}</div>
-							({{filtersArr[filterIndex].selectedOption.getValue()[0].count}})
+						<ng-container
+							*ngIf="
+								filtersArr[filterIndex].name !== 'Country';
+								else selectedCountryFilter
+							">
+							<div class="label">
+								{{ filtersArr[filterIndex].selectedOption.getValue()[0].name }}
+							</div>
+							({{ filtersArr[filterIndex].selectedOption.getValue()[0].count }})
 						</ng-container>
+
 						<ng-template #selectedCountryFilter>
-							<img b2bNgxIcon group="flags/"
-									 [name]="filtersArr[filterIndex].selectedOption.getValue()[0].name | uppercase">
-							{{getCountryName(filtersArr[filterIndex].selectedOption.getValue()[0].name)}}
-							({{filtersArr[filterIndex].selectedOption.getValue()[0].count}})
+							<img
+								b2bNgxIcon
+								group="flags/"
+								[name]="
+									filtersArr[filterIndex].selectedOption.getValue()[0].name
+										| uppercase
+								" />
+							{{
+								getCountryName(
+									filtersArr[filterIndex].selectedOption.getValue()[0].name
+								)
+							}}
+							({{ filtersArr[filterIndex].selectedOption.getValue()[0].count }})
 						</ng-template>
 					</div>
 				</ng-template>
@@ -169,14 +208,17 @@
 		<button
 			(click)="clearFilterStore()"
 			b2bNgxButton
-			[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY" class="clear-button">Clear all
+			[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"
+			class="clear-button">
+			Clear all
 		</button>
 	</div>
 	<div class="listing">
 		<div
 			class="chips-wrapper"
 			[style.padding-bottom]="chipsService.getChipsLength() ? '32px' : '0'">
-			<app-filter-chips (removeFilter)="removeFilter($event)"></app-filter-chips>
+			<app-filter-chips
+				(removeFilter)="removeFilter($event)"></app-filter-chips>
 		</div>
 
 		<b2b-client-marketplace-listing-grid
@@ -184,24 +226,28 @@
 			[marketplaceProducts]="marketplaceProducts$ | async"
 			[user]="user$ | async"></b2b-client-marketplace-listing-grid>
 
-		<b2b-client-marketplace-listing-list
-			*ngIf="(marketplaceProductView$ | async) === 'list'"
-			[marketplaceProducts]="marketplaceProducts$ | async"
-			[user]="user$ | async"></b2b-client-marketplace-listing-list>
-
+		<!--		<b2b-client-marketplace-listing-list-->
+		<!--			*ngIf="(marketplaceProductView$ | async) === 'list'"-->
+		<!--			[marketplaceProducts]="marketplaceProducts$ | async"-->
+		<!--			[user]="user$ | async"></b2b-client-marketplace-listing-list>-->
 
 		<b2b-pagination
 			(togglePageNumber)="togglePage($event)"
 			[length]="totalMarketplaceProductsLength$ | async"
 			[perPage]="PRODUCTS_LIMIT"
-			[currentPage]="currentPage$ | async"
-		></b2b-pagination>
+			[currentPage]="currentPage$ | async"></b2b-pagination>
+	</div>
+</div>
+<div
+	*ngIf="chipsService.selectedMarketCategory$ | async as category"
+	class="category-description-wrapper">
+	<div class="category-description">
+		<h2 class="category-description__title">{{ category.descriptionTitle }}</h2>
+		<div class="category-description__text">{{ category.description }}</div>
 	</div>
 </div>
 
-<button
-	(click)="openPopUp()"
-	class="mobile-filters-button">
-	<img b2bNgxIcon name="filter-icon">
+<button (click)="openPopUp()" class="mobile-filters-button">
+	<img b2bNgxIcon name="filter-icon" />
 	<span class="filter-label">Filter</span>
 </button>

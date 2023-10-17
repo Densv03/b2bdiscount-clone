@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientHomeOffersCaouselComponent } from "./client-home-offers-caousel.component";
+import { ClientHomeOffersCaouselComponent } from './client-home-offers-caousel.component';
 
-describe("ClientHomeOffersCaouselComponent", () => {
+describe('ClientHomeOffersCaouselComponent', () => {
 	let component: ClientHomeOffersCaouselComponent;
 	let fixture: ComponentFixture<ClientHomeOffersCaouselComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientHomeOffersCaouselComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

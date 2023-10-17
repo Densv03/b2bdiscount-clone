@@ -65,6 +65,10 @@ export class B2bBreadcrumbsComponent implements OnInit {
 	private setLabel(label: string): void {
 		if (label) {
 			this.breadcrumbs[this.breadcrumbs.length - 1].label = label;
+
+			if (this.breadcrumbs[this.breadcrumbs?.length - 2].url.includes('/products/')) {
+				this.breadcrumbs.splice(this.breadcrumbs.length - 2, 1);
+			}
 		}
 	}
 }

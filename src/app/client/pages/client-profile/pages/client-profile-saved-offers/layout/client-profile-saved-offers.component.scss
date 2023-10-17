@@ -1,7 +1,7 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .client-profile-saved-offers {
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 40px 20px;
 	}
 	.client-profile-saved-offers-title {

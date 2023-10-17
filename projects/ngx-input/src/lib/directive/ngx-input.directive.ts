@@ -19,7 +19,7 @@ export class B2bNgxInputDirective implements OnChanges {
 	}
 
 	ngOnChanges(changes: NgxChanges<B2bNgxInputDirective>) {
-		if (!changes.theme?.currentValue) {
+		if (!changes.theme?.currentValue && changes.theme?.previousValue) {
 			this._renderer2.removeClass(this._elementRef.nativeElement, changes.theme.previousValue);
 		}
 		if (changes.theme && isValueInEnum(changes.theme.currentValue, B2bNgxInputThemeEnum)) {

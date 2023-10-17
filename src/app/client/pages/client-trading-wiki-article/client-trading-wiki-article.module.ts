@@ -10,10 +10,10 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ShareModule } from 'ngx-sharebuttons';
 import { ClientTradingWikiArticleComponent } from './layout/client-trading-wiki-article.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientTradingWikiArticleComponent],
+	declarations: [ClientTradingWikiArticleComponent],
 	imports: [
 		CommonModule,
 		ClientTradingWikiArticleRoutingModule,

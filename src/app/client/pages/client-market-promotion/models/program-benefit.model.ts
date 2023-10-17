@@ -1,5 +1,5 @@
 export interface ProgramBenefitModel {
-	title: string,
-	text: string,
-	backgroundColorIsWhite: boolean
+	title: string;
+	text: string;
+	backgroundColorIsWhite: boolean;
 }

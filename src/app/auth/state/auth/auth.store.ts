@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { Store, StoreConfig } from "@datorama/akita";
-import {B2bAuthRoleInterface} from "../../../../../projects/shared/src/interfaces/b2b-auth-role.interface";
-import {B2bAuthRootRoleInterface} from "../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface";
+import { Injectable } from '@angular/core';
+import { Store, StoreConfig } from '@datorama/akita';
+import { B2bAuthRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
+import { B2bAuthRootRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface';
 
 export interface AuthState {
 	user: any;
@@ -23,8 +23,8 @@ export function createInitialState(): AuthState {
 	};
 }
 
-@Injectable({ providedIn: "root" })
-@StoreConfig({ name: "auth" })
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'auth' })
 export class AuthStore extends Store<AuthState> {
 	constructor() {
 		super(createInitialState());

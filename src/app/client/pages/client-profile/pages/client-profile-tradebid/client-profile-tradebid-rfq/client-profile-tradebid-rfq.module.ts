@@ -1,22 +1,22 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { ClientProfileTradebidRfqRoutingModule } from "./client-profile-tradebid-rfq-routing.module";
-import { ClientProfileTradebidChatsComponent } from "./components/client-profile-tradebid-chats/client-profile-tradebid-chats.component";
-import { ClientProfileTradebidManageRfqComponent } from "./components/client-profile-tradebid-manage-rfq/client-profile-tradebid-manage-rfq.component";
-import { B2bNgxButtonModule } from "@b2b/ngx-button";
-import { RfqButtonsComponent } from "./shared/components/rfq-buttons/rfq-buttons.component";
-import { ClientProfileTradebidArchivedComponent } from "./components/client-profile-tradebid-archived/client-profile-tradebid-archived.component";
-import { ProductDescriptionItemComponent } from "./shared/components/product-description-item/product-description-item.component";
-import { ChatsItemModule } from "../shared/chats-item/chats-item.module";
-import { B2bNgxImageModule } from "@b2b/ngx-image";
-import { ReactiveFormsModule } from "@angular/forms";
-import { B2bNgxInputModule } from "@b2b/ngx-input";
-import { B2bNgxSelectModule } from "@b2b/ngx-select";
-import { B2bNgxTextareaModule } from "@b2b/ngx-textarea";
-import { B2bNgxFileModule } from "@b2b/ngx-file";
-import { ChangeRfqFormComponent } from "./components/change-rfq-form/change-rfq-form.component";
-import { B2bNgxCountrySelectModule } from "@b2b/ngx-country-select";
-import { B2bNgxCheckboxModule } from "@b2b/ngx-checkbox";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ClientProfileTradebidRfqRoutingModule } from './client-profile-tradebid-rfq-routing.module';
+import { ClientProfileTradebidChatsComponent } from './components/client-profile-tradebid-chats/client-profile-tradebid-chats.component';
+import { ClientProfileTradebidManageRfqComponent } from './components/client-profile-tradebid-manage-rfq/client-profile-tradebid-manage-rfq.component';
+import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { RfqButtonsComponent } from './shared/components/rfq-buttons/rfq-buttons.component';
+import { ClientProfileTradebidArchivedComponent } from './components/client-profile-tradebid-archived/client-profile-tradebid-archived.component';
+import { ProductDescriptionItemComponent } from './shared/components/product-description-item/product-description-item.component';
+import { ChatsItemModule } from '../shared/chats-item/chats-item.module';
+import { B2bNgxImageModule } from '@b2b/ngx-image';
+import { ReactiveFormsModule } from '@angular/forms';
+import { B2bNgxInputModule } from '@b2b/ngx-input';
+import { B2bNgxSelectModule } from '@b2b/ngx-select';
+import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
+import { B2bNgxFileModule } from '@b2b/ngx-file';
+import { ChangeRfqFormComponent } from './components/change-rfq-form/change-rfq-form.component';
+import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
+import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
 
 @NgModule({
 	declarations: [

@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientSeanQuizComponent } from "./layout/client-sean-quiz.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientSeanQuizComponent } from './layout/client-sean-quiz.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientSeanQuizComponent,
 	},
 ];

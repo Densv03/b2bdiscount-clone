@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RfqItemComponent } from "./rfq-item.component";
+import { RfqItemComponent } from './rfq-item.component';
 
-describe("RfqItemComponent", () => {
+describe('RfqItemComponent', () => {
 	let component: RfqItemComponent;
 	let fixture: ComponentFixture<RfqItemComponent>;
 
@@ -18,7 +18,7 @@ describe("RfqItemComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

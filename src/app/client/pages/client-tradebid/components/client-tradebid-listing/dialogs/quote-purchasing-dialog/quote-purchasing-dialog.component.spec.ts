@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuotePurchasingDialogComponent } from "./quote-purchasing-dialog.component";
+import { QuotePurchasingDialogComponent } from './quote-purchasing-dialog.component';
 
-describe("QuotePurchasingDialogComponent", () => {
+describe('QuotePurchasingDialogComponent', () => {
 	let component: QuotePurchasingDialogComponent;
 	let fixture: ComponentFixture<QuotePurchasingDialogComponent>;
 
@@ -18,7 +18,7 @@ describe("QuotePurchasingDialogComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

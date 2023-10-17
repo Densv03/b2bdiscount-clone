@@ -1,0 +1,22 @@
+<div class="wrapper">
+	<div class="text-info">
+		<!--		<p>Want to sell products?</p>-->
+		<!--		<p>Upload them here and buyers will contact you.</p>-->
+		<p *ngIf="bannerTextSource | async as bannerText" class="banner-text">
+			{{ bannerText }}
+		</p>
+	</div>
+	<div class="button-wrapper">
+		<button
+			*ngIf="buttonSource | async as button"
+			(click)="processBannerButtonClick(button)"
+			class="banner-button"
+			b2bNgxButton
+			[theme]="b2bNgxButtonTheme.BACKGROUND_WHITE">
+			{{ button.text }}
+		</button>
+		<!--		<b2b-claim-buttons-->
+		<!--			[buttonClass]="claimButtonClasses.LISTING_BANNER_BUTTON"-->
+		<!--			[buttonTheme]="b2bNgxButtonTheme.BACKGROUND_WHITE"></b2b-claim-buttons>-->
+	</div>
+</div>

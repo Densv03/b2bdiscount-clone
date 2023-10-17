@@ -2,9 +2,13 @@
 	<div class="client-trading-wiki-article" *ngIf="article$ | async as article">
 		<div class="client-trading-wiki-article-container">
 			<p class="client-trading-wiki-article-title">{{ article.title }}</p>
-			<p class="client-trading-wiki-article-date">{{ article.createdAt | date }}, by {{ article.author }}</p>
+			<p class="client-trading-wiki-article-date">
+				{{ article.createdAt | date }}, by {{ article.author }}
+			</p>
 
-			<div class="client-trading-wiki-article-text" [innerHTML]="article.description"></div>
+			<div
+				class="client-trading-wiki-article-text"
+				[innerHTML]="article.description"></div>
 		</div>
 
 		<div class="client-trading-wiki-article__share">
@@ -12,11 +16,15 @@
 				<img b2bNgxIcon name="link" alt="" />
 			</div>
 			<div class="client-trading-wiki-article__share-middle">
-				<p class="client-trading-wiki-article__share-middle-text">{{ "TRADING_WIKI.SHARE" | translate }}</p>
+				<p class="client-trading-wiki-article__share-middle-text">
+					{{ 'TRADING_WIKI.SHARE' | translate }}
+				</p>
 			</div>
 			<div class="client-trading-wiki-article__share-right">
 				<ul class="client-trading-wiki-article__share-right-social-medias">
-					<li class="client-trading-wiki-article__share-right-social-media" *ngFor="let socialMedia of socialMedias">
+					<li
+						class="client-trading-wiki-article__share-right-social-media"
+						*ngFor="let socialMedia of socialMedias">
 						<button
 							[shareButton]="socialMedia.share"
 							[description]="article.description"
@@ -45,13 +53,19 @@
 				class="client-trading-wiki-article__comments-button"
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-				{{ "TRADING_WIKI.POST_COMMENT" | translate }}
+				{{ 'TRADING_WIKI.POST_COMMENT' | translate }}
 			</button>
 
 			<ul class="client-trading-wiki-article__comments-list">
-				<li class="client-trading-wiki-article__comment" *ngFor="let comment of commnets$ | async">
-					<p class="client-trading-wiki-article__comment-author">{{ comment.author.fullName }}</p>
-					<p class="client-trading-wiki-article__comment-message">{{ comment.text }}</p>
+				<li
+					class="client-trading-wiki-article__comment"
+					*ngFor="let comment of commnets$ | async">
+					<p class="client-trading-wiki-article__comment-author">
+						{{ comment.author.fullName }}
+					</p>
+					<p class="client-trading-wiki-article__comment-message">
+						{{ comment.text }}
+					</p>
 				</li>
 			</ul>
 		</form>

@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.tradebid {
@@ -20,10 +20,10 @@
 					justify-content: center;
 					padding: 100px 0 30px 0;
 
-					@include breakpoint("4") {
+					@include breakpoint('4') {
 						margin-right: 0;
 					}
-					@include breakpoint("2") {
+					@include breakpoint('2') {
 						padding-top: 30px;
 					}
 					.image {
@@ -32,23 +32,24 @@
 						svg {
 							width: 887px;
 							height: 600px;
-							@include breakpoint("2") {
+							@include breakpoint('2') {
 								height: 750px;
 							}
 						}
 					}
 					h1 {
+						display: block;
 						font-size: 100px;
 						font-weight: 700;
 						text-align: center;
 						color: #005dff;
 						z-index: 100;
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							font-size: 70px;
 							margin-bottom: 15px !important;
 						}
-						@include breakpoint("1") {
-							font-size: 60px;
+						@include breakpoint('1') {
+							font-size: 35px;
 						}
 					}
 
@@ -58,11 +59,11 @@
 						font-weight: 400;
 						text-align: center;
 						z-index: 100;
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							font-size: 18px;
 							margin-bottom: 15px !important;
 						}
-						@include breakpoint("1") {
+						@include breakpoint('1') {
 							font-size: 19px;
 							padding: 0 50px;
 						}
@@ -81,7 +82,7 @@
 					align-items: center;
 					justify-content: center;
 					margin: auto;
-					@include breakpoint("2") {
+					@include breakpoint('2') {
 						flex-direction: column;
 					}
 					&__item {
@@ -92,14 +93,14 @@
 						padding: 10px;
 						z-index: 100;
 						position: relative;
-						@include breakpoint("4") {
+						@include breakpoint('4') {
 							min-height: 420px;
 						}
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							min-height: 260px;
 							width: 85%;
 						}
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							min-height: 250px;
 							width: 100%;
 							margin-bottom: 15px;
@@ -123,7 +124,7 @@
 							margin-top: 32px;
 							padding: 0 20px;
 							line-height: 27px;
-							@include breakpoint("1") {
+							@include breakpoint('1') {
 								margin-top: 15px;
 							}
 						}
@@ -138,7 +139,7 @@
 					}
 					&__item:nth-child(2) {
 						margin-left: 40px;
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							margin-left: 0;
 						}
 					}
@@ -153,13 +154,13 @@
 						color: #fff;
 						position: absolute;
 						bottom: 25px;
-						@include breakpoint("4") {
+						@include breakpoint('4') {
 							padding: 15px 20px;
 						}
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							width: 40%;
 						}
-						@include breakpoint("1") {
+						@include breakpoint('1') {
 							width: 60%;
 						}
 						&:hover {
@@ -178,7 +179,7 @@
 				&__img {
 					margin-bottom: 100px;
 
-					@include breakpoint("4") {
+					@include breakpoint('4') {
 						width: 70%;
 					}
 				}
@@ -193,23 +194,28 @@
 					padding-top: 100px;
 					padding-bottom: 40px;
 					line-height: 60px;
+					@include breakpoint('1') {
+						padding-top: 30px;
+						padding-bottom: 0;
+						font-size: 35px;
+					}
 				}
 
 				&__wrapper {
 					display: flex;
 					justify-content: center;
 					flex-direction: row;
-					@include breakpoint("2") {
+					@include breakpoint('2') {
 						flex-direction: column-reverse;
 					}
 
 					&__text {
 						flex-basis: 36%;
 						margin-left: 5%;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 50%;
 						}
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							width: 90%;
 						}
 
@@ -223,17 +229,17 @@
 							padding: 15px 40px;
 							margin-bottom: 150px;
 
-							@include breakpoint("2") {
+							@include breakpoint('2') {
 								width: 100%;
 							}
 						}
 					}
 
 					&__img {
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 50%;
 						}
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							width: 100%;
 						}
 
@@ -244,7 +250,7 @@
 						}
 
 						object {
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								height: auto;
 							}

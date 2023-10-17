@@ -1,0 +1,128 @@
+<div class="search">
+	<div class="search__transportation">
+		<div class="search__title">Transportation by</div>
+		<div #transportationBody class="search__transportation-body">
+			<div #deliveryTypesInner class="inner {{ deliveryType$ | async }}"></div>
+			<div
+				*ngFor="let type of getDeliveryTypes()"
+				(click)="switchDeliveryType(transportationBody.offsetWidth, type)"
+				class="search__transportation-item">
+				<div class="search__transportation-img">
+					<svg-icon
+						[src]="
+							'assets/icons/logistic' +
+							((deliveryType$ | async) === type.name
+								? type.activeIcon
+								: type.icon)
+						">
+					</svg-icon>
+				</div>
+				<div
+					class="search__transportation-type"
+					[class.active]="(deliveryType$ | async) === type.name">
+					{{ type.name }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="search__inputs">
+		<svg
+			(click)="swapItems()"
+			class="swap-icon"
+			width="40"
+			height="40"
+			viewBox="0 0 40 40"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<circle cx="20" cy="20" r="20" fill="#F3F6F8" />
+			<path
+				d="M15.5298 14.5298C15.6623 14.3877 15.7344 14.1996 15.731 14.0053C15.7276 13.811 15.6489 13.6256 15.5115 13.4882C15.374 13.3508 15.1887 13.2721 14.9944 13.2687C14.8 13.2652 14.612 13.3374 14.4698 13.4698L12.4698 15.4698C12.3294 15.6105 12.2505 15.8011 12.2505 15.9998C12.2505 16.1986 12.3294 16.3892 12.4698 16.5298L14.4698 18.5298C14.5385 18.6035 14.6213 18.6626 14.7133 18.7036C14.8053 18.7446 14.9046 18.7667 15.0053 18.7684C15.106 18.7702 15.206 18.7517 15.2994 18.714C15.3928 18.6762 15.4776 18.6201 15.5489 18.5489C15.6201 18.4777 15.6762 18.3928 15.714 18.2994C15.7517 18.2061 15.7702 18.106 15.7684 18.0053C15.7666 17.9046 15.7446 17.8053 15.7036 17.7133C15.6626 17.6213 15.6035 17.5385 15.5298 17.4698L14.8098 16.7498H24.9998C25.1987 16.7498 25.3895 16.6708 25.5302 16.5302C25.6708 16.3895 25.7498 16.1988 25.7498 15.9998C25.7498 15.8009 25.6708 15.6102 25.5302 15.4695C25.3895 15.3289 25.1987 15.2498 24.9998 15.2498H14.8098L15.5298 14.5298ZM24.4698 21.4698C24.3294 21.6105 24.2505 21.8011 24.2505 21.9998C24.2505 22.1986 24.3294 22.3892 24.4698 22.5298L25.1898 23.2498H14.9998C14.8009 23.2498 14.6102 23.3289 14.4695 23.4695C14.3288 23.6102 14.2498 23.8009 14.2498 23.9998C14.2498 24.1988 14.3288 24.3895 14.4695 24.5302C14.6102 24.6708 14.8009 24.7498 14.9998 24.7498H25.1898L24.4698 25.4698C24.3961 25.5385 24.337 25.6213 24.296 25.7133C24.2551 25.8053 24.233 25.9046 24.2312 26.0053C24.2295 26.106 24.248 26.2061 24.2857 26.2994C24.3234 26.3928 24.3796 26.4777 24.4508 26.5489C24.522 26.6201 24.6068 26.6762 24.7002 26.714C24.7936 26.7517 24.8936 26.7702 24.9944 26.7684C25.0951 26.7667 25.1944 26.7446 25.2864 26.7036C25.3784 26.6626 25.4612 26.6035 25.5298 26.5298L27.5298 24.5298C27.6703 24.3892 27.7492 24.1986 27.7492 23.9998C27.7492 23.8011 27.6703 23.6105 27.5298 23.4698L25.5298 21.4698C25.3892 21.3294 25.1986 21.2505 24.9998 21.2505C24.8011 21.2505 24.6105 21.3294 24.4698 21.4698Z"
+				fill="#407BFF" />
+		</svg>
+
+		<div class="search__inputs-item">
+			<div class="search__title">Origin of shipment</div>
+
+			<input
+				placeholder="City, Port, Country"
+				[(ngModel)]="origin"
+				[typeahead]="searchOptions$ | async"
+				[typeaheadIsFirstItemActive]="false"
+				[typeaheadItemTemplate]="customItemTemplate"
+				[typeaheadWaitMs]="300"
+				typeaheadOptionField="name"
+				typeaheadGroupField="type"
+				class="form-control" />
+		</div>
+		<div class="search__inputs-item">
+			<div class="search__title">Destination of shipment</div>
+			<input
+				placeholder="City, Port, Country"
+				[(ngModel)]="destination"
+				[typeahead]="searchOptions$ | async"
+				[typeaheadIsFirstItemActive]="false"
+				[typeaheadItemTemplate]="customItemTemplate"
+				[typeaheadWaitMs]="300"
+				typeaheadOptionField="name"
+				typeaheadGroupField="type"
+				class="form-control" />
+		</div>
+	</div>
+
+	<div class="search__datepicker">
+		<div class="search__title">Ready to load</div>
+		<b2b-datepicker
+			inputClassName="datepicker"
+			iconName="filled-calendar"
+			[iconPosition]="{ left: '10px', top: '20px' }"></b2b-datepicker>
+	</div>
+
+	<div class="search__shipment">
+		<div class="search__title">Ready to load</div>
+		<div class="search__shipment-text">{{ deliveryType$ | async }}</div>
+	</div>
+
+	<div class="search__button {{ deliveryType$ | async }}">
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M10.5 19.5C15.4706 19.5 19.5 15.4706 19.5 10.5C19.5 5.52944 15.4706 1.5 10.5 1.5C5.52944 1.5 1.5 5.52944 1.5 10.5C1.5 15.4706 5.52944 19.5 10.5 19.5Z"
+				stroke="white"
+				stroke-width="1.6"
+				stroke-miterlimit="10"
+				stroke-linecap="round"
+				stroke-linejoin="round" />
+			<path
+				d="M22.5 22.5L17.25 17.25"
+				stroke="white"
+				stroke-width="1.6"
+				stroke-miterlimit="10"
+				stroke-linecap="round"
+				stroke-linejoin="round" />
+		</svg>
+	</div>
+</div>
+
+<ng-template #customItemTemplate let-model="item" let-index="index">
+	<div class="item">
+		<div class="flag">
+			<svg-icon
+				[src]="
+					'assets/icons' +
+					(model.type === 'City' ? '/flags/' : '/logistic/') +
+					model.icon +
+					'.svg'
+				">
+			</svg-icon>
+		</div>
+		<div class="labels">
+			<div class="title">{{ model.name }}</div>
+			<div class="subtitle">{{ model.countryName }}</div>
+		</div>
+	</div>
+</ng-template>

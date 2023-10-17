@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminSidenavComponent } from "./admin-sidenav.component";
+import { AdminSidenavComponent } from './admin-sidenav.component';
 
-describe("AdminSidenavComponent", () => {
+describe('AdminSidenavComponent', () => {
 	let component: AdminSidenavComponent;
 	let fixture: ComponentFixture<AdminSidenavComponent>;
 
@@ -18,7 +18,7 @@ describe("AdminSidenavComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

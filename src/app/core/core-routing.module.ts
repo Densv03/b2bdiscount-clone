@@ -1,69 +1,77 @@
-import {APP_INITIALIZER, NgModule} from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { CoreComponent } from "../core/layout/core.component";
-import { RedirectGuard } from "./guards/redirect.guard";
-import {RoleGuard} from "../auth/guards/role/role.guard";
-import {AuthService} from "../auth/services/auth/auth.service";
-import {LanguagesPreload} from "./providers/languages-preload/languages-preload";
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CoreComponent } from '../core/layout/core.component';
+import { RedirectGuard } from './guards/redirect.guard';
+import { RoleGuard } from '../auth/guards/role/role.guard';
+import { AuthService } from '../auth/services/auth/auth.service';
+import { LanguagesPreload } from './providers/languages-preload/languages-preload';
 
 const routes: Routes = [
 	{
-		path: "ru",
+		path: 'ru',
 		component: CoreComponent,
 		// canActivateChild: [MetaGuard],
 		data: {
 			meta: {
-				hreflang: "ru",
+				hreflang: 'ru',
 			},
 		},
 		children: [
 			{
-				path: "auth",
-				loadChildren: () => import("../auth/auth.module").then((m) => m.AuthModule),
+				path: 'auth',
+				loadChildren: () =>
+					import('../auth/auth.module').then((m) => m.AuthModule),
 			},
 			{
-				path: "admin",
+				path: 'admin',
 				canActivate: [RoleGuard],
-				loadChildren: () => import("../admin/admin.module").then((m) => m.AdminModule),
+				loadChildren: () =>
+					import('../admin/admin.module').then((m) => m.AdminModule),
 			},
 			{
-				path: "",
-				loadChildren: () => import("../client/client.module").then((m) => m.ClientModule),
-			}
+				path: '',
+				loadChildren: () =>
+					import('../client/client.module').then((m) => m.ClientModule),
+			},
 		],
 	},
 	{
-		path: "",
+		path: '',
 		component: CoreComponent,
 		canActivate: [RedirectGuard],
 		data: {
 			meta: {
-				hreflang: "en",
+				hreflang: 'en',
 			},
 		},
 		children: [
 			{
-				path: "auth",
-				loadChildren: () => import("../auth/auth.module").then((m) => m.AuthModule),
+				path: 'auth',
+				loadChildren: () =>
+					import('../auth/auth.module').then((m) => m.AuthModule),
 			},
 			{
-				path: "admin",
+				path: 'admin',
 				canActivate: [RoleGuard],
-				loadChildren: () => import("../admin/admin.module").then((m) => m.AdminModule),
+				loadChildren: () =>
+					import('../admin/admin.module').then((m) => m.AdminModule),
 			},
 			{
-				path: "",
-				loadChildren: () => import("../client/client.module").then((m) => m.ClientModule),
-			}
+				path: '',
+				loadChildren: () =>
+					import('../client/client.module').then((m) => m.ClientModule),
+			},
 		],
-	}
+	},
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, {
-    scrollPositionRestoration: "top",
-    initialNavigation: 'enabledBlocking'
-})],
+	imports: [
+		RouterModule.forRoot(routes, {
+			scrollPositionRestoration: 'top',
+			initialNavigation: 'enabledBlocking',
+		}),
+	],
 	exports: [RouterModule],
 })
 export class CoreRoutingModule {}

@@ -1,8 +1,8 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { AdminOfferRoutingModule } from "./admin-offer-routing.module";
-import { AdminOfferComponent } from "./layout/admin-offer.component";
+import { AdminOfferRoutingModule } from './admin-offer-routing.module';
+import { AdminOfferComponent } from './layout/admin-offer.component';
 
 @NgModule({
 	declarations: [AdminOfferComponent],

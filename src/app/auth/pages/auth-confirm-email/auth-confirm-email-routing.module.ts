@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AuthConfirmEmailComponent} from "./layout/auth-confirm-email.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthConfirmEmailComponent } from './layout/auth-confirm-email.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AuthConfirmEmailComponent,
 	},
 ];

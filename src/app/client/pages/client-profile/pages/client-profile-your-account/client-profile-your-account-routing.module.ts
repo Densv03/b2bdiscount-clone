@@ -1,38 +1,40 @@
-import { RouterModule, Routes } from "@angular/router";
-import { NgModule } from "@angular/core";
-import { ClientProfileYourAccountComponent } from "./layout/client-profile-your-account.component";
-import { DefaultRoleGuard } from "../../../../../auth/guards/defaultRole/deafult-role.guard";
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { ClientProfileYourAccountComponent } from './layout/client-profile-your-account.component';
+import { DefaultRoleGuard } from '../../../../../auth/guards/defaultRole/deafult-role.guard';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientProfileYourAccountComponent,
 		children: [
 			{
-				path: "",
-				pathMatch: "full",
-				redirectTo: "settings",
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'settings',
 			},
 			{
-				path: "settings",
+				path: 'settings',
 				canActivate: [DefaultRoleGuard],
 				loadChildren: () =>
-					import("../client-profile-settings/client-profile-settings.module").then(
-						(m) => m.ClientProfileSettingsModule
-					),
+					import(
+						'../client-profile-settings/client-profile-settings.module'
+					).then((m) => m.ClientProfileSettingsModule),
 			},
 			{
-				path: "company-information",
+				path: 'company-information',
 				loadChildren: () =>
-					import("../client-company-information/client-company-information.module").then(
-						(m) => m.ClientCompanyInformationModule
-					),
+					import(
+						'../client-company-information/client-company-information.module'
+					).then((m) => m.ClientCompanyInformationModule),
 			},
 			{
-				path: "billing",
+				path: 'billing',
 				canActivate: [DefaultRoleGuard],
 				loadChildren: () =>
-					import("../client-profile-billing/client-profile-billing.module").then((m) => m.ClientProfileBillingModule),
+					import(
+						'../client-profile-billing/client-profile-billing.module'
+					).then((m) => m.ClientProfileBillingModule),
 			},
 		],
 	},

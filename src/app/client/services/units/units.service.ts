@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { ApiService } from "../../../core/services/api/api.service";
-import { UnitsQuery } from "../../state/units/units.query";
-import { UnitsStore } from "../../state/units/units.store";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ApiService } from '../../../core/services/api/api.service';
+import { UnitsQuery } from '../../state/units/units.query';
+import { UnitsStore } from '../../state/units/units.store';
+import { Observable } from 'rxjs';
 
 @UntilDestroy()
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class UnitsService {
 	public readonly endpoint: string;
@@ -17,7 +17,7 @@ export class UnitsService {
 		private readonly _unitsStore: UnitsStore,
 		private readonly _unitsQuery: UnitsQuery
 	) {
-		this.endpoint = "units";
+		this.endpoint = 'units';
 	}
 
 	public getUnits(): Observable<any> {

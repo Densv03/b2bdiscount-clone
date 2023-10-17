@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoriesModalListComponent } from "./categories-modal-list.component";
+import { CategoriesModalListComponent } from './categories-modal-list.component';
 
-describe("CategoriesModalListComponent", () => {
+describe('CategoriesModalListComponent', () => {
 	let component: CategoriesModalListComponent;
 	let fixture: ComponentFixture<CategoriesModalListComponent>;
 
@@ -18,7 +18,7 @@ describe("CategoriesModalListComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientBadgeComponent } from "./client-badge.component";
+import { ClientBadgeComponent } from './client-badge.component';
 
-describe("ClientBadgeComponent", () => {
+describe('ClientBadgeComponent', () => {
 	let component: ClientBadgeComponent;
 	let fixture: ComponentFixture<ClientBadgeComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientBadgeComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

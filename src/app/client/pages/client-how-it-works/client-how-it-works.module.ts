@@ -7,10 +7,10 @@ import { B2bNgxImageModule } from '@b2b/ngx-image';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
 import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { ClientHowItWorksComponent } from './layout/client-how-it-works.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientHowItWorksComponent],
+	declarations: [ClientHowItWorksComponent],
 	imports: [
 		CommonModule,
 		ClientHowItWorksRoutingModule,

@@ -1,16 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { Observable } from "rxjs";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { GetPaymentPlanResponse } from "src/app/core/models/admin-billing/responses/get-payment-plan-response.model";
-import {DialogRef} from "@angular/cdk/dialog";
-import {AdminBillingService } from "src/app/admin/services/admin-billing.service";
+import { Observable } from 'rxjs';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { GetPaymentPlanResponse } from 'src/app/core/models/admin-billing/responses/get-payment-plan-response.model';
+import { DialogRef } from '@angular/cdk/dialog';
+import { AdminBillingService } from 'src/app/admin/services/admin-billing.service';
 
 @Component({
-	selector: "b2b-quote-purchasing-dialog",
-	templateUrl: "./quote-purchasing-dialog.component.html",
-	styleUrls: ["./quote-purchasing-dialog.component.scss"],
+	selector: 'b2b-quote-purchasing-dialog',
+	templateUrl: './quote-purchasing-dialog.component.html',
+	styleUrls: ['./quote-purchasing-dialog.component.scss'],
 })
 export class QuotePurchasingDialogComponent implements OnInit {
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -19,7 +19,7 @@ export class QuotePurchasingDialogComponent implements OnInit {
 		this.adminBillingService.getQuotesPaymentPlansToDisplay();
 
 	constructor(
-    private readonly dialogRef: DialogRef,
+		private readonly dialogRef: DialogRef,
 		private readonly router: Router,
 		private adminBillingService: AdminBillingService
 	) {}
@@ -28,6 +28,6 @@ export class QuotePurchasingDialogComponent implements OnInit {
 
 	public closeDialog(): void {
 		this.dialogRef.close();
-		this.router.navigate(["/profile/billing"]);
+		this.router.navigate(['/profile/billing']);
 	}
 }

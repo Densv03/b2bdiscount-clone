@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientPromoInComponent } from "./client-promo-in.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientPromoInComponent } from './client-promo-in.component';
 
-describe("ClientPromoInComponent", () => {
+describe('ClientPromoInComponent', () => {
 	let component: ClientPromoInComponent;
 	let fixture: ComponentFixture<ClientPromoInComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientPromoInComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

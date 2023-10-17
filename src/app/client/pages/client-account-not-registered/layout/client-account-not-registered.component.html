@@ -1,22 +1,31 @@
 <div class="registration-complete">
 	<div class="registration-complete__body">
 		<p class="registration-complete__body-title">
-			{{ ("ACCOUNT_NOT_REGISTERED.TITLE_1" | translate) + " " + email + " " + ("ACCOUNT_NOT_REGISTERED.TITLE_2" | translate) }}
+			{{
+				('ACCOUNT_NOT_REGISTERED.TITLE_1' | translate) +
+					' ' +
+					email +
+					' ' +
+					('ACCOUNT_NOT_REGISTERED.TITLE_2' | translate)
+			}}
 		</p>
 		<span>
-			{{ "ACCOUNT_NOT_REGISTERED.SUBTITLE" | translate }}
+			{{ 'ACCOUNT_NOT_REGISTERED.SUBTITLE' | translate }}
 		</span>
 
 		<div class="auth-log-in__main">
-			<button b2bNgxButton class="auth-log-in__log-in-button" (click)="loginWithAnotherAccount()">
-				{{ "ACCOUNT_NOT_REGISTERED.ANOTHER_ACCOUNT" | translate }}
+			<button
+				b2bNgxButton
+				class="auth-log-in__log-in-button"
+				(click)="loginWithAnotherAccount()">
+				{{ 'ACCOUNT_NOT_REGISTERED.ANOTHER_ACCOUNT' | translate }}
 			</button>
 			<button
 				(click)="createNewAccount()"
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 				class="auth-log-in__log-in-button">
-				{{ "ACCOUNT_NOT_REGISTERED.NEW_ACCOUNT" | translate }}
+				{{ 'ACCOUNT_NOT_REGISTERED.NEW_ACCOUNT' | translate }}
 			</button>
 		</div>
 	</div>

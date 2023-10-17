@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {ClientBlogAuthorsPageComponent} from "./layout/client-blog-authors-page.component";
+import { ClientBlogAuthorsPageComponent } from './layout/client-blog-authors-page.component';
 
 const routes: Routes = [
 	{
 		path: '',
-		component: ClientBlogAuthorsPageComponent
-	}
+		component: ClientBlogAuthorsPageComponent,
+	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule],
 })
-export class ClientBlogAuthorsPageRoutingModule { }
+export class ClientBlogAuthorsPageRoutingModule {}

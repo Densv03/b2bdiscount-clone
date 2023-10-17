@@ -1,38 +1,41 @@
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
-import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
-import {B2bNgxInputThemeEnum} from "@b2b/ngx-input";
-import {B2bNgxSelectThemeEnum} from "@b2b/ngx-select";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {map, startWith, switchMap, tap} from "rxjs/operators";
-import {BlogService} from "../../../services/blog/blog.service";
-import {PaginationParamsModel} from "../../../../core/models/pagination-params.model";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {NgxSkeletonLoaderConfig} from "ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { BlogService } from '../../../services/blog/blog.service';
+import { PaginationParamsModel } from '../../../../core/models/pagination-params.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
 
-function generateQueryString(obj: any, initialValue: string = "?") {
+function generateQueryString(obj: any, initialValue: string = '?') {
 	return Object.entries(obj)
 		.filter(([, value]: any) => !!value)
 		.reduce((queryString: string, [key, value]: any) => {
 			return Array.isArray(value)
-				? `${queryString}${value.reduce((str, arrayItem) => `${str}${key}=${arrayItem}&`, "")}`
+				? `${queryString}${value.reduce(
+						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
+						''
+				  )}`
 				: `${queryString}${key}=${value}&`;
 		}, initialValue);
 }
 
 function stripHtml(html: any) {
 	// Create a new div element
-	const temporalDivElement = document.createElement("div");
+	const temporalDivElement = document.createElement('div');
 	// Set the HTML content with the providen
 	temporalDivElement.innerHTML = html;
 	// Retrieve the text property of the element (cross-browser support)
-	return temporalDivElement.textContent || temporalDivElement.innerText || "";
+	return temporalDivElement.textContent || temporalDivElement.innerText || '';
 }
 
 @Component({
-	selector: "b2b-client-blog",
-	templateUrl: "./client-blog.component.html",
-	styleUrls: ["./client-blog.component.scss"],
+	selector: 'b2b-client-blog',
+	templateUrl: './client-blog.component.html',
+	styleUrls: ['./client-blog.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientBlogComponent implements OnInit {
@@ -57,19 +60,22 @@ export class ClientBlogComponent implements OnInit {
 	public readonly searchSubject: BehaviorSubject<any>;
 	public readonly search$: Observable<any>;
 	public totalBlogLength$: Observable<number> = this._blogService.blogLength$;
-	public currentPageSource: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+	public currentPageSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(1);
 
-	private filteredQueryObj: PaginationParamsModel = {limit: 7, offset: 0};
+	private filteredQueryObj: PaginationParamsModel = { limit: 7, offset: 0 };
 
-	constructor(private readonly _blogService: BlogService,
-							private readonly _route: ActivatedRoute,
-							private readonly _router: Router) {
+	constructor(
+		private readonly _blogService: BlogService,
+		private readonly _route: ActivatedRoute,
+		private readonly _router: Router
+	) {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 
 		this.pageSubject = new Subject();
-		this.searchSubject = new BehaviorSubject<any>("");
+		this.searchSubject = new BehaviorSubject<any>('');
 
 		this.search$ = this.searchSubject.asObservable();
 
@@ -98,14 +104,19 @@ export class ClientBlogComponent implements OnInit {
 	}
 
 	public togglePageBlogList(page: number): void {
-		this.filteredQueryObj = {...this.filteredQueryObj, offset: (page - 1) * 7};
-		this._blogService.updateBlogList(generateQueryString(this.filteredQueryObj));
+		this.filteredQueryObj = {
+			...this.filteredQueryObj,
+			offset: (page - 1) * 7,
+		};
+		this._blogService.updateBlogList(
+			generateQueryString(this.filteredQueryObj)
+		);
 		this._router.navigate([], {
 			relativeTo: this._route,
 			queryParams: {
 				page,
 			},
-			queryParamsHandling: "merge"
+			queryParamsHandling: 'merge',
 		});
 
 		this.currentPageSource.next(page);
@@ -116,8 +127,11 @@ export class ClientBlogComponent implements OnInit {
 	// }
 
 	public getFormGroup() {
-		return new FormGroup<{ q: FormControl<string>, offset: FormControl<number> }>({
-			q: new FormControl<string>(""),
+		return new FormGroup<{
+			q: FormControl<string>;
+			offset: FormControl<number>;
+		}>({
+			q: new FormControl<string>(''),
 			// "categories[]": "",
 			// "countries[]": "",
 			// "tags[]": "",
@@ -140,7 +154,7 @@ export class ClientBlogComponent implements OnInit {
 
 	public getArticles() {
 		return this.formGroup.valueChanges.pipe(
-			startWith({limit: 10}),
+			startWith({ limit: 10 }),
 			tap(() => {
 				this.loading = true;
 			}),
@@ -165,39 +179,39 @@ export class ClientBlogComponent implements OnInit {
 
 	public getArticlesSkeletonOptions(): Partial<NgxSkeletonLoaderConfig> {
 		return {
-      count: 4,
-      animation: "progress",
-      theme: {
-        height: "230px",
-      }
-    }
+			count: 4,
+			animation: 'progress',
+			theme: {
+				height: '230px',
+			},
+		};
 	}
 
 	public getSocialMedias() {
 		return [
 			{
-				icon: "facebook-gray",
-				href: "https://www.facebook.com/",
+				icon: 'facebook-gray',
+				href: 'https://www.facebook.com/',
 			},
 			{
-				icon: "twitter-gray",
-				href: "https://twitter.com/",
+				icon: 'twitter-gray',
+				href: 'https://twitter.com/',
 			},
 			{
-				icon: "instagram-gray",
-				href: "https://www.instagram.com/?hl=ru",
+				icon: 'instagram-gray',
+				href: 'https://www.instagram.com/?hl=ru',
 			},
 			{
-				icon: "pinterest-gray",
-				href: "https://www.pinterest.com/",
+				icon: 'pinterest-gray',
+				href: 'https://www.pinterest.com/',
 			},
 			{
-				icon: "behance-gray",
-				href: "https://www.behance.net/",
+				icon: 'behance-gray',
+				href: 'https://www.behance.net/',
 			},
 			{
-				icon: "google-gray",
-				href: "https://www.google.com.ua/?hl=ru",
+				icon: 'google-gray',
+				href: 'https://www.google.com.ua/?hl=ru',
 			},
 		];
 	}
@@ -228,7 +242,7 @@ export class ClientBlogComponent implements OnInit {
 	// }
 
 	public getPageOffers(pageNumber: number): void {
-		this.formGroup.patchValue({offset: pageNumber * 10, limit: 10});
+		this.formGroup.patchValue({ offset: pageNumber * 10, limit: 10 });
 	}
 
 	private blogPageInit(): void {
@@ -239,9 +253,9 @@ export class ClientBlogComponent implements OnInit {
 				queryParams: {
 					page: 1,
 				},
-				queryParamsHandling: "merge"
+				queryParamsHandling: 'merge',
 			});
-			page = 1
+			page = 1;
 		}
 
 		this.togglePageBlogList(+page);

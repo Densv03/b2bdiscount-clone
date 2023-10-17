@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function b2bNgxTel(): ValidatorFn {
 	return (control: AbstractControl): ValidationErrors | null => {
@@ -10,13 +10,13 @@ export function b2bNgxTel(): ValidatorFn {
 		// 	return {phone: true}
 		// }
 
-		if (typeof control.value === "string") {
-			const noSpaceStr = control.value.replace(/\s/g, "");
+		if (typeof control.value === 'string') {
+			const noSpaceStr = control.value.replace(/\s/g, '');
 			if (!/^\d+$/.test(noSpaceStr)) {
 				return { phone: true };
 			}
-		} else if (typeof control.value === "object") {
-			const noSpaceStr = control.value.number.replace(/\s/g, "");
+		} else if (typeof control.value === 'object') {
+			const noSpaceStr = control.value.number.replace(/\s/g, '');
 			if (!/^\d+$/.test(noSpaceStr)) {
 				return { phone: true };
 			}

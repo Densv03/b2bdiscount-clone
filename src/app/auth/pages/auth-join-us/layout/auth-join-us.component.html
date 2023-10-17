@@ -1,22 +1,24 @@
 <div class="auth-join-us__wrapper">
 	<div class="auth-join-us__header">
 		<p class="auth-join-us__header-text-wrapper">
-			<span class="auth-join-us__header-text">{{ "AUTH.ALREADY_HAVE" | translate }}</span>
+			<span class="auth-join-us__header-text">{{
+				'AUTH.ALREADY_HAVE' | translate
+			}}</span>
 			<a
 				b2bNgxLink
 				[routerLink]="b2bNgxLinkService.getLink('/auth/log-in') | async"
 				[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
 				class="auth-join-us__header-link"
 				queryParamsHandling="merge"
-				>{{ "AUTH.LOG_IN" | translate }}</a
+				>{{ 'AUTH.LOG_IN' | translate }}</a
 			>
 		</p>
 	</div>
 
 	<div class="auth-join-us__main">
-		<h2 class="auth-join-us__main-title">{{ "AUTH.JOIN_US" | translate }}</h2>
+		<h2 class="auth-join-us__main-title">{{ 'AUTH.JOIN_US' | translate }}</h2>
 		<p class="auth-join-us__main-description">
-			{{ "AUTH.CHOOSE_ROLE" | translate }}
+			{{ 'AUTH.CHOOSE_ROLE' | translate }}
 		</p>
 
 		<b2b-auth-join-us-roles-list

@@ -1,12 +1,12 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.promotion {
 		&__header {
-			background: #F7FBFE;
+			background: #f7fbfe;
 
 			min-height: 500px;
-      padding: 70px;
+			padding: 70px;
 			gap: 20px;
 			@include breakpoint('4') {
 				padding-left: 40px;
@@ -19,9 +19,9 @@
 			}
 
 			&__wrapper {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
+				display: flex;
+				justify-content: space-between;
+				width: 100%;
 				//position: relative;
 				&__info {
 					width: 44%;
@@ -49,7 +49,7 @@
 					&__subtitle {
 						font-weight: 900;
 						font-size: 42px;
-						color: #005DFF;
+						color: #005dff;
 						margin-top: 20px;
 						margin-bottom: 40px;
 						@include breakpoint('4') {
@@ -75,7 +75,7 @@
 						margin-top: 20px;
 						display: flex;
 						gap: 40px;
-						@include breakpoint('1'){
+						@include breakpoint('1') {
 							gap: 20px;
 						}
 						button {
@@ -106,7 +106,6 @@
 						display: none;
 					}
 				}
-
 			}
 		}
 
@@ -131,14 +130,14 @@
 					}
 				}
 				&__free-until {
-					background: #005DFF;
+					background: #005dff;
 					border-radius: 4px;
 					font-weight: 700;
 					font-size: 32px;
 					line-height: 136%;
 					text-align: center;
 					letter-spacing: 0.01em;
-					color: #FFFFFF;
+					color: #ffffff;
 					max-width: 400px;
 					margin: auto;
 					margin-top: 15px;
@@ -226,7 +225,7 @@
 		}
 
 		&__benefit {
-			background: #F7FBFE;
+			background: #f7fbfe;
 			padding: 70px 0;
 			@include breakpoint('3') {
 				padding-top: 40px;
@@ -276,11 +275,13 @@
 						text-align: center;
 						border-radius: 8px;
 						letter-spacing: 0.01em;
-						color: #FFFFFF;
+						color: #ffffff;
 						padding: 40px 20px;
 						width: 50%;
 						background-color: #1c5bfe;
-						box-shadow: -4px -4px 8px #E5F2FD, 4px 4px 8px #E5F2FD;
+						box-shadow:
+							-4px -4px 8px #e5f2fd,
+							4px 4px 8px #e5f2fd;
 						@include breakpoint('3') {
 							font-size: 20px;
 						}
@@ -312,16 +313,16 @@
 					}
 
 					.modified-block {
-						background-color: #FFFFFF;
-						color: #0F0F11;
+						background-color: #ffffff;
+						color: #0f0f11;
 					}
 				}
-
 			}
 		}
 
 		&__aim {
-			background: url('/assets/images/market-promotion/promotion-background.jpeg') center center/cover no-repeat;
+			background: url('/assets/images/market-promotion/promotion-background.jpeg')
+				center center/cover no-repeat;
 			height: 400px;
 			position: relative;
 			@include breakpoint('1') {
@@ -348,7 +349,7 @@
 					line-height: 136%;
 					text-align: center;
 					letter-spacing: 0.01em;
-					color: #0F0F11;
+					color: #0f0f11;
 					@include breakpoint('3') {
 						font-size: 27px;
 					}
@@ -361,7 +362,7 @@
 					line-height: 134%;
 					text-align: center;
 					letter-spacing: 0.01em;
-					color: #0F0F11;
+					color: #0f0f11;
 					margin-top: 20px;
 					font-weight: 300;
 					@include breakpoint('1') {
@@ -372,13 +373,15 @@
 		}
 
 		&__feedback {
-			background: #F7FBFE;
+			background: #f7fbfe;
 			min-height: 640px;
 			position: relative;
 			&__wrapper {
 				max-width: 560px;
-				background: #FFFFFF;
-				box-shadow: -4px -4px 8px #E5F2FD, 4px 4px 8px #E5F2FD;
+				background: #ffffff;
+				box-shadow:
+					-4px -4px 8px #e5f2fd,
+					4px 4px 8px #e5f2fd;
 				position: absolute;
 				left: 50%;
 				top: 50%;
@@ -443,7 +446,7 @@
 					font-size: 32px;
 					line-height: 136%;
 					letter-spacing: 0.01em;
-					color: #0F0F11;
+					color: #0f0f11;
 					text-align: center;
 					@include breakpoint('3') {
 						font-size: 27px;
@@ -455,7 +458,7 @@
 					line-height: 134%;
 					text-align: center;
 					letter-spacing: 0.01em;
-					color: #0F0F11;
+					color: #0f0f11;
 					@include breakpoint('3') {
 						width: 80%;
 						margin: auto;
@@ -495,9 +498,8 @@
 							@include breakpoint('3') {
 								font-size: 21px;
 							}
-
 						}
-						.description{
+						.description {
 							font-weight: 300;
 							font-size: 16px;
 							line-height: 148%;
@@ -513,8 +515,8 @@
 							display: flex;
 							flex-direction: column;
 							gap: 15px;
-							.release-date{
-								color: #06A67F;
+							.release-date {
+								color: #06a67f;
 								font-weight: 700;
 							}
 							img {
@@ -530,5 +532,5 @@
 }
 
 .mirror {
-  direction: rtl;
+	direction: rtl;
 }

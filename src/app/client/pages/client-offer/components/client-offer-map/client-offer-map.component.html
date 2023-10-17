@@ -1,18 +1,27 @@
 <div class="dialog">
-	<div class="dialog-left">
-	</div>
+	<div class="dialog-left"></div>
 
 	<div class="dialog-right">
-		<p class="tracking-details">{{ "TRACKING.TITLE" | translate }}</p>
+		<p class="tracking-details">{{ 'TRACKING.TITLE' | translate }}</p>
 		<p class="type" *ngIf="isAuth">
-			{{ "TRACKING.TYPE" | translate }}:
-			{{ "OFFER." + (data.transportType === "bulk_vessel" ? "VESSEL_NUMBER" : "CONTAINER_NUMBER") | translate }}:
+			{{ 'TRACKING.TYPE' | translate }}:
+			{{
+				'OFFER.' +
+					(data.transportType === 'bulk_vessel'
+						? 'VESSEL_NUMBER'
+						: 'CONTAINER_NUMBER') | translate
+			}}:
 			{{ data.container }}
 		</p>
 		<p class="type" *ngIf="!isAuth">
-			{{ "TRACKING.TYPE" | translate }}:
-			{{ "OFFER." + (data.transportType === "bulk_vessel" ? "VESSEL_NUMBER" : "CONTAINER_NUMBER") | translate }}:
-			{{ data.container | slice: 0:2 }}
+			{{ 'TRACKING.TYPE' | translate }}:
+			{{
+				'OFFER.' +
+					(data.transportType === 'bulk_vessel'
+						? 'VESSEL_NUMBER'
+						: 'CONTAINER_NUMBER') | translate
+			}}:
+			{{ data.container | slice: 0 : 2 }}
 			XXX XXX XXX
 			<button
 				b2bNgxButton
@@ -25,17 +34,20 @@
 		</p>
 
 		<p class="route">
-			{{ "TRACKING.FROM" | translate }} {{ data.destination?.from }} {{ "TRACKING.TO" | translate }} {{ data.destination?.to }}
+			{{ 'TRACKING.FROM' | translate }} {{ data.destination?.from }}
+			{{ 'TRACKING.TO' | translate }} {{ data.destination?.to }}
 		</p>
 		<p class="eta-to-destination" *ngIf="data.etaToPod && data.pod">
 			ЕТА to {{ data.pod }}: {{ data?.etaToPod | date }}
 		</p>
-		<p class="client-profile-offer-eta" *ngIf="data.etaToTransitPort && data.pol">
+		<p
+			class="client-profile-offer-eta"
+			*ngIf="data.etaToTransitPort && data.pol">
 			ЕТА to {{ data.pol }}: {{ data?.etaToTransitPort | date }}
 		</p>
 
 		<p class="description">
-			{{ "TRACKING.DESCRIPTION" | translate }}
+			{{ 'TRACKING.DESCRIPTION' | translate }}
 		</p>
 	</div>
 </div>

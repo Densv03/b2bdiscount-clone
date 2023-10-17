@@ -1,4 +1,4 @@
 export enum ShowMoreModeEnum {
-	IN = "in",
-	OUT = "out"
+	IN = 'in',
+	OUT = 'out',
 }

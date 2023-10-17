@@ -1,8 +1,8 @@
-import { TestBed } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
 
-import { CompanyInformationGuard } from "./company-information.guard";
+import { CompanyInformationGuard } from './company-information.guard';
 
-describe("CompanyInformationGuard", () => {
+describe('CompanyInformationGuard', () => {
 	let guard: CompanyInformationGuard;
 
 	beforeEach(() => {
@@ -10,7 +10,7 @@ describe("CompanyInformationGuard", () => {
 		guard = TestBed.inject(CompanyInformationGuard);
 	});
 
-	it("should be created", () => {
+	it('should be created', () => {
 		expect(guard).toBeTruthy();
 	});
 });

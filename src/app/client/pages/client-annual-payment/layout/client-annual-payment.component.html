@@ -6,7 +6,9 @@
 		</div>
 
 		<p class="annual-payment-title">Payment details</p>
-		<p class="description">Enter & confirm the information below for invoicing</p>
+		<p class="description">
+			Enter & confirm the information below for invoicing
+		</p>
 
 		<form [formGroup]="formGroup" (submit)="sendCardData(formGroup.value)">
 			<div class="input-container">
@@ -40,7 +42,12 @@
 					formControlName="postCode" />
 			</div>
 
-			<button b2bNgxButton class="submit" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">Proceed to Payment</button>
+			<button
+				b2bNgxButton
+				class="submit"
+				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+				Proceed to Payment
+			</button>
 		</form>
 	</div>
 
@@ -55,7 +62,9 @@
 						<span class="period">/ offer</span>
 					</span>
 				</p>
-				<p class="personal-account">Personal account to manage all you activities.</p>
+				<p class="personal-account">
+					Personal account to manage all you activities.
+				</p>
 				<div class="divider"></div>
 
 				<ul class="list">
@@ -74,7 +83,9 @@
 						<span class="period">/ year</span>
 					</span>
 				</p>
-				<p class="personal-account">Personal account to manage all you activities.</p>
+				<p class="personal-account">
+					Personal account to manage all you activities.
+				</p>
 				<div class="divider"></div>
 				<ul class="list">
 					<li>
@@ -96,8 +107,8 @@
 					<li>
 						<img b2bNgxIcon name="check-blue" alt="" />
 						<span
-							>Get access to all information disclosed by the seller, including seller’s phone number/email, and any
-							extra photos/documents</span
+							>Get access to all information disclosed by the seller, including
+							seller’s phone number/email, and any extra photos/documents</span
 						>
 					</li>
 					<li>
@@ -106,7 +117,10 @@
 					</li>
 					<li>
 						<img b2bNgxIcon name="check-blue" alt="" />
-						<span>Subscribe to newsletter to receive updates on your preferred goods</span>
+						<span
+							>Subscribe to newsletter to receive updates on your preferred
+							goods</span
+						>
 					</li>
 					<li>
 						<img b2bNgxIcon name="check-blue" alt="" />

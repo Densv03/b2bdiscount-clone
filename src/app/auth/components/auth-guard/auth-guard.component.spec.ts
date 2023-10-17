@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthGuardComponent } from "./auth-guard.component";
+import { AuthGuardComponent } from './auth-guard.component';
 
-describe("AuthGuardComponent", () => {
+describe('AuthGuardComponent', () => {
 	let component: AuthGuardComponent;
 	let fixture: ComponentFixture<AuthGuardComponent>;
 
@@ -18,7 +18,7 @@ describe("AuthGuardComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

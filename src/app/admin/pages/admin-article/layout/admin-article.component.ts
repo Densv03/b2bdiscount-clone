@@ -1,35 +1,47 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
-import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap } from "rxjs/operators";
-import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
-import { CategoriesService } from "../../../../client/services/categories/categories.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { WikiService } from "../../../../client/services/wiki/wiki.service";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { HotToastService } from "@ngneat/hot-toast";
-import { ActivatedRoute } from "@angular/router";
-import {combineLatest, Observable} from "rxjs";
-import { capitalizeFirstLetter } from "../../../../core/helpers/function/capitalize-first-letter";
-import { animate, style, transition, trigger } from "@angular/animations";
-import {AngularEditorConfig} from "@kolkov/angular-editor";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+	debounceTime,
+	distinctUntilChanged,
+	filter,
+	map,
+	startWith,
+	switchMap,
+} from 'rxjs/operators';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { CategoriesService } from '../../../../client/services/categories/categories.service';
+import {
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	Validators,
+} from '@angular/forms';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { WikiService } from '../../../../client/services/wiki/wiki.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { HotToastService } from '@ngneat/hot-toast';
+import { ActivatedRoute } from '@angular/router';
+import { combineLatest, Observable } from 'rxjs';
+import { capitalizeFirstLetter } from '../../../../core/helpers/function/capitalize-first-letter';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 const EDITOR_CONFIG: AngularEditorConfig = {
 	editable: true,
 	spellcheck: true,
-	height: "auto",
-	minHeight: "200px",
-	translate: "yes",
+	height: 'auto',
+	minHeight: '200px',
+	translate: 'yes',
 	enableToolbar: true,
 	showToolbar: true,
-	placeholder: "Enter text here...",
+	placeholder: 'Enter text here...',
 	fonts: [
-		{ class: "arial", name: "Arial" },
-		{ class: "times-new-roman", name: "Times New Roman" },
-		{ class: "calibri", name: "Calibri" },
-		{ class: "comic-sans-ms", name: "Comic Sans MS" },
+		{ class: 'arial', name: 'Arial' },
+		{ class: 'times-new-roman', name: 'Times New Roman' },
+		{ class: 'calibri', name: 'Calibri' },
+		{ class: 'comic-sans-ms', name: 'Comic Sans MS' },
 	],
 	sanitize: true,
-	toolbarPosition: "top",
+	toolbarPosition: 'top',
 };
 
 function setValuesToFormData(formData: FormData, values: any, prefix?: string) {
@@ -40,14 +52,16 @@ function setValuesToFormData(formData: FormData, values: any, prefix?: string) {
 				.forEach((arrayItem) => {
 					formData.append(key, arrayItem);
 				});
-		} else if (key === "image") {
+		} else if (key === 'image') {
 			Array.from(value).forEach((file: any) => {
 				formData.append(key, file);
 			});
-		} else if (typeof value === "object" && value !== null) {
+		} else if (typeof value === 'object' && value !== null) {
 			setValuesToFormData(formData, value, key);
 		} else {
-			const displayKey = prefix ? `${prefix}${capitalizeFirstLetter(key)}` : key;
+			const displayKey = prefix
+				? `${prefix}${capitalizeFirstLetter(key)}`
+				: key;
 			formData.append(displayKey, value);
 		}
 	});
@@ -55,17 +69,17 @@ function setValuesToFormData(formData: FormData, values: any, prefix?: string) {
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-admin-article",
-	templateUrl: "./admin-article.component.html",
-	styleUrls: ["./admin-article.component.scss"],
+	selector: 'b2b-admin-article',
+	templateUrl: './admin-article.component.html',
+	styleUrls: ['./admin-article.component.scss'],
 	animations: [
-		trigger("fadeInOut", [
-			transition(":enter", [
+		trigger('fadeInOut', [
+			transition(':enter', [
 				// :enter is alias to 'void => *'
 				style({ opacity: 0 }),
 				animate(500, style({ opacity: 1 })),
 			]),
-			transition(":leave", [
+			transition(':leave', [
 				// :leave is alias to '* => void'
 				animate(500, style({ opacity: 0 })),
 			]),
@@ -108,7 +122,7 @@ export class AdminArticleComponent implements OnInit {
 		return this.searchControl.valueChanges.pipe(
 			debounceTime(1000),
 			distinctUntilChanged(),
-			startWith(""),
+			startWith(''),
 			switchMap((search) => this._wikiService.getTags(search))
 		);
 	}
@@ -128,21 +142,22 @@ export class AdminArticleComponent implements OnInit {
 
 	public setLevel2Categories() {
 		this.formGroup
-			.get("level1Category")
+			.get('level1Category')
 			.valueChanges.pipe(
 				untilDestroyed(this),
 				filter((level1CategoryId) => !!level1CategoryId)
 			)
 			.subscribe((level1CategoryId: any) => {
 				this.level2Categories = this.level1Categories.find(
-					(level1Category: { _id: any; }) => level1Category._id === level1CategoryId
+					(level1Category: { _id: any }) =>
+						level1Category._id === level1CategoryId
 				)?.children;
 			});
 	}
 
 	public updateArticle() {
 		const articleById$ = this._activatedRoute.paramMap.pipe(
-			map((paramMap) => paramMap.get("id")),
+			map((paramMap) => paramMap.get('id')),
 			filter((id) => !!id),
 			switchMap((id) => this._wikiService.getArticleById(id))
 		);
@@ -153,8 +168,11 @@ export class AdminArticleComponent implements OnInit {
 			.pipe(untilDestroyed(this))
 			.subscribe(([article, categories]) => {
 				const level2CategoryId = article.category?._id;
-				const level1CategoryId = categories.find((level1Category: { children: any[]; }) =>
-					level1Category?.children.find((level2Category) => level2Category._id === level2CategoryId)
+				const level1CategoryId = categories.find(
+					(level1Category: { children: any[] }) =>
+						level1Category?.children.find(
+							(level2Category) => level2Category._id === level2CategoryId
+						)
 				)?._id;
 				this.formGroup.patchValue({
 					...article,
@@ -174,10 +192,10 @@ export class AdminArticleComponent implements OnInit {
 	public getFormGroup() {
 		return this._formBuilder.group({
 			_id: null,
-			title: ["", Validators.required],
-			description: "",
-			author: "",
-			image: "",
+			title: ['', Validators.required],
+			description: '',
+			author: '',
+			image: '',
 			country: [null],
 			tags: [[]],
 			level1Category: [null],
@@ -185,8 +203,14 @@ export class AdminArticleComponent implements OnInit {
 		});
 	}
 
-	public onSubmit(values: { [x: string]: any; _id: any; level1Category: any; level2Category: any; tags: any; }): void {
-		if (this.formGroup.status === "INVALID") {
+	public onSubmit(values: {
+		[x: string]: any;
+		_id: any;
+		level1Category: any;
+		level2Category: any;
+		tags: any;
+	}): void {
+		if (this.formGroup.status === 'INVALID') {
 			return;
 		}
 		const formData = new FormData();
@@ -196,10 +220,13 @@ export class AdminArticleComponent implements OnInit {
 		const formValues: any = {
 			...rest,
 			category: level2Category ?? level1Category,
-			tags: tags.map((tag: { _id: any; name: any; }) => tag._id || tag.name),
+			tags: tags.map((tag: { _id: any; name: any }) => tag._id || tag.name),
 		};
 		for (const key in formValues) {
-			if (!formValues[key] || (Array.isArray(formValues[key]) && !formValues[key].length)) {
+			if (
+				!formValues[key] ||
+				(Array.isArray(formValues[key]) && !formValues[key].length)
+			) {
 				delete formValues[key];
 			}
 		}
@@ -215,9 +242,9 @@ export class AdminArticleComponent implements OnInit {
 				.pipe(
 					untilDestroyed(this),
 					this._hotToastService.observe({
-						loading: "Article updating...",
-						success: "Article updated successfully!",
-						error: "Article updating failed!",
+						loading: 'Article updating...',
+						success: 'Article updated successfully!',
+						error: 'Article updating failed!',
 					})
 				)
 				.subscribe(() => {});
@@ -228,9 +255,9 @@ export class AdminArticleComponent implements OnInit {
 				.pipe(
 					untilDestroyed(this),
 					this._hotToastService.observe({
-						loading: "Article creating...",
-						success: "Article created successfully!",
-						error: "Article creation failed!",
+						loading: 'Article creating...',
+						success: 'Article created successfully!',
+						error: 'Article creation failed!',
 					})
 				)
 				.subscribe(() => {});

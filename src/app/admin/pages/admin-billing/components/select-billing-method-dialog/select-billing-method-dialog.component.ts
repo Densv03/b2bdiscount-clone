@@ -1,17 +1,16 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
-
-import { onlyNumber } from "../../../../../core/helpers/validator/only-number";
-import { AddPaymentPlanResponse } from "../../../../../core/models/admin-billing/responses/add-payment-plan-response.model";
+import { onlyNumber } from '../../../../../core/helpers/validator/only-number';
+import { AddPaymentPlanResponse } from '../../../../../core/models/admin-billing/responses/add-payment-plan-response.model';
 
 interface DropdownSelectItem {
 	value: string;
@@ -19,9 +18,9 @@ interface DropdownSelectItem {
 }
 
 @Component({
-	selector: "b2b-select-billing-method-dialog",
-	templateUrl: "./select-billing-method-dialog.component.html",
-	styleUrls: ["./select-billing-method-dialog.component.scss"],
+	selector: 'b2b-select-billing-method-dialog',
+	templateUrl: './select-billing-method-dialog.component.html',
+	styleUrls: ['./select-billing-method-dialog.component.scss'],
 })
 export class SelectBillingMethodDialogComponent implements OnInit {
 	constructor(
@@ -51,22 +50,30 @@ export class SelectBillingMethodDialogComponent implements OnInit {
 	}
 
 	public submitForm(form: FormGroup): void {
-		this.dialogRef.close({ value: form.value, mode: this.getEditMode(), id: this.data?.paymentPlan?._id });
+		this.dialogRef.close({
+			value: form.value,
+			mode: this.getEditMode(),
+			id: this.data?.paymentPlan?._id,
+		});
 	}
 
 	public getButtonText(): string {
-		return this.getEditMode() === "add" ? "Add payment plan" : "Edit payment plan";
+		return this.getEditMode() === 'add'
+			? 'Add payment plan'
+			: 'Edit payment plan';
 	}
 
 	private initFormSettings(): void {
-		this.formGroup.get("typePlan").valueChanges.subscribe((value: string) => {
-			if (value === "quotes") {
-				this.formGroup.get("amountOfQuotes").setValidators([Validators.required, onlyNumber()]);
+		this.formGroup.get('typePlan').valueChanges.subscribe((value: string) => {
+			if (value === 'quotes') {
+				this.formGroup
+					.get('amountOfQuotes')
+					.setValidators([Validators.required, onlyNumber()]);
 			} else {
-				this.formGroup.get("amountOfQuotes").clearValidators();
+				this.formGroup.get('amountOfQuotes').clearValidators();
 			}
 
-			this.formGroup.get("amountOfQuotes").updateValueAndValidity();
+			this.formGroup.get('amountOfQuotes').updateValueAndValidity();
 		});
 	}
 
@@ -81,26 +88,28 @@ export class SelectBillingMethodDialogComponent implements OnInit {
 	}
 
 	private isQuotesAmountInputVisible(): Observable<boolean> {
-		return this.formGroup.get("typePlan").valueChanges.pipe(map((value) => value === "quotes"));
+		return this.formGroup
+			.get('typePlan')
+			.valueChanges.pipe(map((value) => value === 'quotes'));
 	}
 
 	private getTypePlanOptions(): DropdownSelectItem[] {
 		return [
 			{
-				value: "subscription",
-				label: "Subscription",
+				value: 'subscription',
+				label: 'Subscription',
 			},
 			{
-				value: "quotes",
-				label: "Quotes",
+				value: 'quotes',
+				label: 'Quotes',
 			},
 		];
 	}
 
-	private getEditMode(): "add" | "edit" {
+	private getEditMode(): 'add' | 'edit' {
 		if (this.data.paymentPlan) {
-			return "edit";
+			return 'edit';
 		}
-		return "add";
+		return 'add';
 	}
 }

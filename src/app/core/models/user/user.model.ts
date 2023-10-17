@@ -1,10 +1,10 @@
-import { Phone } from "./phone.model";
-import { PaymentInfo } from "./payment-info.model";
-import { Subscriptions } from "./subscriptions.model";
-import { Offer } from "../offer.model";
-import { Logo } from "./logo.model";
-import {B2bAuthRoleInterface} from "../../../../../projects/shared/src/interfaces/b2b-auth-role.interface";
-import {B2bAuthRootRoleInterface} from "../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface";
+import { Phone } from './phone.model';
+import { PaymentInfo } from './payment-info.model';
+import { Subscriptions } from './subscriptions.model';
+import { Offer } from '../offer.model';
+import { Logo } from './logo.model';
+import { B2bAuthRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
+import { B2bAuthRootRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface';
 
 export interface User {
 	rfqQuotes: number;
@@ -30,7 +30,7 @@ export interface User {
 	site: string;
 	socialAuth: boolean;
 	// TODO: make type for authTypes
-	socialAuthType: "google" | "linkedin" | null;
+	socialAuthType: 'google' | 'linkedin' | null;
 	createdAt: string;
 	updatedAt: Date;
 	deletedDate: Date;
@@ -44,15 +44,15 @@ export interface User {
 			created: number;
 			deleted: number;
 			approved: number;
-		},
+		};
 		products: {
 			created: number;
 			deleted: number;
 			approved: number;
-		},
+		};
 		rfq: {
 			created: number;
 			deleted: number;
-		}
-	}
+		};
+	};
 }

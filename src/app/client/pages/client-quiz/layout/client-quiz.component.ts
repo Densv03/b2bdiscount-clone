@@ -1,17 +1,25 @@
-import { DOCUMENT } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Inject, Renderer2 } from "@angular/core";
+import { DOCUMENT } from '@angular/common';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Inject,
+	Renderer2,
+} from '@angular/core';
 
 @Component({
-	selector: "b2b-client-quiz",
-	templateUrl: "./client-quiz.component.html",
-	styleUrls: ["./client-quiz.component.scss"],
+	selector: 'b2b-client-quiz',
+	templateUrl: './client-quiz.component.html',
+	styleUrls: ['./client-quiz.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientQuizComponent {
-	constructor(private _renderer2: Renderer2, @Inject(DOCUMENT) private _document: Document) {}
+	constructor(
+		private _renderer2: Renderer2,
+		@Inject(DOCUMENT) private _document: Document
+	) {}
 
 	public ngOnInit() {
-		const script = this._renderer2.createElement("script");
+		const script = this._renderer2.createElement('script');
 		script.text = `
     (function(w, d, s, o){
       var j = d.createElement(s); j.async = true; j.src = '//script.marquiz.ru/v2.js';j.onload = function() {

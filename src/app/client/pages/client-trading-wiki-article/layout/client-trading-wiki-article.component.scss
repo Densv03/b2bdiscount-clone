@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 ::ng-deep {
 	.client-trading-wiki-article-text {
@@ -28,7 +28,7 @@
 			width: 100%;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 		}
 	}
@@ -58,7 +58,7 @@
 			white-space: pre-wrap;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 15px;
 		}
 	}
@@ -107,7 +107,7 @@
 			}
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			display: none;
 		}
 	}
@@ -157,12 +157,12 @@
 			}
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 15px;
 		}
 	}
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 0;
 	}
 }

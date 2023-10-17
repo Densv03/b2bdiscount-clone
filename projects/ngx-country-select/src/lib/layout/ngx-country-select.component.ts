@@ -41,6 +41,7 @@ import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnInit, OnChanges {
 	@Input() errors: ValidationErrors = {};
 
+	@Input() public invalid: boolean = false;
 	@Input() showInTransit?: boolean;
 	@Input() public theme: B2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum.BACKGROUND_GRAY;
 	@Input() public className: string = '';
@@ -50,7 +51,6 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 
 	@Output() openSelect: EventEmitter<void> = new EventEmitter<void>();
 	@Output() closeSelect: EventEmitter<void> = new EventEmitter<void>();
-
 	public readonly formControl: FormControl<string | null>;
 	public options: any[] = [];
 

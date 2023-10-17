@@ -1,23 +1,31 @@
 <ng-container>
 	<div class="client-trading-wiki-article" *ngIf="article$ | async as article">
-
 		<div class="client-trading-wiki-article-title-block">
-			<h2 class="client-trading-wiki-article-title-block-category">{{article.blog?.category}}</h2>
-			<h1 class="client-trading-wiki-article-title">{{ article.blog.title }}</h1>
+			<h2 class="client-trading-wiki-article-title-block-category">
+				{{ article.blog?.category }}
+			</h2>
+			<h1 class="client-trading-wiki-article-title">
+				{{ article.blog.title }}
+			</h1>
 
 			<p class="client-trading-wiki-article-title-block-info">
-				<a b2bNgxLink [theme]="b2bNgxLinkThemeEnum.TEXT_BLUE" [routerLink]="['samantha-greene']">
+				<a
+					b2bNgxLink
+					[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
+					[routerLink]="['samantha-greene']">
 					by Samantha Greene
 				</a>
 				/
-				<span>{{article.blog.createdAt | date}}</span>
+				<span>{{ article.blog.createdAt | date }}</span>
 				/
 				<span>5m</span>
 			</p>
 		</div>
 
 		<div class="client-trading-wiki-article-content">
-			<div class="article-description" [innerHTML]="article.blog.description"></div>
+			<div
+				class="article-description"
+				[innerHTML]="article.blog.description"></div>
 		</div>
 
 		<div class="client-trading-wiki-article-share">
@@ -32,14 +40,13 @@
 						rel="nofollow"
 						class="client-trading-wiki-article-share-social-media-link"
 						(click)="processShareBtn(socialMedia.share)">
-						<img b2bNgxIcon [name]="socialMedia.icon"/>
+						<img b2bNgxIcon [name]="socialMedia.icon" />
 					</button>
 				</a>
 			</div>
 		</div>
 
 		<div class="client-trading-wiki-article-recommendations">
-
 			<b2b-blog-grid-list
 				[title]="'Recommend'"
 				[getArticles]="article.anotherBlogs">

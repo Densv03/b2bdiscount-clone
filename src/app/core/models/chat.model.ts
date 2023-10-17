@@ -1,4 +1,4 @@
-import { User } from "./user/user.model";
+import { User } from './user/user.model';
 
 export interface Chat {
 	_id: string;

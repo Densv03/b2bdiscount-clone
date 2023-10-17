@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .badge {
 	display: flex;
@@ -24,14 +24,14 @@
 
 .client-profile-offer-bg {
 	padding: 24px 100px;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 0;
 	}
 	.client-profile-offer {
 		background-color: white;
 		padding: 32px 60px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 0 15px 40px;
 		}
 
@@ -46,7 +46,7 @@
 			display: flex;
 			flex-wrap: wrap;
 			margin-top: 40px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 			.client-profile-offer-left {
@@ -68,7 +68,7 @@
 						color: white;
 					}
 				}
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 				}
 			}
@@ -77,7 +77,7 @@
 				width: 60%;
 				padding: 0 40px;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					padding: 24px 0;
 				}
@@ -200,7 +200,7 @@
 						top: 0;
 						background-color: rgba(255, 255, 255, 0.7);
 					}
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 					}
 
@@ -275,7 +275,7 @@
 
 			.client-profile-offer-right {
 				width: 20%;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 				}
 				.client-profile-offer-contact {

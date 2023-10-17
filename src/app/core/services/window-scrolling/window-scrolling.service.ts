@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class WindowScrollingService {
-	private readonly styleTag: HTMLStyleElement
+	private readonly styleTag: HTMLStyleElement;
 
 	constructor() {
 		this.styleTag = this.buildStyleElement();
@@ -19,14 +19,14 @@ export class WindowScrollingService {
 	}
 
 	private buildStyleElement(): HTMLStyleElement {
-		const style = document.createElement("style");
-		style.type = "text/css";
-		style.setAttribute("data-debug", "Injected by WindowScrolling service.");
+		const style = document.createElement('style');
+		style.type = 'text/css';
+		style.setAttribute('data-debug', 'Injected by WindowScrolling service.');
 		style.textContent = `
 			body {
 				overflow: hidden !important ;
 			}
 		`;
-		return (style);
+		return style;
 	}
 }

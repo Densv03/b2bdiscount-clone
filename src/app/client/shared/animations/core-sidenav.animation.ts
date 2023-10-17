@@ -1,43 +1,50 @@
-import { animate, group, state, style, transition, trigger } from "@angular/animations";
+import {
+	animate,
+	group,
+	state,
+	style,
+	transition,
+	trigger,
+} from '@angular/animations';
 
 export const CoreSidenavAnimation = [
-	trigger("slideInOut", [
+	trigger('slideInOut', [
 		state(
-			"in",
+			'in',
 			style({
-				visibility: "visible",
+				visibility: 'visible',
 			})
 		),
 		state(
-			"out",
+			'out',
 			style({
-				right: "-100vw",
-				visibility: "hidden",
+				right: '-100vw',
+				visibility: 'hidden',
 			})
 		),
-		transition("in => out", [
+		transition('in => out', [
 			group([
 				animate(
-					"700ms ease-in-out",
+					'700ms ease-in-out',
 					style({
-						right: "-100vw",
-						display: "none",
+						right: '-100vw',
+						display: 'none',
 					})
 				),
 			]),
 		]),
-		transition("out => in", [
+		transition('out => in', [
 			group([
 				animate(
-					"1ms ease-in-out",
+					'1ms ease-in-out',
 					style({
-						visibility: "visible",
+						visibility: 'visible',
 					})
 				),
 				animate(
-					"400ms ease-in-out",
+					'400ms ease-in-out',
 					style({
-						right: "0px",
+						right: '0px',
 					})
 				),
 			]),

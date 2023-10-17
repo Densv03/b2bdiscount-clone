@@ -1,5 +1,5 @@
 export interface AddPaymentPlanBody {
-	typePlan: "subscription" | "quotes";
+	typePlan: 'subscription' | 'quotes';
 	title: string;
 	price: number;
 	description: string;

@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.auth-container {
@@ -14,7 +14,7 @@
 			overflow: auto;
 		}
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			height: 90%;
 		}
 	}

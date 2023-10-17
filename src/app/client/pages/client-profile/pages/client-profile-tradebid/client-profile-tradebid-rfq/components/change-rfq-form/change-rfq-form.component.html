@@ -1,5 +1,7 @@
 <form class="rfq__form" [formGroup]="form" (ngSubmit)="submitForm(form)">
-	<div class="rfq__form__product-information" formGroupName="productInformation">
+	<div
+		class="rfq__form__product-information"
+		formGroupName="productInformation">
 		<div class="title">Product information</div>
 		<input
 			type="text"
@@ -22,7 +24,9 @@
 		<p
 			*ngIf="
 				this.form.get('productInformation').get('productName').touched &&
-				this.form.get('productInformation').get('productName').errors?.['required']
+				this.form.get('productInformation').get('productName').errors?.[
+					'required'
+				]
 			"
 			class="error"
 			[@fadeInOut]>
@@ -64,9 +68,12 @@
 					class="rfq__input" />
 				<p
 					*ngIf="
-						this.form.get('productInformation').get('quantity').get('quantity').touched &&
-						this.form.get('productInformation').get('quantity').get('quantity').errors?.['required'] &&
-						!this.form.get('productInformation').get('budget').get('maxBudget').errors?.['required']
+						this.form.get('productInformation').get('quantity').get('quantity')
+							.touched &&
+						this.form.get('productInformation').get('quantity').get('quantity')
+							.errors?.['required'] &&
+						!this.form.get('productInformation').get('budget').get('maxBudget')
+							.errors?.['required']
 					"
 					class="error"
 					[@fadeInOut]>
@@ -74,8 +81,10 @@
 				</p>
 				<p
 					*ngIf="
-						this.form.get('productInformation').get('quantity').get('quantity').touched &&
-						this.form.get('productInformation').get('quantity').get('quantity').errors?.['number']
+						this.form.get('productInformation').get('quantity').get('quantity')
+							.touched &&
+						this.form.get('productInformation').get('quantity').get('quantity')
+							.errors?.['number']
 					"
 					class="error"
 					[@fadeInOut]>
@@ -120,9 +129,12 @@
 					class="rfq__input" />
 				<p
 					*ngIf="
-						this.form.get('productInformation').get('budget').get('maxBudget').touched &&
-						this.form.get('productInformation').get('budget').get('maxBudget').errors?.['number'] &&
-						!this.form.get('productInformation').get('budget').get('maxBudget').errors?.['required']
+						this.form.get('productInformation').get('budget').get('maxBudget')
+							.touched &&
+						this.form.get('productInformation').get('budget').get('maxBudget')
+							.errors?.['number'] &&
+						!this.form.get('productInformation').get('budget').get('maxBudget')
+							.errors?.['required']
 					"
 					class="error"
 					[@fadeInOut]>
@@ -130,8 +142,10 @@
 				</p>
 				<p
 					*ngIf="
-						this.form.get('productInformation').get('budget').get('maxBudget').touched &&
-						this.form.get('productInformation').get('budget').get('maxBudget').errors?.['required']
+						this.form.get('productInformation').get('budget').get('maxBudget')
+							.touched &&
+						this.form.get('productInformation').get('budget').get('maxBudget')
+							.errors?.['required']
 					"
 					class="error"
 					[@fadeInOut]>
@@ -163,7 +177,9 @@
 		<p
 			*ngIf="
 				this.form.get('productInformation').get('moreInformation').touched &&
-				this.form.get('productInformation').get('moreInformation').errors?.['latin']
+				this.form.get('productInformation').get('moreInformation').errors?.[
+					'latin'
+				]
 			"
 			[ngStyle]="{ marginTop: '15px' }"
 			class="error"
@@ -173,7 +189,9 @@
 		<p
 			*ngIf="
 				this.form.get('productInformation').get('moreInformation').touched &&
-				this.form.get('productInformation').get('moreInformation').errors?.['required']
+				this.form.get('productInformation').get('moreInformation').errors?.[
+					'required'
+				]
 			"
 			[ngStyle]="{ marginTop: '15px' }"
 			class="error"
@@ -183,16 +201,27 @@
 		<p
 			*ngIf="
 				this.form.get('productInformation').get('moreInformation').touched &&
-				this.form.get('productInformation').get('moreInformation').errors?.['minlength']
+				this.form.get('productInformation').get('moreInformation').errors?.[
+					'minlength'
+				]
 			"
 			[ngStyle]="{ marginTop: '15px' }"
 			class="error"
 			[@fadeInOut]>
 			Please, put more than 20 letters, now
-			{{ form.get("productInformation").get("moreInformation").errors?.['minlength'].actualLength }} letters
+			{{
+				form.get('productInformation').get('moreInformation').errors?.[
+					'minlength'
+				].actualLength
+			}}
+			letters
 		</p>
 		<div class="ngx-file-wrapper">
-			<b2b-ngx-file formControlName="photos" class="rfq__label" label="Choose file" [isPhoto]="true"
+			<b2b-ngx-file
+				formControlName="photos"
+				class="rfq__label"
+				label="Choose file"
+				[isPhoto]="true"
 				>Attachments</b2b-ngx-file
 			>
 		</div>

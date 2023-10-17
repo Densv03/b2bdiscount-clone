@@ -1,6 +1,10 @@
 <form [formGroup]="form">
 	<div *ngIf="categories$ | async as categories" formArrayName="categories">
-		<div *ngFor="let parentCategoryControl of categoriesFormArray.controls; let parentIndex = index">
+		<div
+			*ngFor="
+				let parentCategoryControl of categoriesFormArray.controls;
+				let parentIndex = index
+			">
 			<div [formGroupName]="parentIndex" class="d-flex" style="flex-wrap: wrap">
 				<b2b-ngx-select
 					placeholder="Select parent category"
@@ -14,7 +18,7 @@
 					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
 					style="width: 15%"
 					(click)="toggleCollapse(parentIndex)">
-					{{ parentCategoryControl.value.collapsed ? "Expand" : "Collapse" }}
+					{{ parentCategoryControl.value.collapsed ? 'Expand' : 'Collapse' }}
 				</button>
 
 				<button
@@ -26,9 +30,16 @@
 				</button>
 
 				<div
-					[class.d-none]="!parentCategoryControl.value.parentCategory || parentCategoryControl.value.collapsed"
+					[class.d-none]="
+						!parentCategoryControl.value.parentCategory ||
+						parentCategoryControl.value.collapsed
+					"
 					class="w-100">
-					<p *ngFor="let product of parentCategoryControl.value.productIds; let childIndex = index">
+					<p
+						*ngFor="
+							let product of parentCategoryControl.value.productIds;
+							let childIndex = index
+						">
 						<input
 							(click)="onInputClick(parentIndex, childIndex)"
 							type="text"
@@ -36,17 +47,25 @@
 							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
 							placeholder="Enter product url "
 							[label]="'Enter url ' + getLabel(childIndex)"
-							[class]="'url-input-' + parentIndex"/>
+							[class]="'url-input-' + parentIndex" />
 					</p>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="d-flex pt-2">
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE" (click)="addCategory()" class="w-50 py-2">
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+			(click)="addCategory()"
+			class="w-50 py-2">
 			Add category
 		</button>
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE" (click)="onSave()" class="d-block w-50 py-2">
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+			(click)="onSave()"
+			class="d-block w-50 py-2">
 			Save changes
 		</button>
 	</div>

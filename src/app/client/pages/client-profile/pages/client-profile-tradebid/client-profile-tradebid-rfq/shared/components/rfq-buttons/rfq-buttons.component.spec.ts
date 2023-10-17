@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RfqButtonsComponent } from "./rfq-buttons.component";
+import { RfqButtonsComponent } from './rfq-buttons.component';
 
-describe("RfqButtonsComponent", () => {
+describe('RfqButtonsComponent', () => {
 	let component: RfqButtonsComponent;
 	let fixture: ComponentFixture<RfqButtonsComponent>;
 
@@ -18,7 +18,7 @@ describe("RfqButtonsComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

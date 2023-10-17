@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AuthGoogleSignInSuccessComponent } from "./layout/auth-google-sign-in-success.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGoogleSignInSuccessComponent } from './layout/auth-google-sign-in-success.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AuthGoogleSignInSuccessComponent,
 	},
 ];

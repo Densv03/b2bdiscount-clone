@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.market-list {
@@ -58,11 +58,11 @@
 						}
 					}
 				}
-				@include breakpoint("5") {
+				@include breakpoint('5') {
 					padding-right: 10px;
 					padding-left: 10px;
 				}
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					.info {
 						margin-top: 5px;
 						.supplier-info {

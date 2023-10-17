@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .title {
 	display: flex;
@@ -8,11 +8,11 @@
 		padding: 70px 50px;
 	}
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		flex-direction: column-reverse;
 		padding: 40px 25px;
 	}
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		padding: 25px 10px;
 	}
 	&__text {
@@ -23,7 +23,7 @@
 		margin-top: -50px;
 		padding-right: 50px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			padding-right: 0;
 		}
@@ -38,7 +38,7 @@
 			line-height: 72px;
 			padding-bottom: 20px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 48px;
 				padding-bottom: 0;
 			}
@@ -50,7 +50,7 @@
 			line-height: 36px;
 			padding-bottom: 40px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 18px;
 				padding-bottom: 15px;
 			}
@@ -62,13 +62,13 @@
 			line-height: 24px;
 			margin-bottom: 35px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 12px;
 			}
 		}
 
 		&__buttons {
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				display: flex;
 				justify-content: space-between;
 			}
@@ -77,7 +77,7 @@
 				text-transform: uppercase;
 				padding: 16px 21px;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 48%;
 					padding: 16px 13px;
 					font-size: 12px;
@@ -87,13 +87,13 @@
 			.supplier-btn {
 				margin-right: 30px;
 				margin-bottom: 15px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					margin-bottom: 0;
 				}
 			}
 
 			.learn-more-btn {
-				color: #005DFF;
+				color: #005dff;
 				font-weight: bold;
 			}
 		}
@@ -106,7 +106,7 @@
 		max-width: 600px;
 		gap: 10px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			margin-bottom: 45px;
 			max-width: none;
@@ -121,8 +121,7 @@
 			font-weight: 500;
 			border-radius: 8px;
 
-			@include breakpoint("3") {
-
+			@include breakpoint('3') {
 			}
 			@include breakpoint('1') {
 				height: 106px;
@@ -133,8 +132,9 @@
 
 			&.image-1 {
 				width: 30%;
-				background: url('/assets/images/market-promo/vegetables.jpeg') center center/cover no-repeat;
-				@include breakpoint("3") {
+				background: url('/assets/images/market-promo/vegetables.jpeg') center
+					center/cover no-repeat;
+				@include breakpoint('3') {
 					width: 33%;
 				}
 				@include breakpoint('1') {
@@ -144,7 +144,8 @@
 
 			&.image-2 {
 				width: 65%;
-				background: url('/assets/images/market-promo/solarbattery.jpeg') center center/cover no-repeat;
+				background: url('/assets/images/market-promo/solarbattery.jpeg') center
+					center/cover no-repeat;
 				@include breakpoint('1') {
 					width: 41%;
 				}
@@ -152,8 +153,9 @@
 
 			&.image-3 {
 				width: 65%;
-				background: url('/assets/images/market-promo/wheat.jpeg') center center/cover no-repeat;
-				@include breakpoint("3") {
+				background: url('/assets/images/market-promo/wheat.jpeg') center
+					center/cover no-repeat;
+				@include breakpoint('3') {
 					width: 68%;
 				}
 				@include breakpoint('1') {
@@ -163,7 +165,8 @@
 
 			&.image-4 {
 				width: 30%;
-				background: url('/assets/images/market-promo/iron.jpeg') center center/cover no-repeat;
+				background: url('/assets/images/market-promo/iron.jpeg') center
+					center/cover no-repeat;
 				@include breakpoint('1') {
 					width: 19%;
 				}
@@ -171,8 +174,9 @@
 
 			&.image-5 {
 				width: 45%;
-				background: url('/assets/images/market-promo/chip.jpeg') center center/cover no-repeat;
-				@include breakpoint("3") {
+				background: url('/assets/images/market-promo/chip.jpeg') center
+					center/cover no-repeat;
+				@include breakpoint('3') {
 					width: 48%;
 				}
 				@include breakpoint('1') {
@@ -182,7 +186,8 @@
 
 			&.image-6 {
 				width: 50%;
-				background: url('/assets/images/market-promo/tractor.jpeg') center center/cover no-repeat;
+				background: url('/assets/images/market-promo/tractor.jpeg') center
+					center/cover no-repeat;
 				@include breakpoint('1') {
 					width: 41%;
 				}
@@ -198,9 +203,9 @@
 	padding: 100px;
 	justify-content: space-between;
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		flex-direction: column;
-		padding: 50px	25px;
+		padding: 50px 25px;
 	}
 
 	.advantage {
@@ -211,7 +216,7 @@
 		line-height: 32px;
 		font-weight: 400;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			font-size: 20px;
 			margin-bottom: 20px;
@@ -221,7 +226,7 @@
 			width: 15%;
 			margin-right: 15px;
 			min-width: 50px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 5%;
 			}
 		}
@@ -229,7 +234,7 @@
 		p {
 			width: 60%;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 		}
@@ -239,7 +244,7 @@
 .categories {
 	height: 320px;
 	padding: 10px 0;
-	background-color: rgb(229, 242, 253, .3);
+	background-color: rgb(229, 242, 253, 0.3);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -260,7 +265,7 @@
 			font-size: 36px;
 			line-height: 120%;
 			letter-spacing: 0.01em;
-			color: #0F0F11;
+			color: #0f0f11;
 			@include breakpoint('3') {
 				font-size: 28px;
 			}
@@ -305,7 +310,7 @@
 			}
 
 			.category {
-				background-color: #FFFFFF;
+				background-color: #ffffff;
 				border-radius: 4px;
 				border: 1px solid;
 				display: flex;
@@ -317,7 +322,7 @@
 					font-size: 14px;
 					text-align: center;
 					letter-spacing: 0.02em;
-					color: #0F0F11;
+					color: #0f0f11;
 				}
 			}
 		}
@@ -329,10 +334,10 @@
 			transform: translateY(0);
 		}
 		50% {
-			transform: translateY(-250%)
+			transform: translateY(-250%);
 		}
 		100% {
-			transform: translateY(0)
+			transform: translateY(0);
 		}
 	}
 }
@@ -345,17 +350,17 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 60px 30px;
 	}
 
 	h1 {
 		font-size: 36px;
 		font-weight: 700;
-		color: #0F0F11;
+		color: #0f0f11;
 		margin-bottom: 30px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 20px;
 			margin-bottom: 10px;
 		}
@@ -366,12 +371,12 @@
 		color: #556274;
 		text-align: center;
 		margin-bottom: 20px;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 14px;
 		}
 
 		a {
-			color: #005DFF;
+			color: #005dff;
 		}
 	}
 
@@ -381,7 +386,7 @@
 		font-size: 16px;
 		font-weight: 500;
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			width: 100%;
 		}
 	}
@@ -389,11 +394,17 @@
 
 .unlimited-postings {
 	display: flex;
-	background: linear-gradient(180deg, #E5F2FD10 0%, #E5F2FD10 80%, rgba(255, 255, 255, 1) 81%, rgba(255, 255, 255, 1) 100%);
+	background: linear-gradient(
+		180deg,
+		#e5f2fd10 0%,
+		#e5f2fd10 80%,
+		rgba(255, 255, 255, 1) 81%,
+		rgba(255, 255, 255, 1) 100%
+	);
 	//padding: 30px 100px;
 	padding: 30px 200px 30px 100px;
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		flex-direction: column-reverse;
 		padding: 0 20px;
 	}
@@ -406,7 +417,7 @@
 	.image {
 		width: 60%;
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			width: 100%;
 		}
 
@@ -419,13 +430,13 @@
 		width: 40%;
 		padding-left: 30px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			margin-bottom: 25px;
 		}
 
 		h1 {
-			color: #0F0F11;
+			color: #0f0f11;
 			font-weight: 700;
 			font-size: 36px;
 			line-height: 48px;
@@ -441,7 +452,7 @@
 			padding-bottom: 20px;
 			width: 75%;
 
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				width: 100%;
 			}
 		}
@@ -463,7 +474,7 @@
 	background-color: #fff;
 	padding: 100px 0;
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 35px 0;
 	}
 
@@ -471,10 +482,10 @@
 		font-weight: 700;
 		font-size: 36px;
 		line-height: 48px;
-		color: #0F0F11;
+		color: #0f0f11;
 		padding-bottom: 15px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 20px;
 		}
 	}
@@ -487,10 +498,10 @@
 		text-align: center;
 
 		.link {
-			color: #005DFF;
+			color: #005dff;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 14px;
 			width: 90%;
 		}
@@ -506,8 +517,8 @@
 		height: 222px;
 	}
 
-	div	{
-		background: 100% 100% no-repeat url("/assets/images/main-page-map.png");
+	div {
+		background: 100% 100% no-repeat url('/assets/images/main-page-map.png');
 		background-size: cover;
 		height: 100%;
 
@@ -553,7 +564,7 @@
 		line-height: 134%;
 		text-align: center;
 		letter-spacing: 0.01em;
-		color: #0F0F11
+		color: #0f0f11;
 	}
 
 	.subtitle {
@@ -610,7 +621,9 @@
 		border-radius: 50%;
 		/*  border: 2px solid orangered;*/
 		padding: 20px;
-		box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15), -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
+		box-shadow:
+			6px 6px 10px -1px rgba(0, 0, 0, 0.15),
+			-6px -6px 10px -1px rgba(255, 255, 255, 0.7);
 	}
 
 	.inner {
@@ -621,11 +634,12 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		box-shadow: inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2),
-		inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7),
-		-0.5px -0.5px 0px rgba(255, 255, 255, 1),
-		1.5px 0.5px 0px rgba(0, 0, 0, 0.15),
-		2px 12px 10px -10px rgba(0, 0, 0, 0.05);
+		box-shadow:
+			inset 4px 4px 6px -1px rgba(0, 0, 0, 0.2),
+			inset -4px -4px 6px -1px rgba(255, 255, 255, 0.7),
+			-0.5px -0.5px 0px rgba(255, 255, 255, 1),
+			1.5px 0.5px 0px rgba(0, 0, 0, 0.15),
+			2px 12px 10px -10px rgba(0, 0, 0, 0.05);
 
 		.label {
 			margin-top: 30px;
@@ -640,7 +654,6 @@
 			font-weight: 600;
 			color: #555;
 			font-size: 75px;
-
 		}
 
 		@include breakpoint('1') {
@@ -666,17 +679,16 @@
 		display: block;
 		position: absolute;
 		top: 0;
-
 	}
 
 	#circle {
 		fill: none;
-		stroke: #005DFF;
+		stroke: #005dff;
 		transition: stroke-dashoffset 1s;
 		stroke-linecap: round;
 	}
 }
 
 .mirror {
-  direction: rtl;
+	direction: rtl;
 }

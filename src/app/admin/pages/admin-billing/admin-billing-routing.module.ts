@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AdminBillingComponent } from "./layout/admin-billing.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdminBillingComponent } from './layout/admin-billing.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AdminBillingComponent,
 	},
 ];

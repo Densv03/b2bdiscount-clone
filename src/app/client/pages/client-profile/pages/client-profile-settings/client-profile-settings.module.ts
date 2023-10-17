@@ -1,19 +1,19 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { ClientProfileSettingsComponent} from "./layout/client-profile-settings.component";
-import { B2bNgxInputModule } from "@b2b/ngx-input";
-import { B2bNgxTelModule } from "@b2b/ngx-tel";
-import { B2bNgxSelectModule } from "@b2b/ngx-select";
-import { B2bNgxSocialMediasModule } from "@b2b/ngx-social-medias";
-import {B2bNgxChipsModule} from "@b2b/ngx-chips";
-import { B2bNgxButtonModule } from "@b2b/ngx-button";
-import { ReactiveFormsModule } from "@angular/forms";
-import { B2bNgxCountrySelectModule } from "@b2b/ngx-country-select";
-import { B2bNgxFileModule } from "@b2b/ngx-file";
-import { B2bNgxIconModule } from "@b2b/ngx-icon";
-import { MatDialogModule } from "@angular/material/dialog";
-import {ClientProfileSettingsRoutingModule} from "./client-profile-settings-routing.module";
-import {TranslateModule} from "@ngx-translate/core";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ClientProfileSettingsComponent } from './layout/client-profile-settings.component';
+import { B2bNgxInputModule } from '@b2b/ngx-input';
+import { B2bNgxTelModule } from '@b2b/ngx-tel';
+import { B2bNgxSelectModule } from '@b2b/ngx-select';
+import { B2bNgxSocialMediasModule } from '@b2b/ngx-social-medias';
+import { B2bNgxChipsModule } from '@b2b/ngx-chips';
+import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
+import { B2bNgxFileModule } from '@b2b/ngx-file';
+import { B2bNgxIconModule } from '@b2b/ngx-icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ClientProfileSettingsRoutingModule } from './client-profile-settings-routing.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
 	declarations: [ClientProfileSettingsComponent],

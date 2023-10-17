@@ -1,6 +1,18 @@
-<form [formGroup]="formGroup" class="admin-article" (ngSubmit)="onSubmit(formGroup.value)">
-	<p class="admin-article__label">{{ formGroup.get("_id").value ? "Edit an post" : "Add an post" }}</p>
-	<b2b-ngx-file formControlName="image" class="admin-article__image">Image</b2b-ngx-file>
+<form
+	[formGroup]="formGroup"
+	class="admin-article"
+	(ngSubmit)="onSubmit(formGroup.value)">
+	<p class="admin-article__label">
+		{{ blogAction === blogActionEnum.EDIT ? 'Edit an post' : 'Add an post' }}
+	</p>
+
+	<b2b-ngx-file
+		[isPhoto]="true"
+		[isClickable]="true"
+		formControlName="image"
+		class="admin-article__image">
+		Image
+	</b2b-ngx-file>
 
 	<div class="admin-article__main">
 		<b2b-ngx-input
@@ -108,7 +120,10 @@
 		To change alts for picture, edit this post after creation
 	</div>
 
-	<button b2bNgxButton class="admin-article__button" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-		{{ formGroup.get("_id").value ? "Update an post" : "Create an post" }}
+	<button
+		b2bNgxButton
+		class="admin-article__button"
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+		{{ formGroup.get('_id').value ? 'Update an post' : 'Create an post' }}
 	</button>
 </form>

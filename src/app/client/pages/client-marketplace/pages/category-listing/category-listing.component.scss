@@ -1,12 +1,12 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.listing {
 		padding: 20px 80px;
-		@include breakpoint("4") {
+		@include breakpoint('4') {
 			padding: 20px 70px;
 		}
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			padding: 20px;
 		}
 		.links-list {
@@ -53,13 +53,13 @@
 			margin-top: 30px;
 			.category-wrapper {
 				width: 24%;
-				@include breakpoint("5") {
+				@include breakpoint('5') {
 					width: 32%;
 				}
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 48%;
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					width: 95%;
 				}
 			}

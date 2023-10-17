@@ -1,0 +1,88 @@
+@import 'projects/shared/src/styles';
+
+.custom-carousel {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&.center {
+		justify-content: center;
+
+		@include breakpoint('3') {
+			justify-content: start;
+		}
+
+		@include breakpoint('1') {
+			justify-content: center;
+		}
+	}
+
+	@include breakpoint('3') {
+		justify-content: start;
+	}
+
+	@include breakpoint('1') {
+		justify-content: center;
+	}
+
+	mat-icon {
+		border-radius: 50%;
+		background-color: #d9d9d959;
+		color: #9fa4bb;
+		cursor: pointer;
+
+		@include breakpoint('2') {
+			display: none;
+		}
+	}
+
+	.slider-wrapper {
+		display: flex;
+		justify-content: space-between;
+		transition: 0.5s ease-in-out;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		@include breakpoint('2') {
+			max-width: 464px;
+			transform: none;
+			overflow-x: auto;
+			gap: 20px;
+		}
+
+		@include breakpoint('1') {
+			max-height: 164px;
+		}
+
+		.slide-wrapper {
+			object-fit: contain;
+			width: 100%;
+			max-width: 715px;
+			max-height: 300px;
+			border-radius: 14px;
+			flex: 0 0 100%;
+
+			@include breakpoint('2') {
+				max-width: 464px;
+			}
+
+			@include breakpoint('1') {
+				height: 164px;
+				width: 100%;
+			}
+
+			&.hidden {
+				height: 0;
+				opacity: 0;
+
+				@include breakpoint('2') {
+					height: initial;
+					opacity: 1;
+					object-fit: contain;
+				}
+			}
+		}
+	}
+}

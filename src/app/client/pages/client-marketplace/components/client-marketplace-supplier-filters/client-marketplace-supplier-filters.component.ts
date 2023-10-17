@@ -1,22 +1,22 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import {FormGroup} from "@angular/forms";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-	selector: "b2b-client-marketplace-supplier-filters",
-	templateUrl: "./client-marketplace-supplier-filters.component.html",
-	styleUrls: ["./client-marketplace-supplier-filters.component.scss"],
+	selector: 'b2b-client-marketplace-supplier-filters',
+	templateUrl: './client-marketplace-supplier-filters.component.html',
+	styleUrls: ['./client-marketplace-supplier-filters.component.scss'],
 })
 export class ClientMarketplaceSupplierFiltersComponent implements OnInit {
 	@Output() filterEvent: EventEmitter<any> = new EventEmitter<any>();
 
-	public form: FormGroup = new FormGroup<any>({ productCategories: [] });
+	public form: FormGroup;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 
-	constructor() {
-	}
+	constructor() {}
 
 	ngOnInit(): void {
+		this.form = new FormGroup({ productCategories: new FormControl(null) });
 		this.form.valueChanges.subscribe((value: any) => {
 			const valueForEmit: any = {};
 			for (const key in value) {

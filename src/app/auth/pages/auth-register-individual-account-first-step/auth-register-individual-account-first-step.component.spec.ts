@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthRegisterIndividualAccountFirstStepComponent } from "./auth-register-individual-account-first-step.component";
+import { AuthRegisterIndividualAccountFirstStepComponent } from './auth-register-individual-account-first-step.component';
 
-describe("AuthRegisterIndividualAccountFirstStepComponent", () => {
+describe('AuthRegisterIndividualAccountFirstStepComponent', () => {
 	let component: AuthRegisterIndividualAccountFirstStepComponent;
 	let fixture: ComponentFixture<AuthRegisterIndividualAccountFirstStepComponent>;
 
@@ -13,12 +13,14 @@ describe("AuthRegisterIndividualAccountFirstStepComponent", () => {
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(AuthRegisterIndividualAccountFirstStepComponent);
+		fixture = TestBed.createComponent(
+			AuthRegisterIndividualAccountFirstStepComponent
+		);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

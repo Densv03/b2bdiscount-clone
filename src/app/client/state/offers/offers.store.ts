@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { Store, StoreConfig } from "@datorama/akita";
+import { Injectable } from '@angular/core';
+import { Store, StoreConfig } from '@datorama/akita';
 
 export interface OffersState {
 	allOffers: any;
@@ -21,8 +21,8 @@ export function createInitialState(): OffersState {
 	};
 }
 
-@Injectable({ providedIn: "root" })
-@StoreConfig({ name: "offers" })
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'offers' })
 export class OffersStore extends Store<OffersState> {
 	constructor() {
 		super(createInitialState());

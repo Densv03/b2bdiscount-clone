@@ -1,21 +1,45 @@
-import { Component, OnInit } from "@angular/core";
-import {FormBuilder, Validators} from "@angular/forms";
-import { onlyNumber } from "../../../../../core/helpers/validator/only-number";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { MatDialogRef } from "@angular/material/dialog";
-import { expireDate } from "../../../../../core/helpers/validator/expire-date";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { onlyNumber } from '../../../../../core/helpers/validator/only-number';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { MatDialogRef } from '@angular/material/dialog';
+import { expireDate } from '../../../../../core/helpers/validator/expire-date';
 
 @Component({
-	selector: "b2b-client-profile-add-payment-dialog",
-	templateUrl: "./client-profile-add-payment-modal.component.html",
-	styleUrls: ["./client-profile-add-payment-modal.component.scss"],
+	selector: 'b2b-client-profile-add-payment-dialog',
+	templateUrl: './client-profile-add-payment-modal.component.html',
+	styleUrls: ['./client-profile-add-payment-modal.component.scss'],
 })
 export class ClientProfileAddPaymentDialogComponent implements OnInit {
 	public readonly formGroup = this.formBuilder.group({
-		cardNum: ["", [Validators.required, Validators.maxLength(16), Validators.minLength(16), onlyNumber()]],
-		expDate: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(4), expireDate()]],
-		cardCode: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(3), onlyNumber()]],
+		cardNum: [
+			'',
+			[
+				Validators.required,
+				Validators.maxLength(16),
+				Validators.minLength(16),
+				onlyNumber(),
+			],
+		],
+		expDate: [
+			'',
+			[
+				Validators.required,
+				Validators.minLength(4),
+				Validators.maxLength(4),
+				expireDate(),
+			],
+		],
+		cardCode: [
+			'',
+			[
+				Validators.required,
+				Validators.minLength(3),
+				Validators.maxLength(3),
+				onlyNumber(),
+			],
+		],
 	});
 
 	public readonly b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;

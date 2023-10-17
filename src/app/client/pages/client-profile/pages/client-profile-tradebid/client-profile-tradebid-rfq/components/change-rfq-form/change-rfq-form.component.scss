@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.error {
@@ -18,7 +18,7 @@
 		width: 70%;
 		padding: 0 6em;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 0;
 		}
 
@@ -40,16 +40,16 @@
 				height: 100%;
 				width: auto;
 
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					height: 70%;
 					margin: auto;
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					height: 50%;
 				}
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					display: none;
 				}
 			}
@@ -61,7 +61,7 @@
 			height: auto;
 			margin-top: 30px;
 
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				padding: 0;
 			}
 		}
@@ -73,7 +73,7 @@
 			justify-content: space-between;
 			align-items: center;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				flex-direction: column;
 			}
 		}
@@ -86,7 +86,7 @@
 			display: block;
 			width: 49%;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 		}
@@ -116,7 +116,7 @@
 			max-width: 50%;
 			min-height: 50px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				max-width: 100%;
 			}
 		}
@@ -125,10 +125,10 @@
 			margin-top: 1.5em;
 		}
 
-		button[type="submit"] {
+		button[type='submit'] {
 			padding: 0.5em 1em;
 
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 100%;
 			}
 		}

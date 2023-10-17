@@ -3,16 +3,19 @@ import { B2bNgxChipsComponent } from './layout/ngx-chips.component';
 import {B2bNgxSelectModule} from "@b2b/ngx-select";
 import {ReactiveFormsModule} from "@angular/forms";
 import {B2bNgxIconModule} from "@b2b/ngx-icon";
+import {NgForOf, NgIf} from "@angular/common";
 
 @NgModule({
   declarations: [
     B2bNgxChipsComponent
   ],
-  imports: [
-    B2bNgxSelectModule,
-    ReactiveFormsModule,
-    B2bNgxIconModule
-  ],
+	imports: [
+		B2bNgxSelectModule,
+		ReactiveFormsModule,
+		B2bNgxIconModule,
+		NgIf,
+		NgForOf
+	],
   exports: [
     B2bNgxChipsComponent
   ]

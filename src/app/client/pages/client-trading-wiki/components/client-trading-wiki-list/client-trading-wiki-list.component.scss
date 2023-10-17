@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .ngx-wiki-list {
 	.ngx-wiki-list-item {
@@ -42,7 +42,7 @@
 					}
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					order: 2;
 					padding: 12px 16px;
@@ -54,7 +54,7 @@
 				// object-fit: cover;
 				border-radius: 0px 4px 4px 0px;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					order: 1;
 				}

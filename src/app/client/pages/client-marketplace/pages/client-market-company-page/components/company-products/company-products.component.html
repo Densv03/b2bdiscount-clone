@@ -1,7 +1,7 @@
 <div class="company-products">
-
 	<div class="grid">
 		<b2b-client-marketplace-listing-grid
+			[showBanner]="false"
 			[marketplaceProducts]="products$ | async">
 		</b2b-client-marketplace-listing-grid>
 	</div>
@@ -14,5 +14,3 @@
 			class="pagination"></b2b-ngx-pagination>
 	</div>
 </div>
-
-

@@ -1,0 +1,25 @@
+.logistic {
+	max-width: 1170px;
+	margin: auto;
+	padding-top: 48px;
+	&__wrapper {
+	}
+	&__search {
+		width: 100%;
+	}
+	&__body {
+		display: flex;
+		gap: 27px;
+		margin-top: 32px;
+		min-height: 350px;
+	}
+	&__filter {
+		min-width: 274px;
+	}
+	&__listing {
+		flex-grow: 1;
+		gap: 16px;
+		display: flex;
+		flex-direction: column;
+	}
+}

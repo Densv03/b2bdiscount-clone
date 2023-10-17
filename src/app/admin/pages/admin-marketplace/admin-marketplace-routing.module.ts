@@ -1,15 +1,15 @@
-import { RouterModule, Routes } from "@angular/router";
-import { NgModule } from "@angular/core";
-import { AdminMarketplaceComponent } from "./admin-marketplace.component";
-import { AdminSupplierProductListComponent } from "./components/admin-supplier-product-list/admin-supplier-product-list.component";
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { AdminMarketplaceComponent } from './admin-marketplace.component';
+import { AdminSupplierProductListComponent } from './components/admin-supplier-product-list/admin-supplier-product-list.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AdminMarketplaceComponent,
 	},
 	{
-		path: "supplier/:id",
+		path: 'supplier/:id',
 		component: AdminSupplierProductListComponent,
 	},
 ];

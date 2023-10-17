@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthRecoverAccountComponent } from "../auth-recover-account/auth-recover-account.component";
+import { AuthRecoverAccountComponent } from '../auth-recover-account/auth-recover-account.component';
 
-describe("AuthRecoverAccountComponent", () => {
+describe('AuthRecoverAccountComponent', () => {
 	let component: AuthRecoverAccountComponent;
 	let fixture: ComponentFixture<AuthRecoverAccountComponent>;
 
@@ -18,7 +18,7 @@ describe("AuthRecoverAccountComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadMorePaginatorComponent } from "./load-more-paginator.component";
+import { LoadMorePaginatorComponent } from './load-more-paginator.component';
 
-describe("LoadMorePaginatorComponent", () => {
+describe('LoadMorePaginatorComponent', () => {
 	let component: LoadMorePaginatorComponent;
 	let fixture: ComponentFixture<LoadMorePaginatorComponent>;
 
@@ -18,7 +18,7 @@ describe("LoadMorePaginatorComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

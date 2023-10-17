@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileMyOfferMarkAsSoldComponent } from "./client-profile-my-offer-mark-as-sold.component";
+import { ClientProfileMyOfferMarkAsSoldComponent } from './client-profile-my-offer-mark-as-sold.component';
 
-describe("ClientProfileMyOfferMarkAsSoldComponent", () => {
+describe('ClientProfileMyOfferMarkAsSoldComponent', () => {
 	let component: ClientProfileMyOfferMarkAsSoldComponent;
 	let fixture: ComponentFixture<ClientProfileMyOfferMarkAsSoldComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileMyOfferMarkAsSoldComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

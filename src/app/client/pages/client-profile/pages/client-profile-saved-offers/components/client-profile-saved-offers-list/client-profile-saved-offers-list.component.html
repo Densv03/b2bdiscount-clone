@@ -3,10 +3,15 @@
 		<a
 			[routerLink]="b2bNgxLinkService.getLink('/offers/' + option._id) | async"
 			class="ngx-saved-offers-list-item-link">
-			<img class="ngx-saved-offers-list-item-img" b2bNgxImage [name]="option.previewPhoto" />
+			<img
+				class="ngx-saved-offers-list-item-img"
+				b2bNgxImage
+				[name]="option.previewPhoto" />
 			<div class="ngx-saved-offers-list-item-info">
 				<p class="ngx-saved-offers-list-item-info-title">
-					<span class="ngx-saved-offers-list-item-info-title">{{ option.title }}</span>
+					<span class="ngx-saved-offers-list-item-info-title">{{
+						option.title
+					}}</span>
 					<img
 						b2bNgxIcon
 						*ngIf="option.verifiedTrack"
@@ -30,8 +35,12 @@
 						class="ngx-saved-offers-list-item-info-icon" />
 				</p>
 				<p class="ngx-saved-offers-list-item-info-additional">
-					<span class="ngx-saved-offers-list-item-info-added">Added on {{ option.createdAt | date }}</span>
-					<span class="ngx-saved-offers-list-item-info-status">Status: {{ option.status }}</span>
+					<span class="ngx-saved-offers-list-item-info-added"
+						>Added on {{ option.createdAt | date }}</span
+					>
+					<span class="ngx-saved-offers-list-item-info-status"
+						>Status: {{ option.status }}</span
+					>
 				</p>
 				<p class="ngx-saved-offers-list-item-route">
 					<img
@@ -39,14 +48,21 @@
 						group="flags/"
 						[name]="option.destination?.from | uppercase"
 						class="ngx-saved-offers-list-item-route-first-country-icon" />
-					<span class="ngx-saved-offers-list-item-route-first-country-name">{{ option.destination?.from }}</span>
-					<img b2bNgxIcon name="arrow-r-blue-2" class="ngx-saved-offers-list-item-route-arrow-icon" />
+					<span class="ngx-saved-offers-list-item-route-first-country-name">{{
+						option.destination?.from
+					}}</span>
+					<img
+						b2bNgxIcon
+						name="arrow-r-blue-2"
+						class="ngx-saved-offers-list-item-route-arrow-icon" />
 					<img
 						b2bNgxIcon
 						group="flags/"
 						[name]="option.destination?.to | uppercase"
 						class="ngx-saved-offers-list-item-route-second-country-icon" />
-					<span class="ngx-saved-offers-list-item-route-second-country-name">{{ option.destination?.to }}</span>
+					<span class="ngx-saved-offers-list-item-route-second-country-name">{{
+						option.destination?.to
+					}}</span>
 				</p>
 			</div>
 			<div class="ngx-saved-offers-list-item-chats" *ngIf="false">

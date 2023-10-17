@@ -1,8 +1,10 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 :host {
 	.slide {
 		display: block;
-		box-shadow: -4px -4px 8px #e5f2fd, 4px 4px 8px #e5f2fd;
+		box-shadow:
+			-4px -4px 8px #e5f2fd,
+			4px 4px 8px #e5f2fd;
 		border-radius: 8px;
 		overflow: hidden;
 		height: 300px;
@@ -28,7 +30,7 @@
 				font-size: 16px;
 				line-height: 122%;
 				letter-spacing: 0.01em;
-				color: #0F0F11;
+				color: #0f0f11;
 				@include breakpoint('4') {
 					font-size: 15px;
 				}
@@ -47,7 +49,6 @@
 				margin-top: auto;
 				&-companyName {
 					//margin-top: 16px;
-
 				}
 
 				&-country {
@@ -76,18 +77,18 @@
 
 :host::ng-deep {
 	.carousel {
-
-		.swiper-button-next, .swiper-button-prev {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+		.swiper-button-next,
+		.swiper-button-prev {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
 			width: 16px;
 			height: 16px;
-			color: #9FA4BB;
-      svg {
-        width: 100%;
-        height: 100%;
-      }
+			color: #9fa4bb;
+			svg {
+				width: 100%;
+				height: 100%;
+			}
 			@include breakpoint('3') {
 				display: none;
 			}

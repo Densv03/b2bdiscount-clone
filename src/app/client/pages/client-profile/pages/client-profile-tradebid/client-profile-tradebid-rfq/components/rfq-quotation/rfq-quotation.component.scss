@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.error {
@@ -33,14 +33,14 @@
 					width: 100%;
 					padding: 56px 30px;
 					margin-bottom: 30px;
-					@include breakpoint("4") {
+					@include breakpoint('4') {
 						width: 80%;
 						margin: auto;
 					}
-					@include breakpoint("2") {
+					@include breakpoint('2') {
 						padding: 56px 60px;
 					}
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						padding: 56px 0;
 					}
 
@@ -50,16 +50,16 @@
 						color: #000;
 						margin-left: -25px;
 						margin-bottom: 30px;
-						@include breakpoint("2") {
+						@include breakpoint('2') {
 							margin-left: 0;
 						}
 					}
 					.input-wrapper {
 						width: 44%;
-						@include breakpoint("4") {
+						@include breakpoint('4') {
 							width: 100%;
 						}
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 75%;
 						}
 					}
@@ -70,13 +70,13 @@
 		.form__input {
 			margin-bottom: 24px;
 			width: 645px;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 450px;
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 300px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 230px;
 				font-size: 12px;
 			}
@@ -84,14 +84,14 @@
 
 		.small-inp {
 			width: 230px;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 400px;
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 300px;
 				font-size: 12px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 220px;
 				font-size: 12px;
 			}
@@ -99,10 +99,10 @@
 
 		.normal-inp {
 			width: 400px;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 300px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 230px;
 				font-size: 12px;
 			}
@@ -110,15 +110,15 @@
 
 		.phone-inp {
 			padding-left: 45%;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 400px;
 				padding-left: 35%;
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 300px;
 				padding-left: 35%;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 220px;
 			}
 		}
@@ -128,10 +128,10 @@
 			width: 400px;
 			margin-bottom: 24px;
 
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 300px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 230px;
 			}
 		}
@@ -139,13 +139,13 @@
 		&__middle-space {
 			width: 500px;
 			margin-bottom: 24px;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 400px;
 			}
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				width: 300px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 220px;
 			}
 		}
@@ -155,31 +155,31 @@
 			width: 900px;
 			align-items: flex-start;
 			justify-content: space-between;
-			@include breakpoint("5") {
+			@include breakpoint('5') {
 				flex-direction: column;
 				align-items: flex-start;
 			}
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 300px;
 			}
 
 			.measure-input {
 				width: 398px;
 				transform: translateY(0);
-				@include breakpoint("5") {
+				@include breakpoint('5') {
 					margin-bottom: 20px;
 				}
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					width: 300px;
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					width: 230px;
 				}
 			}
 			.other-unit-error {
 				position: absolute;
 				transform: translateY(15px);
-				@include breakpoint("5") {
+				@include breakpoint('5') {
 					position: relative;
 					transform: translateX(0);
 				}
@@ -189,16 +189,16 @@
 		.group-select-wrapper {
 			width: 300px;
 			margin-left: 40px;
-			@include breakpoint("5") {
+			@include breakpoint('5') {
 				margin-top: -12px;
 				width: 400px;
 				margin-left: 0;
 			}
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 300px;
 				margin-left: 2px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				width: 230px;
 			}
 		}
@@ -227,7 +227,7 @@
 			color: #9fa4bb;
 			margin-top: 15px;
 			font-size: 12px;
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				margin-top: 37px;
 			}
 		}
@@ -236,11 +236,11 @@
 			width: 500px;
 			display: flex;
 			justify-content: space-between;
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				flex-direction: column;
 				width: 300px;
 			}
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				flex-direction: column;
 				width: 300px;
 				margin-bottom: 20px;
@@ -297,7 +297,7 @@
 		transform: translate(170%, -190%);
 		color: #6c7077;
 		opacity: 0.6;
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			transform: translate(0%, 100%);
 		}
 	}
@@ -311,13 +311,13 @@
 	.big-inp {
 		width: 500px;
 		margin-bottom: 10px;
-		@include breakpoint("4") {
+		@include breakpoint('4') {
 			width: 400px;
 		}
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			width: 300px;
 		}
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			width: 220px;
 			font-size: 12px;
 		}

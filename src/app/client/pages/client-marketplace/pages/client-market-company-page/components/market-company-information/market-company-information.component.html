@@ -4,31 +4,48 @@
 	<div *ngIf="socialLinksArePresent" class="social info-section">
 		<div class="title">Websites & social media</div>
 		<div class="social-links">
-			<a *ngIf="companyInfo.website" target="_blank" [href]="checkCompanySiteForValid(companyInfo.website)">
+			<a
+				*ngIf="companyInfo.website"
+				target="_blank"
+				[href]="checkCompanySiteForValid(companyInfo.website)">
 				<button
 					class="website-btn"
 					b2bNgxButton
 					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
 					[id]="
-						(isAuth$ | async) === true ? 'company-page-company-website' : 'company-page-unauthorized-company-website'
+						(isAuth$ | async) === true
+							? 'company-page-company-website'
+							: 'company-page-unauthorized-company-website'
 					">
 					Company website
 				</button>
 			</a>
 
-			<a *ngIf="companyInfo.socialMedia.facebook" [href]="companyInfo.socialMedia.facebook" target="_blank">
+			<a
+				*ngIf="companyInfo.socialMedia.facebook"
+				[href]="companyInfo.socialMedia.facebook"
+				target="_blank">
 				<img b2bNgxIcon name="facebook-blue" />
 			</a>
 
-			<a *ngIf="companyInfo.socialMedia.twitter" [href]="companyInfo.socialMedia.twitter" target="_blank">
+			<a
+				*ngIf="companyInfo.socialMedia.twitter"
+				[href]="companyInfo.socialMedia.twitter"
+				target="_blank">
 				<img b2bNgxIcon name="twitter-blue" />
 			</a>
 
-			<a *ngIf="companyInfo.socialMedia.linkedin" [href]="companyInfo.socialMedia.linkedin" target="_blank">
+			<a
+				*ngIf="companyInfo.socialMedia.linkedin"
+				[href]="companyInfo.socialMedia.linkedin"
+				target="_blank">
 				<img b2bNgxIcon name="linkedin-blue" />
 			</a>
 
-			<a *ngIf="companyInfo.socialMedia.instagram" [href]="companyInfo.socialMedia.instagram" target="_blank">
+			<a
+				*ngIf="companyInfo.socialMedia.instagram"
+				[href]="companyInfo.socialMedia.instagram"
+				target="_blank">
 				<img b2bNgxIcon name="instagram-blue" />
 			</a>
 		</div>
@@ -46,25 +63,42 @@
 		</div>
 	</div>
 
-	<div class="company-documents info-section" *ngIf="companyInfo.documents?.length">
+	<div
+		class="company-documents info-section"
+		*ngIf="companyInfo.documents?.length">
 		<div class="title">Documents & certificates</div>
 		<div
 			[ngStyle]="{
 				height:
-					!viewAllMode && modifiedDocuments.length < 5 ? calculateFirstDocumentsHeight() : calculateAllDocumentsHeight()
+					!viewAllMode && modifiedDocuments.length < 5
+						? calculateFirstDocumentsHeight()
+						: calculateAllDocumentsHeight()
 			}"
 			class="documents-list">
-			<div *ngFor="let document of modifiedDocuments" #documentEl (click)="openDocument(document)" class="document">
+			<div
+				*ngFor="let document of modifiedDocuments"
+				#documentEl
+				(click)="openDocument(document)"
+				class="document">
 				<div class="document-data">
-					<img b2bNgxIcon [name]="document.isDocument ? 'document' : 'photo'" alt="" />
+					<img
+						b2bNgxIcon
+						[name]="document.isDocument ? 'document' : 'photo'"
+						alt="" />
 					<div class="size">{{ document.size }}</div>
 				</div>
 				<div class="label">{{ document.name }}</div>
 			</div>
 		</div>
-		<div *ngIf="modifiedDocuments.length > 5" (click)="viewAllMode = !viewAllMode" class="view-all-block">
-			<img b2bNgxIcon [name]="viewAllMode ? 'arrow-down-blue' : 'arrow-top-blue'" alt="arrow" />
-			<div class="text">{{ viewAllMode ? "Show less" : "View all" }}</div>
+		<div
+			*ngIf="modifiedDocuments.length > 5"
+			(click)="viewAllMode = !viewAllMode"
+			class="view-all-block">
+			<img
+				b2bNgxIcon
+				[name]="viewAllMode ? 'arrow-down-blue' : 'arrow-top-blue'"
+				alt="arrow" />
+			<div class="text">{{ viewAllMode ? 'Show less' : 'View all' }}</div>
 		</div>
 	</div>
 

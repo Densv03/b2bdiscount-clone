@@ -99,48 +99,64 @@
 				</svg>
 			</div>
 
-			<h1>TradeBid</h1>
-			<h2>{{ "TRADEBID.THE_WAY" | translate }}</h2>
+			<h1>Sourcing Request</h1>
+			<h2>{{ 'TRADEBID.THE_WAY' | translate }}</h2>
 			<div class="tradebid__container__main__buttons">
 				<div class="tradebid__container__main__buttons__item">
 					<div class="subtitle">
 						<span>For buyers</span>
 					</div>
 					<div class="title">Vendor sourcing and procurement.</div>
-					<div class="text">Create RFQ and collect vendor’s offers from all around the globe.</div>
-					<button (click)="openCreateRfqDialog()" id="tradeBid_make-RFQ">Make RFQ</button>
+					<div class="text">
+						Create RFQ and collect vendor’s offers from all around the globe.
+					</div>
+					<button (click)="openCreateRfqDialog()" id="tradeBid_make-RFQ">
+						Make RFQ
+					</button>
 				</div>
 				<div class="tradebid__container__main__buttons__item">
 					<div class="subtitle">
 						<span>For vendors</span>
 					</div>
 					<div class="title">New clients and business expansion.</div>
-					<div class="text">Reach out to the buyers with your commercial offer.</div>
-					<button [routerLink]="'/tradebid/listing'" id="tradeBid_offer-quotation">All RFQ</button>
+					<div class="text">
+						Reach out to the buyers with your commercial offer.
+					</div>
+					<button
+						[routerLink]="'/tradebid/listing'"
+						id="tradeBid_offer-quotation">
+						All RFQ
+					</button>
 				</div>
 			</div>
 		</div>
 		<div class="tradebid__container__what-is">
-			<h1>{{ "TRADEBID.WHAT_IS" | translate }}</h1>
+			<h1>{{ 'TRADEBID.WHAT_IS' | translate }}</h1>
 
 			<div class="tradebid__container__what-is__wrapper">
 				<div class="tradebid__container__what-is__wrapper__text">
-					<p>{{ "TRADEBID.WHAT_IS_1" | translate }}</p>
-					<p>{{ "TRADEBID.WHAT_IS_2" | translate }}</p>
-					<p>{{ "TRADEBID.WHAT_IS_3" | translate }}</p>
+					<p>{{ 'TRADEBID.WHAT_IS_1' | translate }}</p>
+					<p>{{ 'TRADEBID.WHAT_IS_2' | translate }}</p>
+					<p>{{ 'TRADEBID.WHAT_IS_3' | translate }}</p>
 
-					<button b2bNgxButton
-									[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-									(click)="openCreateRfqDialog()">
+					<button
+						b2bNgxButton
+						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+						(click)="openCreateRfqDialog()">
 						Make RFQ
 					</button>
 				</div>
 				<div class="tradebid__container__what-is__wrapper__img">
-					<span class="tradebid__container__what-is__wrapper__img__helper"></span>
+					<span
+						class="tradebid__container__what-is__wrapper__img__helper"></span>
 					<object [data]="tradebidWhatIsSafeUrl" type="image/svg+xml"></object>
 				</div>
 			</div>
 		</div>
-		<img b2bNgxImage name="tradebid_footer" imageExtension="jpg" class="tradebid__container__footer" />
+		<img
+			b2bNgxImage
+			name="tradebid_footer"
+			imageExtension="jpg"
+			class="tradebid__container__footer" />
 	</div>
 </div>

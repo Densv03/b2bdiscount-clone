@@ -1,8 +1,8 @@
-import { TestBed } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
 
-import { RegistrationSecondStepGuard } from "./registration-second-step.guard";
+import { RegistrationSecondStepGuard } from './registration-second-step.guard';
 
-describe("RegistrationSecondStepGuard", () => {
+describe('RegistrationSecondStepGuard', () => {
 	let guard: RegistrationSecondStepGuard;
 
 	beforeEach(() => {
@@ -10,7 +10,7 @@ describe("RegistrationSecondStepGuard", () => {
 		guard = TestBed.inject(RegistrationSecondStepGuard);
 	});
 
-	it("should be created", () => {
+	it('should be created', () => {
 		expect(guard).toBeTruthy();
 	});
 });

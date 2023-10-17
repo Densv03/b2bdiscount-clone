@@ -1,19 +1,27 @@
 <div class="login">
-	<div class="go-back">
-	</div>
+	<div class="go-back"></div>
 	<div class="body">
 		<div class="title">Login</div>
-		<form errorTailor class="auth-log-in__main-form" [formGroup]="formGroup" (ngSubmit)="logInWithForm(formGroup)">
+		<form
+			errorTailor
+			class="auth-log-in__main-form"
+			[formGroup]="formGroup"
+			(ngSubmit)="logInWithForm(formGroup)">
 			<div class="form-title">We connect traders globally.</div>
-			<div class="form-subtitle">The B2B platform for wholesale sellers and buyers on the global market.</div>
+			<div class="form-subtitle">
+				The B2B platform for wholesale sellers and buyers on the global market.
+			</div>
 			<button
 				b2bNgxButton
 				type="button"
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_WHITE"
 				class="auth-log-in__log-in-with-google-button"
 				(click)="logInWithGoogle()">
-				<img b2bNgxImage name="google" class="auth-log-in__log-in-with-google-button__icon"/>
-				{{ "AUTH.LOG_IN_GOOGLE" | translate }}
+				<img
+					b2bNgxImage
+					name="google"
+					class="auth-log-in__log-in-with-google-button__icon" />
+				{{ 'AUTH.LOG_IN_GOOGLE' | translate }}
 			</button>
 			<button
 				b2bNgxButton
@@ -21,10 +29,15 @@
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_WHITE"
 				class="auth-log-in__log-in-with-google-button"
 				(click)="logInWithLinkedIn()">
-				<img b2bNgxImage name="linkedin" class="auth-log-in__log-in-with-google-button__icon"/>
-				{{ "AUTH.LOG_IN_LINKEDIN" | translate }}
+				<img
+					b2bNgxImage
+					name="linkedin"
+					class="auth-log-in__log-in-with-google-button__icon" />
+				{{ 'AUTH.LOG_IN_LINKEDIN' | translate }}
 			</button>
-			<b2b-ngx-divider theme="white" class="auth-log-in__main-divider">or</b2b-ngx-divider>
+			<b2b-ngx-divider theme="white" class="auth-log-in__main-divider"
+				>or</b2b-ngx-divider
+			>
 
 			<input
 				b2bNgxInput
@@ -33,7 +46,7 @@
 				[label]="'LABELS.EMAIL' | translate"
 				labelClass="auth-log-in__main-input"
 				formControlName="email"
-				[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate"/>
+				[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate" />
 
 			<div class="control-wrapper">
 				<b2b-ngx-password
@@ -43,8 +56,11 @@
 				</b2b-ngx-password>
 			</div>
 
-			<button class="auth-log-in__main-link" type="button" (click)="openResetPasswordModal()">
-				{{ "AUTH.RESET_PASSWORD" | translate }}
+			<button
+				class="auth-log-in__main-link"
+				type="button"
+				(click)="openResetPasswordModal()">
+				{{ 'AUTH.RESET_PASSWORD' | translate }}
 			</button>
 
 			<button
@@ -53,21 +69,26 @@
 				[disabled]="formGroup.invalid"
 				class="auth-log-in__log-in-button"
 				type="submit">
-				{{ "AUTH.LOG_IN" | translate }}
+				{{ 'AUTH.LOG_IN' | translate }}
 			</button>
 		</form>
 	</div>
 	<div class="other-page-link">
 		<p class="auth-log-in__header-text-wrapper">
-			<span class="auth-log-in__header-text">{{ "AUTH.NOT_REGISTERED_YET" | translate }}</span>
+			<span class="auth-log-in__header-text">{{
+				'AUTH.NOT_REGISTERED_YET' | translate
+			}}</span>
 			<a
 				b2bNgxLink
 				[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
-				[routerLink]="b2bNgxLinkService.getLink('/auth/register-credentials') | async"
+				[routerLink]="
+					b2bNgxLinkService.getLink('/auth/register-credentials') | async
+				"
 				class="auth-log-in__header-link"
 				queryParamsHandling="merge"
 				(click)="registrationLink()"
-			>{{ "AUTH.REGISTRATION" | translate }}</a>
+				>{{ 'AUTH.REGISTRATION' | translate }}</a
+			>
 		</p>
 	</div>
 </div>

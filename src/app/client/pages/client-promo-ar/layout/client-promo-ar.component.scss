@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .hot-it-works-2 {
 	background-color: white;
@@ -14,7 +14,7 @@
 			&.mobile {
 				display: none;
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				height: 496px;
 				&.desktop {
 					display: none;
@@ -35,7 +35,7 @@
 			background: rgba(229, 242, 253, 0.1);
 			backdrop-filter: blur(5px);
 			text-align: right;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				margin-top: 104px;
 				height: 392px;
 				width: 100%;
@@ -50,7 +50,7 @@
 				letter-spacing: 0.01em;
 				color: #ffffff;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					margin-top: 30px;
 					font-size: 23px;
 				}
@@ -63,7 +63,7 @@
 				letter-spacing: 0.27em;
 				color: #ffffff;
 				margin-top: 18px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 14px;
 				}
 			}
@@ -73,7 +73,7 @@
 				font-size: 91px;
 				line-height: 140%;
 				color: #ffffff;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 37px;
 				}
 			}
@@ -84,7 +84,7 @@
 				line-height: 140%;
 				color: #ffffff;
 				margin-top: 13px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					font-size: 14px;
 				}
@@ -92,7 +92,7 @@
 
 			.buttons {
 				margin-top: 50px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					text-align: center;
 					display: flex;
 					justify-content: space-between;
@@ -116,7 +116,7 @@
 						background: #8d1d30;
 					}
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 47.5%;
 						padding: 15px 0;
 						display: flex;
@@ -137,7 +137,7 @@
 
 		//padding: 60px 0;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			padding: 0 15px;
 		}
@@ -145,7 +145,7 @@
 
 	.benefits {
 		margin-top: 74px;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			margin-top: 40px;
 		}
 		ul {
@@ -166,7 +166,7 @@
 				color: #556274;
 				border-left: 4px solid #005dff;
 				padding-left: 32px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					text-align: center;
 					width: 100%;
 					border-left: none;
@@ -178,7 +178,7 @@
 					padding-left: 0;
 
 					&:after {
-						content: "";
+						content: '';
 						display: block;
 						width: 70px;
 						height: 4px;
@@ -204,7 +204,7 @@
 			padding: 50px 0 70px;
 			margin-top: 100px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 25px 15px 35px;
 			}
 
@@ -218,7 +218,7 @@
 					line-height: 120%;
 					letter-spacing: 0.01em;
 					color: #0f0f11;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						font-size: 28px;
 					}
 				}
@@ -235,13 +235,13 @@
 					color: #556274;
 					margin-top: 20px;
 					text-align: right;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 						font-size: 13px;
 					}
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					order: 2;
 				}
@@ -251,7 +251,7 @@
 				width: 50%;
 				object-fit: contain;
 				margin-top: -150px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					order: 1;
 					margin-top: -100px;
@@ -263,7 +263,7 @@
 	.risks {
 		margin-top: 50px;
 		text-align: center;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			text-align: right;
 		}
 		h2 {
@@ -272,7 +272,7 @@
 			line-height: 134%;
 			letter-spacing: 0.01em;
 			color: #0f0f11;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 28px;
 			}
 		}
@@ -284,7 +284,7 @@
 			line-height: 150%;
 			letter-spacing: 0.01em;
 			color: #556274;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				font-size: 13px;
 			}
@@ -301,7 +301,7 @@
 
 			padding: 50px 0 70px;
 			margin-top: 100px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 25px 15px 35px;
 			}
 
@@ -312,7 +312,7 @@
 				align-items: flex-end;
 				// padding-left: 100px;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					padding-left: 0;
 				}
@@ -341,7 +341,7 @@
 					color: #556274;
 					text-align: right;
 					margin-top: 20px;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 						font-size: 13px;
 					}
@@ -364,13 +364,13 @@
 					&:hover {
 						background: #2a2a2f;
 					}
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 						padding: 15px 0;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							font-size: 13px;
 						}
 					}
@@ -381,7 +381,7 @@
 				width: 50%;
 				object-fit: contain;
 				margin-top: -150px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					margin-top: -100px;
 				}
@@ -392,7 +392,7 @@
 	.verification {
 		margin-top: 50px;
 		text-align: center;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			text-align: right;
 		}
 		h2 {
@@ -410,13 +410,13 @@
 			line-height: 150%;
 			letter-spacing: 0.01em;
 			color: #556274;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				padding: 15px 0;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 13px;
 				}
 			}
@@ -434,7 +434,7 @@
 			padding: 50px 0 70px;
 			margin-top: 100px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 25px 15px 35px;
 			}
 
@@ -450,7 +450,7 @@
 					line-height: 120%;
 					letter-spacing: 0.01em;
 					color: #0f0f11;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						font-size: 28px;
 					}
 				}
@@ -467,7 +467,7 @@
 					color: #556274;
 					margin-top: 20px;
 					text-align: right;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 						font-size: 13px;
 					}
@@ -491,19 +491,19 @@
 						background: #2a2a2f;
 					}
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 						padding: 15px 0;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							font-size: 13px;
 						}
 					}
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					order: 2;
 					width: 100%;
 				}
@@ -513,7 +513,7 @@
 				margin-top: -150px;
 				width: 50%;
 				object-fit: contain;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					order: 1;
 					margin-top: -100px;
@@ -525,7 +525,7 @@
 	.mission {
 		text-align: center;
 		margin-top: 50px;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			text-align: right;
 		}
 		h2 {
@@ -535,7 +535,7 @@
 			line-height: 134%;
 			letter-spacing: 0.01em;
 			color: #0f0f11;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				text-align: right;
 			}
 		}
@@ -548,7 +548,7 @@
 			line-height: 150%;
 			letter-spacing: 0.01em;
 			color: #556274;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				text-align: right;
 				font-size: 13px;
@@ -556,7 +556,7 @@
 		}
 
 		h3 {
-			@import "projects/shared/src/styles";
+			@import 'projects/shared/src/styles';
 
 			.hot-it-works-2 {
 				background-color: white;
@@ -572,7 +572,7 @@
 						&.mobile {
 							display: none;
 						}
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							height: 496px;
 							&.desktop {
 								display: none;
@@ -592,7 +592,7 @@
 						border-bottom-right-radius: 150px;
 						background: rgba(229, 242, 253, 0.1);
 						backdrop-filter: blur(5px);
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							margin-top: 104px;
 							height: 392px;
 							width: 100%;
@@ -607,7 +607,7 @@
 							letter-spacing: 0.01em;
 							color: #ffffff;
 
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								margin-top: 30px;
 								font-size: 23px;
 							}
@@ -620,7 +620,7 @@
 							letter-spacing: 0.27em;
 							color: #ffffff;
 							margin-top: 18px;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								font-size: 14px;
 							}
 						}
@@ -630,7 +630,7 @@
 							font-size: 91px;
 							line-height: 140%;
 							color: #ffffff;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								font-size: 37px;
 							}
 						}
@@ -641,7 +641,7 @@
 							line-height: 140%;
 							color: #ffffff;
 							margin-top: 13px;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								font-size: 14px;
 							}
@@ -649,7 +649,7 @@
 
 						.buttons {
 							margin-top: 50px;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								display: flex;
 								justify-content: space-between;
 								margin-top: 20px;
@@ -672,7 +672,7 @@
 									background: #8d1d30;
 								}
 
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									width: 47.5%;
 									padding: 15px 0;
 									display: flex;
@@ -693,7 +693,7 @@
 
 					//padding: 60px 0;
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 100%;
 						padding: 0 15px;
 					}
@@ -701,7 +701,7 @@
 
 				.benefits {
 					margin-top: 74px;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						margin-top: 40px;
 					}
 					ul {
@@ -721,7 +721,7 @@
 							color: #556274;
 							border-left: 4px solid #005dff;
 							padding-left: 32px;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								text-align: center;
 								width: 100%;
 								border-left: none;
@@ -733,7 +733,7 @@
 								padding-left: 0;
 
 								&:after {
-									content: "";
+									content: '';
 									display: block;
 									width: 70px;
 									height: 4px;
@@ -759,7 +759,7 @@
 						padding: 50px 0 70px;
 						margin-top: 100px;
 
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							padding: 25px 15px 35px;
 						}
 
@@ -774,7 +774,7 @@
 								align-items: center;
 								letter-spacing: 0.01em;
 								color: #0f0f11;
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									font-size: 28px;
 								}
 							}
@@ -790,13 +790,13 @@
 								letter-spacing: 0.01em;
 								color: #556274;
 								margin-top: 20px;
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									width: 100%;
 									font-size: 13px;
 								}
 							}
 
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								order: 2;
 							}
@@ -806,7 +806,7 @@
 							width: 50%;
 							object-fit: contain;
 							margin-top: -150px;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								order: 1;
 								margin-top: -100px;
@@ -818,7 +818,7 @@
 				.risks {
 					margin-top: 50px;
 					text-align: center;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						text-align: left;
 					}
 					h2 {
@@ -827,7 +827,7 @@
 						line-height: 134%;
 						letter-spacing: 0.01em;
 						color: #0f0f11;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							font-size: 28px;
 						}
 					}
@@ -839,7 +839,7 @@
 						line-height: 150%;
 						letter-spacing: 0.01em;
 						color: #556274;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 100%;
 							font-size: 13px;
 						}
@@ -856,7 +856,7 @@
 
 						padding: 50px 0 70px;
 						margin-top: 100px;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							padding: 25px 15px 35px;
 						}
 
@@ -864,7 +864,7 @@
 							width: 50%;
 							// padding-left: 100px;
 
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								padding-left: 0;
 							}
@@ -892,7 +892,7 @@
 								letter-spacing: 0.01em;
 								color: #556274;
 								margin-top: 20px;
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									width: 100%;
 									font-size: 13px;
 								}
@@ -915,13 +915,13 @@
 								&:hover {
 									background: #2a2a2f;
 								}
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									width: 100%;
 									padding: 15px 0;
 									display: flex;
 									align-items: center;
 									justify-content: center;
-									@include breakpoint("3") {
+									@include breakpoint('3') {
 										font-size: 13px;
 									}
 								}
@@ -932,7 +932,7 @@
 							width: 50%;
 							object-fit: contain;
 							margin-top: -150px;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								margin-top: -100px;
 							}
@@ -943,7 +943,7 @@
 				.verification {
 					margin-top: 50px;
 					text-align: center;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						text-align: left;
 					}
 					h2 {
@@ -961,13 +961,13 @@
 						line-height: 150%;
 						letter-spacing: 0.01em;
 						color: #556274;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 100%;
 							padding: 15px 0;
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								font-size: 13px;
 							}
 						}
@@ -985,7 +985,7 @@
 						padding: 50px 0 70px;
 						margin-top: 100px;
 
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							padding: 25px 15px 35px;
 						}
 
@@ -1001,7 +1001,7 @@
 								line-height: 120%;
 								letter-spacing: 0.01em;
 								color: #0f0f11;
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									font-size: 28px;
 								}
 							}
@@ -1017,7 +1017,7 @@
 								letter-spacing: 0.01em;
 								color: #556274;
 								margin-top: 20px;
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									width: 100%;
 									font-size: 13px;
 								}
@@ -1041,19 +1041,19 @@
 									background: #2a2a2f;
 								}
 
-								@include breakpoint("3") {
+								@include breakpoint('3') {
 									width: 100%;
 									padding: 15px 0;
 									display: flex;
 									align-items: center;
 									justify-content: center;
-									@include breakpoint("3") {
+									@include breakpoint('3') {
 										font-size: 13px;
 									}
 								}
 							}
 
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								order: 2;
 								width: 100%;
 							}
@@ -1063,7 +1063,7 @@
 							margin-top: -150px;
 							width: 50%;
 							object-fit: contain;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								width: 100%;
 								order: 1;
 								margin-top: -100px;
@@ -1075,7 +1075,7 @@
 				.mission {
 					text-align: center;
 					margin-top: 50px;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						text-align: right;
 					}
 					h2 {
@@ -1085,7 +1085,7 @@
 						line-height: 134%;
 						letter-spacing: 0.01em;
 						color: #0f0f11;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							text-align: left;
 						}
 					}
@@ -1098,7 +1098,7 @@
 						line-height: 150%;
 						letter-spacing: 0.01em;
 						color: #556274;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 100%;
 							text-align: left;
 							font-size: 13px;
@@ -1113,7 +1113,7 @@
 						line-height: 134%;
 						letter-spacing: 0.01em;
 						color: #0f0f11;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							text-align: right;
 						}
 					}
@@ -1131,13 +1131,13 @@
 						padding: 20px 40px;
 						background: #0f0f11;
 						border-radius: 8px;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 100%;
 							padding: 15px 0;
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								font-size: 13px;
 							}
 						}
@@ -1182,7 +1182,7 @@
 					letter-spacing: 0.01em;
 					color: #0f0f11;
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						font-size: 19px;
 					}
 
@@ -1199,14 +1199,14 @@
 					flex-wrap: wrap;
 					align-items: flex-end;
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						justify-content: flex-start;
 					}
 
 					img {
 						width: 270px;
 						height: 81.04px;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 172px;
 							height: 51px;
 						}
@@ -1220,7 +1220,7 @@
 						line-height: 148%;
 						letter-spacing: 0.01em;
 						color: #556274;
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							margin-left: 0px;
 							font-size: 15px;
 						}
@@ -1235,7 +1235,7 @@
 			line-height: 134%;
 			letter-spacing: 0.01em;
 			color: #0f0f11;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				text-align: right;
 			}
 		}
@@ -1253,13 +1253,13 @@
 			padding: 20px 40px;
 			background: #0f0f11;
 			border-radius: 8px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				padding: 15px 0;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 13px;
 				}
 			}
@@ -1305,7 +1305,7 @@
 		color: #0f0f11;
 		text-align: right;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 19px;
 		}
 
@@ -1322,14 +1322,14 @@
 		flex-wrap: wrap;
 		align-items: flex-end;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			justify-content: flex-end;
 		}
 
 		img {
 			width: 270px;
 			height: 81.04px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 172px;
 				height: 51px;
 			}
@@ -1343,7 +1343,7 @@
 			line-height: 148%;
 			letter-spacing: 0.01em;
 			color: #556274;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				margin-left: 0px;
 				font-size: 15px;
 			}

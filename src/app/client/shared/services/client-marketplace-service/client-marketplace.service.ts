@@ -1,43 +1,59 @@
-import { Injectable } from "@angular/core";
-import {BehaviorSubject, filter, Observable, of, share} from "rxjs";
-import {first, map} from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, filter, Observable, of, share } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 
-import {HttpParams} from "@angular/common/http";
-import {NgxSkeletonLoaderConfig} from "ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types";
-import {MarketProductModel} from "../../../pages/client-marketplace/models/market-product.model";
-import {ApiService} from "../../../../core/services/api/api.service";
-import {environment} from "../../../../../environments/environment";
-import {ProductDetailsModel} from "../../../pages/client-marketplace/models/product-details.model";
-import {PaginationParamsModel} from "../../../../core/models/pagination-params.model";
+import { HttpParams } from '@angular/common/http';
+import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
+import { MarketProductModel } from '../../../pages/client-marketplace/models/market-product.model';
+import { ApiService } from '../../../../core/services/api/api.service';
+import { environment } from '../../../../../environments/environment';
+import { ProductDetailsModel } from '../../../pages/client-marketplace/models/product-details.model';
+import { PaginationParamsModel } from '../../../../core/models/pagination-params.model';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class ClientMarketplaceService {
 	public readonly PRODUCTS_LIMIT = 20;
 
-	public shippingMethods: string[] = ["EXW", "FCA", "FAS", "FOB", "CFR/CIF", "DPU", "DAP", "DDP"];
-	public paymentMethods: string[] = ["T/T", "L/C", "CAD", "Other"];
+	public shippingMethods: string[] = [
+		'EXW',
+		'FCA',
+		'FAS',
+		'FOB',
+		'CFR/CIF',
+		'DPU',
+		'DAP',
+		'DDP',
+	];
+	public paymentMethods: string[] = ['Swift transfer', 'L/C', 'Paypal', 'CAD'];
 
-	private marketplaceProductsSource: BehaviorSubject<MarketProductModel[]> = new BehaviorSubject<MarketProductModel[]>([]);
-	private marketplaceProductsLengthSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private marketplaceProductsSource: BehaviorSubject<MarketProductModel[]> =
+		new BehaviorSubject<MarketProductModel[]>([]);
+	private marketplaceProductsLengthSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
 
-	private manageProductsSource: BehaviorSubject<MarketProductModel[]> = new BehaviorSubject<MarketProductModel[]>([]);
-	private manageProductsLengthSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private manageProductsSource: BehaviorSubject<MarketProductModel[]> =
+		new BehaviorSubject<MarketProductModel[]>([]);
+	private manageProductsLengthSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
 
 	// private archivedProductsSource: BehaviorSubject<MarketProductModel[]> = new BehaviorSubject<MarketProductModel[]>([]);
 	// private archivedProductsLengthSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
 	private chatsSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	private chatsLengthSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private chatsLengthSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
 
-	private supplierListingSource: BehaviorSubject<MarketProductModel[]> = new BehaviorSubject<MarketProductModel[]>([]);
-	private supplierListingLengthSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private supplierListingSource: BehaviorSubject<MarketProductModel[]> =
+		new BehaviorSubject<MarketProductModel[]>([]);
+	private supplierListingLengthSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
 
-	private loadingSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	private loadingSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 
-	constructor(private apiService: ApiService) {
-	}
+	constructor(private apiService: ApiService) {}
 
 	public get marketplaceProducts$(): Observable<any> {
 		return this.marketplaceProductsSource.asObservable();
@@ -80,14 +96,17 @@ export class ClientMarketplaceService {
 	}
 
 	public get unreadMessagesCount$(): Observable<any> {
-		return this.apiService.get("my/unreadProductMessagesCount");
+		return this.apiService.get('my/unreadProductMessagesCount');
 	}
 
 	public get loading$(): Observable<boolean> {
 		return this.loadingSource.asObservable();
 	}
 
-	public getMarketplaceProducts(filters?: any, offset: number = 0): Observable<any> {
+	public getMarketplaceProducts(
+		filters?: any,
+		offset: number = 0
+	): Observable<any> {
 		this.startLoading();
 		return this.apiService.get(
 			`products${filters}limit=${this.PRODUCTS_LIMIT}&offset=${offset}`
@@ -99,9 +118,17 @@ export class ClientMarketplaceService {
 
 	public updateMarketplaceProductsOnSearch(data: any): void {
 		this.completeLoading();
-    // TODO: remove this condition before deploy
-		this.marketplaceProductsLengthSource.next(environment.apiUrl.includes('api-dev') ? data.result.totalCount: data.totalCount);
-		this.marketplaceProductsSource.next(environment.apiUrl.includes('api-dev') ? data.result.products : data.products);
+		// TODO: remove this condition before deploy
+		this.marketplaceProductsLengthSource.next(
+			environment.apiUrl.includes('api-dev')
+				? data.result.totalCount
+				: data.totalCount
+		);
+		this.marketplaceProductsSource.next(
+			environment.apiUrl.includes('api-dev')
+				? data.result.products
+				: data.products
+		);
 	}
 
 	public updateMarketplaceProducts(filters?: any, offset: number = 0): void {
@@ -112,20 +139,33 @@ export class ClientMarketplaceService {
 			)
 			.subscribe((data: any) => {
 				this.completeLoading();
-        // TODO: remove this condition before deploy
-				this.marketplaceProductsLengthSource.next(environment.apiUrl.includes('api-dev') ? data.result.totalCount : data.totalCount);
-				this.marketplaceProductsSource.next(environment.apiUrl.includes('api-dev') ? data.result.products : data.products);
+				// TODO: remove this condition before deploy
+				this.marketplaceProductsLengthSource.next(
+					environment.apiUrl.includes('api-dev')
+						? data.result.totalCount
+						: data.totalCount
+				);
+				this.marketplaceProductsSource.next(
+					environment.apiUrl.includes('api-dev')
+						? data.result.products
+						: data.products
+				);
 			});
 	}
 
-	public updateSupplierListing(id: string, categories: string[] = [], offset: number = 0, limit?: number): void {
+	public updateSupplierListing(
+		id: string,
+		categories: string[] = [],
+		offset: number = 0,
+		limit?: number
+	): void {
 		this.apiService
-			.get("products", {
+			.get('products', {
 				params: {
 					supplier: id,
 					categories,
 					limit: limit ?? this.PRODUCTS_LIMIT,
-					offset
+					offset,
 				},
 			})
 			.pipe(
@@ -141,8 +181,12 @@ export class ClientMarketplaceService {
 	public updateChats(offset: number = 0): void {
 		this.startLoading();
 		this.apiService
-			.get("my/chats", {
-				params: {typeRoom: "users,product", offset, limit: this.PRODUCTS_LIMIT},
+			.get('my/chats', {
+				params: {
+					typeRoom: 'users,product',
+					offset,
+					limit: this.PRODUCTS_LIMIT,
+				},
 			})
 			.pipe(
 				filter((data) => !!data),
@@ -156,7 +200,7 @@ export class ClientMarketplaceService {
 	}
 
 	public createProduct(product: any): Observable<any> {
-		return this.apiService.post("product/create", product);
+		return this.apiService.post('product/create', product);
 	}
 
 	public updateProduct(id: string, product: any): Observable<any> {
@@ -168,9 +212,10 @@ export class ClientMarketplaceService {
 	}
 
 	public getProductById(id: string): Observable<ProductDetailsModel> {
-		return this.apiService
-			.get<ProductDetailsModel>(`product/${id}`)
-			.pipe(filter(data => !!data), share());
+		return this.apiService.get<ProductDetailsModel>(`product/${id}`).pipe(
+			filter((data) => !!data),
+			share()
+		);
 	}
 
 	public archiveProduct(id: string): Observable<any> {
@@ -182,11 +227,15 @@ export class ClientMarketplaceService {
 	}
 
 	public approveProductByAdmin(id: string): Observable<any> {
-		return this.apiService.post<{ id: string }>("product/product-approval", {id});
+		return this.apiService.post<{ id: string }>('product/product-approval', {
+			id,
+		});
 	}
 
 	public declineProductByAdmin(id: string): Observable<any> {
-		return this.apiService.post<{ id: string }>("product/product-rejection", {id});
+		return this.apiService.post<{ id: string }>('product/product-rejection', {
+			id,
+		});
 	}
 
 	public updateProductByAdmin(id: string, product: any): Observable<any> {
@@ -201,7 +250,10 @@ export class ClientMarketplaceService {
 		return this.apiService.put(`product/${id}/archive-admin`, {});
 	}
 
-	public updateProductsByAdmin(queryObj: PaginationParamsModel, otherParams?: any): void {
+	public updateProductsByAdmin(
+		queryObj: PaginationParamsModel,
+		otherParams?: any
+	): void {
 		this.startLoading();
 		this.getProductsByAdmin(queryObj, otherParams)
 			.pipe(first())
@@ -212,7 +264,10 @@ export class ClientMarketplaceService {
 			});
 	}
 
-	public updateSupplierProducts(supplierId: string, paginationParams: PaginationParamsModel): void {
+	public updateSupplierProducts(
+		supplierId: string,
+		paginationParams: PaginationParamsModel
+	): void {
 		this.startLoading();
 		this.getSupplierProducts(supplierId, paginationParams)
 			.pipe(first())
@@ -224,28 +279,34 @@ export class ClientMarketplaceService {
 	}
 
 	public getUserMarketProducts(): Observable<any> {
-		return this.apiService.get('products/my')
-			.pipe(
-				filter((data: any) => !!data),
-				map(({products}) => products))
+		return this.apiService.get('products/my').pipe(
+			filter((data: any) => !!data),
+			map(({ products }) => products)
+		);
 	}
 
 	public updateManageProducts(offset: number = 0, queryParam?: string): void {
 		this.startLoading();
 		let url = `products/my?limit=${this.PRODUCTS_LIMIT}&offset=${offset}&`;
-		if(queryParam) {
-			url += `${queryParam}=true`
+		if (queryParam) {
+			url += `${queryParam}=true`;
 		}
 
 		this.apiService
-			.get(url).pipe(
+			.get(url)
+			.pipe(
 				filter((data) => !!data),
-				first())
+				first()
+			)
 			.subscribe((data: any) => {
 				this.completeLoading();
 				this.manageProductsLengthSource.next(data.totalCount);
 				this.manageProductsSource.next(data.products);
-				if (data.products.length === 0 && data.totalCount > 0 && offset - this.PRODUCTS_LIMIT >= 0) {
+				if (
+					data.products.length === 0 &&
+					data.totalCount > 0 &&
+					offset - this.PRODUCTS_LIMIT >= 0
+				) {
 					this.updateManageProducts(offset - this.PRODUCTS_LIMIT);
 				}
 			});
@@ -283,26 +344,53 @@ export class ClientMarketplaceService {
 	}
 
 	public getMarketplaceSkeletonOptions(): Partial<NgxSkeletonLoaderConfig> {
-    return {
-      count: 5,
-      animation: 'progress',
-      theme: {
-        height: '160px',
-      }
-    }
-
+		return {
+			count: 5,
+			animation: 'progress',
+			theme: {
+				height: '160px',
+			},
+		};
 	}
-	public getCompanyByName(name: string, paginationParams: PaginationParamsModel): Observable<{companies: any[], totalCount: number}> {
-		return this.apiService.get("products/get-company", {params: {...paginationParams, q: name}});
+	public getCompanyByName(
+		name: string,
+		paginationParams: PaginationParamsModel
+	): Observable<{ companies: any[]; totalCount: number }> {
+		return this.apiService.get('products/get-company', {
+			params: { ...paginationParams, q: name },
+		});
 	}
 
-	private getSupplierProducts(supplierId: string, {offset, limit}: PaginationParamsModel): Observable<any> {
-		return this.apiService.get(`products?supplier=${supplierId}&limit=${limit}&offset=${offset}`);
+	public deletePhotosFromProduct(
+		productId: string,
+		photos: string[]
+	): Observable<any> {
+		return this.apiService.delete(`product/${productId}/files/delete`, {
+			body: {
+				photos,
+			},
+		});
 	}
 
-	private getProductsByAdmin(queryObj: PaginationParamsModel, otherParams?: any): Observable<any> {
-		return this.apiService.get("products/get-products-admin", {
-			params: {offset: queryObj.offset, limit: queryObj.limit, ...otherParams},
+	private getSupplierProducts(
+		supplierId: string,
+		{ offset, limit }: PaginationParamsModel
+	): Observable<any> {
+		return this.apiService.get(
+			`products?supplier=${supplierId}&limit=${limit}&offset=${offset}`
+		);
+	}
+
+	private getProductsByAdmin(
+		queryObj: PaginationParamsModel,
+		otherParams?: any
+	): Observable<any> {
+		return this.apiService.get('products/get-products-admin', {
+			params: {
+				offset: queryObj.offset,
+				limit: queryObj.limit,
+				...otherParams,
+			},
 		});
 	}
 }

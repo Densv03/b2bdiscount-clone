@@ -1,6 +1,5 @@
 <div class="client-profile-chats">
-
-	<h3 class="client-profile-chats-title">{{ "PAGES.MY_CHATS" | translate }}</h3>
+	<h3 class="client-profile-chats-title">{{ 'PAGES.MY_CHATS' | translate }}</h3>
 
 	<div class="client-profile-chats-container">
 		<ng-container *ngIf="chats$ | async as chats; else noChats">
@@ -15,14 +14,14 @@
 		<ng-template #noChats>
 			<div class="client-profile-chats-no-chats" *ngIf="!loading">
 				<p class="client-profile-chats-no-chats-title">
-					{{ "OFFERS.NO_CHATS" | translate }}
+					{{ 'OFFERS.NO_CHATS' | translate }}
 				</p>
 				<a
 					b2bNgxLink
 					[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
 					class="client-profile-chats-no-chats-button"
 					[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
-					>{{ "BUTTONS.LATEST_OFFERS" | translate }}</a
+					>{{ 'BUTTONS.LATEST_OFFERS' | translate }}</a
 				>
 			</div>
 		</ng-template>

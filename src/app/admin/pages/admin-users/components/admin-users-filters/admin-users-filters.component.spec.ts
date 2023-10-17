@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminUsersFiltersComponent } from "./admin-users-filters.component";
+import { AdminUsersFiltersComponent } from './admin-users-filters.component';
 
-describe("AdminUsersFiltersComponent", () => {
+describe('AdminUsersFiltersComponent', () => {
 	let component: AdminUsersFiltersComponent;
 	let fixture: ComponentFixture<AdminUsersFiltersComponent>;
 
@@ -18,7 +18,7 @@ describe("AdminUsersFiltersComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

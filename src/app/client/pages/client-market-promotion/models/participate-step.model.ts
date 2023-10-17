@@ -1,4 +1,4 @@
 export interface ParticipateStepModel {
-	icon: string,
-	text: string
+	icon: string;
+	text: string;
 }

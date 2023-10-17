@@ -1,4 +1,4 @@
 export interface SelectCategoryModel {
-	text: string,
-	value: string
+	text: string;
+	value: string;
 }

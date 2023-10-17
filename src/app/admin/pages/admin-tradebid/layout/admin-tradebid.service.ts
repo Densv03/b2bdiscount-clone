@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { map, tap } from "rxjs/operators";
-import { Observable } from "rxjs";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { HotToastService } from "@ngneat/hot-toast";
-import { ApiService } from "../../../../core/services/api/api.service";
-import { OffersQuery } from "../../../../client/state/offers/offers.query";
-import { OffersStore } from "../../../../client/state/offers/offers.store";
+import { Injectable } from '@angular/core';
+import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { HotToastService } from '@ngneat/hot-toast';
+import { ApiService } from '../../../../core/services/api/api.service';
+import { OffersQuery } from '../../../../client/state/offers/offers.query';
+import { OffersStore } from '../../../../client/state/offers/offers.store';
 
-function getPreviewPhoto(offer: { photos: string | any[]; }) {
+function getPreviewPhoto(offer: { photos: string | any[] }) {
 	return offer.photos && offer.photos.length ? offer.photos[0].lg : null;
 }
 
 @UntilDestroy()
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class AdminTradeBidService {
 	public readonly _endpoint: string;
@@ -23,11 +23,11 @@ export class AdminTradeBidService {
 		private readonly _offersStore: OffersStore,
 		private readonly _hotToastService: HotToastService
 	) {
-		this._endpoint = "offers/";
+		this._endpoint = 'offers/';
 	}
 
 	public removeAllOffers() {
-		return this._apiService.delete("offers/delete");
+		return this._apiService.delete('offers/delete');
 	}
 
 	public getContainerLocation(query: any) {
@@ -43,7 +43,7 @@ export class AdminTradeBidService {
 
 		if (!seaLines.length) {
 			this._apiService
-				.get("seaLines")
+				.get('seaLines')
 				.pipe(untilDestroyed(this))
 				.subscribe((response) => {
 					this._offersStore.update({
@@ -57,13 +57,13 @@ export class AdminTradeBidService {
 
 	public markAsSold(id: string) {
 		this._apiService
-			.post(`offer/${id}/status/update`, { status: "sold" })
+			.post(`offer/${id}/status/update`, { status: 'sold' })
 			.pipe(
 				untilDestroyed(this),
 				this._hotToastService.observe({
-					loading: "Offer status updating...",
-					success: "Offer status updated successfully!",
-					error: "Offer status updating failed!",
+					loading: 'Offer status updating...',
+					success: 'Offer status updated successfully!',
+					error: 'Offer status updating failed!',
 				})
 			)
 			.subscribe();
@@ -86,7 +86,9 @@ export class AdminTradeBidService {
 	// }
 
 	public deleteOfferSub(id: string) {
-		return this._apiService.delete(`offer/${id}/delete`).pipe(untilDestroyed(this));
+		return this._apiService
+			.delete(`offer/${id}/delete`)
+			.pipe(untilDestroyed(this));
 	}
 
 	public deleteOfferById(id: string, body: any) {
@@ -111,7 +113,7 @@ export class AdminTradeBidService {
 
 	public getMyOffers(): Observable<any> {
 		this._apiService
-			.get("my/offers/")
+			.get('my/offers/')
 			.pipe(untilDestroyed(this))
 			.subscribe((myOffers: any) => {
 				this._offersStore.update({
@@ -125,29 +127,31 @@ export class AdminTradeBidService {
 		return this._offersQuery.selectMyOffers$;
 	}
 
-	public getOffers(queryString: string = ""): Observable<any> {
-		return this._apiService.get("tradeBid/get-rfq-admin" + queryString + "&hideCompleted=true").pipe(
-			untilDestroyed(this),
-			map((response: any) => {
-				const { rfqList, totalCount } = response;
-				const allOffers = rfqList.map((offer: { photos: string | any[]; }) => {
-					return {
-						...offer,
-						previewPhoto: getPreviewPhoto(offer),
-					};
-				});
-				this._offersStore.update({
-					allOffers,
-					allOffersCount: totalCount,
-				});
+	public getOffers(queryString: string = ''): Observable<any> {
+		return this._apiService
+			.get('tradeBid/get-rfq-admin' + queryString + '&hideCompleted=true')
+			.pipe(
+				untilDestroyed(this),
+				map((response: any) => {
+					const { rfqList, totalCount } = response;
+					const allOffers = rfqList.map((offer: { photos: string | any[] }) => {
+						return {
+							...offer,
+							previewPhoto: getPreviewPhoto(offer),
+						};
+					});
+					this._offersStore.update({
+						allOffers,
+						allOffersCount: totalCount,
+					});
 
-				return [...allOffers];
-			})
-		);
+					return [...allOffers];
+				})
+			);
 	}
 
 	public getActiveOffers(): Observable<any> {
-		return this._apiService.get("offers?hideSold=true").pipe(
+		return this._apiService.get('offers?hideSold=true').pipe(
 			untilDestroyed(this),
 			map((response: any) => {
 				const { offers, totalCount } = response;
@@ -169,7 +173,7 @@ export class AdminTradeBidService {
 	}
 
 	public getSavedOffers(): Observable<any> {
-		const url = "my/offers/favourites";
+		const url = 'my/offers/favourites';
 		this._apiService.get(url).subscribe((savedOffers: any) => {
 			this._offersStore.update({
 				savedOffers: savedOffers.map((savedOffer: any) => ({
@@ -182,7 +186,7 @@ export class AdminTradeBidService {
 	}
 
 	public createOffer(offerToCreate: unknown) {
-		return this._apiService.post("offer/create", offerToCreate);
+		return this._apiService.post('offer/create', offerToCreate);
 	}
 
 	public updateOffer(offerToUpdate: unknown, id: any) {
@@ -193,10 +197,12 @@ export class AdminTradeBidService {
 		return this._apiService.post(`user/favourites/${id}/add`, {}).pipe(
 			tap(() => {
 				this._offersStore.update({
-					allOffers: this._offersStore.getValue().allOffers.map((offer: { _id: string; isSaved: any; }) => ({
-						...offer,
-						isSaved: offer._id === id ? true : offer.isSaved,
-					})),
+					allOffers: this._offersStore
+						.getValue()
+						.allOffers.map((offer: { _id: string; isSaved: any }) => ({
+							...offer,
+							isSaved: offer._id === id ? true : offer.isSaved,
+						})),
 				});
 			})
 		);
@@ -208,8 +214,10 @@ export class AdminTradeBidService {
 				const { savedOffers, allOffers } = this._offersQuery.getValue();
 
 				this._offersStore.update({
-					savedOffers: savedOffers.filter((savedOffer: { _id: string; }) => savedOffer._id !== id),
-					allOffers: allOffers.map((offer: { _id: string; isSaved: any; }) => ({
+					savedOffers: savedOffers.filter(
+						(savedOffer: { _id: string }) => savedOffer._id !== id
+					),
+					allOffers: allOffers.map((offer: { _id: string; isSaved: any }) => ({
 						...offer,
 						isSaved: offer._id === id ? false : offer.isSaved,
 					})),
@@ -223,6 +231,9 @@ export class AdminTradeBidService {
 	}
 
 	public declineOffer(id: string, message: string) {
-		return this._apiService.post(`tradebid/rfq-rejection`, { id: id, reasonForReject: message });
+		return this._apiService.post(`tradebid/rfq-rejection`, {
+			id: id,
+			reasonForReject: message,
+		});
 	}
 }

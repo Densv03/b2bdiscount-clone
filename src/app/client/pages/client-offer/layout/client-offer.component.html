@@ -1,12 +1,20 @@
 <div class="client-profile-offer-bg">
 	<div
-		[class]="'client-profile-offer ' + (offer.reasonForDeletion ? 'client-profile-offer-deleted' : '')"
+		[class]="
+			'client-profile-offer ' +
+			(offer.reasonForDeletion ? 'client-profile-offer-deleted' : '')
+		"
 		*ngIf="offer; else loadingOffer">
-		<div *ngIf="offer.hasOwnProperty('offerApproved') && !offer.offerApproved && !offer.offerRejected">
+		<div
+			*ngIf="
+				offer.hasOwnProperty('offerApproved') &&
+				!offer.offerApproved &&
+				!offer.offerRejected
+			">
 			<p class="badge badge-moderate">
 				<img b2bNgxIcon name="info-1" />
 
-				{{ "OFFER.BADGE_MODERATE" | translate }}
+				{{ 'OFFER.BADGE_MODERATE' | translate }}
 			</p>
 		</div>
 		<div class="client-profile-offer-container">
@@ -18,7 +26,9 @@
 					className="client-profile-offer-images"></b2b-ngx-images-carousel>
 
 				<div *ngIf="offer.reasonForDeletion" class="disable">
-					<p *ngIf="offer.reasonForDeletion === 'Deleted by admin'; else SOLD">DELETED</p>
+					<p *ngIf="offer.reasonForDeletion === 'Deleted by admin'; else SOLD">
+						DELETED
+					</p>
 					<ng-template #SOLD>
 						<p>SOLD</p>
 					</ng-template>
@@ -27,34 +37,61 @@
 
 			<ng-template #photosHidden>
 				<img b2bNgxImage name="logo" src="" alt="" />
-				<p class="hidden-photos">{{ "OFFER.PHOTO_HIDDEN" | translate }}</p>
+				<p class="hidden-photos">{{ 'OFFER.PHOTO_HIDDEN' | translate }}</p>
 			</ng-template>
 
 			<div class="client-profile-offer-center">
 				<h1 class="client-profile-offer-title">{{ offer.title }}</h1>
 				<hr />
-				<p class="client-profile-offer-available" *ngIf="!offer.reasonForDeletion">
-					<span class="client-profile-offer-units">{{ offer.amount?.count }} {{ offer.amount?.unit?.name }}</span>
-					<span class="client-profile-offer-available-title">{{ "OFFER.AVAILABLE" | translate }}</span>
-					<span class="client-profile-offer-discount">-{{ offer.price?.discount }}%</span>
+				<p
+					class="client-profile-offer-available"
+					*ngIf="!offer.reasonForDeletion">
+					<span class="client-profile-offer-units"
+						>{{ offer.amount?.count }} {{ offer.amount?.unit?.name }}</span
+					>
+					<span class="client-profile-offer-available-title">{{
+						'OFFER.AVAILABLE' | translate
+					}}</span>
+					<span class="client-profile-offer-discount"
+						>-{{ offer.price?.discount }}%</span
+					>
 				</p>
 				<p class="client-profile-offer-price-container">
-					<span class="client-profile-offer-price-old-price">${{ offer.price?.old }}</span>
+					<span class="client-profile-offer-price-old-price"
+						>${{ offer.price?.old }}</span
+					>
 					<span class="client-profile-offer-price-dollar-sign">$</span>
-					<span class="client-profile-offer-price-current-price">{{ offer.price?.new }} </span>
+					<span class="client-profile-offer-price-current-price"
+						>{{ offer.price?.new }}
+					</span>
 					<span class="client-profile-offer-price-units"
-						>{{ "SHARED.PER" | translate }} {{ "UNITS." + offer.amount.unit.name.toUpperCase() | translate }}</span
+						>{{ 'SHARED.PER' | translate }}
+						{{
+							'UNITS.' + offer.amount.unit.name.toUpperCase() | translate
+						}}</span
 					>
 				</p>
 				<hr />
-				<p class="client-profile-offer-shipping-details">{{ "OFFER.SHIPPING_DETAILS"| translate }}</p>
+				<p class="client-profile-offer-shipping-details">
+					{{ 'OFFER.SHIPPING_DETAILS' | translate }}
+				</p>
 				<p class="client-profile-offer-type" *ngIf="isAuth">
-					{{ "OFFER." + (offer?.transportType?.name === "bulk_vessel" ? "VESSEL_NUMBER" : "CONTAINER_NUMBER") | translate }}:
+					{{
+						'OFFER.' +
+							(offer?.transportType?.name === 'bulk_vessel'
+								? 'VESSEL_NUMBER'
+								: 'CONTAINER_NUMBER') | translate
+					}}:
 					{{ offer.container }}
 				</p>
 				<p class="client-profile-offer-type" *ngIf="!isAuth">
-					{{ "OFFER." + (offer?.transportType?.name === "bulk_vessel" ? "VESSEL_NUMBER" : "CONTAINER_NUMBER") | translate }}:
-					{{ offer.container | slice: 0:2 }}
+					{{
+						'OFFER.' +
+							(offer?.transportType?.name === 'bulk_vessel'
+								? 'VESSEL_NUMBER'
+								: 'CONTAINER_NUMBER') | translate
+					}}:
+					{{ offer.container | slice: 0 : 2 }}
 					XXX XXX XXX
 					<button
 						b2bNgxButton
@@ -65,10 +102,11 @@
 					</button>
 				</p>
 				<p class="client-profile-offer-route">
-					{{ "TRACKING.FROM" | translate }} {{ offer.destination?.from }} to {{ offer.destination?.to }}
+					{{ 'TRACKING.FROM' | translate }} {{ offer.destination?.from }} to
+					{{ offer.destination?.to }}
 				</p>
 				<p class="client-profile-offer-eta">
-					Current location: {{getCurrentLocation(offer?.currentLocation)}}
+					Current location: {{ getCurrentLocation(offer?.currentLocation) }}
 				</p>
 				<p class="client-profile-offer-eta">
 					POL: <span *ngIf="location?.pol; else none">{{ location.pol }}</span>
@@ -77,34 +115,48 @@
 					POD: <span *ngIf="location?.pod; else none">{{ location?.pod }}</span>
 				</p>
 				<p class="client-profile-offer-eta">
-					ЕТА to POD: <span *ngIf="location?.etaToPod; else none">{{ location?.etaToPod | date }}</span>
+					ЕТА to POD:
+					<span *ngIf="location?.etaToPod; else none">{{
+						location?.etaToPod | date
+					}}</span>
 				</p>
-				<p class="client-profile-offer-eta" *ngIf="offer?.transportType?.name !== 'bulk_vessel'">
-					{{ "TRACKING.TRANSIT_PROST" | translate }}
-					<span *ngIf="location?.etaToTransitPort; else none">{{ location?.etaToTransitPort | date }}</span>
+				<p
+					class="client-profile-offer-eta"
+					*ngIf="offer?.transportType?.name !== 'bulk_vessel'">
+					{{ 'TRACKING.TRANSIT_PROST' | translate }}
+					<span *ngIf="location?.etaToTransitPort; else none">{{
+						location?.etaToTransitPort | date
+					}}</span>
 				</p>
 
 				<p class="badge" *ngIf="!location && offer.isMine">
-					{{ "TRACKING.ERROR_MINE" | translate }}
+					{{ 'TRACKING.ERROR_MINE' | translate }}
 				</p>
 				<p class="badge" *ngIf="!location && !offer.isMine">
-					{{ "TRACKING.ERROR" | translate }}
+					{{ 'TRACKING.ERROR' | translate }}
 				</p>
 
 				<div class="client-profile-offer-map-wrapper">
 					<img b2bNgxImage class="client-profile-offer-map" name="map" alt="" />
-					<button class="client-profile-offer-map-button" (click)="openMap()" [disabled]="offer.reasonForDeletion">
+					<button
+						class="client-profile-offer-map-button"
+						(click)="openMap()"
+						[disabled]="offer.reasonForDeletion">
 						<img b2bNgxIcon name="map-arrow" />
-						{{ "OFFER.VIEW_ON_MAP" | translate }}
+						{{ 'OFFER.VIEW_ON_MAP' | translate }}
 					</button>
-					<div *ngIf="offer.reasonForDeletion" class="client-profile-offer-map-wrapper-disable"></div>
+					<div
+						*ngIf="offer.reasonForDeletion"
+						class="client-profile-offer-map-wrapper-disable"></div>
 				</div>
 
 				<ng-template #none>
 					<span>None</span>
 				</ng-template>
 
-				<div *ngIf="!isAuth && offer.documents && offer?.documents?.length" class="see-documents">
+				<div
+					*ngIf="!isAuth && offer.documents && offer?.documents?.length"
+					class="see-documents">
 					<div>
 						<p>To see attached document you must sign in</p>
 						<button
@@ -117,13 +169,21 @@
 						</button>
 					</div>
 				</div>
-				<div [class.blured]="!isAuth" *ngIf="offer.documents && offer?.documents?.length">
-					<p class="client-profile-offer-verified-documents">{{ "OFFER.VERIFIED_DOCUMENTS" | translate }}</p>
+				<div
+					[class.blured]="!isAuth"
+					*ngIf="offer.documents && offer?.documents?.length">
+					<p class="client-profile-offer-verified-documents">
+						{{ 'OFFER.VERIFIED_DOCUMENTS' | translate }}
+					</p>
 					<ul class="documents">
 						<li
 							class="document"
 							*ngFor="let document of offer.documents"
-							(click)="offer.reasonForDeletion || !isAuth ? null : openDocument(document)"
+							(click)="
+								offer.reasonForDeletion || !isAuth
+									? null
+									: openDocument(document)
+							"
 							[class.gray]="document.isDocument">
 							<img *ngIf="document.isImage" [src]="document.fullPath" alt="" />
 							<p *ngIf="document.isDocument">{{ document.extension }}</p>
@@ -134,15 +194,21 @@
 					<li class="client-profile-offer-verified-document"></li>
 				</ul>
 
-				<p class="client-profile-offer-desciption-title">{{ "OFFER.DESCRIPTION" | translate }}</p>
+				<p class="client-profile-offer-desciption-title">
+					{{ 'OFFER.DESCRIPTION' | translate }}
+				</p>
 				<p class="client-profile-offer-desciption">{{ offer.description }}</p>
 			</div>
 
 			<div class="client-profile-offer-right">
 				<div class="client-profile-offer-contact">
-					<p class="client-profile-offer-contact-title">{{ "OFFER.CONTACT_SUPPLIER" | translate }}</p>
+					<p class="client-profile-offer-contact-title">
+						{{ 'OFFER.CONTACT_SUPPLIER' | translate }}
+					</p>
 					<p class="client-profile-offer-contact-info" [class.blured]="!isAuth">
-						<span class="client-profile-offer-contact-name">{{ offer.contact?.companyName }}</span>
+						<span class="client-profile-offer-contact-name">{{
+							offer.contact?.companyName
+						}}</span>
 					</p>
 					<!--					<a-->
 					<!--						b2bNgxLink-->
@@ -179,10 +245,10 @@
 							theme: 'light'
 						}"
 						(click)="openReportPopover()">
-						{{ "OFFER.REPORT_LOT" | translate }}
+						{{ 'OFFER.REPORT_LOT' | translate }}
 					</button>
 					<span #tooltipTemplate>
-						{{ "OFFER.REPORT_TOOLTIP" | translate }}
+						{{ 'OFFER.REPORT_TOOLTIP' | translate }}
 					</span>
 				</div>
 			</div>
@@ -191,14 +257,14 @@
 
 	<ng-template #errorOffer>
 		<div class="not-offer-container">
-			<p class="not-offer-title">{{ "OFFER.IS_NOT_ACTUAL" | translate }}</p>
+			<p class="not-offer-title">{{ 'OFFER.IS_NOT_ACTUAL' | translate }}</p>
 
 			<a
 				b2bNgxLink
 				[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
 				[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
 				class="not-offer-button"
-				>{{ "LINKS.GO_TO_OFFERS" | translate }}</a
+				>{{ 'LINKS.GO_TO_OFFERS' | translate }}</a
 			>
 		</div>
 	</ng-template>

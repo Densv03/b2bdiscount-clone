@@ -1,9 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	Input,
+	Output,
+} from '@angular/core';
 
 @Component({
-	selector: "b2b-auth-join-us-roles-list",
-	templateUrl: "./auth-join-us-roles-list.component.html",
-	styleUrls: ["./auth-join-us-roles-list.component.scss"],
+	selector: 'b2b-auth-join-us-roles-list',
+	templateUrl: './auth-join-us-roles-list.component.html',
+	styleUrls: ['./auth-join-us-roles-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthJoinUsRolesListComponent {
@@ -24,10 +30,10 @@ export class AuthJoinUsRolesListComponent {
 	public getSkeletonOptions() {
 		return [
 			{
-				count: "3",
-				animation: "pulse",
+				count: '3',
+				animation: 'pulse',
 				theme: {
-					height: "6.25rem",
+					height: '6.25rem',
 				},
 			},
 		];

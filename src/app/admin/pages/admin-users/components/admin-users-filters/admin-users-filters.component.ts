@@ -1,15 +1,27 @@
-import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
-import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { AuthService } from "../../../../../auth/services/auth/auth.service";
+import {
+	Component,
+	forwardRef,
+	Input,
+	OnChanges,
+	OnInit,
+	SimpleChanges,
+} from '@angular/core';
+import {
+	ControlValueAccessor,
+	FormBuilder,
+	FormGroup,
+	NG_VALUE_ACCESSOR,
+} from '@angular/forms';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from '../../../../../auth/services/auth/auth.service';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-admin-users-filters",
-	templateUrl: "./admin-users-filters.component.html",
-	styleUrls: ["./admin-users-filters.component.scss"],
+	selector: 'b2b-admin-users-filters',
+	templateUrl: './admin-users-filters.component.html',
+	styleUrls: ['./admin-users-filters.component.scss'],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
@@ -18,22 +30,24 @@ import { AuthService } from "../../../../../auth/services/auth/auth.service";
 		},
 	],
 })
-export class AdminUsersFiltersComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class AdminUsersFiltersComponent
+	implements OnInit, OnChanges, ControlValueAccessor
+{
 	@Input() categories: any;
 	public readonly b2bNgxSelectThemeEnum: typeof B2bNgxSelectThemeEnum;
 	public readonly b2bNgxInputThemeEnum: typeof B2bNgxInputThemeEnum;
 	public readonly socialAuthTypesOptions = [
 		{
-			value: "google",
-			label: "Google",
+			value: 'google',
+			label: 'Google',
 		},
 		{
-			value: "linkedin",
-			label: "LinkedIn",
+			value: 'linkedin',
+			label: 'LinkedIn',
 		},
 		{
-			value: "otherRegistrations",
-			label: "Other registrations",
+			value: 'otherRegistrations',
+			label: 'Other registrations',
 		},
 	];
 
@@ -42,7 +56,10 @@ export class AdminUsersFiltersComponent implements OnInit, OnChanges, ControlVal
 	range: any;
 	parsedCategories: [];
 
-	constructor(private formBuilder: FormBuilder, private _authService: AuthService) {
+	constructor(
+		private formBuilder: FormBuilder,
+		private _authService: AuthService
+	) {
 		this.b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.parsedCategories = [];
@@ -51,25 +68,47 @@ export class AdminUsersFiltersComponent implements OnInit, OnChanges, ControlVal
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (changes && changes["categories"].currentValue && changes["categories"].currentValue.length) {
-			this.parsedCategories = changes["categories"].currentValue.map((category: { name: any; _id: any; children: { name: any; _id: any; children: { name: any; _id: any; }[]; }[]; }) => ({
-				text: category.name,
-				value: category._id,
-				collapsed: true,
-				checked: false,
-				children: category.children.map((level2Category: { name: any; _id: any; children: { name: any; _id: any; }[]; }) => ({
-					text: level2Category.name,
-					value: level2Category._id,
+		if (
+			changes &&
+			changes['categories'].currentValue &&
+			changes['categories'].currentValue.length
+		) {
+			this.parsedCategories = changes['categories'].currentValue.map(
+				(category: {
+					name: any;
+					_id: any;
+					children: {
+						name: any;
+						_id: any;
+						children: { name: any; _id: any }[];
+					}[];
+				}) => ({
+					text: category.name,
+					value: category._id,
 					collapsed: true,
 					checked: false,
-					children: level2Category.children.map((level3Category: { name: any; _id: any; }) => ({
-						text: level3Category.name,
-						value: level3Category._id,
-						collapsed: true,
-						checked: false,
-					})),
-				})),
-			}));
+					children: category.children.map(
+						(level2Category: {
+							name: any;
+							_id: any;
+							children: { name: any; _id: any }[];
+						}) => ({
+							text: level2Category.name,
+							value: level2Category._id,
+							collapsed: true,
+							checked: false,
+							children: level2Category.children.map(
+								(level3Category: { name: any; _id: any }) => ({
+									text: level3Category.name,
+									value: level3Category._id,
+									collapsed: true,
+									checked: false,
+								})
+							),
+						})
+					),
+				})
+			);
 		}
 	}
 
@@ -102,11 +141,13 @@ export class AdminUsersFiltersComponent implements OnInit, OnChanges, ControlVal
 				startDate: null,
 				endDate: null,
 			}),
-			socialAuthType: "",
+			socialAuthType: '',
 		});
-		this.filtersForm.valueChanges.pipe(untilDestroyed(this)).subscribe((filters: any) => {
-			this.onChange(filters);
-		});
+		this.filtersForm.valueChanges
+			.pipe(untilDestroyed(this))
+			.subscribe((filters: any) => {
+				this.onChange(filters);
+			});
 	}
 
 	public getRoles() {

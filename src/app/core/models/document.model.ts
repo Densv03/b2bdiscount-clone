@@ -1,6 +1,6 @@
 export interface DocumentModel {
-	path: string,
-	name: string,
-	size: string | number,
-	_id: string
+	path: string;
+	name: string;
+	size: string | number;
+	_id: string;
 }

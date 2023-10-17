@@ -1,15 +1,15 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .buttons-wrapper {
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		margin-top: 20px;
 		padding-right: 20px;
 	}
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		flex-direction: column-reverse;
 		align-items: flex-start;
 	}
@@ -23,7 +23,7 @@
 			&:active {
 				border-color: transparent;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				transform: translateX(-10px);
 			}
 			svg {
@@ -72,10 +72,10 @@
 	min-height: 500px;
 	background-color: #fff;
 	padding: 15px 40px 40px 40px;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		margin: auto;
 	}
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		padding: 0;
 	}
 }

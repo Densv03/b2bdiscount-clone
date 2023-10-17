@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import {ClientProfileMyChatsComponent} from "./layout/client-profile-my-chats.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientProfileMyChatsComponent } from './layout/client-profile-my-chats.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientProfileMyChatsComponent,
 	},
 ];

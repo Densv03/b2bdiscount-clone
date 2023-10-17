@@ -1,5 +1,5 @@
 export enum AdminListType {
-	tradebid = "tradebid",
-	offers = "offers",
-	market = "market",
+	tradebid = 'tradebid',
+	offers = 'offers',
+	market = 'market',
 }

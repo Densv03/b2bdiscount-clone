@@ -1,28 +1,33 @@
-import { Injectable } from "@angular/core";
-import {BehaviorSubject, Observable} from "rxjs";
-import { take, tap } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
 
-import { User } from "../../../core/models/user/user.model";
-import {AuthQuery} from "../../state/auth/auth.query";
-import {ApiService} from "../../../core/services/api/api.service";
-import {AuthStore} from "../../state/auth/auth.store";
-import {RegisterResponseInterface} from "../../../../../projects/shared/src/interfaces/auth-responses.interface";
-import {B2bAuthRoleInterface} from "../../../../../projects/shared/src/interfaces/b2b-auth-role.interface";
-import {MixpanelService} from "../../../core/services/mixpanel/mixpanel.service";
+import { User } from '../../../core/models/user/user.model';
+import { AuthQuery } from '../../state/auth/auth.query';
+import { ApiService } from '../../../core/services/api/api.service';
+import { AuthStore } from '../../state/auth/auth.store';
+import { RegisterResponseInterface } from '../../../../../projects/shared/src/interfaces/auth-responses.interface';
+import { B2bAuthRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
+import { MixpanelService } from '../../../core/services/mixpanel/mixpanel.service';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class AuthService {
-	public isRegisteredByGoogle: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	public isRegisteredByGoogle: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 	public showSidenav = true;
 	public userCredentials$ = new BehaviorSubject<any>(null);
+	private isUserLoadingSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(true);
+	public isUserLoading$: Observable<boolean> =
+		this.isUserLoadingSource.asObservable();
 
 	constructor(
 		private readonly apiService: ApiService,
 		private readonly authStore: AuthStore,
 		private readonly authQuery: AuthQuery,
-    private readonly mixpanelService: MixpanelService
+		private readonly mixpanelService: MixpanelService
 	) {
 		setTimeout(() => {
 			this.initUser();
@@ -31,34 +36,32 @@ export class AuthService {
 
 	public initUser() {
 		const token = this.getToken();
-		console.log('INIT USER TOKEN: ', token)
-		this.updateToken(token || "");
+		this.updateToken(token || '');
 
-		this.apiService
-			.get<User>("user/")
-			.pipe(
-				tap(user => console.log(user)),)
-			.subscribe({
-				next: (user) => this.updateUser(<User>user),
-				error: () => this.updateUser(null),
-			});
+		this.apiService.get<User>('user/').subscribe({
+			next: (user) => {
+				this.updateUser(<User>user);
+				this.isUserLoadingSource.next(false);
+			},
+			error: () => {
+				this.updateUser(null);
+				this.isUserLoadingSource.next(false);
+			},
+		});
 	}
 
 	public returnInitedUser(): Observable<User> {
 		return this.apiService
-			.get<User>("user/")
-			.pipe(
-				tap(user => console.log(user)),
-				tap(user => this.updateUser(<User>user))
-				)
+			.get<User>('user/')
+			.pipe(tap((user) => this.updateUser(<User>user)));
 	}
 
-  public updateRole(role: B2bAuthRoleInterface) {
-    this.authStore.update({role});
-  }
+	public updateRole(role: B2bAuthRoleInterface) {
+		this.authStore.update({ role });
+	}
 
 	public updateToken(token: string) {
-		localStorage.setItem("token", token);
+		localStorage.setItem('token', token);
 		this.authStore.update({ token });
 	}
 
@@ -69,7 +72,7 @@ export class AuthService {
 	}
 
 	public sendEmailAgain(email: any) {
-		return this.apiService.post("auth/sendRegisterMail", { email });
+		return this.apiService.post('auth/sendRegisterMail', { email });
 	}
 
 	public getUser() {
@@ -95,18 +98,18 @@ export class AuthService {
 			return tokenFromStore;
 		}
 
-		const tokenFromLocalStorage = localStorage.getItem("token");
+		const tokenFromLocalStorage = localStorage.getItem('token');
 
 		if (tokenFromLocalStorage) {
 			return tokenFromLocalStorage;
 		}
 
-		return "";
+		return '';
 	}
 
 	public logOut() {
-		localStorage.removeItem("token");
-    this.mixpanelService.logout();
+		localStorage.removeItem('token');
+		this.mixpanelService.logout();
 		this.authStore.update({
 			user: null,
 			token: null,
@@ -116,10 +119,13 @@ export class AuthService {
 	public getRoles(): Observable<B2bAuthRoleInterface[]> {
 		if (!this.authQuery.getValue().roles.length) {
 			this.apiService
-				.get("roles")
+				.get('roles')
 				.pipe(take(1))
 				.subscribe((data: any) => {
-					this.authStore.update({ roles: data.roles, rootRoles: data.rootRoles });
+					this.authStore.update({
+						roles: data.roles,
+						rootRoles: data.rootRoles,
+					});
 				});
 		}
 
@@ -129,10 +135,13 @@ export class AuthService {
 	public getRootRoles() {
 		if (!this.authQuery.getValue().rootRoles.length) {
 			this.apiService
-				.get("roles")
+				.get('roles')
 				.pipe(take(1))
 				.subscribe((data: any) => {
-					this.authStore.update({ roles: data.roles, rootRoles: data.rootRoles });
+					this.authStore.update({
+						roles: data.roles,
+						rootRoles: data.rootRoles,
+					});
 				});
 		}
 		return this.authQuery.selectRootRoles$;
@@ -140,31 +149,39 @@ export class AuthService {
 
 	public logInWithGoogle(): void {}
 
-	public logInWithForm(formGroupValue: any): Observable<RegisterResponseInterface> {
-		return this.apiService.post<RegisterResponseInterface>("auth/login", formGroupValue).pipe(
-			tap((response: any) => {
-				this.updateToken(response.token);
-				this.initUser();
-			})
-		);
+	public logInWithForm(
+		formGroupValue: any
+	): Observable<RegisterResponseInterface> {
+		return this.apiService
+			.post<RegisterResponseInterface>('auth/login', formGroupValue)
+			.pipe(
+				tap((response: any) => {
+					this.updateToken(response.token);
+					this.initUser();
+				})
+			);
 	}
 
 	public registerWithGoogle(): void {}
 
 	public getPreregisteredCompanyInformation(email: string): Observable<any> {
-		return this.apiService.post("auth/check-company-in-ep-list", { email });
+		return this.apiService.post('auth/check-company-in-ep-list', { email });
 	}
 
 	public checkEmailForExisting(email: string): Observable<any> {
-		return this.apiService.get("user/checkAbsenceUserInDB", { params: { email } });
+		return this.apiService.get('user/checkAbsenceUserInDB', {
+			params: { email },
+		});
 	}
 
 	public registerWithForm(model: any): Observable<RegisterResponseInterface> {
-		return this.apiService.post<RegisterResponseInterface>("auth/register", model).pipe(
-			tap((response: any) => {
-				this.updateToken(response.token);
-				this.initUser();
-			})
-		);
+		return this.apiService
+			.post<RegisterResponseInterface>('auth/register', model)
+			.pipe(
+				tap((response: any) => {
+					this.updateToken(response.token);
+					this.initUser();
+				})
+			);
 	}
 }

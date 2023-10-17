@@ -1,0 +1,157 @@
+<div class="submit-inquiry">
+	<img b2bNgxIcon name="cross" class="cross-icon" />
+	<div class="content">
+		<h2 class="header-text">
+			Submit inquiry and agent will contact you to provide a precise
+			calculation.
+		</h2>
+		<div class="shipment-info">
+			<div class="shipment-row">
+				<div class="shipment-item">
+					<div class="shipment-item__label">Departure</div>
+					<div class="shipment-item__value">{{ data.departure }}</div>
+				</div>
+				<div class="shipment-item">
+					<div class="shipment-item__label">Arrival</div>
+					<div class="shipment-item__value">{{ data.arrival }}</div>
+				</div>
+			</div>
+			<div class="shipment-row">
+				<div class="shipment-item">
+					<div class="shipment-item__label">Ready to load</div>
+					<div class="shipment-item__value">{{ data.readyToLoad }}</div>
+				</div>
+				<div class="shipment-item">
+					<div class="shipment-item__label">Type of shipment</div>
+					<div class="shipment-item__value">{{ data.shipmentType }}</div>
+				</div>
+			</div>
+			<div class="shipment-row">
+				<div class="shipment-item">
+					<div class="shipment-item__label">Transportation by:</div>
+					<div class="shipment-item__value">{{ data.transportationType }}</div>
+				</div>
+				<div class="shipment-item">
+					<div class="shipment-item__label"></div>
+					<div class="shipment-item__value"></div>
+				</div>
+			</div>
+		</div>
+		<form
+			class="inquiry-form"
+			(ngSubmit)="submitForm()"
+			[formGroup]="submitInquiryForm">
+			<div class="inquiry-form-row">
+				<div class="inquiry-form-item">
+					<div class="inquiry-form-item__label">
+						Product name with HS code <span class="required">*</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							placeholder="Product name (HS 00000000)"
+							formControlName="productName" />
+						<p
+							*ngIf="
+								formState['productName'].touched &&
+								formState['productName']?.errors['nameWithHS']
+							"
+							[@fadeInOut]
+							class="error-message">
+							Pattern should be: Product name (HS 00000000)
+						</p>
+					</div>
+				</div>
+				<div class="inquiry-form-item">
+					<div class="inquiry-form-item__label">
+						Weight, MT <span class="required">*</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							placeholder="2000 kg / 2 MT"
+							formControlName="weight" />
+					</div>
+				</div>
+			</div>
+			<div class="inquiry-form-row">
+				<div class="inquiry-form-item">
+					<div class="inquiry-form-item__label">
+						Full Name <span class="required">*</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							placeholder="Type name"
+							formControlName="fullName" />
+					</div>
+				</div>
+				<div class="inquiry-form-item">
+					<div class="inquiry-form-item__label">
+						Country <span class="required">*</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<b2b-ngx-country-select
+							placeholder="Select country"
+							[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+							formControlName="country"></b2b-ngx-country-select>
+					</div>
+				</div>
+			</div>
+			<div class="inquiry-form-row">
+				<div class="inquiry-form-item">
+					<div class="inquiry-form-item__label">
+						Phone number <span class="required">*</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<b2b-ngx-tel
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							formControlName="phoneNumber"
+							inputClass="inquiry-form-tel-input"></b2b-ngx-tel>
+					</div>
+				</div>
+				<div class="inquiry-form-item">
+					<div class="inquiry-form-item__label">
+						Email <span class="required">*</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							placeholder="Type email"
+							formControlName="email" />
+					</div>
+				</div>
+			</div>
+			<div class="inquiry-form-row">
+				<div class="inquiry-form-item single">
+					<div class="inquiry-form-item__label">
+						Description <span class="optional">(optional)</span>
+					</div>
+					<div class="inquiry-form-item__control">
+						<textarea
+							b2bNgxTextarea
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							placeholder="Type description"
+							formControlName="description"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="btn-container">
+				<button
+					b2bNgxButton
+					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+					[disabled]="!(isFormValid$ | async)">
+					Send
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

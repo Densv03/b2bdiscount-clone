@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileAddOfferDialogComponent } from "./client-profile-add-offer-dialog.component";
+import { ClientProfileAddOfferDialogComponent } from './client-profile-add-offer-dialog.component';
 
-describe("ClientProfileAddOfferDialogComponent", () => {
+describe('ClientProfileAddOfferDialogComponent', () => {
 	let component: ClientProfileAddOfferDialogComponent;
 	let fixture: ComponentFixture<ClientProfileAddOfferDialogComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileAddOfferDialogComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

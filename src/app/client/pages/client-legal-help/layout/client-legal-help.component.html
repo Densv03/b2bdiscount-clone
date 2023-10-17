@@ -1,15 +1,25 @@
 <div class="legal-help">
 	<div class="container">
 		<div class="legal-help-header">
-			<h3 class="legal-help-title">{{ "LEGAL_HELP.TITLE" | translate }}</h3>
+			<h3 class="legal-help-title">{{ 'LEGAL_HELP.TITLE' | translate }}</h3>
 			<p class="legal-help-description">
-				{{ "LEGAL_HELP.DESCRIPTION_1" | translate }}
-				<img class="logo" b2bNgxIcon class="client-home__description-icon" name="Interlegal" />
+				{{ 'LEGAL_HELP.DESCRIPTION_1' | translate }}
+				<img
+					class="logo"
+					b2bNgxIcon
+					class="client-home__description-icon"
+					name="Interlegal" />
 			</p>
-			<p class="legal-help-description">{{ "LEGAL_HELP.DESCRIPTION_2" | translate }}</p>
+			<p class="legal-help-description">
+				{{ 'LEGAL_HELP.DESCRIPTION_2' | translate }}
+			</p>
 		</div>
 
-		<form errorTailor class="legal-help-form" [formGroup]="formGroup" (ngSubmit)="sendMessage(formGroup)">
+		<form
+			errorTailor
+			class="legal-help-form"
+			[formGroup]="formGroup"
+			(ngSubmit)="sendMessage(formGroup)">
 			<input
 				b2bNgxInput
 				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
@@ -29,7 +39,7 @@
 				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 				formControlName="country"
 				[errors]="formGroup.get('country')?.errors"
-				>{{ "INPUTS.COUNTRY" | translate }}</b2b-ngx-country-select
+				>{{ 'INPUTS.COUNTRY' | translate }}</b2b-ngx-country-select
 			>
 			<textarea
 				b2bNgxTextarea
@@ -40,8 +50,12 @@
 				formControlName="text"
 				[label]="'LABELS.MESSAGE' | translate"
 				labelClass="legal-help-textarea"></textarea>
-			<button b2bNgxButton type="submit" class="legal-help-button" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-				{{ "BUTTONS.SEND_MESSAGE" | translate }}
+			<button
+				b2bNgxButton
+				type="submit"
+				class="legal-help-button"
+				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+				{{ 'BUTTONS.SEND_MESSAGE' | translate }}
 			</button>
 
 			<pre class="legal-help-text">

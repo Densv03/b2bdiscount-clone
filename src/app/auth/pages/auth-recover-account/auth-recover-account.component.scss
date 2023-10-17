@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	display: block;
@@ -80,7 +80,7 @@
 }
 
 ::ng-deep {
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		.report-dialog {
 			.ngneat-dialog-content {
 				width: 95% !important;

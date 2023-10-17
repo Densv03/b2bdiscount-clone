@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 const PRIVACY_POLICY = [
 	{
@@ -260,9 +260,9 @@ As We do not store any credit card details or transaction information, it is imp
 	},
 ];
 @Component({
-	selector: "b2b-client-privacy-policy",
-	templateUrl: "./client-privacy-policy.component.html",
-	styleUrls: ["./client-privacy-policy.component.scss"],
+	selector: 'b2b-client-privacy-policy',
+	templateUrl: './client-privacy-policy.component.html',
+	styleUrls: ['./client-privacy-policy.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientPrivacyPolicyComponent {

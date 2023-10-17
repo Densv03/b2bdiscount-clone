@@ -1,8 +1,8 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .ngx-saved-offers-list-item {
 	margin-top: 4px;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 	}
 	.ngx-saved-offers-list-item-link {
 		display: flex;

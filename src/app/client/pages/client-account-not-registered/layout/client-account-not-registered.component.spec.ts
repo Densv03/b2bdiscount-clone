@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientAccountNotRegisteredComponent } from "./client-account-not-registered.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientAccountNotRegisteredComponent } from './client-account-not-registered.component';
 
-describe("ClientAccountNotRegisteredComponent", () => {
+describe('ClientAccountNotRegisteredComponent', () => {
 	let component: ClientAccountNotRegisteredComponent;
 	let fixture: ComponentFixture<ClientAccountNotRegisteredComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientAccountNotRegisteredComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

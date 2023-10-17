@@ -1,28 +1,55 @@
-import { Component, OnInit } from "@angular/core";
-import {FormBuilder, Validators} from "@angular/forms";
-import { onlyNumber } from "../../../../../core/helpers/validator/only-number";
-import { onlyLatin } from "../../../../../core/helpers/validator/only-latin";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
-import { MatDialogRef } from "@angular/material/dialog";
-import { onlyLatinAndNumberAndSymbols } from "../../../../../core/helpers/validator/only -latin-numbers-symbols";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { onlyNumber } from '../../../../../core/helpers/validator/only-number';
+import { onlyLatin } from '../../../../../core/helpers/validator/only-latin';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { MatDialogRef } from '@angular/material/dialog';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only -latin-numbers-symbols';
 
 @Component({
-	selector: "b2b-client-profile-billing-dialog",
-	templateUrl: "./client-profile-billing-dialog.component.html",
-	styleUrls: ["./client-profile-billing-dialog.component.scss"],
+	selector: 'b2b-client-profile-billing-dialog',
+	templateUrl: './client-profile-billing-dialog.component.html',
+	styleUrls: ['./client-profile-billing-dialog.component.scss'],
 })
 export class ClientProfileBillingDialogComponent implements OnInit {
 	public readonly formGroup = this.formBuilder.group({
-		cardNum: ["", [Validators.required, Validators.maxLength(16), Validators.minLength(16), onlyNumber()]],
-		email: ["", [Validators.required, Validators.email]],
-		expDate: ["", [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
-		postCode: ["", [Validators.required, Validators.minLength(6), Validators.maxLength(6), onlyNumber()]],
-		cardCode: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(3), onlyNumber()]],
+		cardNum: [
+			'',
+			[
+				Validators.required,
+				Validators.maxLength(16),
+				Validators.minLength(16),
+				onlyNumber(),
+			],
+		],
+		email: ['', [Validators.required, Validators.email]],
+		expDate: [
+			'',
+			[Validators.required, Validators.minLength(4), Validators.maxLength(4)],
+		],
+		postCode: [
+			'',
+			[
+				Validators.required,
+				Validators.minLength(6),
+				Validators.maxLength(6),
+				onlyNumber(),
+			],
+		],
+		cardCode: [
+			'',
+			[
+				Validators.required,
+				Validators.minLength(3),
+				Validators.maxLength(3),
+				onlyNumber(),
+			],
+		],
 		state: [null, [Validators.required]],
-		address: ["", [Validators.required, onlyLatinAndNumberAndSymbols()]],
-		city: ["", [Validators.required, onlyLatin()]],
+		address: ['', [Validators.required, onlyLatinAndNumberAndSymbols()]],
+		city: ['', [Validators.required, onlyLatin()]],
 	});
 
 	public readonly b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;

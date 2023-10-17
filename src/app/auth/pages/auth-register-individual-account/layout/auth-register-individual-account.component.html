@@ -1,7 +1,9 @@
 <div class="auth-register-individual-account__wrapper">
 	<div class="auth-register-individual-account__header">
 		<p class="auth-register-individual-account__header-text-wrapper">
-			<span class="auth-register-individual-account__header-text">{{ "AUTH.ALREADY_HAVE" | translate }}</span>
+			<span class="auth-register-individual-account__header-text">{{
+				'AUTH.ALREADY_HAVE' | translate
+			}}</span>
 			<a
 				(click)="processSignInClick()"
 				b2bNgxLink
@@ -9,14 +11,14 @@
 				[routerLink]="b2bNgxLinkService.getLink('/auth/log-in') | async"
 				class="auth-register-individual-account__header-link"
 				queryParamsHandling="merge"
-				>{{ "AUTH.LOG_IN" | translate }}</a
+				>{{ 'AUTH.LOG_IN' | translate }}</a
 			>
 		</p>
 	</div>
 
 	<div class="auth-register-individual-account__main">
 		<h2 class="auth-register-individual-account__main-title">
-			{{ "AUTH.REGISTER_INDIVIDUAL_ACCOUNT" | translate }}
+			{{ 'AUTH.REGISTER_INDIVIDUAL_ACCOUNT' | translate }}
 		</h2>
 
 		<form class="auth-register-individual-account__main-form">
@@ -28,8 +30,11 @@
 					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_WHITE"
 					class="auth-register-individual-account__register-with-google-button"
 					(click)="registerWithGoogle()">
-					<img b2bNgxImage name="google" class="auth-register-individual-account__register-with-google-button__icon" />
-					{{ "AUTH.REGISTER_GOOGLE" | translate }}
+					<img
+						b2bNgxImage
+						name="google"
+						class="auth-register-individual-account__register-with-google-button__icon" />
+					{{ 'AUTH.REGISTER_GOOGLE' | translate }}
 				</button>
 				<button
 					b2bNgxButton
@@ -42,11 +47,11 @@
 						b2bNgxImage
 						name="linkedin"
 						class="auth-register-individual-account__register-with-google-button__icon" />
-					{{ "AUTH.REGISTER_LINKEDIN" | translate }}
+					{{ 'AUTH.REGISTER_LINKEDIN' | translate }}
 				</button>
-<!--				<b2b-ngx-divider [hidden]="false" theme="white" class="auth-register-individual-account__main-divider"-->
-<!--					>or</b2b-ngx-divider-->
-<!--				>-->
+				<!--				<b2b-ngx-divider [hidden]="false" theme="white" class="auth-register-individual-account__main-divider"-->
+				<!--					>or</b2b-ngx-divider-->
+				<!--				>-->
 			</ng-container>
 			<div class="auth-register-individual-account__main-input">
 				<router-outlet></router-outlet>

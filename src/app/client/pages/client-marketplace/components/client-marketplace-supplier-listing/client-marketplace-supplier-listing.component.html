@@ -1,7 +1,9 @@
 <form [formGroup]="formGroup">
 	<div class="latest-offers-header">
 		<h3 class="latest-offers-header-title">
-			<span class="latest-offers-header-title-text">All products of supplier</span>
+			<span class="latest-offers-header-title-text"
+				>All products of supplier</span
+			>
 			<span class="latest-offers-header-icon"></span>
 		</h3>
 		<input
@@ -26,19 +28,27 @@
 <div class="main-content">
 	<div class="filters">
 		<b2b-client-marketplace-supplier-filters
-			(filterEvent)="updateFilter($event)"></b2b-client-marketplace-supplier-filters>
+			(filterEvent)="
+				updateFilter($event)
+			"></b2b-client-marketplace-supplier-filters>
 		<b2b-client-marketplace-supplier-info
 			[supplierId]="supplierId"
-			[supplierInfo]="supplierInfo$ | async"></b2b-client-marketplace-supplier-info>
+			[supplierInfo]="
+				supplierInfo$ | async
+			"></b2b-client-marketplace-supplier-info>
 	</div>
 	<div class="listing">
 		<b2b-client-marketplace-listing-grid
 			*ngIf="offersListTheme === 'grid'"
-			[marketplaceProducts]="supplierProducts$ | async"></b2b-client-marketplace-listing-grid>
+			[marketplaceProducts]="
+				supplierProducts$ | async
+			"></b2b-client-marketplace-listing-grid>
 
 		<b2b-client-marketplace-listing-list
 			*ngIf="offersListTheme === 'list'"
-			[marketplaceProducts]="supplierProducts$ | async"></b2b-client-marketplace-listing-list>
+			[marketplaceProducts]="
+				supplierProducts$ | async
+			"></b2b-client-marketplace-listing-list>
 
 		<!--		<b2b-load-more-paginator *ngIf="(loadMorePaginatorIsVisible$ | async)" (loadMoreClicked)="loadMoreProducts($event)"></b2b-load-more-paginator>-->
 		<b2b-ngx-pagination

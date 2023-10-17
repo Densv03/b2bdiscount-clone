@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 // import { io } from "socket.io-client";
-import { UserService } from "../../pages/client-profile/services/user/user.service";
-import { environment } from "../../../../environments/environment";
-import { combineLatest, filter } from "rxjs/operators";
-import { BehaviorSubject, Subject } from "rxjs";
-import { ApiService } from "../../../core/services/api/api.service";
-import { Router } from "@angular/router";
+import { UserService } from '../../pages/client-profile/services/user/user.service';
+import { environment } from '../../../../environments/environment';
+import { combineLatest, filter } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { ApiService } from '../../../core/services/api/api.service';
+import { Router } from '@angular/router';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class SocketService {
 	private _socket: any;
@@ -19,20 +19,28 @@ export class SocketService {
 	private readonly _statusSubject = new Subject();
 	private readonly _status$ = this._statusSubject.asObservable();
 
-	private readonly _unreadMessagesCountBehaviourSubject = new BehaviorSubject(0);
-	private readonly _unreadOfferMessagesCountBehaviourSubject = new BehaviorSubject(0);
-	private readonly _unreadRfqMessagesCountBehaviourSubject = new BehaviorSubject(0);
-	private readonly _unreadMarketplaceMessagesCountBehaviourSubject = new BehaviorSubject(0);
-	private readonly _unreadMessagesCount$ = this._unreadMessagesCountBehaviourSubject.asObservable();
-	private readonly _unreadOfferMessagesCount$ = this._unreadOfferMessagesCountBehaviourSubject.asObservable();
-	private readonly _unreadRfqMessagesCount$ = this._unreadRfqMessagesCountBehaviourSubject.asObservable();
+	private readonly _unreadMessagesCountBehaviourSubject = new BehaviorSubject(
+		0
+	);
+	private readonly _unreadOfferMessagesCountBehaviourSubject =
+		new BehaviorSubject(0);
+	private readonly _unreadRfqMessagesCountBehaviourSubject =
+		new BehaviorSubject(0);
+	private readonly _unreadMarketplaceMessagesCountBehaviourSubject =
+		new BehaviorSubject(0);
+	private readonly _unreadMessagesCount$ =
+		this._unreadMessagesCountBehaviourSubject.asObservable();
+	private readonly _unreadOfferMessagesCount$ =
+		this._unreadOfferMessagesCountBehaviourSubject.asObservable();
+	private readonly _unreadRfqMessagesCount$ =
+		this._unreadRfqMessagesCountBehaviourSubject.asObservable();
 	private readonly _unreadMarketplaceMessagesCount$ =
 		this._unreadMarketplaceMessagesCountBehaviourSubject.asObservable();
 
 	constructor(
 		private readonly _usersService: UserService,
 		private readonly _apiService: ApiService,
-		private readonly _router: Router,
+		private readonly _router: Router
 	) {
 		this.openConnection();
 		this.getUnreadMessagesCount();
@@ -47,11 +55,12 @@ export class SocketService {
 			.pipe(filter((token) => !!token))
 			.subscribe(async () => {
 				try {
-					const {unreadMessagesCount} = await this._apiService.get<any>("my/unreadMessagesCount").toPromise();
+					const { unreadMessagesCount } = await this._apiService
+						.get<any>('my/unreadMessagesCount')
+						.toPromise();
 
 					this._unreadMessagesCountBehaviourSubject.next(unreadMessagesCount);
-				} catch {
-				}
+				} catch {}
 			});
 	}
 
@@ -61,10 +70,13 @@ export class SocketService {
 			.pipe(filter((token) => !!token))
 			.subscribe(async () => {
 				try {
-					const {unreadMessagesCount} = await this._apiService.get<any>("my/unreadOfferMessagesCount").toPromise();
-					this._unreadOfferMessagesCountBehaviourSubject.next(unreadMessagesCount);
-				} catch {
-				}
+					const { unreadMessagesCount } = await this._apiService
+						.get<any>('my/unreadOfferMessagesCount')
+						.toPromise();
+					this._unreadOfferMessagesCountBehaviourSubject.next(
+						unreadMessagesCount
+					);
+				} catch {}
 			});
 	}
 
@@ -74,10 +86,13 @@ export class SocketService {
 			.pipe(filter((token) => !!token))
 			.subscribe(async () => {
 				try {
-					const {unreadMessagesCount} = await this._apiService.get<any>("my/unreadRfqMessagesCount").toPromise();
-					this._unreadRfqMessagesCountBehaviourSubject.next(unreadMessagesCount);
-				} catch {
-				}
+					const { unreadMessagesCount } = await this._apiService
+						.get<any>('my/unreadRfqMessagesCount')
+						.toPromise();
+					this._unreadRfqMessagesCountBehaviourSubject.next(
+						unreadMessagesCount
+					);
+				} catch {}
 			});
 	}
 
@@ -86,10 +101,16 @@ export class SocketService {
 			.getToken$()
 			.pipe(
 				filter((token) => !!token),
-				combineLatest([this._apiService.get<any>("my/unreadUsersMessagesCount"), this._apiService.get<any>("my/unreadProductMessagesCount")])
-			).subscribe((data) => {
-			this._unreadMarketplaceMessagesCountBehaviourSubject.next(data[1].unreadMessagesCount + data[2].unreadMessagesCount);
-		})
+				combineLatest([
+					this._apiService.get<any>('my/unreadUsersMessagesCount'),
+					this._apiService.get<any>('my/unreadProductMessagesCount'),
+				])
+			)
+			.subscribe((data) => {
+				this._unreadMarketplaceMessagesCountBehaviourSubject.next(
+					data[1].unreadMessagesCount + data[2].unreadMessagesCount
+				);
+			});
 	}
 
 	private openConnection() {
@@ -114,23 +135,23 @@ export class SocketService {
 	}
 
 	private subscribeOnNewMessage() {
-		return this._socket.on("new_message", (newMessage: any) => {
+		return this._socket.on('new_message', (newMessage: any) => {
 			if (this._router.url.includes(newMessage.room)) {
 				return;
 			}
 
 			switch (newMessage.typeRoom) {
-				case "rfq":
+				case 'rfq':
 					this._unreadRfqMessagesCountBehaviourSubject.next(
 						this._unreadRfqMessagesCountBehaviourSubject.getValue() + 1
 					);
 					break;
-				case "product":
+				case 'product':
 					this._unreadMarketplaceMessagesCountBehaviourSubject.next(
 						this._unreadMarketplaceMessagesCountBehaviourSubject.getValue() + 1
 					);
 					break;
-				case "offer":
+				case 'offer':
 					this._unreadOfferMessagesCountBehaviourSubject.next(
 						this._unreadOfferMessagesCountBehaviourSubject.getValue() + 1
 					);
@@ -139,8 +160,8 @@ export class SocketService {
 
 			this._newMessageSubject.next(newMessage);
 
-			const unreadMessagesCount = this._unreadMessagesCountBehaviourSubject.getValue();
-
+			const unreadMessagesCount =
+				this._unreadMessagesCountBehaviourSubject.getValue();
 
 			this._unreadMessagesCountBehaviourSubject.next(unreadMessagesCount + 1);
 		});
@@ -163,7 +184,8 @@ export class SocketService {
 	}
 
 	public readMessages(count: number) {
-		const newCount = this._unreadMessagesCountBehaviourSubject.getValue() - count;
+		const newCount =
+			this._unreadMessagesCountBehaviourSubject.getValue() - count;
 		this._unreadMessagesCountBehaviourSubject.next(newCount);
 	}
 
@@ -172,12 +194,12 @@ export class SocketService {
 	}
 
 	private subscribeOnStatusChange() {
-		this._socket.on("online", (user: any) => {
-			this._statusSubject.next({online: true, user});
+		this._socket.on('online', (user: any) => {
+			this._statusSubject.next({ online: true, user });
 		});
 
-		this._socket.on("offline", (user: any) => {
-			this._statusSubject.next({online: false, user});
+		this._socket.on('offline', (user: any) => {
+			this._statusSubject.next({ online: false, user });
 		});
 	}
 

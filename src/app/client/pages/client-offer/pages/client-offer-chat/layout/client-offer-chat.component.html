@@ -6,35 +6,50 @@
 			(ngSubmit)="sendMessage(formGroup.get('message').value)"
 			class="client-profile-chat-container">
 			<p class="client-profile-chat-breadcrumbs">
-				<a [routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async">{{ "PAGES.LATEST_OFFERS" | translate }}</a>
-				<a [routerLink]="b2bNgxLinkService.getLink('/offers/' + chatInfo.offer._id) | async"
+				<a [routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async">{{
+					'PAGES.LATEST_OFFERS' | translate
+				}}</a>
+				<a
+					[routerLink]="
+						b2bNgxLinkService.getLink('/offers/' + chatInfo.offer._id) | async
+					"
 					>/ {{ chatInfo.offer.title }}
 				</a>
 			</p>
 
 			<p class="client-profile-chat-title">{{ chatInfo.offer.title }}</p>
-			<p class="client-profile-chat-started">{{ "CHAT.CHAT_STARTED"  | translate }} {{ chatInfo.createdAt | date }}</p>
+			<p class="client-profile-chat-started">
+				{{ 'CHAT.CHAT_STARTED' | translate }} {{ chatInfo.createdAt | date }}
+			</p>
 
 			<div class="client-profile-chat-messages">
 				<ul class="client-profile-chat-messages-list" #chatContainer>
-					<li *ngFor="let message of messages$ | async" class="client-profile-chat-messages-list-item">
+					<li
+						*ngFor="let message of messages$ | async"
+						class="client-profile-chat-messages-list-item">
 						<p class="client-profile-chat-messages-list-item-info">
-							<span class="client-profile-chat-messages-list-item-from">{{ message.contact.author }}</span>
-							<span class="client-profile-chat-messages-list-item-date">{{ message.createdAt | date }}</span>
+							<span class="client-profile-chat-messages-list-item-from">{{
+								message.contact.author
+							}}</span>
+							<span class="client-profile-chat-messages-list-item-date">{{
+								message.createdAt | date
+							}}</span>
 						</p>
 						<p class="client-profile-chat-messages-list-item-message">
 							{{ message.body }}
 						</p>
 					</li>
-					<li *ngIf="!(messages$ | async)?.length" class="client-profile-chat-no-messages">
-						{{ "CHAT.NO_MESSAGES"  | translate }}
+					<li
+						*ngIf="!(messages$ | async)?.length"
+						class="client-profile-chat-no-messages">
+						{{ 'CHAT.NO_MESSAGES' | translate }}
 					</li>
 				</ul>
 			</div>
 
 			<textarea
 				formControlName="message"
-				[placeholder]="'PLACEHOLDERS.ENTER_TO_SEND'  | translate"
+				[placeholder]="'PLACEHOLDERS.ENTER_TO_SEND' | translate"
 				class="client-profile-chat-textarea"
 				rows="5"></textarea>
 
@@ -44,8 +59,11 @@
 					type="submit"
 					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 					class="client-profile-chat-actions-send-button">
-					<span>{{ "BUTTONS.SEND"  | translate }}</span>
-					<img b2bNgxIcon name="chat" class="client-profile-chat-actions-send-button-icon" />
+					<span>{{ 'BUTTONS.SEND' | translate }}</span>
+					<img
+						b2bNgxIcon
+						name="chat"
+						class="client-profile-chat-actions-send-button-icon" />
 				</button>
 			</div>
 		</form>
@@ -58,26 +76,34 @@
 				<p class="client-profile-chat-buyer-info-title">
 					<span>{{ chatInfo.displayInfo.author }}</span>
 				</p>
-				<p class="client-profile-chat-buyer-info-from" *ngIf="chatInfo.displayInfo.country">
-					{{ "LABELS.FROM"  | translate }} {{ chatInfo.displayInfo.country }}
+				<p
+					class="client-profile-chat-buyer-info-from"
+					*ngIf="chatInfo.displayInfo.country">
+					{{ 'LABELS.FROM' | translate }} {{ chatInfo.displayInfo.country }}
 				</p>
 
-				<p class="client-profile-chat-buyer-email-title" *ngIf="chatInfo.displayInfo.email">
-					{{ "LABELS.EMAIL"  | translate }}
+				<p
+					class="client-profile-chat-buyer-email-title"
+					*ngIf="chatInfo.displayInfo.email">
+					{{ 'LABELS.EMAIL' | translate }}
 				</p>
 				<p class="client-profile-chat-buyer-email">
 					{{ chatInfo.displayInfo.email }}
 				</p>
 
-				<p class="client-profile-chat-buyer-phone-title" *ngIf="chatInfo.displayInfo.phone?.e164Number">
-					{{ "LABELS.PHONE" | translate }}
+				<p
+					class="client-profile-chat-buyer-phone-title"
+					*ngIf="chatInfo.displayInfo.phone?.e164Number">
+					{{ 'LABELS.PHONE' | translate }}
 				</p>
 				<p class="client-profile-chat-buyer-phone">
 					{{ chatInfo.displayInfo.phone?.e164Number }}
 				</p>
 
-				<p class="client-profile-chat-buyer-web-title" *ngIf="chatInfo.displayInfo.site">
-					{{ "LABELS.WEB" | translate }}
+				<p
+					class="client-profile-chat-buyer-web-title"
+					*ngIf="chatInfo.displayInfo.site">
+					{{ 'LABELS.WEB' | translate }}
 				</p>
 				<p class="client-profile-chat-buyer-web">
 					{{ chatInfo.displayInfo.site }}
@@ -85,16 +111,25 @@
 			</div>
 			<div class="client-profile-chat-buyer-info-media">
 				<button class="my-btn requested" *ngIf="displayContactsOpened">
-					{{ "CHAT.CONTACTS_OPENED" | translate }}
+					{{ 'CHAT.CONTACTS_OPENED' | translate }}
 				</button>
-				<button class="my-btn" *ngIf="displayRequestContacts" (click)="requestContacts()">
-					{{ "CHAT.REQUEST_CONTACTS" | translate }}
+				<button
+					class="my-btn"
+					*ngIf="displayRequestContacts"
+					(click)="requestContacts()">
+					{{ 'CHAT.REQUEST_CONTACTS' | translate }}
 				</button>
-				<button class="my-btn" *ngIf="displayOpenContacts" (click)="openContacts()">
-					{{ "CHAT.OPEN_CONTACTS" | translate }}
+				<button
+					class="my-btn"
+					*ngIf="displayOpenContacts"
+					(click)="openContacts()">
+					{{ 'CHAT.OPEN_CONTACTS' | translate }}
 				</button>
-				<button class="my-btn" *ngIf="displayCloseContacts" (click)="closeContacts()">
-					{{ "CHAT.CLOSE_CONTACTS" | translate }}
+				<button
+					class="my-btn"
+					*ngIf="displayCloseContacts"
+					(click)="closeContacts()">
+					{{ 'CHAT.CLOSE_CONTACTS' | translate }}
 				</button>
 			</div>
 		</div>

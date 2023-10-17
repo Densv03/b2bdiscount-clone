@@ -11,21 +11,31 @@
 			[formGroup]="formGroup"
 			(ngSubmit)="sendMessage(formGroup.get('message').value)"
 			class="client-profile-chat-container">
-			<p class="client-profile-chat-started">{{ "CHAT.CHAT_STARTED" | translate }}: {{ chatInfo.createdAt | date }}</p>
+			<p class="client-profile-chat-started">
+				{{ 'CHAT.CHAT_STARTED' | translate }}: {{ chatInfo.createdAt | date }}
+			</p>
 
 			<div class="client-profile-chat-messages">
 				<ul class="client-profile-chat-messages-list" #chatContainer>
-					<li *ngFor="let message of messages$ | async" class="client-profile-chat-messages-list-item">
+					<li
+						*ngFor="let message of messages$ | async"
+						class="client-profile-chat-messages-list-item">
 						<p class="client-profile-chat-messages-list-item-info">
-							<span class="client-profile-chat-messages-list-item-from">{{ message.contact.author }}</span>
-							<span class="client-profile-chat-messages-list-item-date">{{ message.createdAt | date }}</span>
+							<span class="client-profile-chat-messages-list-item-from">{{
+								message.contact.author
+							}}</span>
+							<span class="client-profile-chat-messages-list-item-date">{{
+								message.createdAt | date
+							}}</span>
 						</p>
 						<p class="client-profile-chat-messages-list-item-message">
 							{{ message.body }}
 						</p>
 					</li>
-					<li *ngIf="!(messages$ | async)?.length" class="client-profile-chat-no-messages">
-						{{ "CHAT.NO_MESSAGES" | translate }}
+					<li
+						*ngIf="!(messages$ | async)?.length"
+						class="client-profile-chat-no-messages">
+						{{ 'CHAT.NO_MESSAGES' | translate }}
 					</li>
 				</ul>
 			</div>
@@ -38,7 +48,12 @@
 			<div class="client-profile-chat-actions">
 				<div class="chat-actions-item-icons">
 					<div class="icon-wrapper">
-						<svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<svg
+							width="12"
+							height="16"
+							viewBox="0 0 12 16"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg">
 							<path
 								d="M10.3257 7.99998C11.3462 7.1743 12 5.9121 12 4.49997C12 2.01855 9.98142 0
 						7.49997 0H0V2.00001H0.999989V14H0V16H7.5C9.98145 16 12 13.9815 12 11.5C12 10.0879
@@ -51,30 +66,61 @@
 					</div>
 
 					<div class="icon-wrapper">
-						<svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<svg
+							width="12"
+							height="16"
+							viewBox="0 0 12 16"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg">
 							<path
 								d="M12 2.00001V0H5.99997V2.00001H7.48355L2.34073 14H0V16H6V14H4.51642L9.65921 2.00001H12Z"
 								fill="#9FA4BB" />
 						</svg>
 					</div>
-					<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="32"
+						height="32"
+						viewBox="0 0 32 32"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
 						<rect width="32" height="32" rx="4" fill="white" />
 						<g clip-path="url(#clip0_1026_5781)">
-							<path d="M11.585 15.1309H24.1564V17.4166H11.585V15.1309Z" fill="#9FA4BB" />
-							<path d="M11.585 21.0405H24.1564V23.3263H11.585V21.0405Z" fill="#9FA4BB" />
-							<path d="M11.585 9.22119H24.1564V11.5069H11.585V9.22119Z" fill="#9FA4BB" />
-							<path d="M8.03906 9.22119H10.3248V11.5069H8.03906V9.22119Z" fill="#9FA4BB" />
-							<path d="M8.03906 15.1309H10.3248V17.4166H8.03906V15.1309Z" fill="#9FA4BB" />
-							<path d="M8.03906 21.0405H10.3248V23.3263H8.03906V21.0405Z" fill="#9FA4BB" />
+							<path
+								d="M11.585 15.1309H24.1564V17.4166H11.585V15.1309Z"
+								fill="#9FA4BB" />
+							<path
+								d="M11.585 21.0405H24.1564V23.3263H11.585V21.0405Z"
+								fill="#9FA4BB" />
+							<path
+								d="M11.585 9.22119H24.1564V11.5069H11.585V9.22119Z"
+								fill="#9FA4BB" />
+							<path
+								d="M8.03906 9.22119H10.3248V11.5069H8.03906V9.22119Z"
+								fill="#9FA4BB" />
+							<path
+								d="M8.03906 15.1309H10.3248V17.4166H8.03906V15.1309Z"
+								fill="#9FA4BB" />
+							<path
+								d="M8.03906 21.0405H10.3248V23.3263H8.03906V21.0405Z"
+								fill="#9FA4BB" />
 						</g>
 						<defs>
 							<clipPath id="clip0_1026_5781">
-								<rect width="16" height="16" fill="white" transform="translate(8 8)" />
+								<rect
+									width="16"
+									height="16"
+									fill="white"
+									transform="translate(8 8)" />
 							</clipPath>
 						</defs>
 					</svg>
 
-					<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="32"
+						height="32"
+						viewBox="0 0 32 32"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
 						<rect width="32" height="32" rx="4" fill="white" />
 						<path
 							d="M16 8C11.5817 8 8 11.5817 8 16C8 20.4183 11.5817 24 16 24C20.4183 24 24 20.4183 24 16C23.9953 11.5837 20.4163 8.00472 16 8ZM16 22.8571C12.2129 22.8571 9.14285 19.7871 9.14285 16C9.14285 12.2129 12.2129 9.14285 16 9.14285C19.7871 9.14285 22.8571 12.2129 22.8571 16C22.853 19.7854 19.7854 22.853 16 22.8571Z"
@@ -108,7 +154,7 @@
 							type="submit"
 							[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 							class="client-profile-chat-actions-send-button">
-							<span>{{ "BUTTONS.SEND" | translate }}</span>
+							<span>{{ 'BUTTONS.SEND' | translate }}</span>
 							<svg
 								class="client-profile-chat-actions-send-button-icon"
 								width="16"
@@ -137,7 +183,9 @@
 			<div class="buyer-info-profile">
 				<div class="buyer-info-title">{{ chatInfo.displayInfo.role }} info</div>
 				<div class="buyer-info-header">
-					<div class="buyer-info-header-name">{{ chatInfo.displayInfo.fullName }}</div>
+					<div class="buyer-info-header-name">
+						{{ chatInfo.displayInfo.fullName }}
+					</div>
 				</div>
 				<!--			<div class="buyer-info-country">from </div>-->
 				<div class="buyer-info-block">
@@ -153,7 +201,12 @@
 				<div class="buyer-info-product-title">Media</div>
 			</div>
 			<div class="buyer-info-warning">
-				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 16 16"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
 					<path
 						d="M7.119 1.77272C7.49724 1.07443 8.49934 1.07443 8.87758 1.77272L14.9665 13.0137C15.3274 13.68 14.8449 14.49 14.0872 14.49H1.90941C1.15164 14.49 0.669209 13.68 1.03012 13.0137L7.119 1.77272Z"
 						stroke="#9FA4BB"
@@ -170,6 +223,6 @@
 
 <ng-template #userDeleted>
 	<p class="user-deleted">
-		{{ "CHAT.USER_DELETED" | translate }}
+		{{ 'CHAT.USER_DELETED' | translate }}
 	</p>
 </ng-template>

@@ -1,10 +1,11 @@
-@import "projects/shared/src/styles";
-@import "projects/shared/src/styles/colors";
+@import 'projects/shared/src/styles';
+@import 'projects/shared/src/styles/colors';
 
 :host {
 	.item {
+		cursor: pointer;
 		border-radius: 14px;
-		background: #FFF;
+		background: #fff;
 		max-width: 862px;
 		margin: auto;
 		display: grid;
@@ -14,19 +15,17 @@
 			grid-template-columns: 2.6fr 0.7fr 0.9fr;
 		}
 		@include breakpoint('2') {
-			max-width: 95%;
 			grid-template-columns: 2fr 1fr 1fr;
 		}
 		@include breakpoint('1') {
 			display: flex;
 			flex-direction: column;
-			max-width: 85%;
 		}
 		&__column {
 			padding: 16px 0;
-			border-right: 1px solid #E5F2FD;
+			border-right: 1px solid #e5f2fd;
 			@include breakpoint('1') {
-				border-bottom: 1px solid #E5F2FD;
+				border-bottom: 1px solid #e5f2fd;
 			}
 			&:first-child {
 				padding-left: 16px;
@@ -82,8 +81,6 @@
 			gap: 8px;
 		}
 
-
-
 		&__country {
 			&-flag {
 				width: 20px;
@@ -109,6 +106,10 @@
 			font-weight: 700;
 			line-height: 18px;
 			letter-spacing: 0.14px;
+			@include breakpoint('1') {
+				width: 200px;
+				padding: 8px 18px;
+			}
 		}
 	}
 }

@@ -1,22 +1,22 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { CategoriesService } from "src/app/client/services/categories/categories.service";
-import { Observable } from "rxjs";
-import { getName } from "country-list";
-import { filter, first, map } from "rxjs/operators";
-import { UnitsService } from "src/app/client/services/units/units.service";
-import {MatDialog} from "@angular/material/dialog";
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { CategoriesService } from 'src/app/client/services/categories/categories.service';
+import { Observable } from 'rxjs';
+import { getName } from 'country-list';
+import { filter, first, map } from 'rxjs/operators';
+import { UnitsService } from 'src/app/client/services/units/units.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-	selector: "b2b-product-information",
-	templateUrl: "./product-information.component.html",
-	styleUrls: ["./product-information.component.scss"],
+	selector: 'b2b-product-information',
+	templateUrl: './product-information.component.html',
+	styleUrls: ['./product-information.component.scss'],
 })
 export class ProductInformationComponent implements OnInit {
 	@Input() rfqInfo: any;
 
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-	public measureName: string = "";
+	public measureName: string = '';
 
 	constructor(
 		private dialog: MatDialog,
@@ -32,7 +32,9 @@ export class ProductInformationComponent implements OnInit {
 				filter((data) => !!data?.length),
 				first(),
 				map((res) => {
-					this.measureName = res.find((item: { _id: any; }) => item._id === this.rfqInfo.measure).displayName;
+					this.measureName = res.find(
+						(item: { _id: any }) => item._id === this.rfqInfo.measure
+					).displayName;
 				})
 			)
 			.subscribe(() => {
@@ -45,6 +47,6 @@ export class ProductInformationComponent implements OnInit {
 	}
 
 	public getCountryNameByCode(countryCode: string): string {
-		return countryCode ? getName(countryCode?.toUpperCase()) : "";
+		return countryCode ? getName(countryCode?.toUpperCase()) : '';
 	}
 }

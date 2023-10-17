@@ -1,16 +1,16 @@
-import { Component } from "@angular/core";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { FormGroup } from "@angular/forms";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { environment } from "../../../../../environments/environment.prod";
+import { Component } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { FormGroup } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { environment } from '../../../../../environments/environment.prod';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-account-not-registered",
-	templateUrl: "./client-account-not-registered.component.html",
-	styleUrls: ["./client-account-not-registered.component.scss"],
+	selector: 'b2b-client-account-not-registered',
+	templateUrl: './client-account-not-registered.component.html',
+	styleUrls: ['./client-account-not-registered.component.scss'],
 })
 export class ClientAccountNotRegisteredComponent {
 	public readonly formGroup: FormGroup;
@@ -19,20 +19,25 @@ export class ClientAccountNotRegisteredComponent {
 
 	email: string;
 
-	constructor(private readonly _router: Router, private _activatedRoute: ActivatedRoute) {
+	constructor(
+		private readonly _router: Router,
+		private _activatedRoute: ActivatedRoute
+	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 
-		this._activatedRoute.queryParamMap.pipe(untilDestroyed(this)).subscribe((val: ParamMap) => {
-			this.email = val.get("email");
-		});
+		this._activatedRoute.queryParamMap
+			.pipe(untilDestroyed(this))
+			.subscribe((val: ParamMap) => {
+				this.email = val.get('email');
+			});
 	}
 
 	public createNewAccount(): void {
-		this._router.navigateByUrl("auth/register-credentials");
+		this._router.navigateByUrl('auth/register-credentials');
 	}
 
 	public loginWithAnotherAccount(): void {
-		this._router.navigateByUrl("auth/log-in");
+		this._router.navigateByUrl('auth/log-in');
 	}
 }

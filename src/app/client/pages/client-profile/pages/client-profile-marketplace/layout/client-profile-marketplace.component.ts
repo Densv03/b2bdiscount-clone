@@ -1,21 +1,21 @@
-import {Component, OnInit} from "@angular/core";
-import {Observable} from "rxjs";
-import {Router} from "@angular/router";
-import {HotToastService} from "@ngneat/hot-toast";
-import {MatDialog} from "@angular/material/dialog";
-import {UserService} from "../../../services/user/user.service";
-import {
-  ClientMarketplaceService
-} from "../../../../../shared/services/client-marketplace-service/client-marketplace.service";
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
+import { MatDialog } from '@angular/material/dialog';
+import { UserService } from '../../../services/user/user.service';
+import { ClientMarketplaceService } from '../../../../../shared/services/client-marketplace-service/client-marketplace.service';
 
 @Component({
-	selector: "b2b-client-profile-marketplace",
-	templateUrl: "./client-profile-marketplace.component.html",
-	styleUrls: ["./client-profile-marketplace.component.scss"],
+	selector: 'b2b-client-profile-marketplace',
+	templateUrl: './client-profile-marketplace.component.html',
+	styleUrls: ['./client-profile-marketplace.component.scss'],
 })
 export class ClientProfileMarketplaceComponent implements OnInit {
-	public totalChatsLength$: Observable<number> = this.clientMarketplaceService.chatsLength$;
-	public totalProductLength$: Observable<number> = this.clientMarketplaceService.manageProductsLength$;
+	public totalChatsLength$: Observable<number> =
+		this.clientMarketplaceService.chatsLength$;
+	public totalProductLength$: Observable<number> =
+		this.clientMarketplaceService.manageProductsLength$;
 
 	public PRODUCTS_LIMIT: number = this.clientMarketplaceService.PRODUCTS_LIMIT;
 
@@ -23,11 +23,17 @@ export class ClientProfileMarketplaceComponent implements OnInit {
 	public archievedProducts$: Observable<any[]>;
 	public chats$: Observable<any[]>;
 
-	public isBuyerAccount = this.userService.getUser().rootRole?.displayName === 'Buyer';
+	public isBuyerAccount =
+		this.userService.getUser().rootRole?.displayName === 'Buyer';
 
-	public isUserAbleToUseMarketplace: boolean = this.userService.isUserAbleToUseMarketplace;
+	public isUserAbleToUseMarketplace: boolean =
+		this.userService.isUserAbleToUseMarketplace;
 
-	private paginationPageNumbers: { chat: number; manage: number; archived: number } = {
+	private paginationPageNumbers: {
+		chat: number;
+		manage: number;
+		archived: number;
+	} = {
 		chat: 1,
 		manage: 1,
 		archived: 1,
@@ -55,7 +61,9 @@ export class ClientProfileMarketplaceComponent implements OnInit {
 	}
 
 	public togglePageProductList(page: number): void {
-		this.clientMarketplaceService.updateManageProducts((page - 1) * this.PRODUCTS_LIMIT);
+		this.clientMarketplaceService.updateManageProducts(
+			(page - 1) * this.PRODUCTS_LIMIT
+		);
 		this.paginationPageNumbers.manage = page;
 	}
 
@@ -65,7 +73,7 @@ export class ClientProfileMarketplaceComponent implements OnInit {
 
 	public showErrorMessage(): void {
 		this.hotToast.error(
-			"To trade on B2B Market your company’s type must be Manufacturer or Trader. You can switch it on settings."
+			'To trade on B2B Market your company’s type must be Manufacturer or Trader. You can switch it on settings.'
 		);
 	}
 

@@ -5,7 +5,7 @@
 		font-size: 24px;
 		line-height: 24px;
 		letter-spacing: 0.01em;
-		color: #0F0F11;
+		color: #0f0f11;
 	}
 	.subtitle,
 	.subtext,
@@ -57,7 +57,7 @@
 		text-align: left;
 		.link {
 			text-decoration: underline;
-			color: #005DFF;
+			color: #005dff;
 			cursor: pointer;
 		}
 	}
@@ -68,7 +68,6 @@
 	}
 }
 
-
 :host::ng-deep {
 	.parent-span {
 		z-index: 1;
@@ -77,7 +76,9 @@
 		height: 38px;
 		transition: -webkit-transform 2s ease;
 		transition: transform 2s ease;
-		transition: transform 2s ease, -webkit-transform 2s ease;
+		transition:
+			transform 2s ease,
+			-webkit-transform 2s ease;
 		-webkit-transform: translateY(0);
 		transform: translateY(0);
 		line-height: 1;
@@ -89,8 +90,8 @@
 				margin: 5px 0;
 			}
 			&.gray {
-				color: #9FA4BB;
-				opacity: .3;
+				color: #9fa4bb;
+				opacity: 0.3;
 			}
 		}
 	}

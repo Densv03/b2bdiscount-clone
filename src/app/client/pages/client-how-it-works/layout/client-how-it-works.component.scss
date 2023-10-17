@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .hot-it-works {
 	background-color: white;
@@ -10,7 +10,7 @@
 
 		padding: 60px 0;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			padding: 30px 15px;
 		}
@@ -31,7 +31,7 @@
 			width: 75%;
 			margin: 4px auto 0;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 		}
@@ -82,7 +82,7 @@
 			margin: 4px auto 0;
 			line-height: 146%;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 		}
@@ -96,7 +96,7 @@
 
 			padding: 0 90px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 0 15px;
 			}
 
@@ -104,7 +104,7 @@
 				width: 50%;
 				padding: 52px 50px;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					padding: 15px;
 				}
@@ -127,7 +127,7 @@
 			.section-img {
 				width: 50%;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 				}
 				img {
@@ -152,7 +152,7 @@
 		background: #f3f6f8;
 		padding: 64px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 15px;
 			margin-top: 100px;
 		}
@@ -165,25 +165,25 @@
 			justify-content: space-between;
 			flex-wrap: wrap;
 
-			@include breakpoint("6") {
+			@include breakpoint('6') {
 				width: 70%;
 			}
 
-			@include breakpoint("5") {
+			@include breakpoint('5') {
 				width: 80%;
 			}
 
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 100%;
 			}
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 
 			.footer-info {
 				width: 50%;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 				}
 				.footer-title {
@@ -199,7 +199,7 @@
 						color: #005dff;
 					}
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						font-size: 36px;
 						text-align: center;
 					}
@@ -213,7 +213,7 @@
 
 					margin-top: 10px;
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						text-align: center;
 					}
 				}
@@ -226,7 +226,7 @@
 				align-items: center;
 				justify-content: center;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					margin-top: 15px;
 				}
@@ -257,7 +257,7 @@
 					box-shadow: 0px 4px 16px rgba(10, 8, 58, 0.3);
 					border-radius: 16px;
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						font-size: 36px;
 						padding: 15px 20px;
 					}

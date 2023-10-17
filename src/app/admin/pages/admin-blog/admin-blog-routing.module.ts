@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AdminBlogComponent } from "./layout/admin-blog.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdminBlogComponent } from './layout/admin-blog.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AdminBlogComponent,
 	},
 ];

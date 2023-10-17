@@ -1,13 +1,17 @@
 <div class="card">
 	<div class="card-title">Contact the business</div>
-	<div class="company-name">{{companyInfo.companyName}}</div>
+	<div class="company-name">{{ companyInfo.companyName }}</div>
 	<div class="company-location">
 		<div class="country-image">
-			<img b2bNgxIcon group="flags/" [name]="companyInfo.country | uppercase" class="country-icon"/>
+			<img
+				b2bNgxIcon
+				group="flags/"
+				[name]="companyInfo.country | uppercase"
+				class="country-icon" />
 		</div>
-		<div class="country-name">{{getCountryName(companyInfo.country)}}</div>
+		<div class="country-name">{{ getCountryName(companyInfo.country) }}</div>
 	</div>
-	<div class="company-address">{{companyInfo.address}}</div>
+	<div class="company-address">{{ companyInfo.address }}</div>
 	<div class="contact-buttons">
 		<!--		<a [href]="'tel:' + companyInfo.phone.number"-->
 		<!--			 class="phone-button"-->
@@ -22,16 +26,21 @@
 			(click)="openPhoneModal()">
 			Phone
 		</button>
-		<a *ngIf="companyInfo.website"
-			 target="_blank"
-			 [href]="checkCompanySiteForValid(companyInfo.website)"
-			 mat-stroked-button
-			 class="material-btn">Website</a>
-		<button *ngIf="companyInfo.user !== user?._id"
-						class="contact-button" b2bNgxButton
-						(click)="openChat($event)"
-						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-			<img b2bNgxIcon name="chat-white">
+		<a
+			*ngIf="companyInfo.website"
+			target="_blank"
+			[href]="checkCompanySiteForValid(companyInfo.website)"
+			mat-stroked-button
+			class="material-btn"
+			>Website</a
+		>
+		<button
+			*ngIf="companyInfo.user !== user?._id"
+			class="contact-button"
+			b2bNgxButton
+			(click)="openChat($event)"
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+			<img b2bNgxIcon name="chat-white" />
 			<span>Contact</span>
 		</button>
 	</div>

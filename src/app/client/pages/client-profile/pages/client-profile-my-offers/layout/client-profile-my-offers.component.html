@@ -1,8 +1,11 @@
 <div class="client-profile-my-offers">
-	<h3 class="client-profile-my-offers-title">{{ "OFFERS.MY_OFFERS" | translate }}</h3>
+	<h3 class="client-profile-my-offers-title">
+		{{ 'OFFERS.MY_OFFERS' | translate }}
+	</h3>
 
 	<div class="client-profile-my-offers-container">
-		<ng-container *ngIf="isLangLoaded && offers$ | async as offers; else noOffers">
+		<ng-container
+			*ngIf="isLangLoaded && offers$ | async as offers; else noOffers">
 			<b2b-client-profile-my-offers-list
 				*ngIf="offers.length; else noOffers"
 				[options]="offers"
@@ -12,7 +15,7 @@
 		<ng-template #noOffers>
 			<div class="client-profile-my-offers-no-offers" *ngIf="!loading">
 				<p class="client-profile-my-offers-no-offers-title">
-					{{ "OFFERS.NO_OFFERS_MY" | translate }}
+					{{ 'OFFERS.NO_OFFERS_MY' | translate }}
 				</p>
 				<!--				<a-->
 				<!--					b2bNgxLink-->
@@ -28,7 +31,7 @@
 					class="client-profile-my-offers-no-offers-button"
 					(click)="goTo('/offer')"
 					id="add-offer-profile">
-					+ {{ "OFFERS.ADD_OFFER" | translate }}
+					+ {{ 'OFFERS.ADD_OFFER' | translate }}
 				</button>
 			</div>
 		</ng-template>

@@ -1,145 +1,297 @@
-<b2b-breadcrumbs [breadcrumbLabel]="productSource.value?.title"></b2b-breadcrumbs>
+<div class="product-detail-wrapper">
+	<b2b-breadcrumbs
+		*ngIf="!product"
+		[breadcrumbLabel]="productSource.value?.title"></b2b-breadcrumbs>
 
-<ng-container *ngIf="productSource | async as product">
-  <div class="product-detail">
-    <div class="product-info">
-      <div class="product-header">
-      </div>
-      <div class="product">
-        <div class="gallery">
-          <b2b-ngx-images-carousel
-            (click)="product.reasonForDeletion ? null : openImages()"
-            [options]="product.photos"
-            className="client-profile-offer-images"></b2b-ngx-images-carousel>
-          <div *ngIf="product?.hidden || $any(product)?.deleted" class="disable">
-            <p *ngIf="$any(product)?.deleted; else HIDDEN">Product was deleted</p>
-            <ng-template #HIDDEN>
-              <p>Product was hidden</p>
-            </ng-template>
-          </div>
-        </div>
-        <div class="description">
-          <h1 class="title">{{ product.title }}</h1>
-          <div class="price">
-            <div class="price-wrapper">
-              <div class="currency">$</div>
-              <div class="amount">{{ product.price?.old }}</div>
-              <div class="unit">/{{ product.amount?.unit?.name }}</div>
-            </div>
-          </div>
-          <div class="product-details">
-            <div class="subtitle">Product details</div>
-            <div class="company-info">Product specifications: {{ product.specifications }}</div>
-            <div class="ability">Supply ability: {{ product.amount.count + product.amount.unit.name }}</div>
-          </div>
-          <div class="shipping">
-            <div class="subtitle">Shipping information</div>
-            <ul class="methods">
-              <li>Available shipping options:</li>
-              <li class="method">{{ product?.shipping.join(", ") }}</li>
-            </ul>
-          </div>
-          <div class="shipping">
-            <div class="subtitle">Payment details</div>
-            <ul class="methods">
-              <li>Available payment methods:</li>
-              <li class="method">{{ product.paymentMethods.join(", ") }}</li>
-            </ul>
-          </div>
-          <div class="suppliers-info">
-            <div class="subtitle">Suppliers info</div>
-            <div class="company-name">Company description: {{ companyInfo.companyDescription }}</div>
-          </div>
-          <div class="country-of-origin">
-            <div class="subtitle">Country of origin</div>
-            <div class="company-name">{{ getCountryName(product.country) }}</div>
-          </div>
-        </div>
-        <div class="contact">
-          <div class="supplier-contact">
-            <p class="supplier-title">Contact Supplier</p>
-            <div [routerLink]="b2bNgxLinkService.getLink('/b2bmarket/company/' + companyId) | async"
-                 class="supplier-info-company-name">
-              {{ product.contact.companyName }}
-            </div>
-            <p class="supplier-country">
-              <img b2bNgxIcon group="flags/" [name]="companyInfo.country | uppercase" class="country-icon"/>
-              <span class="supplier-country-name">{{ getCountryName(companyInfo.country) }}</span>
-            </p>
-            <p class="supplier-type">{{ product.suppliersType }}</p>
-            <button [routerLink]="b2bNgxLinkService.getLink('/b2bmarket/company/' + companyId) | async"
-                    b2bNgxButton
-                    class="supplier-contact-link"
-                    [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-              Supplier’s page
-            </button>
-            <button
-              (click)="openChat($event)"
-              b2bNgxButton
-              [id]="
+	<ng-container *ngIf="productSource | async as product">
+		<div class="product-detail">
+			<h1 class="product-name mb-4">{{ product.title }}</h1>
+
+			<b2b-custom-carousel
+				[isImage]="true"
+				[slides]="product.photosUrl"></b2b-custom-carousel>
+
+			<section class="product-information">
+				<div class="product-info">
+					<div class="description">
+						<h3 class="section-title">Product description</h3>
+
+						<p class="section-text">{{ product.specifications }}</p>
+					</div>
+
+					<div class="origin">
+						<h3 class="section-title">Product origin:</h3>
+
+						<p class="section-text">
+							{{
+								getName(
+									product?.productOrigin
+										? product?.productOrigin
+										: product?.country
+								)
+							}}
+						</p>
+					</div>
+
+					<div class="origin" *ngIf="isAmount">
+						<h3 class="section-title">Minimum order quantity:</h3>
+
+						<p class="section-text">
+							{{ product.amount?.count || product?.amount }}/{{
+								(+product.amount?.count > 1
+									? product.amount?.unit?.pluralDisplayName
+									: product.amount?.unit?.displayName) ||
+									product.amount?.unit ||
+									product?.unit
+							}}
+						</p>
+					</div>
+
+					<div class="origin" *ngIf="product?.brandName">
+						<h3 class="section-title">Brand:</h3>
+
+						<p class="section-text">{{ product.brandName }}</p>
+					</div>
+
+					<div class="more-info" *ngIf="isSpecificationList">
+						<h3 class="section-title">More information</h3>
+
+						<div class="more-info-block">
+							<div *ngFor="let info of product.specificationList">
+								<p class="section-text">{{ info.specification }}</p>
+								<p class="section-text">{{ info.item }}</p>
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="method"
+						*ngIf="
+							!!product?.paymentMethods &&
+							product.paymentMethods.length > 0 &&
+							product.paymentMethods[0] !== null
+						">
+						<h3 class="section-title">Payment method</h3>
+
+						<div class="flex-gap">
+							<p
+								class="section-text method-text"
+								*ngFor="let method of product?.paymentMethods">
+								{{ method }}
+							</p>
+						</div>
+					</div>
+
+					<div
+						class="method"
+						*ngIf="!!product?.tradingAreas && product?.tradingAreas.length > 0">
+						<h3 class="section-title">Trading areas</h3>
+
+						<div class="flex-gap">
+							<p
+								class="section-text method-text"
+								*ngFor="let area of product.tradingAreas">
+								{{ area }}
+							</p>
+						</div>
+					</div>
+
+					<div
+						class="method"
+						*ngIf="
+							product?.shipping &&
+							product?.shipping.length > 0 &&
+							product.shipping[0] !== null
+						">
+						<h3 class="section-title">Shipping information</h3>
+
+						<div class="flex-gap">
+							<p
+								class="section-text method-text"
+								*ngFor="let shipping of product.shipping">
+								{{ shipping }}
+							</p>
+						</div>
+					</div>
+
+					<div
+						class="method"
+						*ngIf="product?.ports && product?.ports.length > 0">
+						<h3 class="section-title">Port of shipping</h3>
+
+						<div class="flex-gap ports-wrapper">
+							<div
+								class="section-text method-text w-100 port-text"
+								*ngFor="let port of product.ports">
+								<div class="port-row">
+									<div class="port-country">
+										<img
+											b2bNgxIcon
+											group="flags/"
+											[name]="port.countryCode?.toUpperCase()" />
+
+										<p class="section-text method-text port-text">
+											{{ port.country }}
+										</p>
+									</div>
+
+									<div class="ports">
+										<p
+											class="section-text method-text port-text"
+											*ngFor="let portName of port.portName">
+											{{ portName }}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="company-info">
+					<div
+						*ngIf="product?.hidden || $any(product)?.deleted"
+						class="disable">
+						<p *ngIf="$any(product)?.deleted; else HIDDEN">
+							Product was deleted
+						</p>
+						<ng-template #HIDDEN>
+							<p>Product was hidden</p>
+						</ng-template>
+					</div>
+
+					<div class="company-text">
+						<div class="text">
+							<a
+								b2bNgxLink
+								[routerLink]="'/b2bmarket/company/' + companyInfo._id"
+								[theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
+								class="company-title">
+								{{ companyInfo.companyName }}</a
+							>
+
+							<a
+								*ngIf="otherProducts"
+								b2bNgxLink
+								[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
+								[routerLink]="'/b2bmarket/supplier-listing/' + product.user"
+								class="company-products-count"
+								>{{ companyInfo.countActiveUserProducts }} products total</a
+							>
+
+							<div class="flex-gap align-items-center">
+								<mat-icon>business_center</mat-icon>
+
+								<p class="section-text">
+									{{ product?.suppliersType || user.role.displayName }}
+								</p>
+							</div>
+
+							<div class="flex-gap align-items-center address mobile">
+								<mat-icon>home</mat-icon>
+
+								<p class="section-text">{{ companyInfo.address }}</p>
+							</div>
+						</div>
+
+						<img
+							[ngSrc]="
+								companyInfo?.logo?.path
+									? apiAddress + companyInfo.logo?.path
+									: 'assets/images/no-company-logo.png'
+							"
+							width="72"
+							height="72" />
+					</div>
+
+					<div class="flex-gap align-items-center address desktop">
+						<mat-icon>home</mat-icon>
+
+						<p class="section-text">{{ companyInfo.address }}</p>
+					</div>
+
+					<div class="buttons">
+						<div class="btn-row">
+							<a
+								(click)="openPhoneModal()"
+								[class.w-100]="!companyInfo?.website"
+								[class.text-center]="!companyInfo?.website">
+								Phone
+							</a>
+
+							<a
+								*ngIf="companyInfo.website"
+								[href]="companyInfo.website"
+								target="_blank">
+								Website
+							</a>
+						</div>
+
+						<button
+							b2bNgxButton
+							(click)="openChat($event)"
+							[id]="
+								(isAuth$ | async) === true
+									? 'marketplace-product-details-authorized'
+									: 'marketplace-product-details-unauthorized'
+							"
+							[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+							class="btn-100">
+							<img b2bNgxIcon name="messages-2" />
+
+							Contact
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<div *ngIf="otherProducts?.length" class="other-products">
+				<div class="flex-between">
+					<h3 class="other-products-title">More products from this supplier</h3>
+
+					<a
+						b2bNgxLink
+						[routerLink]="'/b2bmarket/supplier-listing/' + product.user"
+						[id]="
 							(isAuth$ | async) === true
-								? 'marketplace-product-details-authorized'
-								: 'marketplace-product-details-unauthorized'
+								? 'marketplace-other-products-authorized'
+								: 'marketplace-other-products-unauthorized'
 						"
-              [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-              class="supplier-contact-link">
-              Contact supplier
-            </button>
-          </div>
-          <div class="supplier-report">
-            <img b2bNgxImage name="alert"/>
-<!--            [ngxTippy]="tooltipTemplate"-->
-<!--            tippyClassName="tooltip"-->
-<!--            [disabled]="product.reasonForDeletion"-->
-<!--            [tippyProps]="{-->
-<!--            arrow: false,-->
-<!--            placement: 'bottom',-->
-<!--            theme: 'light',-->
-<!--            allowHtml: true-->
-<!--            }"-->
-            <button
+						[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
+						>View all</a
+					>
+				</div>
 
-              (click)="openReportPopover()">
-              Report this lot
-            </button>
-            <span #tooltipTemplate>
-						If you’re having or previously had any issues related to this offer or seller, please, tell us about it in
-						order to protect other buyers.
-					</span>
-          </div>
-          <div class="calculate-section d-flex justify-content-center flex-column">
-            <!--					<div class="calculate-section d-flex justify-content-center flex-column">-->
-            <!--						<img b2bNgxIcon name="calculate-logistics" class="calculate-logistics-image">-->
+				<ul class="products" [class.between]="otherProducts.length === 4">
+					<li *ngFor="let product of otherProducts" class="product-wrapper">
+						<b2b-client-marketplace-product-item
+							(click)="navigateOnProductDetail(product.path || product._id)"
+							[logoLink]="companyInfo?.logo?.path ?? 'plug'"
+							[product]="product">
+						</b2b-client-marketplace-product-item>
+					</li>
+				</ul>
+			</div>
 
-          </div>
-          <!--						<button-->
-          <!--							b2bNgxButton-->
-          <!--							[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"-->
-          <!--							(click)="openInDevelopmentPopUp()">-->
-          <!--							Calculate logistics-->
-          <!--						</button>-->
-          <!--					</div>-->
-        </div>
-      </div>
-    </div>
-    <div *ngIf="otherProducts?.length" class="other-products">
-      <button
-        [routerLink]="'/b2bmarket/supplier-listing/' + product.user"
-        class="other-products-title"
-        [id]="
-				(isAuth$ | async) === true ? 'marketplace-other-products-authorized' : 'marketplace-other-products-unauthorized'
-			">
-        Other products from this supplier
-      </button>
-      <ul class="products">
-        <li *ngFor="let product of otherProducts" class="product-wrapper">
-          <b2b-client-marketplace-product-item
-            (click)="navigateOnProductDetail(product.path || product._id)"
-            [logoLink]="companyInfo?.logo?.path ?? 'plug'"
-            [product]="product">
-          </b2b-client-marketplace-product-item>
-        </li>
-      </ul>
-    </div>
-  </div>
-</ng-container>
+			<div *ngIf="otherSuppliersProducts?.length" class="other-products">
+				<div class="flex-between">
+					<h3 class="other-products-title">Similar products</h3>
+				</div>
+
+				<ul
+					class="products"
+					[class.between]="otherSuppliersProducts.length === 4">
+					<li
+						*ngFor="let product of otherSuppliersProducts"
+						class="product-wrapper">
+						<b2b-client-marketplace-product-item
+							(click)="navigateOnProductDetail(product.path || product._id)"
+							[logoLink]="companyInfo?.logo?.path ?? 'plug'"
+							[product]="product">
+						</b2b-client-marketplace-product-item>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</ng-container>
+</div>

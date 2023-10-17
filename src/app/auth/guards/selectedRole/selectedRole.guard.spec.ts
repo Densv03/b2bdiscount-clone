@@ -1,8 +1,8 @@
-import { TestBed } from "@angular/core/testing";
+import { TestBed } from '@angular/core/testing';
 
-import { SelectedRoleGuard } from "./selectedRole.guard";
+import { SelectedRoleGuard } from './selectedRole.guard';
 
-describe("SelectedRoleGuard", () => {
+describe('SelectedRoleGuard', () => {
 	let guard: SelectedRoleGuard;
 
 	beforeEach(() => {
@@ -10,7 +10,7 @@ describe("SelectedRoleGuard", () => {
 		guard = TestBed.inject(SelectedRoleGuard);
 	});
 
-	it("should be created", () => {
+	it('should be created', () => {
 		expect(guard).toBeTruthy();
 	});
 });

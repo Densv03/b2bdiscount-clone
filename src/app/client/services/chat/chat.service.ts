@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators";
-import { ApiService } from "../../../core/services/api/api.service";
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api/api.service';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class ChatService {
 	constructor(private readonly _apiService: ApiService) {}

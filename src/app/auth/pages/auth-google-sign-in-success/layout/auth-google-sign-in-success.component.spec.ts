@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthGoogleSignInSuccessComponent } from "./auth-google-sign-in-success.component";
+import { AuthGoogleSignInSuccessComponent } from './auth-google-sign-in-success.component';
 
-describe("AuthGoogleSignInSuccessComponent", () => {
+describe('AuthGoogleSignInSuccessComponent', () => {
 	let component: AuthGoogleSignInSuccessComponent;
 	let fixture: ComponentFixture<AuthGoogleSignInSuccessComponent>;
 
@@ -18,7 +18,7 @@ describe("AuthGoogleSignInSuccessComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

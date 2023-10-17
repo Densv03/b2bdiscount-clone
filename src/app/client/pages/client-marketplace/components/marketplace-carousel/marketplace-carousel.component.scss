@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.ngx-offers-carousel {
@@ -48,7 +48,7 @@
 			.ngx-offers-carousel-list-item {
 				margin: 0 8px;
 				width: 380px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					margin: 0 24px;
 				}
 				background: #ffffff;

@@ -1,10 +1,25 @@
 <div class="chips">
 	<div
-		*ngFor="let chip of chipsService.filterChips$ | async"
+		*ngFor="let chip of chipsService.filterChips$ | async as filterChipsArr"
 		class="chips__item">
-		<div class="chips__item-label">{{getChipsLabel(chip.label) }}</div>
+		<div
+			*ngIf="
+				getChipsLabel(chip.label) !==
+					chipsService.getLastChipsCategory()['label'];
+				else categoryChips
+			"
+			class="chips__item-label">
+			{{ getChipsLabel(chip.label) }}
+		</div>
+
+		<ng-template #categoryChips>
+			<h1>{{ chip?.label }}</h1>
+		</ng-template>
+
 		<img
 			(click)="removeChip(chip)"
-			class="chips__item-icon" b2bNgxIcon name="cancel">
+			class="chips__item-icon"
+			b2bNgxIcon
+			name="cancel" />
 	</div>
 </div>

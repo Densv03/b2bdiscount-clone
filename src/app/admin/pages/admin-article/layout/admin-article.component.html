@@ -1,6 +1,13 @@
-<form [formGroup]="formGroup" class="admin-article" (ngSubmit)="onSubmit(formGroup.value)">
-	<p class="admin-article__label">{{ formGroup.get("_id").value ? "Edit an article" : "Add an article" }}</p>
-	<b2b-ngx-file formControlName="image" class="admin-article__image">Image</b2b-ngx-file>
+<form
+	[formGroup]="formGroup"
+	class="admin-article"
+	(ngSubmit)="onSubmit(formGroup.value)">
+	<p class="admin-article__label">
+		{{ formGroup.get('_id').value ? 'Edit an article' : 'Add an article' }}
+	</p>
+	<b2b-ngx-file formControlName="image" class="admin-article__image"
+		>Image</b2b-ngx-file
+	>
 
 	<div class="admin-article__main">
 		<div>
@@ -9,7 +16,12 @@
 				class="admin-article__input"
 				[label]="'LABELS.ARTICLE_LABEL' | translate"
 				placeholder="Enter article label"></b2b-ngx-input>
-			<p *ngIf="this.formGroup.get('title').errors?.['required']" class="error" [@fadeInOut]>This field is required</p>
+			<p
+				*ngIf="this.formGroup.get('title').errors?.['required']"
+				class="error"
+				[@fadeInOut]>
+				This field is required
+			</p>
 		</div>
 		<div>
 			<b2b-ngx-input
@@ -61,7 +73,10 @@
 		formControlName="description"
 		[config]="editorConfig"></angular-editor>
 
-	<button b2bNgxButton class="admin-article__button" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-		{{ formGroup.get("_id").value ? "Update an article" : "Create an article" }}
+	<button
+		b2bNgxButton
+		class="admin-article__button"
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+		{{ formGroup.get('_id').value ? 'Update an article' : 'Create an article' }}
 	</button>
 </form>

@@ -1,53 +1,101 @@
+<img b2bNgxIcon name="cross" class="cross-icon" mat-dialog-close />
+
 <div class="content">
-	<img b2bNgxIcon name="cross" class="cross-icon" mat-dialog-close>
 	<h2 class="title">
-		<p>Couldn't find the right product? </p>
+		<p>Couldn't find the right product?</p>
 		<p>Leave a Request and suppliers will contact you.</p>
 	</h2>
 	<form [formGroup]="rfqFormGroup" class="rfq-form" (ngSubmit)="submitForm()">
 		<div class="product-name">
 			<p class="label">Product name</p>
-			<input class="product-name__input" type="text" b2bNgxInput [theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-				formControlName="productName" placeholder="Product name">
+			<input
+				class="product-name__input"
+				type="text"
+				b2bNgxInput
+				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+				formControlName="productName"
+				placeholder="Product name" />
 		</div>
 		<div class="product-sector">
-			<p class="label">Product name</p>
-			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="productSector" placeholder="Product sector"></b2b-ngx-select>
+			<p class="label">Product sector</p>
+			<b2b-ngx-select
+				className="border-radius-14"
+				[options]="level1Categories$ | async"
+				(changed)="selectCategory($event)"
+				bindValue="_id"
+				bindLabel="name"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				formControlName="productSector"
+				placeholder="Product sector"></b2b-ngx-select>
 		</div>
 		<div class="product-category">
 			<p class="label">Product category</p>
-			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="productCategory" placeholder="Product category"></b2b-ngx-select>
+			<b2b-ngx-select
+				className="border-radius-14"
+				[options]="level2Categories$ | async"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				formControlName="category"
+				placeholder="Product category"
+				bindValue="_id"
+				bindLabel="name"></b2b-ngx-select>
 		</div>
 		<div class="comments">
 			<p class="label">Fill in sourcing requirements</p>
-			<textarea b2bNgxTextarea class="comments__textarea" [theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-				formControlName="comments" placeholder="Comments"></textarea>
+			<textarea
+				b2bNgxTextarea
+				class="comments__textarea"
+				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+				formControlName="moreInformation"
+				placeholder="Comments"></textarea>
 		</div>
 		<div class="terms-of-delivery">
-			<p class="label">Fill in sourcing requirements</p>
-			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="deliveryTerms" placeholder="Type or select" [searchable]="true"></b2b-ngx-select>
+			<p class="label">Terms of delivery</p>
+			<b2b-ngx-select
+				className="border-radius-14"
+				[options]="tradeTerms$ | async"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				bindLabel="value"
+				bindValue="id"
+				formControlName="tradeTerms"
+				placeholder="Type or select"
+				[searchable]="true"></b2b-ngx-select>
 		</div>
 		<div class="delivery-location">
 			<p class="label">Delivery location</p>
-			<b2b-ngx-country-select className="border-radius-14" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="location" placeholder="Location"></b2b-ngx-country-select>
+			<b2b-ngx-country-select
+				className="border-radius-14"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				formControlName="destination"
+				placeholder="Location"></b2b-ngx-country-select>
 		</div>
 		<div class="required-amount">
 			<p class="label">Required amount</p>
-			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="requiredAmount" placeholder="Product category"></b2b-ngx-select>
+			<input
+				type="text"
+				b2bNgxInput
+				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+				formControlName="amount"
+				placeholder="Required amount"
+				class="input" />
 		</div>
 		<div class="unit">
 			<p class="label">Unit</p>
-			<b2b-ngx-select className="border-radius-14" [options]="[]" [theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-				formControlName="deliveryTerms" placeholder="Tones"></b2b-ngx-select>
+			<b2b-ngx-select
+				className="border-radius-14"
+				[options]="units$ | async"
+				bindValue="_id"
+				bindLabel="displayName"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				formControlName="units"
+				placeholder="Select"></b2b-ngx-select>
 		</div>
 		<div class="btn-submit-wrapper">
-			<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" [disabled]="!(isValid$ | async)"
-				class="btn-submit">Send
+			<button
+				b2bNgxButton
+				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+				[disabled]="!(isValid$ | async)"
+				class="btn-submit">
+				Send
 			</button>
 		</div>
 	</form>

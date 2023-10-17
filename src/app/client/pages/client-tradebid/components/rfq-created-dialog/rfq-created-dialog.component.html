@@ -1,0 +1,22 @@
+<img b2bNgxIcon name="cross" class="cross-icon" mat-dialog-close />
+
+<div class="content">
+	<p>Your sourcing request has been created successfully.</p>
+
+	<div class="buttons">
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_TRANSPARENT"
+			mat-dialog-close
+			[routerLink]="'profile/your-workspace/tradebid/my-rfq'">
+			My requests
+		</button>
+
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_WHITE"
+			(click)="addNewRfqDialog()">
+			Add request
+		</button>
+	</div>
+</div>

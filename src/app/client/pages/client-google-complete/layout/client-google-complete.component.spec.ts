@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientGoogleCompleteComponent } from "./client-google-complete.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientGoogleCompleteComponent } from './client-google-complete.component';
 
-describe("ClientGoogleCompleteComponent", () => {
+describe('ClientGoogleCompleteComponent', () => {
 	let component: ClientGoogleCompleteComponent;
 	let fixture: ComponentFixture<ClientGoogleCompleteComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientGoogleCompleteComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

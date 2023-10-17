@@ -1,0 +1,43 @@
+<div *ngIf="order" class="order">
+	<div class="order__info">
+		<div class="order__header">
+			<div class="order__icon {{ order.deliveryType }}">
+				<svg-icon
+					[src]="
+						'/assets/icons/logistic/' +
+						getOrderTransportIcon(order.deliveryType, true)
+					"></svg-icon>
+			</div>
+			<div class="order__transportName">{{ order.transportName }}</div>
+		</div>
+		<div class="order__way">
+			<div class="order__way-header">
+				<svg-icon
+					class="order__way-icon"
+					[src]="
+						'/assets/icons/logistic/' +
+						getOrderTransportIcon(order.deliveryType)
+					"></svg-icon>
+				<div class="order__way-title">{{ order.origin }}</div>
+				<div class="order__way-title">{{ order.destination }}</div>
+			</div>
+			<div class="order__way-road {{ order.deliveryType }}"></div>
+		</div>
+	</div>
+	<div class="order__price">
+		<div class="order__price-valid">
+			<div class="title">Valid</div>
+			<div class="date">{{ order.validTo | date: 'dd/MM/yyyy' }}</div>
+		</div>
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+			class="request-btn"
+			(click)="sendRequestToCompany()">
+			<div class="btn-text">
+				<span>{{ order.price }}</span>
+				<span>Request</span>
+			</div>
+		</button>
+	</div>
+</div>

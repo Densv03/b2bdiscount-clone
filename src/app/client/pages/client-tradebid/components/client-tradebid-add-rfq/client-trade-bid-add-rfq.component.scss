@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.error {
@@ -19,7 +19,7 @@
 		padding: 0 6em;
 		padding-bottom: 70px;
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			padding: 0 0 70px;
 		}
 
@@ -28,11 +28,11 @@
 			display: flex;
 			justify-content: space-between;
 			flex-direction: row;
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				flex-direction: column;
 				padding: 0 20px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				justify-content: space-around;
 			}
 			h1 {
@@ -42,7 +42,7 @@
 				justify-content: center;
 				align-items: center;
 				line-height: 50px;
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					font-size: 2em;
 					line-height: 36px;
 				}
@@ -52,16 +52,16 @@
 				height: 100%;
 				width: auto;
 
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					height: 70%;
 					margin: auto;
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					height: 50%;
 				}
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					margin: 0 0 0 auto;
 				}
 			}
@@ -74,15 +74,15 @@
 			padding: 3em 19em 3em 10em;
 			margin-top: 3em;
 
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				padding: 3em 10em 3em 10em;
 			}
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 3em 8em 3em 10em;
 			}
 
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				padding: 3em 5em 3em 5em;
 			}
 
@@ -105,7 +105,7 @@
 			justify-content: space-between;
 			align-items: center;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				flex-direction: column;
 			}
 		}
@@ -118,7 +118,7 @@
 			display: block;
 			width: 49%;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 		}
@@ -148,7 +148,7 @@
 			max-width: 50%;
 			min-height: 50px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				max-width: 100%;
 			}
 		}
@@ -169,7 +169,7 @@
 			justify-content: space-around;
 			width: 50%;
 			margin: auto;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				flex-direction: column-reverse;
 			}
@@ -177,7 +177,7 @@
 				padding: 15px 40px;
 			}
 			.cancel-btn {
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					margin-top: 20px;
 					width: 200px;
 				}
@@ -199,7 +199,7 @@
 		transform: translate(170%, -190%);
 		color: #6c7077;
 		opacity: 0.6;
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			transform: translate(0%, 100%);
 		}
 	}

@@ -1,13 +1,18 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
-import { combineLatest } from "rxjs";
-import { filter, map } from "rxjs/operators";
-import { OffersService } from "../../../../services/offers/offers.service";
-import {AuthService} from "../../../../../auth/services/auth/auth.service";
+import { Injectable } from '@angular/core';
+import {
+	ActivatedRouteSnapshot,
+	CanActivate,
+	Router,
+	RouterStateSnapshot,
+} from '@angular/router';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
+import { combineLatest } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { OffersService } from '../../../../services/offers/offers.service';
+import { AuthService } from '../../../../../auth/services/auth/auth.service';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class MyOfferGuard implements CanActivate {
 	constructor(
@@ -18,7 +23,7 @@ export class MyOfferGuard implements CanActivate {
 	) {}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		const offerId = route.paramMap.get("id");
+		const offerId = route.paramMap.get('id');
 
 		const user$ = this._authService.getUser().pipe(filter((user) => !!user));
 		const offer$ = this._offersService.getOfferById(offerId);
@@ -28,7 +33,7 @@ export class MyOfferGuard implements CanActivate {
 				const isOwner = offer?.user === user._id;
 
 				if (!isOwner) {
-					this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink("/"));
+					this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink('/'));
 				}
 
 				return isOwner;

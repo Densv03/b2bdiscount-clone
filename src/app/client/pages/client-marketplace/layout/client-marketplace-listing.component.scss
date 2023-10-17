@@ -1,51 +1,52 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 label {
-  display: flex;
-  gap: 5px;
-  img {
-    width: 23px;
-  }
+	display: flex;
+	gap: 5px;
+
+	img {
+		width: 23px;
+	}
 }
+
 .multi-options {
-  .item {
-    margin-top: 10px !important;
+	.item {
+		margin-top: 10px !important;
+
 		&:first-child {
 			margin-top: 0 !important;
 		}
-  }
+	}
 }
+
 .circle {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1px solid #828282;
-  position: relative;
-  .inner-circle {
-    width: 11px;
-    height: 12px;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    &.selected {
-      background: #828282;
-    }
-  }
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 1px solid #828282;
+	position: relative;
+
+	.inner-circle {
+		width: 11px;
+		height: 12px;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		position: absolute;
+		left: 50%;
+		top: 50%;
+
+		&.selected {
+			background: #828282;
+		}
+	}
 }
 
 .latest-offers-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 1.25rem 99px;
-	@include breakpoint("3") {
-		flex-direction: column;
-		padding: 1.25rem 18px;
-	}
-	@include breakpoint('2') {
-		padding: 0 18px;
+	max-width: 1385px;
+	margin: auto;
+	width: 87%;
+	@include breakpoint('4') {
+		width: 95%;
 	}
 
 	.latest-offers-header-title {
@@ -60,7 +61,7 @@ label {
 			display: none;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			.latest-offers-header-icon {
 				display: block;
@@ -71,7 +72,7 @@ label {
 	.search-wrapper {
 		width: 40%;
 		position: relative;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			margin-top: 24px;
 		}
@@ -81,7 +82,7 @@ label {
 
 		.latest-offers-header-search {
 			display: block;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				margin-top: 24px;
 			}
@@ -92,7 +93,7 @@ label {
 			right: 15px;
 			cursor: pointer;
 			top: 16px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				top: 40px;
 			}
 		}
@@ -106,7 +107,7 @@ label {
 			display: none;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			&__mobile {
 				display: flex;
 				width: 100%;
@@ -172,11 +173,47 @@ label {
 			align-items: center;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			.latest-offers-header-display-type {
 				display: none;
 			}
 		}
+	}
+}
+
+.category-description-wrapper {
+	padding-bottom: 80px;
+	@include breakpoint('1') {
+		padding-bottom: 30px;
+	}
+}
+
+.category-description {
+	border-radius: 8px;
+	border: 2px solid #d3dfff;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+	width: 87%;
+	margin: auto;
+	max-width: 1385px;
+	padding: 24px 100px;
+	@include breakpoint('4') {
+		width: 95%;
+		padding: 24px 30px;
+	}
+	&__title {
+		color: #000;
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 140%;
+		letter-spacing: 0.18px;
+	}
+	&__subtitle {
+		color: #000;
+		font-size: 12px;
+		font-weight: 400;
+		line-height: 140%;
+		letter-spacing: 0.12px;
+		margin-top: 8px;
 	}
 }
 
@@ -196,38 +233,64 @@ label {
 		width: 275px;
 		padding: 25px 0 0 0;
 		align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    .options {
-      max-height: 188px;
-      overflow: auto;
-    }
-    .item {
-      margin-top: 8px;
-      display: flex;
-      gap: 5px;
-      cursor: pointer;
-      input[type='radio'] {
-        accent-color: #0F0F11;
-      }
-      .label {
-        color: #000;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 18px;
-        letter-spacing: 0.28px;
-        width: 80%;
-      }
-      &:first-child {
-        margin-top: 0;
-      }
-    }
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+
+		.offers-title {
+			color: #0f0f11;
+			font-size: 24px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 134%;
+			letter-spacing: 0.24px;
+		}
+
+		.selection-title {
+			padding-bottom: 28px;
+			color: #000;
+			font-size: 18px;
+			font-weight: 700;
+			letter-spacing: 0.36px;
+		}
+
+		.options {
+			max-height: 188px;
+			overflow: auto;
+		}
+
+		.item {
+			margin-top: 8px;
+			display: flex;
+			gap: 5px;
+			cursor: pointer;
+
+			input[type='radio'] {
+				accent-color: #0f0f11;
+			}
+
+			.label {
+				color: #000;
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 18px;
+				letter-spacing: 0.28px;
+				width: 80%;
+			}
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
 	}
 
 	.listing {
-		width: 80%;
+		width: 75%;
 		padding: 25px 0;
+		@include breakpoint('3') {
+			width: 100%;
+		}
+
 		.chips-wrapper {
 			//margin-bottom: 32px;
 			@include breakpoint('3') {
@@ -239,43 +302,44 @@ label {
 		}
 	}
 
-	@include breakpoint("4") {
+	@include breakpoint('4') {
 		width: 95%;
 	}
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		width: 100%;
 		.filters {
 			display: none;
 		}
 	}
-	@include breakpoint("2") {
+	@include breakpoint('2') {
 		.listing {
 			padding-left: 0;
 		}
 	}
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		.filters {
 			width: 25%;
 		}
 		.listing {
 			width: 100%;
+			padding-top: 0;
 		}
 	}
 }
 
 :host::ng-deep {
-	@include breakpoint("2") {
+	@include breakpoint('2') {
 		.ng-placeholder {
 			font-size: 11px;
 			padding-left: 0;
 		}
 	}
 
-  .ngx-checkbox__label {
-    .label {
-      width: 100% !important;
-    }
-  }
+	.ngx-checkbox__label {
+		.label {
+			width: 100% !important;
+		}
+	}
 
 	.filters-checkbox {
 		width: 20px !important;
@@ -290,7 +354,7 @@ label {
 
 .mobile-filters-pop-up {
 	display: none;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		& {
 			display: block;
 		}
@@ -300,24 +364,27 @@ label {
 .clear-button {
 	padding: 15px 0;
 	margin-bottom: 15px;
+	border-radius: 14px;
 }
-
 
 .mobile-filters-button {
 	border-radius: 50px;
-	background: #FFF;
-	box-shadow: 4px 4px 15px 0 #000, -4px -4px 15px 0px #E5F2FD;
+	background: #fff;
+	box-shadow:
+		4px 4px 15px 0 #000,
+		-4px -4px 15px 0px #e5f2fd;
 	display: none;
 	align-items: center;
 	gap: 8px;
 	position: fixed;
 	bottom: 0;
 	left: 50%;
-	transform: translate(-50%,-50%);
+	transform: translate(-50%, -50%);
 	padding: 7px 22px;
 	@include breakpoint('3') {
 		display: flex;
 	}
+
 	.filter-label {
 		color: #000;
 		font-size: 20px;

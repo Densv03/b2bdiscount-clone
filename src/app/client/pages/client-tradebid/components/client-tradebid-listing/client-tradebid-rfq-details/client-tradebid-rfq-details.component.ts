@@ -1,13 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { MakeQuoteDialogComponent } from "../dialogs/make-quote-dialog/make-quote-dialog.component";
-import { TradebidService } from "src/app/client/pages/client-tradebid/tradebid.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import {  first } from "rxjs/operators";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { Observable } from "rxjs";
-import { User } from "src/app/core/models/user/user.model";
-import { UserService } from "src/app/client/pages/client-profile/services/user/user.service";
-import {MatDialog} from "@angular/material/dialog";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MakeQuoteDialogComponent } from '../dialogs/make-quote-dialog/make-quote-dialog.component';
+import { TradebidService } from 'src/app/client/pages/client-tradebid/tradebid.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { Observable } from 'rxjs';
+import { User } from 'src/app/core/models/user/user.model';
+import { UserService } from 'src/app/client/pages/client-profile/services/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
 
 enum UserActions {
 	SHOW_DIALOG,
@@ -15,9 +15,9 @@ enum UserActions {
 }
 
 @Component({
-	selector: "b2b-client-tradebid-rfq-details",
-	templateUrl: "./client-tradebid-rfq-details.component.html",
-	styleUrls: ["./client-tradebid-rfq-details.component.scss"],
+	selector: 'b2b-client-tradebid-rfq-details',
+	templateUrl: './client-tradebid-rfq-details.component.html',
+	styleUrls: ['./client-tradebid-rfq-details.component.scss'],
 })
 export class ClientTradebidRfqDetailsComponent implements OnInit {
 	public rfqData: any;
@@ -38,7 +38,7 @@ export class ClientTradebidRfqDetailsComponent implements OnInit {
 		private changeDetectionRef: ChangeDetectorRef,
 		private userService: UserService
 	) {
-		this.rfqId = this.route.snapshot.params["id"];
+		this.rfqId = this.route.snapshot.params['id'];
 	}
 
 	public ngOnInit(): void {
@@ -46,12 +46,19 @@ export class ClientTradebidRfqDetailsComponent implements OnInit {
 			.getRfqById(this.rfqId)
 			.pipe(first())
 			.subscribe((data: any) => {
-				this.userService.getUser()?.fullName === data.user?.fullName ? (this.showButton = false) : null;
+				this.userService.getUser()?.fullName === data.user?.fullName
+					? (this.showButton = false)
+					: null;
 				this.rfqData = data;
-				this.user$ = this.userService.getPublicUserInfo(this.rfqData?.user?._id);
+				this.user$ = this.userService.getPublicUserInfo(
+					this.rfqData?.user?._id
+				);
 				this.initUserActions(this.userService.getUser());
 
-				this.showBuyerInfo = this.isContactsOpen(data, this.userService.getUser()?._id);
+				this.showBuyerInfo = this.isContactsOpen(
+					data,
+					this.userService.getUser()?._id
+				);
 
 				this.changeDetectionRef.detectChanges();
 			});
@@ -59,19 +66,19 @@ export class ClientTradebidRfqDetailsComponent implements OnInit {
 
 	public quoteNow(): void {
 		if (!this.userService.getUser()) {
-			this.router.navigate(["/auth/log-in"]);
+			this.router.navigate(['/auth/log-in']);
 		} else if (this.userAction === UserActions.SHOW_DIALOG) {
 			this.openDialog();
 		} else {
-			this.router.navigate(["tradebid", "quotation", this.rfqData._id]);
+			this.router.navigate(['tradebid', 'quotation', this.rfqData._id]);
 		}
 	}
 
 	private openDialog(): void {
-    this.dialog.open(MakeQuoteDialogComponent, {
-      width: '560px',
-      height: '280px'
-    });
+		this.dialog.open(MakeQuoteDialogComponent, {
+			width: '560px',
+			height: '280px',
+		});
 	}
 
 	private isContactsOpen(rfq: any, userId: string): boolean {
@@ -79,6 +86,8 @@ export class ClientTradebidRfqDetailsComponent implements OnInit {
 	}
 
 	private initUserActions(user: User): void {
-		this.userAction = user?.rfqQuotes ? UserActions.REDIRECT_TO_QUOTATION_FORM : UserActions.SHOW_DIALOG;
+		this.userAction = user?.rfqQuotes
+			? UserActions.REDIRECT_TO_QUOTATION_FORM
+			: UserActions.SHOW_DIALOG;
 	}
 }

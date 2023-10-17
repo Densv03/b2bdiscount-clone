@@ -1,6 +1,8 @@
 <div class="client-profile-add-offer-wrapper">
 	<div class="client-profile-add-offer">
-		<p class="client-profile-add-offer-title">{{ editMode ? "OFFER.EDIT" : "OFFER.ADD" | translate}}</p>
+		<p class="client-profile-add-offer-title">
+			{{ editMode ? 'OFFER.EDIT' : ('OFFER.ADD' | translate) }}
+		</p>
 
 		<p
 			class="badge"
@@ -11,13 +13,15 @@
 			">
 			<img b2bNgxIcon name="info-1" />
 
-			<span>{{ "OFFER.BADGE" | translate }}</span>
+			<span>{{ 'OFFER.BADGE' | translate }}</span>
 		</p>
 
 		<form [formGroup]="formGroup" b2bScrollToInvalidControl>
 			<div class="client-profile-add-offer-container">
 				<div class="client-profile-add-offer-left">
-					<p class="client-profile-add-offer-left-seller-details">{{ "OFFER.SELLER_DETAILS" | translate }}</p>
+					<p class="client-profile-add-offer-left-seller-details">
+						{{ 'OFFER.SELLER_DETAILS' | translate }}
+					</p>
 					<div class="client-profile-add-offer-left-company-info">
 						<div class="client-profile-add-offer-left-company-name-container">
 							<input
@@ -27,13 +31,18 @@
 								labelClass="client-profile-add-offer-company-name"
 								formControlName="contactCompanyName"
 								[placeholder]="'PLACEHOLDERS.ENTER_COMPANY_NAME' | translate" />
-							<p [@fadeInOut] class="error" *ngIf="formGroup.controls['contactCompanyName'].errors?.['latin']">
-								{{ "ERRORS.USER_ENGLISH_LETTERS" | translate }}
+							<p
+								[@fadeInOut]
+								class="error"
+								*ngIf="
+									formGroup.controls['contactCompanyName'].errors?.['latin']
+								">
+								{{ 'ERRORS.USER_ENGLISH_LETTERS' | translate }}
 							</p>
 							<b2b-ngx-toggle
 								formControlName="visibilityCompanyName"
 								class="client-profile-add-offer-company-name-visible-toggle"
-								>{{ "LABELS.VISIBLE" | translate }}</b2b-ngx-toggle
+								>{{ 'LABELS.VISIBLE' | translate }}</b2b-ngx-toggle
 							>
 						</div>
 						<div class="client-profile-add-offer-left-name-container">
@@ -44,13 +53,19 @@
 								labelClass="client-profile-add-offer-name"
 								formControlName="contactPersonName"
 								[placeholder]="'PLACEHOLDERS.ENTER_NAME' | translate" />
-							<p [@fadeInOut] class="error" *ngIf="formGroup.controls['contactPersonName'].errors?.['latin']">
-								{{ "ERRORS.USER_ENGLISH_LETTERS" | translate }}
+							<p
+								[@fadeInOut]
+								class="error"
+								*ngIf="
+									formGroup.controls['contactPersonName'].errors?.['latin']
+								">
+								{{ 'ERRORS.USER_ENGLISH_LETTERS' | translate }}
 							</p>
 							<b2b-ngx-toggle
 								formControlName="visibilityContactPerson"
 								class="client-profile-add-offer-name-visibe-toggle"
-								>{{ "LABELS.VISIBLE" | translate }}</b2b-ngx-toggle>
+								>{{ 'LABELS.VISIBLE' | translate }}</b2b-ngx-toggle
+							>
 						</div>
 					</div>
 					<div class="client-profile-add-offer-left-contact-information">
@@ -60,11 +75,13 @@
 								[errors]="formGroup.get('contactPhone').errors"
 								[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 								class="client-profile-add-offer-tel"
-								>{{ "LABELS.PHONE" | translate }}</b2b-ngx-tel
+								>{{ 'LABELS.PHONE' | translate }}</b2b-ngx-tel
 							>
-							<b2b-ngx-toggle formControlName="visibilityPhone" class="client-profile-add-offer-tel-visible-toggle">{{
-								"LABELS.VISIBLE" | translate
-							}}</b2b-ngx-toggle>
+							<b2b-ngx-toggle
+								formControlName="visibilityPhone"
+								class="client-profile-add-offer-tel-visible-toggle"
+								>{{ 'LABELS.VISIBLE' | translate }}</b2b-ngx-toggle
+							>
 						</div>
 						<div class="client-profile-add-offer-left-email-container">
 							<input
@@ -74,12 +91,16 @@
 								labelClass="client-profile-add-offer-email"
 								formControlName="contactEmail"
 								[placeholder]="'PLACEHOLDERS.ENTER_EMAIL' | translate" />
-							<b2b-ngx-toggle formControlName="visibilityEmail" class="client-profile-add-offer-email-visible-toggle">{{
-								"LABELS.VISIBLE" | translate
-							}}</b2b-ngx-toggle>
+							<b2b-ngx-toggle
+								formControlName="visibilityEmail"
+								class="client-profile-add-offer-email-visible-toggle"
+								>{{ 'LABELS.VISIBLE' | translate }}</b2b-ngx-toggle
+							>
 						</div>
 					</div>
-					<p class="client-profile-add-offer-left-cargo-details">{{ "OFFER.CARGO_DETAILS" | translate }}</p>
+					<p class="client-profile-add-offer-left-cargo-details">
+						{{ 'OFFER.CARGO_DETAILS' | translate }}
+					</p>
 					<input
 						b2bNgxInput
 						[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
@@ -87,8 +108,11 @@
 						labelClass="client-profile-add-offer-lot-name"
 						formControlName="title"
 						[placeholder]="'PLACEHOLDERS.ENTER_LOT_NAME' | translate" />
-					<p [@fadeInOut] class="error" *ngIf="formGroup.controls['title'].errors?.['latin']">
-						{{ "ERRORS.USER_ENGLISH_LETTERS" | translate }}
+					<p
+						[@fadeInOut]
+						class="error"
+						*ngIf="formGroup.controls['title'].errors?.['latin']">
+						{{ 'ERRORS.USER_ENGLISH_LETTERS' | translate }}
 					</p>
 					<div class="client-profile-add-offer-cargo">
 						<div class="client-profile-add-offer-cargo-category">
@@ -101,7 +125,7 @@
 								bindValue="_id"
 								bindLabel="name"
 								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-								>{{ "LABELS.CARGO" | translate }}</b2b-ngx-select
+								>{{ 'LABELS.CARGO' | translate }}</b2b-ngx-select
 							>
 						</div>
 						<div class="client-profile-add-offer-cargo-subcategory">
@@ -112,7 +136,9 @@
 								[options]="level2Categories$ | async"
 								bindValue="_id"
 								bindLabel="name"
-								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"></b2b-ngx-select>
+								[theme]="
+									b2bNgxSelectThemeEnum.BACKGROUND_GRAY
+								"></b2b-ngx-select>
 						</div>
 					</div>
 
@@ -121,9 +147,14 @@
 						[label]="'LABELS.DESCRIPTION' | translate"
 						labelClass="client-profile-add-offer-description"
 						formControlName="description"
-						[placeholder]="'PLACEHOLDERS.ENTER_DESCRIPTION' | translate"></textarea>
-					<p [@fadeInOut] class="error" *ngIf="formState['description'].errors?.['latin']">
-						{{ "ERRORS.USER_ENGLISH_LETTERS" | translate }}
+						[placeholder]="
+							'PLACEHOLDERS.ENTER_DESCRIPTION' | translate
+						"></textarea>
+					<p
+						[@fadeInOut]
+						class="error"
+						*ngIf="formState['description'].errors?.['latin']">
+						{{ 'ERRORS.USER_ENGLISH_LETTERS' | translate }}
 					</p>
 
 					<div class="client-profile-add-offer-price">
@@ -153,8 +184,11 @@
 							<p
 								[@fadeInOut]
 								class="error"
-								*ngIf="formState['priceNew'].dirty && formState['priceDiscount'].value < 5">
-								{{ "OFFER.DISCOUNT" | translate }}
+								*ngIf="
+									formState['priceNew'].dirty &&
+									formState['priceDiscount'].value < 5
+								">
+								{{ 'OFFER.DISCOUNT' | translate }}
 							</p>
 						</div>
 					</div>
@@ -169,7 +203,10 @@
 							<p
 								[@fadeInOut]
 								class="error"
-								*ngIf="formState['amount'].errors?.['number'] && formState['amount'].dirty">
+								*ngIf="
+									formState['amount'].errors?.['number'] &&
+									formState['amount'].dirty
+								">
 								Please, use numbers
 							</p>
 						</div>
@@ -179,12 +216,16 @@
 								[options]="units$ | async"
 								bindValue="_id"
 								bindLabel="displayName"
-								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"></b2b-ngx-select>
+								[theme]="
+									b2bNgxSelectThemeEnum.BACKGROUND_GRAY
+								"></b2b-ngx-select>
 						</div>
 					</div>
 				</div>
 				<div class="client-profile-add-offer-right">
-					<p class="client-profile-add-offer-right-transportation">{{ "OFFER.TRANSPORTATION" | translate }}</p>
+					<p class="client-profile-add-offer-right-transportation">
+						{{ 'OFFER.TRANSPORTATION' | translate }}
+					</p>
 
 					<div class="client-profile-add-offer-right-transport-wrapper">
 						<div class="client-profile-add-offer-right-transport-type">
@@ -196,13 +237,15 @@
 								bindValue="_id"
 								bindLabel="displayName"
 								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-								>{{ "LABELS.TRANSPORTATION_TYPE" | translate }}</b2b-ngx-select
+								>{{ 'LABELS.TRANSPORTATION_TYPE' | translate }}</b2b-ngx-select
 							>
 						</div>
 					</div>
 
 					<div class="client-profile-add-offer-right-transport-type-wrapper">
-						<div *ngIf="showContainerNumber$ | async" class="client-profile-add-offer-right-container-no">
+						<div
+							*ngIf="showContainerNumber$ | async"
+							class="client-profile-add-offer-right-container-no">
 							<b2b-ngx-input
 								formControlName="container"
 								[placeholder]="'PLACEHOLDERS.CONTAINER_VESSEL' | translate"
@@ -210,7 +253,8 @@
 							<p
 								class="client-profile-add-offer-right-container-no__error"
 								*ngIf="
-									formGroup.get('container').errors?.['bulkVesselFormat'] && formGroup.get('container').dirty
+									formGroup.get('container').errors?.['bulkVesselFormat'] &&
+									formGroup.get('container').dirty
 								">
 								There should be only numbers
 							</p>
@@ -222,33 +266,41 @@
 								">
 								Please, check your “container number”
 							</p>
-							<p class="client-profile-add-offer-right-photos-description">{{ "HINTS.CONTAINER_NUMBER" | translate }}</p>
+							<p class="client-profile-add-offer-right-photos-description">
+								{{ 'HINTS.CONTAINER_NUMBER' | translate }}
+							</p>
 						</div>
-						<div *ngIf="isTransportTypeBulk" class="client-profile-add-offer-right-container-number-type">
+						<div
+							*ngIf="isTransportTypeBulk"
+							class="client-profile-add-offer-right-container-number-type">
 							<b2b-ngx-radio
 								[options]="['IMO', 'MMSI']"
 								formControlName="containerNumberType"
-								[errors]="formGroup.get('containerNumberType').errors"></b2b-ngx-radio>
+								[errors]="
+									formGroup.get('containerNumberType').errors
+								"></b2b-ngx-radio>
 						</div>
 					</div>
 
 					<b2b-ngx-toggle
 						formControlName="visibilityContainer"
 						class="client-profile-add-offer-right-container-no-toggle">
-						{{ "LABELS.VISIBLE" | translate }}</b2b-ngx-toggle
+						{{ 'LABELS.VISIBLE' | translate }}</b2b-ngx-toggle
 					>
 
 					<div class="client-profile-add-offer-right-transport-destination">
-						<div class="client-profile-add-offer-right-transport-destination-from">
+						<div
+							class="client-profile-add-offer-right-transport-destination-from">
 							<b2b-ngx-country-select
 								[touched]="formState['destinationFrom'].touched"
 								formControlName="destinationFrom"
 								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 								[placeholder]="'PLACEHOLDERS.FROM' | translate">
-								{{ "LABELS.DESTINATION" | translate }}
+								{{ 'LABELS.DESTINATION' | translate }}
 							</b2b-ngx-country-select>
 						</div>
-						<div class="client-profile-add-offer-right-transport-destination-to">
+						<div
+							class="client-profile-add-offer-right-transport-destination-to">
 							<b2b-ngx-country-select
 								[touched]="formState['destinationTo'].touched"
 								formControlName="destinationTo"
@@ -268,7 +320,9 @@
 						</b2b-ngx-country-select>
 					</div>
 
-					<p class="client-profile-add-offer-right-photos-and-documents">{{ "OFFER.PHOTOS_AND_DOCUMENTS" | translate }}</p>
+					<p class="client-profile-add-offer-right-photos-and-documents">
+						{{ 'OFFER.PHOTOS_AND_DOCUMENTS' | translate }}
+					</p>
 
 					<b2b-ngx-file
 						formControlName="photos"
@@ -276,19 +330,28 @@
 						[errors]="formGroup.get('photos').errors"
 						[label]="'LABELS.CHOOSE_PHOTOS' | translate"
 						[isPhoto]="true"
-						>{{ "LABELS.PHOTOS" | translate }}</b2b-ngx-file>
+						>{{ 'LABELS.PHOTOS' | translate }}</b2b-ngx-file
+					>
 
-					<p *ngIf="formState['photos'].touched && formState['photos'].errors?.['required']" class="error" [@fadeInOut]>
+					<p
+						*ngIf="
+							formState['photos'].touched &&
+							formState['photos'].errors?.['required']
+						"
+						class="error"
+						[@fadeInOut]>
 						Please load at least 1 photo
 					</p>
 
-					<p class="client-profile-add-offer-right-photos-description">{{ "OFFER.PHOTOS_DESCRIPTION" | translate }}</p>
+					<p class="client-profile-add-offer-right-photos-description">
+						{{ 'OFFER.PHOTOS_DESCRIPTION' | translate }}
+					</p>
 
 					<div [hidden]="true">
 						<b2b-ngx-toggle
 							formControlName="visibilityPhotos"
 							class="client-profile-add-offer-right-photos-visible-toggle"
-							>{{ "LABELS.VISIBLE" | translate }}</b2b-ngx-toggle
+							>{{ 'LABELS.VISIBLE' | translate }}</b2b-ngx-toggle
 						>
 					</div>
 					<b2b-ngx-file
@@ -298,18 +361,27 @@
 						[errors]="formGroup.get('documents').errors"
 						[label]="'LABELS.CHOOSE_DOCUMENTS' | translate"
 						(clicked)="openDocument($event)"
-						>{{ "LABELS.DOCUMENTS" | translate }}</b2b-ngx-file>
+						>{{ 'LABELS.DOCUMENTS' | translate }}</b2b-ngx-file
+					>
 
-					<p *ngIf="formState['documents'].touched && formState['documents'].errors?.['required']" class="error" [@fadeInOut]>
+					<p
+						*ngIf="
+							formState['documents'].touched &&
+							formState['documents'].errors?.['required']
+						"
+						class="error"
+						[@fadeInOut]>
 						Please load at least 1 document
 					</p>
 
-					<p class="client-profile-add-offer-right-documents-description">{{ "OFFER.DOCUMENTS_DESCRIPTION" | translate }}</p>
+					<p class="client-profile-add-offer-right-documents-description">
+						{{ 'OFFER.DOCUMENTS_DESCRIPTION' | translate }}
+					</p>
 
 					<b2b-ngx-toggle
 						formControlName="visibilityDocuments"
 						class="client-profile-add-offer-right-documents-visible-toggle"
-						>{{ "LABELS.HIDDEN" | translate }}</b2b-ngx-toggle
+						>{{ 'LABELS.HIDDEN' | translate }}</b2b-ngx-toggle
 					>
 				</div>
 			</div>
@@ -322,7 +394,12 @@
 			(click)="backToCompanyForm()"
 			b2bNgxButton
 			[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY">
-			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg
+				width="16"
+				height="16"
+				viewBox="0 0 16 16"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg">
 				<path
 					d="M3.29289 8.70711C2.90237 8.31658 2.90237 7.68342 3.29289 7.29289L9.65685 0.928933C10.0474 0.538408 10.6805 0.538408 11.0711 0.928933C11.4616 1.31946 11.4616 1.95262 11.0711 2.34315L5.41421 8L11.0711 13.6569C11.4616 14.0474 11.4616 14.6805 11.0711 15.0711C10.6805 15.4616 10.0474 15.4616 9.65685 15.0711L3.29289 8.70711ZM5 9L4 9L4 7L5 7L5 9Z"
 					fill="#0F0F11" />
@@ -336,7 +413,7 @@
 			[disabled]="loading"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 			class="client-profile-add-offer-form-review-and-post-button">
-			{{ "OFFER.REVIEW" | translate}}
+			{{ 'OFFER.REVIEW' | translate }}
 		</button>
 		<button
 			*ngIf="editMode"
@@ -345,7 +422,7 @@
 			[disabled]="loading"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 			class="client-profile-add-offer-form-review-and-post-button">
-			{{ "OFFER.EDIT" | translate}}
+			{{ 'OFFER.EDIT' | translate }}
 		</button>
 	</div>
 </div>

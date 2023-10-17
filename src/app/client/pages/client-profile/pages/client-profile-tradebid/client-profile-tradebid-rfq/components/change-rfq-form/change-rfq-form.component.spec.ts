@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChangeRfqFormComponent } from "./change-rfq-form.component";
+import { ChangeRfqFormComponent } from './change-rfq-form.component';
 
-describe("ChangeRfqFormComponent", () => {
+describe('ChangeRfqFormComponent', () => {
 	let component: ChangeRfqFormComponent;
 	let fixture: ComponentFixture<ChangeRfqFormComponent>;
 
@@ -18,7 +18,7 @@ describe("ChangeRfqFormComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

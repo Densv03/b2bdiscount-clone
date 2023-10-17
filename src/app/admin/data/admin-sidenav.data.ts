@@ -1,42 +1,42 @@
 export const AdminSidenavData = [
 	{
-		label: "USERS",
-		path: "/admin/users",
+		label: 'USERS',
+		path: '/admin/users',
 	},
 	{
-		label: "OFFERS",
-		path: "/admin/offers",
+		label: 'OFFERS',
+		path: '/admin/offers',
 	},
 	// {
 	// 	label: "WIKI ARTICLES",
 	// 	path: "/admin/articles",
 	// },
 	{
-		label: "MANAGER",
-		path: "/admin/manager",
+		label: 'MANAGER',
+		path: '/admin/manager',
 	},
 	{
-		label: "TRADE BID",
-		path: "/admin/tradebid",
+		label: 'TRADE BID',
+		path: '/admin/tradebid',
 	},
 	{
-		label: "MARKET",
-		path: "/admin/b2bmarket",
+		label: 'MARKET',
+		path: '/admin/b2bmarket',
 	},
 	{
-		label: "HOMEPAGE",
-		path: "/admin/homepage",
+		label: 'HOMEPAGE',
+		path: '/admin/homepage',
 	},
 	{
-		label: "COMPANIES",
-		path: "/admin/companies",
+		label: 'COMPANIES',
+		path: '/admin/companies',
 	},
 	{
-		label: "BLOG",
-		path: "/admin/blog",
+		label: 'BLOG',
+		path: '/admin/blog',
 	},
 	{
-		label: "BILLING",
-		path: "/admin/billing",
+		label: 'BILLING',
+		path: '/admin/billing',
 	},
 ];

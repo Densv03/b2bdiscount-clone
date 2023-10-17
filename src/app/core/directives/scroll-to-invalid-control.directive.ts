@@ -1,30 +1,34 @@
-import { Directive, HostListener, ElementRef } from "@angular/core";
-import { FormGroupDirective } from "@angular/forms";
-import { fromEvent } from "rxjs";
-import { debounceTime, take } from "rxjs/operators";
+import { Directive, HostListener, ElementRef } from '@angular/core';
+import { FormGroupDirective } from '@angular/forms';
+import { fromEvent } from 'rxjs';
+import { debounceTime, take } from 'rxjs/operators';
 
 @Directive({
-	selector: "[b2bScrollToInvalidControl]",
+	selector: '[b2bScrollToInvalidControl]',
 })
 export class B2bScrollToInvalidControl {
-	constructor(private el: ElementRef, private formGroupDir: FormGroupDirective) {}
+	constructor(
+		private el: ElementRef,
+		private formGroupDir: FormGroupDirective
+	) {}
 
-	@HostListener("ngSubmit") onSubmit() {
+	@HostListener('ngSubmit') onSubmit() {
 		if (this.formGroupDir.control.invalid) {
 			this.scrollToFirstInvalidControl();
 		}
 	}
 
 	private scrollToFirstInvalidControl() {
-		const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector(".ng-invalid");
+		const firstInvalidControl: HTMLElement =
+			this.el.nativeElement.querySelector('.ng-invalid');
 
 		window.scroll({
 			top: this.getTopOffset(firstInvalidControl),
 			left: 0,
-			behavior: "smooth",
+			behavior: 'smooth',
 		});
 
-		fromEvent(window, "scroll")
+		fromEvent(window, 'scroll')
 			.pipe(debounceTime(100), take(1))
 			.subscribe(() => firstInvalidControl.focus());
 	}

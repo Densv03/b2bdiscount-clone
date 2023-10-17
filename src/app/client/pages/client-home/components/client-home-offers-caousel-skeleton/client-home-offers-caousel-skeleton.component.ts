@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-	selector: "b2b-client-home-offers-caousel-skeleton",
-	templateUrl: "./client-home-offers-caousel-skeleton.component.html",
-	styleUrls: ["./client-home-offers-caousel-skeleton.component.scss"],
+	selector: 'b2b-client-home-offers-caousel-skeleton',
+	templateUrl: './client-home-offers-caousel-skeleton.component.html',
+	styleUrls: ['./client-home-offers-caousel-skeleton.component.scss'],
 })
 export class ClientHomeOffersCaouselSkeletonComponent {
 	public readonly options: any;
@@ -16,8 +16,8 @@ export class ClientHomeOffersCaouselSkeletonComponent {
 
 	public getTheme() {
 		return {
-			width: "380px",
-			height: "171px",
+			width: '380px',
+			height: '171px',
 		};
 	}
 }

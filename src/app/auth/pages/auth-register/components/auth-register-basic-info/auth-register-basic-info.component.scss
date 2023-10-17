@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.auth-register-individual-account__main-input {
@@ -45,7 +45,7 @@
 		align-items: center;
 		gap: 40px;
 		padding-bottom: 12px;
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			gap: 10px;
 		}
 
@@ -55,7 +55,7 @@
 			line-height: 36px;
 			color: #000000;
 			margin: 0;
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				font-size: 22px;
 			}
 		}
@@ -65,10 +65,10 @@
 			box-shadow: 2px 2px 8px #e3eaf1;
 			padding: 40px 113px;
 			border-radius: 10px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 40px 50px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				box-shadow: none;
 				padding: 0 0 50px 0;
 			}

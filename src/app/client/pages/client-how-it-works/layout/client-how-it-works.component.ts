@@ -6,27 +6,27 @@ import {
 	OnDestroy,
 	TemplateRef,
 	ViewChild,
-} from "@angular/core";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
-import {TranslateService} from "@ngx-translate/core";
+} from '@angular/core';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-	selector: "b2b-client-how-it-works",
-	templateUrl: "./client-how-it-works.component.html",
-	styleUrls: ["./client-how-it-works.component.scss"],
+	selector: 'b2b-client-how-it-works',
+	templateUrl: './client-how-it-works.component.html',
+	styleUrls: ['./client-how-it-works.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientHowItWorksComponent implements OnDestroy {
-	@ViewChild("howItWorks") howItWorks: ElementRef<any>;
+	@ViewChild('howItWorks') howItWorks: ElementRef<any>;
 	pageYOffset = 0;
 	innerHeight = 0;
 	constructor(
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
-		private readonly translateService: TranslateService,
+		private readonly translateService: TranslateService
 	) {}
 
 	public get ruVideo() {
-		return this.translateService.currentLang === "ru";
+		return this.translateService.currentLang === 'ru';
 	}
 
 	processVideoClick(event: any): void {
@@ -46,7 +46,7 @@ export class ClientHowItWorksComponent implements OnDestroy {
 		const percentFilled = (this.pageYOffset * 100) / this.innerHeight;
 	}
 
-	@HostListener("window:scroll", ["$event"])
+	@HostListener('window:scroll', ['$event'])
 	onScroll() {
 		this.pageYOffset = window.pageYOffset;
 		this.innerHeight = window.innerHeight;

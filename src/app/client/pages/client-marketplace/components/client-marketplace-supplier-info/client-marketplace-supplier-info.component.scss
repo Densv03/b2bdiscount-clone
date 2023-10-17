@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.supplier-info {
@@ -26,7 +26,7 @@
 				color: #0f0f11;
 				margin-top: 10px;
 				word-break: break-word;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 12px;
 				}
 			}
@@ -47,7 +47,7 @@
 		}
 	}
 
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		.supplier-info {
 			.header {
 				padding: 0;

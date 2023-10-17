@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.header {
@@ -10,6 +10,11 @@
 		background: $color-white-900;
 		box-shadow: 0 0.16rem 0 $color-white-200;
 		transition: background-color 0.5s;
+		max-height: 54px;
+
+		.logo {
+			line-height: 10px;
+		}
 
 		.header__wrapper {
 			width: 400px;
@@ -35,7 +40,7 @@
 		.header__logo {
 			width: 7.25rem;
 			height: 2.25rem;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 90px;
 				height: 26px;
 			}
@@ -45,7 +50,7 @@
 			width: fit-content;
 			display: flex;
 			align-items: center;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				display: none;
 			}
 		}
@@ -98,7 +103,11 @@
 			align-items: center;
 
 			button {
-				width: 37px;
+				display: none;
+				@include breakpoint('3') {
+					display: block;
+				}
+				//width: 37px;
 				height: 35px;
 			}
 
@@ -123,7 +132,6 @@
 					display: grid;
 					grid-template-columns: repeat(2, auto);
 					grid-template-rows: repeat(2, auto);
-					padding: 4px 24px 4px 0;
 
 					.header__buttons-profile-text {
 						max-width: 133px;
@@ -169,10 +177,9 @@
 
 						margin-left: 10px;
 					}
-
 				}
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					display: none;
 				}
 			}
@@ -196,7 +203,7 @@
 					margin-right: 0.56rem;
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					display: none;
 				}
 			}
@@ -206,19 +213,19 @@
 				border-radius: 0.25rem;
 				font-weight: 700;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					display: none;
 				}
 			}
 		}
 
-		@include breakpoint("4") {
+		@include breakpoint('4') {
 			padding: 15px 20px;
 		}
 
 		.header__burger {
 			display: none;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				display: block;
 			}
 		}

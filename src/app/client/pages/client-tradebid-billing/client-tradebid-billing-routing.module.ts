@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientTradebidBillingComponent } from "./layout/client-tradebid-billing.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientTradebidBillingComponent } from './layout/client-tradebid-billing.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientTradebidBillingComponent,
 	},
 ];

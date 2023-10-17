@@ -1,0 +1,64 @@
+<div class="filter">
+	<div [ngSwitch]="deliveryType$ | async">
+		<ng-container
+			*ngSwitchCase="'Sea'"
+			[ngTemplateOutlet]="containerTypesFilter">
+		</ng-container>
+		<ng-container *ngSwitchCase="'Air'" [ngTemplateOutlet]="shipmentFilter">
+		</ng-container>
+	</div>
+
+	<ng-template #shipmentFilter>
+		<div class="filter__name">Total shipment</div>
+		<div class="shipment">
+			<div *ngFor="let shipment of shipmentTypes" class="shipment__item">
+				<div class="shipment__item-header">
+					<div class="shipment__item-title">{{ shipment.name }}</div>
+					<div class="shipment__item-info">
+						<input
+							type="number"
+							id="weightValue"
+							[(ngModel)]="shipment.defaultValue"
+							[min]="shipment.min"
+							[max]="shipment.max" />
+						<div class="shipment__item-measure">{{ shipment.measure }}</div>
+					</div>
+				</div>
+				<mat-slider
+					[(ngModel)]="shipment.defaultValue"
+					[min]="shipment.min"
+					[max]="shipment.max"
+					[step]="shipment.step">
+					<input matSliderThumb />
+				</mat-slider>
+				<!--				<input type="range" id="weightInput" name="weight" [(ngModel)]="shipment.defaultValue" [min]="shipment.min" [max]="shipment.max" [step]="shipment.step">-->
+
+				<!--				<input-->
+				<!--					#rangeInput-->
+				<!--					[value]="item.defaultValue"-->
+				<!--					[min]="item.min"-->
+				<!--					[max]="item.max"-->
+				<!--					[step]="item.step"-->
+				<!--					type="range"-->
+				<!--					class="shipment__item-range">-->
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #containerTypesFilter>
+		<div class="filter__name">Types of container</div>
+		<div class="filter__list">
+			<label
+				*ngFor="let containerType of containerTypes"
+				(click)="chooseContainerType(containerType)"
+				class="filter__item">
+				<input
+					type="radio"
+					class="filter__radio-input"
+					name="containerType"
+					[value]="containerType" />
+				<div class="filter__label">{{ containerType }}</div>
+			</label>
+		</div>
+	</ng-template>
+</div>

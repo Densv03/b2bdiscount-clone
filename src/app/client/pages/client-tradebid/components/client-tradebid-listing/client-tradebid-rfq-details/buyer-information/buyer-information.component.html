@@ -8,7 +8,9 @@
 	</div>
 	<div class="user-info__general-info">
 		<div class="user-info__general-info__left">Country:</div>
-		<div class="user-info__general-info__right">{{ getCountryNameByCode(user?.country) }}</div>
+		<div class="user-info__general-info__right">
+			{{ getCountryNameByCode(user?.country) }}
+		</div>
 		<div class="user-info__general-info__left">Phone:</div>
 		<div *ngIf="showBuyerInfo; else showBlurredPhoneNumber">
 			<a [href]="getPhoneNumberLink()" class="user-info__general-info__right">
@@ -36,5 +38,11 @@
 			</div>
 		</ng-template>
 	</div>
-	<button *ngIf="showBtn" b2bNgxButton (click)="showDetails()" [disabled]="showBuyerInfo">View Details</button>
+	<button
+		*ngIf="showBtn"
+		b2bNgxButton
+		(click)="showDetails()"
+		[disabled]="showBuyerInfo">
+		View Details
+	</button>
 </div>

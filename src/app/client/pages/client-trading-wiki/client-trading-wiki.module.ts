@@ -15,10 +15,10 @@ import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
 import { B2bNgxSelectModule } from '@b2b/ngx-select';
 import { ClientTradingWikiComponent } from './layout/client-trading-wiki.component';
 import { TreeviewModule } from '@b2b/ngx-treeview';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientTradingWikiComponent, ClientTradingWikiListComponent],
+	declarations: [ClientTradingWikiComponent, ClientTradingWikiListComponent],
 	imports: [
 		CommonModule,
 		ClientTradingWikiRoutingModule,
@@ -33,7 +33,7 @@ import {TranslateModule} from "@ngx-translate/core";
 		B2bNgxCountrySelectModule,
 		B2bNgxSelectModule,
 		TreeviewModule,
-		TranslateModule
+		TranslateModule,
 	],
 })
 export class ClientTradingWikiModule {}

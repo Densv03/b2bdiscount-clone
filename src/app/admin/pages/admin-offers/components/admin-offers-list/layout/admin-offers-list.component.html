@@ -1,11 +1,15 @@
 <ul class="admin-offers-list">
 	<li *ngFor="let offer of offers" class="admin-offers-list-item">
 		<a [routerLink]="offer._id" class="admin-offers-list-item-link">
-			<img *ngIf="listType !== 'tradebid'" class="admin-offers-list-item-img" b2bNgxImage [name]="offer.previewPhoto" />
+			<img
+				*ngIf="listType !== 'tradebid'"
+				class="admin-offers-list-item-img"
+				b2bNgxImage
+				[name]="offer.previewPhoto" />
 			<div class="admin-offers-list-item-info">
 				<div class="admin-offers-list-item-info-header">
 					<p class="admin-offers-list-item-info-title">
-						{{ listType === "tradebid" ? offer.productName : offer.title }}
+						{{ listType === 'tradebid' ? offer.productName : offer.title }}
 					</p>
 					<div *ngIf="listType" class="circle">
 						{{ offer.rooms.length }}
@@ -26,9 +30,13 @@
 					</div>
 				</div>
 				<p class="admin-offers-list-item-info-additional">
-					<span class="admin-offers-list-item-info-added">{{ offer.author }}</span>
+					<span class="admin-offers-list-item-info-added">{{
+						offer.author
+					}}</span>
 				</p>
-				<p *ngIf="listType === 'tradebid'">Quotations by this rfq: {{ offer.quotations.length }}</p>
+				<p *ngIf="listType === 'tradebid'">
+					Quotations by this rfq: {{ offer.quotations.length }}
+				</p>
 			</div>
 			<div class="admin-offers-list-item-more">
 				<b2b-ngx-dropdown [options]="menuOptions" [optionToReturn]="offer">

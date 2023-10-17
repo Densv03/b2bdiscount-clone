@@ -13,10 +13,10 @@ import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
 import { B2bNgxImageModule } from '@b2b/ngx-image';
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
 import { ClientAnnualPaymentComponent } from './layout/client-annual-payment.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientAnnualPaymentComponent],
+	declarations: [ClientAnnualPaymentComponent],
 	imports: [
 		CommonModule,
 		ClientAnnualPaymentRoutingModule,

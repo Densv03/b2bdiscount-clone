@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { Store, StoreConfig } from "@datorama/akita";
+import { Injectable } from '@angular/core';
+import { Store, StoreConfig } from '@datorama/akita';
 
 export interface WikiState {
 	articles: any;
@@ -11,8 +11,8 @@ export function createInitialState(): WikiState {
 	};
 }
 
-@Injectable({ providedIn: "root" })
-@StoreConfig({ name: "wiki" })
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'wiki' })
 export class WikiStore extends Store<WikiState> {
 	constructor() {
 		super(createInitialState());

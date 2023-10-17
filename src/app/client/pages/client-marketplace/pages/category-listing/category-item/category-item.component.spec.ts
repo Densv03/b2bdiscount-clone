@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoryItemComponent } from "./category-item.component";
+import { CategoryItemComponent } from './category-item.component';
 
-describe("CategoryItemComponent", () => {
+describe('CategoryItemComponent', () => {
 	let component: CategoryItemComponent;
 	let fixture: ComponentFixture<CategoryItemComponent>;
 
@@ -18,7 +18,7 @@ describe("CategoryItemComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

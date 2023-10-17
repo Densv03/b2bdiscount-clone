@@ -1,24 +1,27 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { SectionInfoEnum } from "../section-info.enum";
-import { ActivatedRoute } from "@angular/router";
-import { filter, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import {PlatformService} from "../../../services/platform/platform.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SectionInfoEnum } from '../section-info.enum';
+import { ActivatedRoute } from '@angular/router';
+import { filter, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { PlatformService } from '../../../services/platform/platform.service';
 
 @Component({
-	selector: "b2b-client-about-us",
-	templateUrl: "./client-about-us.component.html",
-	styleUrls: ["./client-about-us.component.scss"],
+	selector: 'b2b-client-about-us',
+	templateUrl: './client-about-us.component.html',
+	styleUrls: ['./client-about-us.component.scss'],
 })
 export class ClientAboutUsComponent implements OnInit, OnDestroy {
 	public sectionInfoType: typeof SectionInfoEnum = SectionInfoEnum;
-	public b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
+	public b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum =
+		B2bNgxButtonThemeEnum;
 	public activeSectionInfoType: string = this.sectionInfoType.market;
 	private unsubscribe: Subject<void> = new Subject<void>();
 
-	constructor(private activeRoute: ActivatedRoute,
-				private platformService: PlatformService) {}
+	constructor(
+		private activeRoute: ActivatedRoute,
+		private platformService: PlatformService
+	) {}
 
 	ngOnInit(): void {
 		this.activeRoute.queryParams

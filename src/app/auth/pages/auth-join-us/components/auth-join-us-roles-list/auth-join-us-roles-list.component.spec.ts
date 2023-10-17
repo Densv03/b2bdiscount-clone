@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthJoinUsRolesListComponent } from "./auth-join-us-roles-list.component";
+import { AuthJoinUsRolesListComponent } from './auth-join-us-roles-list.component';
 
-describe("AuthJoinUsRolesListComponent", () => {
+describe('AuthJoinUsRolesListComponent', () => {
 	let component: AuthJoinUsRolesListComponent;
 	let fixture: ComponentFixture<AuthJoinUsRolesListComponent>;
 
@@ -18,7 +18,7 @@ describe("AuthJoinUsRolesListComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

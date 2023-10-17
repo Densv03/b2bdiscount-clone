@@ -1,0 +1,11 @@
+<div class="input-wrapper">
+	<input [placeholder]="placeholder ? placeholder : 'Choose a date'" [matDatepicker]="picker"
+				 (click)="picker.open()" readonly [class]="inputClassName">
+	<img *ngIf="iconName"
+			 b2bNgxIcon [name]="iconName"
+			 [style.top]="iconPosition.top"
+			 [style.left]="iconPosition.left"
+			 [style.right]="iconPosition.right"
+			 [style.bottom]="iconPosition.bottom">
+</div>
+<mat-datepicker #picker [calendarHeaderComponent]="customHeader"></mat-datepicker>

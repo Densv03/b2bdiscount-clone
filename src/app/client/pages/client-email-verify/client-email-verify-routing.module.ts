@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientEmailVerifyComponent } from "./layout/client-email-verify.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientEmailVerifyComponent } from './layout/client-email-verify.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientEmailVerifyComponent,
 	},
 ];

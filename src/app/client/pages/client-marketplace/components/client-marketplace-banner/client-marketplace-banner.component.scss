@@ -1,0 +1,61 @@
+@import 'projects/shared/src/styles';
+
+.wrapper {
+	display: flex;
+	height: 81px;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 14px;
+	background: linear-gradient(89deg, #3d85f0 1.2%, #9db3ff 99.86%);
+	padding: 0 10%;
+
+	@include breakpoint('1') {
+		height: max-content;
+		flex-direction: column;
+		padding: 16px;
+	}
+
+	.text-info {
+		padding: 16px 0;
+	}
+}
+
+.banner-button {
+	padding: 9px 38px;
+	border-radius: 14px;
+	@include breakpoint('3') {
+		padding: 9px 25px;
+	}
+	@include breakpoint('1') {
+		padding: 9px 38px;
+	}
+}
+
+p {
+	color: #fff;
+	font-weight: 700;
+	line-height: 134%;
+	letter-spacing: 0.18px;
+	font-size: 16px;
+	margin-bottom: 0;
+
+	@include breakpoint('1') {
+		font-size: 14px;
+		line-height: 15px;
+		text-align: center;
+	}
+}
+
+.button-wrapper {
+	width: 30%;
+	text-align: center;
+
+	@include breakpoint('1') {
+		width: 80%;
+	}
+
+	.request-btn {
+		padding: 9px 38px;
+		border-radius: 8px;
+	}
+}

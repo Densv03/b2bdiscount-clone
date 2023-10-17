@@ -5,30 +5,34 @@ import {
 	Component,
 	ElementRef,
 	HostListener,
-	ViewChild
+	ViewChild,
 } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {PlatformService} from "../../../../services/platform/platform.service";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PlatformService } from '../../../../services/platform/platform.service';
 
 @Component({
-  selector: 'b2b-countdown',
-  templateUrl: './countdown.component.html',
-  styleUrls: ['./countdown.component.scss'],
+	selector: 'b2b-countdown',
+	templateUrl: './countdown.component.html',
+	styleUrls: ['./countdown.component.scss'],
 	// changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CountdownComponent {
-	@ViewChild('counterLimit', {static: true}) counterLimitRef?: ElementRef;
-	@ViewChild('amountOfDays', {static: true}) amountOfDaysRef?: ElementRef;
-	@ViewChild('counterSection', {static: true}) counterSectionRef?: ElementRef;
+	@ViewChild('counterLimit', { static: true }) counterLimitRef?: ElementRef;
+	@ViewChild('amountOfDays', { static: true }) amountOfDaysRef?: ElementRef;
+	@ViewChild('counterSection', { static: true }) counterSectionRef?: ElementRef;
 
-	private percentageCounterSource: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-	private daysCounterSource: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-	private wasCounterLaunchedSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-	private countLimitSource: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-	private amountOfDaysSource: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+	private percentageCounterSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(1);
+	private daysCounterSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(1);
+	private wasCounterLaunchedSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
+	private countLimitSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(1);
+	private amountOfDaysSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(1);
 
-	constructor(private platformService: PlatformService) {
-	}
+	constructor(private platformService: PlatformService) {}
 
 	public get counter$(): Observable<number> {
 		return this.percentageCounterSource.asObservable();
@@ -39,7 +43,7 @@ export class CountdownComponent {
 	}
 
 	public get countLimit$(): Observable<number> {
-		return this.countLimitSource.asObservable()
+		return this.countLimitSource.asObservable();
 	}
 
 	public get amountOfDays$(): Observable<number> {
@@ -53,14 +57,16 @@ export class CountdownComponent {
 	}
 
 	private getCountLimit(): number {
-		return 90 * this.countAmountOfDays() / 85;
+		return (90 * this.countAmountOfDays()) / 85;
 	}
 
 	private initPercentageCounterObserve(): void {
 		this.countLimitSource.next(this.getCountLimit());
 
 		const observer = new MutationObserver(() => {
-			this.percentageCounterSource.next(+this.counterLimitRef!.nativeElement.textContent)
+			this.percentageCounterSource.next(
+				+this.counterLimitRef!.nativeElement.textContent
+			);
 		});
 		observer.observe(this.counterLimitRef?.nativeElement, {
 			childList: true,
@@ -71,7 +77,9 @@ export class CountdownComponent {
 		this.amountOfDaysSource.next(this.countAmountOfDays());
 
 		const observer = new MutationObserver(() => {
-			this.daysCounterSource.next(+this.amountOfDaysRef!.nativeElement.textContent)
+			this.daysCounterSource.next(
+				+this.amountOfDaysRef!.nativeElement.textContent
+			);
 		});
 		observer.observe(this.amountOfDaysRef?.nativeElement, {
 			childList: true,
@@ -81,22 +89,23 @@ export class CountdownComponent {
 	@HostListener('window:scroll', ['$event'])
 	private onScroll(): void {
 		// if (!this.wasCounterLaunchedSource.getValue() && this.isInViewport(this.counterSectionRef?.nativeElement)) {
-			this.wasCounterLaunchedSource.next(true);
-			this.initDaysCounterObserve();
-			this.initPercentageCounterObserve();
+		this.wasCounterLaunchedSource.next(true);
+		this.initDaysCounterObserve();
+		this.initPercentageCounterObserve();
 		// }
 	}
 
 	private isInViewport(element: HTMLElement): any {
 		if (!element && this.platformService.isServer) {
-			return ;
+			return;
 		}
 
 		const rect = element.getBoundingClientRect();
 		return (
 			rect.top >= 0 &&
 			rect.left >= 0 &&
-			rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+			rect.bottom <=
+				(window.innerHeight || document.documentElement.clientHeight) &&
 			rect.right <= (window.innerWidth || document.documentElement.clientWidth)
 		);
 	}

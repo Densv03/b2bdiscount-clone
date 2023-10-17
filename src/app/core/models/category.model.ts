@@ -6,5 +6,5 @@ export interface Category {
 	createdAt?: Date;
 	updatedAt?: Date;
 	active: boolean;
-	_id: string
+	_id: string;
 }

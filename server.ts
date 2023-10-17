@@ -72,10 +72,12 @@ export function app(): express.Express {
 			'registration-complete',
 			'email-verify',
 			'register-google-account',
+			'register-linkedin-account',
 			'google-sign-in-success',
 			'admin',
 			'email-confirmation',
-			'b2bmarket'
+			'b2bmarket',
+			'profile'
 		];
 
 		const shouldExclude = excludedUrls.some(urlPart => req.url.includes(urlPart));

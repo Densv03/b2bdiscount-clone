@@ -1,6 +1,8 @@
 <div class="client-profile-settings">
 	<div class="settings-header">
-		<h3 class="client-profile-settings-title">{{ "SETTINGS.TITLE" | translate}}</h3>
+		<h3 class="client-profile-settings-title">
+			{{ 'SETTINGS.TITLE' | translate }}
+		</h3>
 		<div class="header-buttons">
 			<button
 				(click)="saveChanges(baseFormGroup)"
@@ -127,7 +129,7 @@
 						b2bNgxInput
 						[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 						[label]="'LABELS.EMAIL' | translate"
-						formControlName="email"/>
+						formControlName="email" />
 				</div>
 
 				<div class="client-profile-settings-block-input">
@@ -135,16 +137,22 @@
 						b2bNgxInput
 						[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 						[label]="'LABELS.FULL_NAME' | translate"
-						formControlName="fullName"/>
+						formControlName="fullName" />
 
-					<p *ngIf="baseFormState['fullName']?.errors?.['fullName']" class="error">Enter first and last name in
-						English, separated by a space. For example: John Smith</p>
+					<p
+						*ngIf="baseFormState['fullName']?.errors?.['fullName']"
+						class="error">
+						Enter first and last name in English, separated by a space. For
+						example: John Smith
+					</p>
 				</div>
 
 				<div class="client-profile-settings-block-input">
-					<b2b-ngx-tel formControlName="phone" [errors]="baseFormGroup.get('phone').errors">{{
-						"LABELS.PHONE_NUMBER" | translate
-						}}</b2b-ngx-tel>
+					<b2b-ngx-tel
+						formControlName="phone"
+						[errors]="baseFormGroup.get('phone').errors"
+						>{{ 'LABELS.PHONE_NUMBER' | translate }}</b2b-ngx-tel
+					>
 				</div>
 
 				<div class="client-profile-settings-block-input">
@@ -163,7 +171,9 @@
 				class="client-profile-settings-change-password-form"
 				[formGroup]="passwordFormGroup"
 				*ngIf="!user.socialAuth">
-				<p class="client-profile-settings-change-password-label">{{ "LABELS.PASSWORD" | translate }}</p>
+				<p class="client-profile-settings-change-password-label">
+					{{ 'LABELS.PASSWORD' | translate }}
+				</p>
 				<div class="client-profile-settings-block">
 					<div class="client-profile-settings-block-input">
 						<input
@@ -171,7 +181,7 @@
 							b2bNgxInput
 							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 							[label]="'LABELS.OLD_PASSWORD' | translate"
-							formControlName="password"/>
+							formControlName="password" />
 					</div>
 					<div class="client-profile-settings-block-input">
 						<input
@@ -179,7 +189,7 @@
 							b2bNgxInput
 							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 							[label]="'LABELS.NEW_PASSWORD' | translate"
-							formControlName="newPassword"/>
+							formControlName="newPassword" />
 					</div>
 				</div>
 				<div class="form-buttons">
@@ -189,7 +199,7 @@
 						(click)="updatePassword(passwordFormGroup)"
 						class="client-profile-settings-block-submit-button"
 						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-						{{ "BUTTONS.CHANGE_PASSWORD" | translate}}
+						{{ 'BUTTONS.CHANGE_PASSWORD' | translate }}
 					</button>
 
 					<button
@@ -197,7 +207,7 @@
 						(click)="deleteAccount()"
 						[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
 						class="delete-account-button desktop-delete-button">
-						<img b2bNgxIcon name="delete-red"/>
+						<img b2bNgxIcon name="delete-red" />
 						Delete account
 					</button>
 				</div>
@@ -205,7 +215,12 @@
 		</div>
 	</form>
 	<div class="header-buttons mobile-buttons">
-		<button [theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY" b2bNgxButton class="cancel-btn">Cancel</button>
+		<button
+			[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"
+			b2bNgxButton
+			class="cancel-btn">
+			Cancel
+		</button>
 		<button
 			(click)="saveChanges(baseFormGroup)"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"

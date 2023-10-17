@@ -1,8 +1,13 @@
 <div class="quotation">
 	<img b2bNgxImage name="tradebid-quotation-header" imageExtension="png" />
 	<div class="quotation__wrapper">
-		<form class="quotation__wrapper__form" [formGroup]="form" (ngSubmit)="submitForm()">
-			<div class="quotation__wrapper__form__container" formGroupName="quotationForm">
+		<form
+			class="quotation__wrapper__form"
+			[formGroup]="form"
+			(ngSubmit)="submitForm()">
+			<div
+				class="quotation__wrapper__form__container"
+				formGroupName="quotationForm">
 				<h2>Quotation form</h2>
 
 				<input
@@ -15,7 +20,9 @@
 				<p
 					*ngIf="
 						this.form.get('quotationForm')?.get('productName')?.touched &&
-						this.form.get('quotationForm')?.get('productName')?.errors?.['latin']
+						this.form.get('quotationForm')?.get('productName')?.errors?.[
+							'latin'
+						]
 					"
 					class="error"
 					[@fadeInOut]>
@@ -24,7 +31,9 @@
 				<p
 					*ngIf="
 						this.form.get('quotationForm')?.get('productName')?.touched &&
-						this.form.get('quotationForm')?.get('productName')?.errors?.['required']
+						this.form.get('quotationForm')?.get('productName')?.errors?.[
+							'required'
+						]
 					"
 					class="error"
 					[@fadeInOut]>
@@ -40,7 +49,9 @@
 				<p
 					*ngIf="
 						this.form.get('quotationForm')?.get('specifications')?.touched &&
-						this.form.get('quotationForm')?.get('specifications')?.errors?.['required']
+						this.form.get('quotationForm')?.get('specifications')?.errors?.[
+							'required'
+						]
 					"
 					class="error"
 					[@fadeInOut]>
@@ -49,7 +60,9 @@
 				<p
 					*ngIf="
 						this.form.get('quotationForm')?.get('specifications')?.touched &&
-						this.form.get('quotationForm')?.get('specifications')?.errors?.['cyrillic']
+						this.form.get('quotationForm')?.get('specifications')?.errors?.[
+							'cyrillic'
+						]
 					"
 					class="error"
 					[@fadeInOut]>
@@ -69,8 +82,10 @@
 
 				<div
 					[ngStyle]="
-							form.controls['quotationForm']?.get('price')?.get('price')?.touched &&
-							form.controls['quotationForm']?.get('price')?.get('price')?.errors?.['required']
+						form.controls['quotationForm']?.get('price')?.get('price')
+							?.touched &&
+						form.controls['quotationForm']?.get('price')?.get('price')
+							?.errors?.['required']
 							? { marginBottom: '10px' }
 							: null
 					"
@@ -86,8 +101,10 @@
 							formControlName="price" />
 						<p
 							*ngIf="
-								form.controls['quotationForm']?.get('price')?.get('price')?.touched &&
-							form.controls['quotationForm']?.get('price')?.get('price')?.errors?.['required']
+								form.controls['quotationForm']?.get('price')?.get('price')
+									?.touched &&
+								form.controls['quotationForm']?.get('price')?.get('price')
+									?.errors?.['required']
 							"
 							class="error price-error"
 							[@fadeInOut]>
@@ -95,9 +112,12 @@
 						</p>
 						<p
 							*ngIf="
-							form.controls['quotationForm']?.get('price')?.get('price')?.touched &&
-							form.controls['quotationForm']?.get('price')?.get('price')?.errors?.['number'] &&
-							!form.controls['quotationForm']?.get('price')?.get('price')?.errors?.['required']
+								form.controls['quotationForm']?.get('price')?.get('price')
+									?.touched &&
+								form.controls['quotationForm']?.get('price')?.get('price')
+									?.errors?.['number'] &&
+								!form.controls['quotationForm']?.get('price')?.get('price')
+									?.errors?.['required']
 							"
 							class="error price-error"
 							[@fadeInOut]>
@@ -142,15 +162,20 @@
 						<p
 							*ngIf="
 								form.controls['quotationForm'].get('otherUnit')?.touched &&
-								form.controls['quotationForm'].get('otherUnit')?.errors?.['required']"
+								form.controls['quotationForm'].get('otherUnit')?.errors?.[
+									'required'
+								]
+							"
 							class="error other-unit-error"
 							[@fadeInOut]>
 							This field is required
 						</p>
 						<p
 							*ngIf="
-							form.controls['quotationForm'].get('otherUnit')?.touched &&
-							form.controls['quotationForm'].get('otherUnit')?.errors?.['latin']
+								form.controls['quotationForm'].get('otherUnit')?.touched &&
+								form.controls['quotationForm'].get('otherUnit')?.errors?.[
+									'latin'
+								]
 							"
 							class="error other-unit-error"
 							[@fadeInOut]>
@@ -167,8 +192,10 @@
 					formControlName="moreInformation"></textarea>
 				<p
 					*ngIf="
-					form.controls['quotationForm'].get('moreInformation')?.touched &&
-						form.controls['quotationForm'].get('moreInformation')?.errors?.['required']
+						form.controls['quotationForm'].get('moreInformation')?.touched &&
+						form.controls['quotationForm'].get('moreInformation')?.errors?.[
+							'required'
+						]
 					"
 					class="error"
 					[@fadeInOut]>
@@ -177,7 +204,9 @@
 				<p
 					*ngIf="
 						form.controls['quotationForm'].get('moreInformation')?.touched &&
-						form.controls['quotationForm'].get('moreInformation')?.errors?.['cyrillic']
+						form.controls['quotationForm'].get('moreInformation')?.errors?.[
+							'cyrillic'
+						]
 					"
 					class="error"
 					[@fadeInOut]>
@@ -186,19 +215,36 @@
 				<p
 					*ngIf="
 						form.controls['quotationForm'].get('moreInformation')?.touched &&
-						form.controls['quotationForm'].get('moreInformation')?.errors?.['minlength'] &&
-						!form.controls['quotationForm'].get('moreInformation')?.errors?.['cyrillic']
+						form.controls['quotationForm'].get('moreInformation')?.errors?.[
+							'minlength'
+						] &&
+						!form.controls['quotationForm'].get('moreInformation')?.errors?.[
+							'cyrillic'
+						]
 					"
 					[ngStyle]="{ marginTop: '15px' }"
 					class="error"
 					[@fadeInOut]>
 					Please, put more than 20 letters, now
-					{{ form.controls['quotationForm'].get('moreInformation')?.errors?.['minlength'].actualLength }} letters
+					{{
+						form.controls['quotationForm'].get('moreInformation')?.errors?.[
+							'minlength'
+						].actualLength
+					}}
+					letters
 				</p>
 				<div class="file-wrapper ngx-file-wrapper">
-					<b2b-ngx-file formControlName="photos" [isPhoto]="false" label="Choose file">Products picture </b2b-ngx-file>
+					<b2b-ngx-file
+						formControlName="photos"
+						[isPhoto]="false"
+						label="Choose file"
+						>Products picture
+					</b2b-ngx-file>
 				</div>
-				<div class="quotation__label">Please use only real photos. All photos will be checked by the moderators.</div>
+				<div class="quotation__label">
+					Please use only real photos. All photos will be checked by the
+					moderators.
+				</div>
 			</div>
 			<!--			<div class="quotation__wrapper__form__container"-->
 			<!--					 formGroupName="suppliersCompanyInfo">-->
@@ -370,14 +416,22 @@
 				class="cancel-btn"
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY">
-				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 16 16"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
 					<path
 						d="M3.29289 8.70711C2.90237 8.31658 2.90237 7.68342 3.29289 7.29289L9.65685 0.928933C10.0474 0.538408 10.6805 0.538408 11.0711 0.928933C11.4616 1.31946 11.4616 1.95262 11.0711 2.34315L5.41421 8L11.0711 13.6569C11.4616 14.0474 11.4616 14.6805 11.0711 15.0711C10.6805 15.4616 10.0474 15.4616 9.65685 15.0711L3.29289 8.70711ZM5 9L4 9L4 7L5 7L5 9Z"
 						fill="#0F0F11" />
 				</svg>
 				<span>Back</span>
 			</button>
-			<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" (click)="submitForm()">
+			<button
+				b2bNgxButton
+				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+				(click)="submitForm()">
 				2/2 Confirm and submit
 			</button>
 		</div>

@@ -1,6 +1,6 @@
 export interface PromotionFeatureModel {
-	title: string,
-	description: string,
-	releaseDate: string,
-	photo: string
+	title: string;
+	description: string;
+	releaseDate: string;
+	photo: string;
 }

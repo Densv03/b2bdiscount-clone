@@ -1,17 +1,17 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { AdminArticleRoutingModule } from "./admin-article-routing.module";
-import { AdminArticleComponent } from "./layout/admin-article.component";
-import { B2bNgxInputModule } from "@b2b/ngx-input";
-import { B2bNgxFileModule } from "@b2b/ngx-file";
-import { AngularEditorModule } from "@kolkov/angular-editor";
-import { ReactiveFormsModule } from "@angular/forms";
-import { B2bNgxSelectModule } from "@b2b/ngx-select";
-import { B2bNgxButtonModule } from "@b2b/ngx-button";
-import { B2bNgxCountrySelectModule } from "@b2b/ngx-country-select";
-import { B2bNgxChipsModule } from "@b2b/ngx-chips";
-import {TranslateModule} from "@ngx-translate/core";
+import { AdminArticleRoutingModule } from './admin-article-routing.module';
+import { AdminArticleComponent } from './layout/admin-article.component';
+import { B2bNgxInputModule } from '@b2b/ngx-input';
+import { B2bNgxFileModule } from '@b2b/ngx-file';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ReactiveFormsModule } from '@angular/forms';
+import { B2bNgxSelectModule } from '@b2b/ngx-select';
+import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
+import { B2bNgxChipsModule } from '@b2b/ngx-chips';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
 	declarations: [AdminArticleComponent],
@@ -26,7 +26,7 @@ import {TranslateModule} from "@ngx-translate/core";
 		AngularEditorModule,
 		ReactiveFormsModule,
 		B2bNgxChipsModule,
-		TranslateModule
+		TranslateModule,
 	],
 })
 export class AdminArticleModule {}

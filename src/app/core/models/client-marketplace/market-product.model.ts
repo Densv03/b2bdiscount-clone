@@ -1,13 +1,12 @@
-import {Amount} from "../amount.model";
-import {Contact} from "../contact.model";
-import {Visibility} from "../visibility.model";
-import {Category} from "../category.model";
-import {Photo} from "../photo.model";
-
+import { Amount } from '../amount.model';
+import { Contact } from '../contact.model';
+import { Visibility } from '../visibility.model';
+import { Category } from '../category.model';
+import { Photo } from '../photo.model';
 
 export interface MarketProductModel {
-	chatStarted: string[],
-	reasonForDeletion: string
+	chatStarted: string[];
+	reasonForDeletion: string;
 	price: Price;
 	amount: Amount;
 	contact: Contact;

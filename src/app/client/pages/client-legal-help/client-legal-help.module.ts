@@ -13,10 +13,10 @@ import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
 import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
 import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { ClientLegalHelpComponent } from './layout/client-legal-help.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientLegalHelpComponent],
+	declarations: [ClientLegalHelpComponent],
 	imports: [
 		CommonModule,
 		ClientLegalHelpRoutingModule,

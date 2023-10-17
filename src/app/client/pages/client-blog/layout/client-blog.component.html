@@ -1,17 +1,17 @@
 <form [formGroup]="formGroup" class="wiki">
-<!--	<div class="wiki-header">-->
-<!--		<h3 class="wiki-header-title">-->
-<!--			<span class="wiki-header-title-text">{{ "BLOG.TITLE") }}</span>-->
-<!--			<span class="wiki-header-icon"></span>-->
-<!--		</h3>-->
-<!--		<input-->
-<!--			b2bNgxInput-->
-<!--			formControlName="q"-->
-<!--			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"-->
-<!--			class="wiki-header-search"-->
-<!--			[placeholder]="'PLACEHOLDERS.SEARCH')"/>-->
-<!--		<div class="wiki-header__social-medias"></div>-->
-<!--	</div>-->
+	<!--	<div class="wiki-header">-->
+	<!--		<h3 class="wiki-header-title">-->
+	<!--			<span class="wiki-header-title-text">{{ "BLOG.TITLE") }}</span>-->
+	<!--			<span class="wiki-header-icon"></span>-->
+	<!--		</h3>-->
+	<!--		<input-->
+	<!--			b2bNgxInput-->
+	<!--			formControlName="q"-->
+	<!--			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"-->
+	<!--			class="wiki-header-search"-->
+	<!--			[placeholder]="'PLACEHOLDERS.SEARCH')"/>-->
+	<!--		<div class="wiki-header__social-medias"></div>-->
+	<!--	</div>-->
 
 	<div class="wiki-main">
 		<div class="wiki-main-list">
@@ -25,12 +25,13 @@
 						(togglePageNumber)="togglePageBlogList($event)"
 						[currentPage]="currentPage$ | async"></b2b-pagination>
 				</ng-container>
-
 			</ng-container>
 
 			<ng-template #noArticles>
 				<div class="wiki-no-articles" *ngIf="!loading">
-					<p class="wiki-no-articles-title">{{ "BLOG.NO_ARTICLES" | translate }}</p>
+					<p class="wiki-no-articles-title">
+						{{ 'BLOG.NO_ARTICLES' | translate }}
+					</p>
 				</div>
 			</ng-template>
 

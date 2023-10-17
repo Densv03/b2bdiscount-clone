@@ -1,11 +1,16 @@
 <ul class="admin-articles-list">
 	<li *ngFor="let article of articles" class="admin-articles-list-item">
 		<a [routerLink]="article._id" class="admin-articles-list-item-link">
-			<img class="admin-articles-list-item-img" b2bNgxImage [name]="article.image?.lg" />
+			<img
+				class="admin-articles-list-item-img"
+				b2bNgxImage
+				[name]="article.image?.lg" />
 			<div class="admin-articles-list-item-info">
 				<p class="admin-articles-list-item-info-title">{{ article.title }}</p>
 				<p class="admin-articles-list-item-info-additional">
-					<span class="admin-articles-list-item-info-added">{{ article.author }}</span>
+					<span class="admin-articles-list-item-info-added">{{
+						article.author
+					}}</span>
 				</p>
 			</div>
 			<div class="admin-articles-list-item-more">

@@ -1,50 +1,107 @@
-<li [ngStyle]="{ height: chatPossibilityIsHidden ? '350px' : '395px' }" class="product">
+<li
+	[ngStyle]="{ height: chatPossibilityIsHidden ? '350px' : '385px' }"
+	class="product">
+	<!--	<div-->
+	<!--		(click)="product.saved = true"-->
+	<!--		class="save">-->
+	<!--		<svg *ngIf="!product.saved; else savedOfferIcon"-->
+	<!--			width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">-->
+	<!--			<g id="Group">-->
+	<!--				<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M4 5C4 4.20435 4.31607 3.44129 4.87868 2.87868C5.44129 2.31607 6.20435 2 7 2H17C17.7956 2 18.5587 2.31607 19.1213 2.87868C19.6839 3.44129 20 4.20435 20 5V21.028C20 22.248 18.62 22.958 17.628 22.249L12 18.229L6.372 22.249C5.379 22.959 4 22.249 4 21.029V5ZM7 4C6.73478 4 6.48043 4.10536 6.29289 4.29289C6.10536 4.48043 6 4.73478 6 5V20.057L11.128 16.394C11.3824 16.2122 11.6873 16.1145 12 16.1145C12.3127 16.1145 12.6176 16.2122 12.872 16.394L18 20.057V5C18 4.73478 17.8946 4.48043 17.7071 4.29289C17.5196 4.10536 17.2652 4 17 4H7Z" fill="black"/>-->
+	<!--			</g>-->
+	<!--		</svg>-->
+
+	<!--		<ng-template #savedOfferIcon>-->
+	<!--			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+	<!--				<g clip-path="url(#clip0_2855_450)">-->
+	<!--					<path d="M4 5C4 4.20435 4.31607 3.44129 4.87868 2.87868C5.44129 2.31607 6.20435 2 7 2H17C17.7956 2 18.5587 2.31607 19.1213 2.87868C19.6839 3.44129 20 4.20435 20 5V21.028C20 22.248 18.62 22.958 17.628 22.249L12 18.229L6.372 22.249C5.379 22.959 4 22.249 4 21.029V5Z" fill="#005DFF"/>-->
+	<!--				</g>-->
+	<!--				<defs>-->
+	<!--					<clipPath id="clip0_2855_450">-->
+	<!--						<rect width="24" height="24" fill="white"/>-->
+	<!--					</clipPath>-->
+	<!--				</defs>-->
+	<!--			</svg>-->
+
+	<!--		</ng-template>-->
+
+	<!--	</div>-->
 	<a
-		[routerLink]="['products', product?.path ? product.path : product._id]
-		">
+		[routerLink]="[
+			isListing ? 'products' : '/b2bmarket/listing/products',
+			product?.path ? product.path : product._id
+		]">
 		<div>
-			<img b2bNgxImage [name]="product?.photos[0]?.lg" alt="" class="product-header" />
-			<div *ngIf="product.hidden" class="ngx-latest-offers-grid-item-image-container-overlay">
+			<img
+				b2bNgxImage
+				[name]="product?.photos[0]?.lg"
+				alt=""
+				class="product-header" />
+			<div
+				*ngIf="product.hidden"
+				class="ngx-latest-offers-grid-item-image-container-overlay">
 				<p>HIDDEN</p>
 			</div>
 		</div>
 		<div class="product-title">{{ cutString(product.title, 20) }}</div>
+		<div class="product-description">
+			{{ cutDescription(product?.specifications) }}
+		</div>
 		<div class="supplier-info">
-			<img *ngIf="getCompanyLogo() !== 'plug'; else iconPlug" b2bNgxImage [name]="getCompanyLogo()" alt="logo" />
-			<ng-template #iconPlug>
-				<img b2bNgxIcon name="company-logo-plug" />
-			</ng-template>
+			<!--			<img *ngIf="getCompanyLogo() !== 'plug'; else iconPlug" b2bNgxImage [name]="getCompanyLogo()" alt="logo" />-->
+			<!--			<ng-template #iconPlug>-->
+			<!--				<img b2bNgxIcon name="company-logo-plug" />-->
+			<!--			</ng-template>-->
 			<div class="text">
-				{{ cutString(product.company ? product.company[0]?.companyName : product.contact.companyName, 17) }}
+				{{
+					cutString(
+						product.company
+							? product.company[0]?.companyName
+							: product.contact.companyName,
+						17
+					)
+				}}
 			</div>
 		</div>
-		<div *ngIf="product.company; else productWithoutCompany" class="supplier-info">
-			<img b2bNgxIcon group="flags/" [name]="product.company[0]?.country | uppercase" alt="" />
+		<div
+			*ngIf="product.company; else productWithoutCompany"
+			class="supplier-info">
+			<img
+				b2bNgxIcon
+				group="flags/"
+				[name]="product.company[0]?.country | uppercase"
+				alt="" />
 			<div class="text">{{ getCountryName(product.company[0]?.country) }}</div>
 		</div>
 		<ng-template #productWithoutCompany>
 			<div class="supplier-info">
-				<img b2bNgxIcon group="flags/" [name]="product.country | uppercase" alt="" />
+				<img
+					b2bNgxIcon
+					group="flags/"
+					[name]="product.country | uppercase"
+					alt="" />
 				<div class="text">{{ getCountryName(product.country) }}</div>
 			</div>
 		</ng-template>
 
-		<div class="supplier-info">
-			<img b2bNgxIcon name="tag" alt="" />
-			<div class="text">{{ product.suppliersType }}</div>
-		</div>
+		<!--		<div class="supplier-info">-->
+		<!--			<img b2bNgxIcon name="tag" alt="" />-->
+		<!--			<div class="text">{{ product.suppliersType }}</div>-->
+		<!--		</div>-->
 
-		<div *ngIf="!chatPossibilityIsHidden" class="divider"></div>
+		<!--		<div *ngIf="!chatPossibilityIsHidden" class="divider"></div>-->
 	</a>
 	<button
 		*ngIf="!chatPossibilityIsHidden"
 		b2bNgxButton
-		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_GRAY"
 		class="product-item-footer-button"
 		(click)="openChat($event)"
 		[id]="getIdForContactSupplierButton$() | async">
-			<span class="product-item-footer-button-text">{{
-				product.user === (user$ | async)?._id ? "View my product" : "Contact Supplier"
-				}}</span>
+		<span class="product-item-footer-button-text">{{
+			product.user === (user$ | async)?._id
+				? 'View my product'
+				: (buttonTitle$ | async)
+		}}</span>
 	</button>
 </li>

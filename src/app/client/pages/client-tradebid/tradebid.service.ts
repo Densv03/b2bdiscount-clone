@@ -1,11 +1,19 @@
-import { Injectable } from "@angular/core";
-import {BehaviorSubject, Observable, of, publish, refCount, share, Subject} from "rxjs";
-import { filter, first } from "rxjs/operators";
-import { ApiService } from "../../../core/services/api/api.service";
+import { Injectable } from '@angular/core';
+import {
+	BehaviorSubject,
+	Observable,
+	of,
+	publish,
+	refCount,
+	share,
+	Subject,
+} from 'rxjs';
+import { filter, first } from 'rxjs/operators';
+import { ApiService } from '../../../core/services/api/api.service';
 // import { AuthService } from "../../../auth/services/auth/auth.service";
 // import { io } from "socket.io-client";
-import { environment } from "../../../../environments/environment";
-import { PublicCompanyInfoModel } from "../../../core/models/public-company-info.model";
+import { environment } from '../../../../environments/environment';
+import { PublicCompanyInfoModel } from '../../../core/models/public-company-info.model';
 
 interface SelectItem {
 	id: string;
@@ -13,19 +21,27 @@ interface SelectItem {
 }
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class TradebidService {
-	private rfqListSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	private totalLengthSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-	private companyInfoSource: Subject<PublicCompanyInfoModel> = new Subject<PublicCompanyInfoModel>();
+	private rfqListSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+		[]
+	);
+	private rfqListIsLoadedSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
+	private totalLengthSource: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
+	private companyInfoSource: Subject<PublicCompanyInfoModel> =
+		new Subject<PublicCompanyInfoModel>();
 	private socket: any;
 
-	constructor(private apiService: ApiService) {
-	}
+	constructor(private apiService: ApiService) {}
 
 	get rfqList$(): Observable<any> {
 		return this.rfqListSource.asObservable();
+	}
+	get rfqListLoadingStatus$(): Observable<any> {
+		return this.rfqListIsLoadedSource.asObservable();
 	}
 
 	get rfqListLength$(): Observable<number> {
@@ -40,16 +56,20 @@ export class TradebidService {
 	}
 
 	public updateRfqList(queryString: string): void {
+		this.rfqListIsLoadedSource.next(false);
 		this.getRfq(queryString)
 			.pipe(first())
 			.subscribe((data) => {
+				this.rfqListIsLoadedSource.next(true);
 				this.rfqListSource.next(data.rfqList);
 				this.totalLengthSource.next(data.totalCount);
 			});
 	}
 
 	public getRfqByIdAdmin(RfqId: string): Observable<any> {
-		return this.apiService.get<any>(`tradeBid/get-rfq-quotations-admin/${RfqId}`).pipe(filter((data) => !!data));
+		return this.apiService
+			.get<any>(`tradeBid/get-rfq-quotations-admin/${RfqId}`)
+			.pipe(filter((data) => !!data));
 	}
 
 	public getRfqById(rfqId: string): Observable<any> {
@@ -57,7 +77,7 @@ export class TradebidService {
 	}
 
 	public createRFQ(body: any): Observable<any> {
-		return this.apiService.post("tradeBid/create-rfq", body);
+		return this.apiService.post('tradeBid/create-rfq', body);
 	}
 
 	public getObservableForSelect(arr: string[]): Observable<SelectItem[]> {
@@ -72,39 +92,43 @@ export class TradebidService {
 	}
 
 	public getCompanyInfoById(id: string): Observable<PublicCompanyInfoModel> {
-		return this.apiService.get<PublicCompanyInfoModel>(`tradeBid/getCompany/${id}`)
-			.pipe(filter(data => !!data))
+		return this.apiService
+			.get<PublicCompanyInfoModel>(`tradeBid/getCompany/${id}`)
+			.pipe(filter((data) => !!data));
 	}
 
 	public createQuotation(body: any): Observable<any> {
-		return this.apiService.post("tradeBid/create-quotation", body);
+		return this.apiService.post('tradeBid/create-quotation', body);
 	}
 
 	public getCompanyData(): Observable<PublicCompanyInfoModel> {
-		return this.apiService.get("tradeBid/get-company-data");
+		return this.apiService.get('tradeBid/get-company-data');
 	}
 
 	public createCompanyInfo(body: any): Observable<any> {
-		return this.apiService.post("tradeBid/create-company-data", body);
+		return this.apiService.post('tradeBid/create-company-data', body);
 	}
 
 	public updateCompanyInfo(body: any): Observable<any> {
-		return this.apiService.post("tradeBid/update-company-data", body);
+		return this.apiService.post('tradeBid/update-company-data', body);
 	}
 
 	public updateCompanyDataAdmin(id: string, body: any): Observable<any> {
-		return this.apiService.put("tradeBid/update-company-data-admin", {...body, id});
+		return this.apiService.put('tradeBid/update-company-data-admin', {
+			...body,
+			id,
+		});
 	}
 
 	public sendMessageToSeller(rfq: any, message: string): void {
 		// this.openConnection(this.authService.getToken());
 
-		this.socket.emit("message", {
-			type: "text",
+		this.socket.emit('message', {
+			type: 'text',
 			body: message,
 			userId: rfq.user._id,
 			rfqId: rfq._id,
-			typeRoom: "rfq",
+			typeRoom: 'rfq',
 		});
 	}
 

@@ -6,13 +6,13 @@ import {
 	OnChanges,
 	OnInit,
 	SimpleChanges,
-} from "@angular/core";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
+} from '@angular/core';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
 
 @Component({
-	selector: "b2b-client-profile-my-offers-list",
-	templateUrl: "./client-profile-my-offers-list.component.html",
-	styleUrls: ["./client-profile-my-offers-list.component.scss"],
+	selector: 'b2b-client-profile-my-offers-list',
+	templateUrl: './client-profile-my-offers-list.component.html',
+	styleUrls: ['./client-profile-my-offers-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientProfileMyOffersListComponent implements OnInit, OnChanges {
@@ -34,7 +34,9 @@ export class ClientProfileMyOffersListComponent implements OnInit, OnChanges {
 	computeOptions() {
 		this.parsedOptions = this.options.map((option) => {
 			const updatedOptions = [
-				...this.menuOptions.filter((el: { label: string; }) => (option.hidden ? el.label !== "Hide" : el.label !== "Unhide")),
+				...this.menuOptions.filter((el: { label: string }) =>
+					option.hidden ? el.label !== 'Hide' : el.label !== 'Unhide'
+				),
 			];
 			return {
 				...option,
@@ -44,10 +46,12 @@ export class ClientProfileMyOffersListComponent implements OnInit, OnChanges {
 	}
 
 	setBadgeText(reasonForDeletion: string): string {
-		if (reasonForDeletion === 'I don\'t sell cargo anymore') {
-			return 'BADGE.REMOVED_BY_OWNER'
+		if (reasonForDeletion === "I don't sell cargo anymore") {
+			return 'BADGE.REMOVED_BY_OWNER';
 		} else {
-			return reasonForDeletion === 'Deleted by admin' ? 'BADGE.REJECTED'	: 'BADGE.SOLD';
+			return reasonForDeletion === 'Deleted by admin'
+				? 'BADGE.REJECTED'
+				: 'BADGE.SOLD';
 		}
 	}
 }

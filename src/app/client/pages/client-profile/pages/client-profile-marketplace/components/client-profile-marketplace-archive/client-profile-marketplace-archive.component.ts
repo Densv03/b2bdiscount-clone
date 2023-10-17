@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Observable } from "rxjs";
-import { RfqButtonTypeEnum } from "../../../client-profile-tradebid/client-profile-tradebid-rfq/shared/enums/RfqButtonType.enum";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RfqButtonTypeEnum } from '../../../client-profile-tradebid/client-profile-tradebid-rfq/shared/enums/RfqButtonType.enum';
 
 @Component({
-	selector: "b2b-client-profile-marketplace-archive",
-	templateUrl: "./client-profile-marketplace-archive.component.html",
-	styleUrls: ["./client-profile-marketplace-archive.component.scss"],
+	selector: 'b2b-client-profile-marketplace-archive',
+	templateUrl: './client-profile-marketplace-archive.component.html',
+	styleUrls: ['./client-profile-marketplace-archive.component.scss'],
 })
 export class ClientProfileMarketplaceArchiveComponent implements OnInit {
 	@Input() archivedProducts$: Observable<any[]>;

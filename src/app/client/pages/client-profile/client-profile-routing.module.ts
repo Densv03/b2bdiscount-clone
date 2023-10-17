@@ -1,40 +1,40 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { DefaultRoleGuard } from "../../../auth/guards/defaultRole/deafult-role.guard";
-import { MyOfferGuard } from "./guards/myOffer/myOffer.guard";
-import {ClientProfileComponent} from "./layout/client-profile.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DefaultRoleGuard } from '../../../auth/guards/defaultRole/deafult-role.guard';
+import { MyOfferGuard } from './guards/myOffer/myOffer.guard';
+import { ClientProfileComponent } from './layout/client-profile.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientProfileComponent,
 		children: [
 			{
-				path: "",
-				pathMatch: "full",
-				redirectTo: "your-account",
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'your-account',
 			},
 			{
-				path: "your-account",
+				path: 'your-account',
 				loadChildren: () =>
-					import("./pages/client-profile-your-account/client-profile-your-account.module").then(
-						(m) => m.ClientProfileYourAccountModule
-					),
+					import(
+						'./pages/client-profile-your-account/client-profile-your-account.module'
+					).then((m) => m.ClientProfileYourAccountModule),
 			},
 			{
-				path: "your-workspace",
+				path: 'your-workspace',
 				loadChildren: () =>
-					import("./pages/client-profile-your-workspace/client-profile-your-workspace.module").then(
-						(m) => m.ClientProfileYourWorkspaceModule
-					),
+					import(
+						'./pages/client-profile-your-workspace/client-profile-your-workspace.module'
+					).then((m) => m.ClientProfileYourWorkspaceModule),
 			},
 			{
-				path: "my-offers/:id",
+				path: 'my-offers/:id',
 				canActivate: [MyOfferGuard, DefaultRoleGuard],
 				loadChildren: () =>
-					import("./pages/client-profile-add-offer/client-profile-add-offer.module").then(
-						(m) => m.ClientProfileAddOfferModule
-					),
+					import(
+						'./pages/client-profile-add-offer/client-profile-add-offer.module'
+					).then((m) => m.ClientProfileAddOfferModule),
 			},
 			// {
 			// 	path: "my-chats",
@@ -45,12 +45,12 @@ const routes: Routes = [
 			// 		),
 			// },
 			{
-				path: "my-offers",
+				path: 'my-offers',
 				canActivate: [DefaultRoleGuard],
 				loadChildren: () =>
-					import("./pages/client-profile-my-offers/client-profile-my-offers.module").then(
-						(m) => m.ClientProfileMyOffersModule
-					),
+					import(
+						'./pages/client-profile-my-offers/client-profile-my-offers.module'
+					).then((m) => m.ClientProfileMyOffersModule),
 			},
 			// {
 			// 	path: "my-offers/:id/chats",
@@ -69,9 +69,9 @@ const routes: Routes = [
 			// 		),
 			// },
 			{
-				path: "settings",
-				pathMatch: "full",
-				redirectTo: "your-account"
+				path: 'settings',
+				pathMatch: 'full',
+				redirectTo: 'your-account',
 			},
 			// {
 			// 	path: "billing",

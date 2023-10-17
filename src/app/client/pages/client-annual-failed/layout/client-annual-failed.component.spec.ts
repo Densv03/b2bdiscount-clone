@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientAnnualFailedComponent } from "./client-annual-failed.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientAnnualFailedComponent } from './client-annual-failed.component';
 
-describe("ClientAnnualFailedComponent", () => {
+describe('ClientAnnualFailedComponent', () => {
 	let component: ClientAnnualFailedComponent;
 	let fixture: ComponentFixture<ClientAnnualFailedComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientAnnualFailedComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

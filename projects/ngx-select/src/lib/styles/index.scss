@@ -11,7 +11,7 @@
         ng-select {
           &.ng-touched {
             .ng-select-container {
-              background-color: $color-red-50 !important;
+              background-color: $color-red-50;
               border-color: $color-red-500 !important;
             }
           }
@@ -22,7 +22,7 @@
       b2b-ngx-select {
         &.ng-invalid {
           .ng-select-container {
-            background-color: $color-red-50 !important;
+            background-color: $color-red-50;
             border-color: $color-red-500 !important;
           }
         }
@@ -36,7 +36,7 @@
         ng-select {
           &.ng-touched {
             .ng-select-container {
-              background-color: $color-red-50 !important;
+              background-color: $color-red-50;
               border-color: $color-red-500 !important;
             }
           }
@@ -47,7 +47,7 @@
       b2b-ngx-country-select {
         &.ng-invalid {
           .ng-select-container {
-            background-color: $color-red-50 !important;
+            background-color: $color-red-50;
             border-color: $color-red-500 !important;
           }
         }

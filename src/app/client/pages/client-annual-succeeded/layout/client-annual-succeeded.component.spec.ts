@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientAnnualSucceededComponent } from "./client-annual-succeeded.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientAnnualSucceededComponent } from './client-annual-succeeded.component';
 
-describe("ClientAnnualSucceededComponent", () => {
+describe('ClientAnnualSucceededComponent', () => {
 	let component: ClientAnnualSucceededComponent;
 	let fixture: ComponentFixture<ClientAnnualSucceededComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientAnnualSucceededComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

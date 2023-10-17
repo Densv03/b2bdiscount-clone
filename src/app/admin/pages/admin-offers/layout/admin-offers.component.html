@@ -8,7 +8,9 @@
 		>Add Сategories</a
 	>
 
-	<app-admin-offers-list [offers]="offers$ | async" [menuOptions]="menuOptions"></app-admin-offers-list>
+	<app-admin-offers-list
+		[offers]="offers$ | async"
+		[menuOptions]="menuOptions"></app-admin-offers-list>
 
 	<b2b-ngx-pagination
 		[length]="totalCount$ | async"

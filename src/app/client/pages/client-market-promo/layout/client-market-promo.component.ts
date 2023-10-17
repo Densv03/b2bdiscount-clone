@@ -1,27 +1,36 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, ViewChild,} from "@angular/core";
-import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
-import {B2bNgxLinkThemeEnum} from "@b2b/ngx-link";
-import {BehaviorSubject, Observable} from "rxjs";
-import {filter, first, map} from "rxjs/operators";
-import {CategoryListingService} from "../../client-marketplace/pages/category-listing/category-listing.service";
-import {Category} from "../../client-marketplace/shared/models/category.model";
-import {AuthService} from "../../../../auth/services/auth/auth.service";
-import {ActivatedRoute} from "@angular/router";
-import {TranslateService} from "@ngx-translate/core";
+import {
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	HostListener,
+	Input,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, first, map } from 'rxjs/operators';
+import { CategoryListingService } from '../../client-marketplace/pages/category-listing/category-listing.service';
+import { Category } from '../../client-marketplace/shared/models/category.model';
+import { AuthService } from '../../../../auth/services/auth/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-	selector: "b2b-client-market-promo",
-	templateUrl: "./client-market-promo.component.html",
-	styleUrls: ["./client-market-promo.component.scss"],
+	selector: 'b2b-client-market-promo',
+	templateUrl: './client-market-promo.component.html',
+	styleUrls: ['./client-market-promo.component.scss'],
 })
 export class ClientMarketPromoComponent implements OnInit {
-  public lang: string;
+	public lang: string;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 
-	private categoriesNamesSource: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+	private categoriesNamesSource: BehaviorSubject<string[]> =
+		new BehaviorSubject<string[]>([]);
 
-	@ViewChild("circle", {static: true}) circle?: ElementRef;
+	@ViewChild('circle', { static: true }) circle?: ElementRef;
 	@Input() limitDeg: number = 360;
 	@Input() value: number = 0;
 	@Input() width: number = 7;
@@ -33,12 +42,11 @@ export class ClientMarketPromoComponent implements OnInit {
 		private readonly authService: AuthService,
 		private readonly translateService: TranslateService,
 		private readonly activatedRoute: ActivatedRoute
-	) {
-	}
+	) {}
 
 	public ngOnInit() {
 		if (this.activatedRoute.snapshot.params?.['lang']) {
-      this.lang = this.activatedRoute.snapshot.params['lang'];
+			this.lang = this.activatedRoute.snapshot.params['lang'];
 			this.translateService.use(this.activatedRoute.snapshot.params?.['lang']);
 		}
 		this.categoriesListingService.presentCategoriesSource$
@@ -63,12 +71,15 @@ export class ClientMarketPromoComponent implements OnInit {
 		return 2 * Math.PI * this.radius;
 	}
 
-	@HostListener("document:scroll", ["$event"])
+	@HostListener('document:scroll', ['$event'])
 	public onViewportScroll() {
 		const windowHeight = window.innerHeight;
 		const boundingRectFive = this.circle?.nativeElement.getBoundingClientRect();
 
-		if (boundingRectFive?.top >= 0 && boundingRectFive?.bottom <= windowHeight) {
+		if (
+			boundingRectFive?.top >= 0 &&
+			boundingRectFive?.bottom <= windowHeight
+		) {
 			setTimeout(() => {
 				this.value = this.getDaysToEndDate() / 100;
 				this.changeDetectorRef.detectChanges();
@@ -78,7 +89,7 @@ export class ClientMarketPromoComponent implements OnInit {
 
 	public getDaysToEndDate(): number {
 		const startDate = new Date(Date.now()).getTime();
-		const endDate = new Date("12/31/2023").getTime();
+		const endDate = new Date('12/31/2023').getTime();
 		const percent = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 		return percent;
 	}
@@ -92,8 +103,12 @@ export class ClientMarketPromoComponent implements OnInit {
 	}
 
 	public smoothScrollToAdvantages(): void {
-		const advantagesElement = document.getElementById("ts-advantages");
-		advantagesElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+		const advantagesElement = document.getElementById('ts-advantages');
+		advantagesElement.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+			inline: 'nearest',
+		});
 	}
 
 	private getCategoryNamesArr(categories: Category[]): string[] {

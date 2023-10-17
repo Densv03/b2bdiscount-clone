@@ -6,15 +6,21 @@
 		<img b2bNgxImage [name]="category.image" alt="category-photo" />
 	</div>
 	<div class="category-content">
-		<a b2bNgxLink
-			[routerLink]="['/b2bmarket/listing', category.path]" class="category-title">{{ category?.name }}</a>
+		<a
+			b2bNgxLink
+			[routerLink]="['/b2bmarket/listing', category.path]"
+			class="category-title"
+			>{{ category?.name }}</a
+		>
 		<ul class="sub-category-list">
 			<li class="list-item">
-				<a b2bNgxLink
+				<a
+					b2bNgxLink
 					[@fadeAnimation]
 					*ngFor="let child of childrenCategory.children"
-					[routerLink]="['listing',  category.path, child.path]">
-					{{ child.name }} {{child.productsCount > 0 ? '(' + child.productsCount + ')' : ''}}
+					[routerLink]="['/b2bmarket/listing', category.path, child.path]">
+					{{ child.name }}
+					{{ child.productsCount > 0 ? '(' + child.productsCount + ')' : '' }}
 				</a>
 			</li>
 		</ul>
@@ -22,9 +28,22 @@
 
 	<div class="divider"></div>
 	<div
-		(click)="childrenCategory.isSelected === true ? hideCardCategories(category) : showCardCategories(category)"
+		(click)="
+			childrenCategory.isSelected === true
+				? hideCardCategories(category)
+				: showCardCategories(category)
+		"
 		class="view-all-block">
-		<img b2bNgxIcon [name]="childrenCategory.isSelected === true ? 'arrow-down-blue' : 'arrow-top-blue'" alt="arrow" />
-		<div class="text">{{ childrenCategory.isSelected === true ? "Show less" : "View all" }}</div>
+		<img
+			b2bNgxIcon
+			[name]="
+				childrenCategory.isSelected === true
+					? 'arrow-down-blue'
+					: 'arrow-top-blue'
+			"
+			alt="arrow" />
+		<div class="text">
+			{{ childrenCategory.isSelected === true ? 'Show less' : 'View all' }}
+		</div>
 	</div>
 </div>

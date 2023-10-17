@@ -1,8 +1,8 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	* {
-		font-family: "Helvetica Neue", sans-serif;
+		font-family: 'Helvetica Neue', sans-serif;
 	}
 
 	.join-us-block {
@@ -21,7 +21,6 @@
 				font-size: 32px;
 				line-height: 44px;
 				letter-spacing: 0.01em;
-
 
 				@include breakpoint('2') {
 					font-size: 24px;
@@ -67,12 +66,12 @@
 			@include breakpoint('5') {
 				height: 500px;
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				height: auto;
 				min-height: 375px;
 				padding-top: 45px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				height: auto;
 				min-height: auto;
 				padding-top: 0;
@@ -81,7 +80,7 @@
 			.header-wrapper {
 				display: flex;
 				height: 100%;
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					flex-direction: column;
 				}
 
@@ -91,19 +90,19 @@
 					@include breakpoint('5') {
 						padding-left: 60px;
 					}
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 43%;
 						padding-left: 2%;
 					}
-					@include breakpoint("2") {
+					@include breakpoint('2') {
 						width: 52%;
 					}
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						width: 100%;
 					}
 
 					a {
-						@include breakpoint("1") {
+						@include breakpoint('1') {
 							width: 130px;
 							padding: 10px 0;
 						}
@@ -115,17 +114,17 @@
 					width: 57%;
 					right: 0;
 					z-index: 2;
-					@include breakpoint("4") {
+					@include breakpoint('4') {
 						padding-right: 0;
 						width: 55%;
 					}
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						width: 63%;
 					}
 					@include breakpoint('2') {
 						width: 56%;
 					}
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						display: none;
 					}
 				}
@@ -133,7 +132,7 @@
 
 			.ship {
 				width: 100%;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 				}
 			}
 
@@ -167,7 +166,7 @@
 				letter-spacing: 0.01em;
 				position: relative;
 				z-index: 5;
-				@include breakpoint("5") {
+				@include breakpoint('5') {
 					font-size: 52px;
 					line-height: 55px;
 				}
@@ -175,7 +174,7 @@
 					font-size: 42px;
 					line-height: 46px;
 				}
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 31px;
 					line-height: 35px;
 				}
@@ -188,11 +187,11 @@
 				letter-spacing: 0.01em;
 				color: #0f0f11;
 				max-width: 550px;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 15px;
 					line-height: 21px;
 				}
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					font-size: 13px;
 				}
 			}
@@ -239,7 +238,7 @@
 				padding: 0 2%;
 			}
 
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				padding: 0 17px;
 			}
 
@@ -249,10 +248,10 @@
 				line-height: 36px;
 				letter-spacing: 0.01em;
 				color: $color-black-900;
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					font-size: 25px;
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					font-size: 21px;
 				}
 			}
@@ -310,7 +309,9 @@
 					.solutions-item {
 						height: 100%;
 						border-radius: 14px;
-						box-shadow: -4px -4px 8px #E5F2FD, 4px 4px 8px #E5F2FD;
+						box-shadow:
+							-4px -4px 8px #e5f2fd,
+							4px 4px 8px #e5f2fd;
 						padding: 16px;
 						cursor: pointer;
 
@@ -321,7 +322,7 @@
 							height: 96px;
 							column-gap: 16px;
 							padding-bottom: 16px;
-							border-bottom: 1px solid #E5F2FD;
+							border-bottom: 1px solid #e5f2fd;
 
 							.icon-container {
 								display: flex;
@@ -348,7 +349,7 @@
 								}
 
 								&.background-second-light-blue {
-									background: rgba(0, 93, 255, 0.1);;
+									background: rgba(0, 93, 255, 0.1);
 								}
 							}
 
@@ -358,7 +359,7 @@
 								line-height: 32px;
 								letter-spacing: 0.01em;
 
-								@include breakpoint("2") {
+								@include breakpoint('2') {
 									font-size: 18px;
 									line-height: 24px;
 								}
@@ -374,7 +375,7 @@
 							color: $color-gray-500;
 
 							span {
-								color: #006BFF;
+								color: #006bff;
 							}
 						}
 					}
@@ -387,10 +388,10 @@
 			padding: 127px 100px 90px;
 			background-color: $color-white-900;
 
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				padding: 50px 10px;
 			}
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				padding: 50px 16px;
 			}
 
@@ -400,10 +401,10 @@
 				line-height: 36px;
 				letter-spacing: 0.01em;
 				color: #0f0f11;
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					font-size: 25px;
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					font-size: 21px;
 				}
 			}
@@ -456,7 +457,9 @@
 					.block-item {
 						height: 380px;
 						border-radius: 14px;
-						box-shadow: -4px -4px 8px #E5F2FD, 4px 4px 8px #E5F2FD;
+						box-shadow:
+							-4px -4px 8px #e5f2fd,
+							4px 4px 8px #e5f2fd;
 
 						img {
 							width: 100%;
@@ -490,7 +493,7 @@
 								line-height: 16px;
 								letter-spacing: 0.01em;
 								color: #979797;
-								border-top: 1px solid #E5F2FD;
+								border-top: 1px solid #e5f2fd;
 								padding-top: 10px;
 							}
 						}
@@ -511,7 +514,9 @@
 					.block-item {
 						border-radius: 14px;
 						flex-basis: 30%;
-						box-shadow: -4px -4px 8px #E5F2FD, 4px 4px 8px #E5F2FD;
+						box-shadow:
+							-4px -4px 8px #e5f2fd,
+							4px 4px 8px #e5f2fd;
 						padding: 12px 0;
 
 						img {
@@ -545,7 +550,7 @@
 								line-height: 16px;
 								letter-spacing: 0.01em;
 								color: #979797;
-								border-top: 1px solid #E5F2FD;
+								border-top: 1px solid #e5f2fd;
 								padding-top: 10px;
 							}
 						}
@@ -556,7 +561,7 @@
 
 		.subscription {
 			padding: 0 100px 128px;
-			background-color: #FFFFFF;
+			background-color: #ffffff;
 
 			@include breakpoint('4') {
 				padding: 0;
@@ -564,7 +569,7 @@
 
 			.subscription-container {
 				width: 100%;
-				background: linear-gradient(90deg, #02339B -3.21%, #5879CC 100%);
+				background: linear-gradient(90deg, #02339b -3.21%, #5879cc 100%);
 				border-radius: 20px;
 				padding: 48px 152px;
 
@@ -583,7 +588,7 @@
 					font-size: 24px;
 					line-height: 32px;
 					letter-spacing: 0.01em;
-					color: #FFFFFF;
+					color: #ffffff;
 
 					@include breakpoint('3') {
 						padding-bottom: 0;
@@ -650,7 +655,6 @@
 					}
 				}
 			}
-
 		}
 
 		.container {
@@ -680,7 +684,7 @@
 				text-align: center;
 				letter-spacing: 0.01em;
 				color: #ffffff;
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					font-size: 26px;
 					line-height: 26px;
 				}
@@ -711,7 +715,6 @@
 }
 
 :host::ng-deep {
-
 	.subs-checkbox {
 		width: 22px !important;
 		height: 22px !important;
@@ -724,7 +727,7 @@
 		height: auto;
 		margin-top: 20px;
 		display: none;
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			display: block;
 		}
 
@@ -747,13 +750,13 @@
 					}
 
 					.card-text {
-						@include breakpoint("1") {
+						@include breakpoint('1') {
 							font-size: 12px;
 						}
 					}
 
 					button {
-						@include breakpoint("1") {
+						@include breakpoint('1') {
 							font-size: 12px;
 							width: 100px;
 							height: 35px;

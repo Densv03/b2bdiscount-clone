@@ -47,6 +47,27 @@
 			}
 		}
 
+		&.reverse {
+			position: initial;
+			justify-content: space-between;
+
+			.ngx-checkbox__label {
+				padding: 0;
+			}
+
+			.ngx-checkbox__icon {
+				position: initial;
+			}
+		}
+
+		&.pointer {
+			cursor: pointer;
+
+			.ngx-checkbox__label {
+				color: #9FA4BB;
+			}
+		}
+
 		&.subscription-checkbox {
 			.ngx-checkbox__label {
 				font-weight: 400;
@@ -56,6 +77,7 @@
 				color: #FFFFFF;
 				width: max-content;
 			}
+
 			.ngx-checkbox__input:checked ~ .ngx-checkbox__icon {
 				background-color: #FFFFFF;
 				border-color: #FFFFFF;

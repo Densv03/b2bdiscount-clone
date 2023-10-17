@@ -1,12 +1,17 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
-import { AuthService} from "../../services/auth/auth.service";
-import { filter, map, tap } from "rxjs/operators";
-import {User} from "../../../core/models/user/user.model";
+import { Injectable } from '@angular/core';
+import {
+	CanActivate,
+	ActivatedRouteSnapshot,
+	RouterStateSnapshot,
+	Router,
+} from '@angular/router';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
+import { AuthService } from '../../services/auth/auth.service';
+import { filter, map, tap } from 'rxjs/operators';
+import { User } from '../../../core/models/user/user.model';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
 	constructor(
@@ -19,17 +24,17 @@ export class RoleGuard implements CanActivate {
 		const token = this._authService.getToken();
 
 		if (!token) {
-			this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink("/"));
+			this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink('/'));
 			return false;
 		}
 
 		return this._authService.getUser().pipe(
 			filter((user) => !!user),
 			map((user: User) => {
-				const isAdmin = user?.role?.name === "admin";
+				const isAdmin = user?.role?.name === 'admin';
 
 				if (!isAdmin) {
-					this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink("/"));
+					this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink('/'));
 				}
 
 				return isAdmin;

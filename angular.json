@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "b2b",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -1185,6 +1185,37 @@
             "main": "projects/b2b-breadcrumbs/src/test.ts",
             "tsConfig": "projects/b2b-breadcrumbs/tsconfig.spec.json",
             "karmaConfig": "projects/b2b-breadcrumbs/karma.conf.js"
+          }
+        }
+      }
+    },
+    "b2b-datepicker": {
+      "projectType": "library",
+      "root": "projects/b2b-datepicker",
+      "sourceRoot": "projects/b2b-datepicker/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/b2b-datepicker/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/b2b-datepicker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/b2b-datepicker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/b2b-datepicker/src/test.ts",
+            "tsConfig": "projects/b2b-datepicker/tsconfig.spec.json",
+            "karmaConfig": "projects/b2b-datepicker/karma.conf.js"
           }
         }
       }

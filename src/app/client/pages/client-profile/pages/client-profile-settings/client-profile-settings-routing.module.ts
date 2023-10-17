@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import {ClientProfileSettingsComponent} from "./layout/client-profile-settings.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientProfileSettingsComponent } from './layout/client-profile-settings.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientProfileSettingsComponent,
 	},
 ];

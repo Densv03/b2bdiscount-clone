@@ -1,0 +1,49 @@
+.content {
+	width: 640px;
+	@include breakpoint('3') {
+		width: 440px;
+	}
+	@include breakpoint('2') {
+		width: auto;
+	}
+	&__wrapper {
+		max-width: 320px;
+		margin: auto;
+	}
+	&__title {
+		text-align: center;
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 134%;
+		letter-spacing: 0.18px;
+		margin-top: 10px;
+		@include breakpoint('2') {
+			font-size: 14px;
+		}
+	}
+	&__buttons {
+		margin-top: 16px;
+		display: flex;
+		gap: 16px;
+	}
+	&__button {
+		width: 159px;
+		border-radius: 14px;
+		padding: 10px 0;
+		text-shadow: 0 0 0.5px rgba(0, 0, 0, 0.25);
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 18px;
+		letter-spacing: 0.28px;
+		@include breakpoint('2') {
+			width: 120px;
+		}
+		&:first-child {
+			color: white !important;
+			outline: none;
+			&:hover {
+				color: black !important;
+			}
+		}
+	}
+}

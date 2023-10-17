@@ -1,17 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { CategoriesService } from "../../../../client/services/categories/categories.service";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { filter } from "rxjs/operators";
-import { HotToastService } from "@ngneat/hot-toast";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { CategoriesService } from '../../../../client/services/categories/categories.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { filter } from 'rxjs/operators';
+import { HotToastService } from '@ngneat/hot-toast';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-admin-article",
-	templateUrl: "./admin-article-categories.component.html",
-	styleUrls: ["./admin-article-categories.component.scss"],
+	selector: 'b2b-admin-article',
+	templateUrl: './admin-article-categories.component.html',
+	styleUrls: ['./admin-article-categories.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminArticleCategoriesComponent implements OnInit {
@@ -40,7 +40,7 @@ export class AdminArticleCategoriesComponent implements OnInit {
 		this.level2Categories = [];
 		this.level3Categories = [];
 
-		this.errorMessage = "";
+		this.errorMessage = '';
 	}
 
 	public setLevel1Categories() {
@@ -54,14 +54,15 @@ export class AdminArticleCategoriesComponent implements OnInit {
 
 	public setLevel2Categories() {
 		this.formGroup
-			.get("selectLevel1Category")
+			.get('selectLevel1Category')
 			.valueChanges.pipe(
 				untilDestroyed(this),
 				filter((level1CategoryId) => !!level1CategoryId)
 			)
 			.subscribe((level1CategoryId: any) => {
 				this.level2Categories = this.level1Categories.find(
-					(level1Category: { _id: any; }) => level1Category._id === level1CategoryId
+					(level1Category: { _id: any }) =>
+						level1Category._id === level1CategoryId
 				)?.children;
 			});
 	}
@@ -72,15 +73,17 @@ export class AdminArticleCategoriesComponent implements OnInit {
 	}
 
 	public createCategory() {
-		const selectLevel1Category = this.formGroup.get("selectLevel1Category").value;
+		const selectLevel1Category = this.formGroup.get(
+			'selectLevel1Category'
+		).value;
 
-		const inputLevel1Category = this.formGroup.get("inputLevel1Category").value;
-		const inputLevel2Category = this.formGroup.get("inputLevel2Category").value;
+		const inputLevel1Category = this.formGroup.get('inputLevel1Category').value;
+		const inputLevel2Category = this.formGroup.get('inputLevel2Category').value;
 
-		this.errorMessage = "";
+		this.errorMessage = '';
 
-		let level1Category: any = "";
-		let level2Category: any = "";
+		let level1Category: any = '';
+		let level2Category: any = '';
 
 		if (inputLevel1Category && inputLevel2Category) {
 			level1Category = { name: inputLevel1Category };
@@ -90,7 +93,7 @@ export class AdminArticleCategoriesComponent implements OnInit {
 			level2Category = { name: inputLevel2Category };
 		} else {
 			this.errorMessage =
-				"To create a category you have to fill all fields; Each level have to be filled with select (already exist category) or with name (new one); You cant select 2 level category";
+				'To create a category you have to fill all fields; Each level have to be filled with select (already exist category) or with name (new one); You cant select 2 level category';
 			return;
 		}
 
@@ -99,51 +102,70 @@ export class AdminArticleCategoriesComponent implements OnInit {
 			.pipe(
 				untilDestroyed(this),
 				this._hotToastrService.observe({
-					loading: "Category is creating...",
-					success: "Category successfully created",
-					error: "Categories creating failed",
+					loading: 'Category is creating...',
+					success: 'Category successfully created',
+					error: 'Categories creating failed',
 				})
 			)
 			.subscribe();
 	}
 
 	public updateCategory() {
-		const selectLevel1Category = this.formGroup.get("selectLevel1Category").value;
-		const selectLevel2Category = this.formGroup.get("selectLevel2Category").value;
+		const selectLevel1Category = this.formGroup.get(
+			'selectLevel1Category'
+		).value;
+		const selectLevel2Category = this.formGroup.get(
+			'selectLevel2Category'
+		).value;
 
-		const inputLevel1Category = this.formGroup.get("inputLevel1Category").value;
-		const inputLevel2Category = this.formGroup.get("inputLevel2Category").value;
+		const inputLevel1Category = this.formGroup.get('inputLevel1Category').value;
+		const inputLevel2Category = this.formGroup.get('inputLevel2Category').value;
 
-		const toggleLevel1Category = this.formGroup.get("toggleLevel1Category").value;
-		const toggleLevel2Category = this.formGroup.get("toggleLevel2Category").value;
+		const toggleLevel1Category = this.formGroup.get(
+			'toggleLevel1Category'
+		).value;
+		const toggleLevel2Category = this.formGroup.get(
+			'toggleLevel2Category'
+		).value;
 
-		this.errorMessage = "";
+		this.errorMessage = '';
 
-		let categoryIdToUpdate = "";
-		let categoryNameToUpdate = "";
-		let categoryHiddenToUpdate = "";
+		let categoryIdToUpdate = '';
+		let categoryNameToUpdate = '';
+		let categoryHiddenToUpdate = '';
 
-		if (selectLevel1Category && (inputLevel1Category || typeof toggleLevel1Category == "boolean")) {
+		if (
+			selectLevel1Category &&
+			(inputLevel1Category || typeof toggleLevel1Category == 'boolean')
+		) {
 			categoryIdToUpdate = selectLevel1Category;
 			categoryNameToUpdate = inputLevel1Category;
 			categoryHiddenToUpdate = toggleLevel1Category;
-		} else if (selectLevel2Category && (inputLevel2Category || typeof toggleLevel2Category == "boolean")) {
+		} else if (
+			selectLevel2Category &&
+			(inputLevel2Category || typeof toggleLevel2Category == 'boolean')
+		) {
 			categoryIdToUpdate = selectLevel2Category;
 			categoryNameToUpdate = inputLevel2Category;
 			categoryHiddenToUpdate = toggleLevel2Category;
 		} else {
-			this.errorMessage = "To update a category you have to select it and enter a new name";
+			this.errorMessage =
+				'To update a category you have to select it and enter a new name';
 			return;
 		}
 
 		this._categoriesService
-			.updateWikiCategory(categoryIdToUpdate, categoryNameToUpdate, categoryHiddenToUpdate)
+			.updateWikiCategory(
+				categoryIdToUpdate,
+				categoryNameToUpdate,
+				categoryHiddenToUpdate
+			)
 			.pipe(
 				untilDestroyed(this),
 				this._hotToastrService.observe({
-					loading: "Category is updating...",
-					success: "Category successfully updated",
-					error: "Categories updating failed",
+					loading: 'Category is updating...',
+					success: 'Category successfully updated',
+					error: 'Categories updating failed',
 				})
 			)
 			.subscribe();

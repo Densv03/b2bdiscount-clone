@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { ApiService } from "../../../core/services/api/api.service";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { ApiService } from '../../../core/services/api/api.service';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class WikiService {
 	public readonly _articlesBehaviourSubject: BehaviorSubject<any[]>;
@@ -13,7 +13,7 @@ export class WikiService {
 	constructor(private readonly _apiService: ApiService) {
 		this._articlesBehaviourSubject = new BehaviorSubject<any[]>([]);
 		this._articles$ = this._articlesBehaviourSubject.asObservable();
-		this._endpoint = "posts/";
+		this._endpoint = 'posts/';
 	}
 
 	public getTags(str: unknown) {
@@ -21,7 +21,7 @@ export class WikiService {
 	}
 
 	public createArticle(body: unknown) {
-		return this._apiService.post("post/create", body);
+		return this._apiService.post('post/create', body);
 	}
 
 	public getComments(post: string) {
@@ -41,7 +41,9 @@ export class WikiService {
 
 	public getArticleById(id: string): Observable<any> {
 		const articles = this._articlesBehaviourSubject.getValue();
-		const foundArticle = articles.find((articleToFind) => articleToFind.id === id);
+		const foundArticle = articles.find(
+			(articleToFind) => articleToFind.id === id
+		);
 
 		if (foundArticle) {
 			return of(foundArticle);

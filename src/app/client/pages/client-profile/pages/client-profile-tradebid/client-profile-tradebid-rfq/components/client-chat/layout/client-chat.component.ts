@@ -6,40 +6,40 @@ import {
 	OnDestroy,
 	OnInit,
 	ViewChild,
-} from "@angular/core";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { ActivatedRoute } from "@angular/router";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { ChatService } from "../../../../../../../../services/chat/chat.service";
-import { BehaviorSubject, combineLatest, Observable } from "rxjs";
-import {filter, map, switchMap, take, tap} from "rxjs/operators";
-import { UserService } from "../../../../../../services/user/user.service";
-import { OffersService } from "../../../../../../../../services/offers/offers.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { io } from "socket.io-client";
-import { AuthService } from "../../../../../../../../../auth/services/auth/auth.service";
-import { environment } from "../../../../../../../../../../environments/environment";
-import { SocketService } from "../../../../../../../../services/socket/socket.service";
-import { ChatsService } from "../../../../../../../../services/chats/chats.service";
-import { HotToastService } from "@ngneat/hot-toast";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
+} from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { ActivatedRoute } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ChatService } from '../../../../../../../../services/chat/chat.service';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { UserService } from '../../../../../../services/user/user.service';
+import { OffersService } from '../../../../../../../../services/offers/offers.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { io } from 'socket.io-client';
+import { AuthService } from '../../../../../../../../../auth/services/auth/auth.service';
+import { environment } from '../../../../../../../../../../environments/environment';
+import { SocketService } from '../../../../../../../../services/socket/socket.service';
+import { ChatsService } from '../../../../../../../../services/chats/chats.service';
+import { HotToastService } from '@ngneat/hot-toast';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
 import * as countryList from 'country-list';
-import { TradebidService } from "../../../../../../../client-tradebid/tradebid.service";
-import mixpanel from "mixpanel-browser";
-import {MixpanelService} from "../../../../../../../../../core/services/mixpanel/mixpanel.service";
-import {CategoriesService} from "../../../../../../../../services/categories/categories.service";
-import {getName} from "country-list";
-import {TranslateService} from "@ngx-translate/core";
+import { TradebidService } from '../../../../../../../client-tradebid/tradebid.service';
+import mixpanel from 'mixpanel-browser';
+import { MixpanelService } from '../../../../../../../../../core/services/mixpanel/mixpanel.service';
+import { CategoriesService } from '../../../../../../../../services/categories/categories.service';
+import { getName } from 'country-list';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-chat",
-	templateUrl: "./client-chat.component.html",
-	styleUrls: ["./client-chat.component.scss"],
+	selector: 'b2b-client-chat',
+	templateUrl: './client-chat.component.html',
+	styleUrls: ['./client-chat.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientChatComponent implements OnInit, OnDestroy {
-	@ViewChild("chatContainer") chatContainer: ElementRef;
+	@ViewChild('chatContainer') chatContainer: ElementRef;
 	public buyerContacts: any;
 	public buyerStatus: boolean;
 	public rfqInfo: any;
@@ -84,11 +84,12 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.formGroup = this._formBuilder.group({
-			message: "",
+			message: '',
 		});
 
 		this._messagesHistoryBehaviourSubject = new BehaviorSubject<any>([]);
-		this._messagesHistory$ = this._messagesHistoryBehaviourSubject.asObservable();
+		this._messagesHistory$ =
+			this._messagesHistoryBehaviourSubject.asObservable();
 
 		this._messageBehaviourSubject = new BehaviorSubject<any>([]);
 		this._message$ = this._messageBehaviourSubject.asObservable();
@@ -112,14 +113,17 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 						this.buyerStatus = chatInfo.isActive;
 						const displayInfoOf =
 							chatInfo.buyer?._id === user?._id
-								? this.translateService.instant("CHAT.SELLER")
-								: this.translateService.instant("CHAT.BUYER");
+								? this.translateService.instant('CHAT.SELLER')
+								: this.translateService.instant('CHAT.BUYER');
 						const displayInfo =
-							displayInfoOf === this.translateService.instant("CHAT.SELLER") ? chatInfo.seller : chatInfo.buyer;
+							displayInfoOf === this.translateService.instant('CHAT.SELLER')
+								? chatInfo.seller
+								: chatInfo.buyer;
 						const author =
 							displayInfo?.fullName ||
 							displayInfo?.personName ||
-							`${this.translateService.instant("CHAT.SELLER")} of ${chatInfo.offer?.title}`;
+							`${this.translateService.instant('CHAT.SELLER')} of ${chatInfo
+								.offer?.title}`;
 
 						return {
 							...chatInfo,
@@ -138,7 +142,7 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 	public getMessages() {
 		const user$ = this._authService.getUser();
 		const chat$ = this._activatedRoute.paramMap.pipe(
-			map((paramMap) => paramMap.get("id")),
+			map((paramMap) => paramMap.get('id')),
 			switchMap((id) => this._chatService.getChatById(id))
 		);
 
@@ -148,18 +152,24 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 				this._messagesHistory$.pipe(
 					tap(() => {
 						setTimeout(() => {
-							this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+							this.chatContainer.nativeElement.scrollTop =
+								this.chatContainer.nativeElement.scrollHeight;
 						}, 0);
 					}),
 					map((messages) =>
-						messages.map((message: { author: any; }) => {
+						messages.map((message: { author: any }) => {
 							const dispayInfoOf =
 								chat.seller?._id === message?.author
-									? this.translateService.instant("CHAT.SELLER")
-									: this.translateService.instant("CHAT.BUYER");
+									? this.translateService.instant('CHAT.SELLER')
+									: this.translateService.instant('CHAT.BUYER');
 							const displayInfo =
-								dispayInfoOf === this.translateService.instant("CHAT.SELLER") ? chat.offer?.contact : chat.buyer;
-							const author = displayInfo?.fullName || displayInfo?.personName || chat.seller.fullName;
+								dispayInfoOf === this.translateService.instant('CHAT.SELLER')
+									? chat.offer?.contact
+									: chat.buyer;
+							const author =
+								displayInfo?.fullName ||
+								displayInfo?.personName ||
+								chat.seller.fullName;
 
 							return {
 								...message,
@@ -176,8 +186,8 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	public enterPressed(event: { preventDefault: () => void; }) {
-		this.sendMessage(this.formGroup.get("message").value);
+	public enterPressed(event: { preventDefault: () => void }) {
+		this.sendMessage(this.formGroup.get('message').value);
 		event.preventDefault();
 	}
 
@@ -188,35 +198,42 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 
 		this.chatInfo$.pipe(untilDestroyed(this)).subscribe((chatInfo) => {
 			const user = this._usersService.getUser();
-			const rfqId = typeof chatInfo.rfq === "string" ? chatInfo.rfq : chatInfo.rfq._id;
-			this._socket.emit("message", {
-				type: "text",
+			const rfqId =
+				typeof chatInfo.rfq === 'string' ? chatInfo.rfq : chatInfo.rfq._id;
+			this._socket.emit('message', {
+				type: 'text',
 				body,
-				userId: user._id === chatInfo.buyer?._id ? chatInfo.seller._id : chatInfo.buyer?._id,
+				userId:
+					user._id === chatInfo.buyer?._id
+						? chatInfo.seller._id
+						: chatInfo.buyer?._id,
 				rfqId,
-				typeRoom: "rfq",
+				typeRoom: 'rfq',
 			});
 		});
 
-		this.formGroup.get("message").reset();
+		this.formGroup.get('message').reset();
 	}
 
 	public subscribeOnMessage() {
-		return this._socket.on("message", (message: any) => {
+		return this._socket.on('message', (message: any) => {
 			const history = this._messagesHistoryBehaviourSubject.getValue();
 			this._messagesHistoryBehaviourSubject.next([...history, message]);
 		});
 	}
 
 	public subscribeOnChatInfo() {
-		return this._socket.on("chat_info", (chatInfo: { unreadMessagesCount: number; }) => {
-			this._socketService.readMessages(chatInfo.unreadMessagesCount);
-			this._chatInfoBehaviourSubject.next(chatInfo);
-		});
+		return this._socket.on(
+			'chat_info',
+			(chatInfo: { unreadMessagesCount: number }) => {
+				this._socketService.readMessages(chatInfo.unreadMessagesCount);
+				this._chatInfoBehaviourSubject.next(chatInfo);
+			}
+		);
 	}
 
 	public subscribeOnMessageHistory() {
-		return this._socket.on("message_history", (message_history: any) => {
+		return this._socket.on('message_history', (message_history: any) => {
 			this._messagesHistoryBehaviourSubject.next(message_history);
 		});
 	}
@@ -227,7 +244,7 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 		}
 
 		this._socket = io(environment.apiUrl, {
-			path: "/chat",
+			path: '/chat',
 			auth: {
 				token,
 			},
@@ -238,7 +255,7 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 		const token$ = this._usersService.getToken$();
 		const user$ = this._usersService.getUser$();
 		const chat$ = this._activatedRoute.paramMap.pipe(
-			map((paramMap) => paramMap.get("id")),
+			map((paramMap) => paramMap.get('id')),
 			switchMap((id) => this._chatService.getChatById(id))
 		);
 
@@ -246,7 +263,9 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 			.pipe(untilDestroyed(this))
 			.subscribe(([chat, token, user]: any) => {
 				const buyer = Array.isArray(chat.buyer) ? chat.buyer[0] : chat.buyer;
-				const seller = Array.isArray(chat.seller) ? chat.seller[0] : chat.seller;
+				const seller = Array.isArray(chat.seller)
+					? chat.seller[0]
+					: chat.seller;
 
 				this.openConnection(token);
 
@@ -254,29 +273,38 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 				this.subscribeOnChatInfo();
 				this.subscribeOnMessage();
 
-				const role = user._id === buyer?._id ? "buyer" : "seller";
-				const contactTo = role === "seller" ? buyer : seller;
+				const role = user._id === buyer?._id ? 'buyer' : 'seller';
+				const contactTo = role === 'seller' ? buyer : seller;
 
-				this.displayContactsRequested = chat.contactsRequested && !this.displayContactsOpened;
+				this.displayContactsRequested =
+					chat.contactsRequested && !this.displayContactsOpened;
 				this.displayRequestContacts =
-					role === "buyer" &&
+					role === 'buyer' &&
 					!this.displayContactsOpened &&
 					!this.displayContactsRequested &&
 					(!chat.offer.visibility.email || !chat.offer.visibility.phone);
-				this.displayOpenContacts = role === "seller" && !this.displayContactsOpened && chat.contactsRequested;
-				this.displayCloseContacts = role === "seller" && !this.displayContactsOpened && chat.contactsRequested;
+				this.displayOpenContacts =
+					role === 'seller' &&
+					!this.displayContactsOpened &&
+					chat.contactsRequested;
+				this.displayCloseContacts =
+					role === 'seller' &&
+					!this.displayContactsOpened &&
+					chat.contactsRequested;
 
 				this.chat = chat;
-				this._socket.emit("start_chat", {
+				this._socket.emit('start_chat', {
 					userId: contactTo?._id,
 					rfqId: chat.rfq,
-					typeRoom: "rfq",
+					typeRoom: 'rfq',
 				});
 			});
 	}
 
 	public getDestination(): string {
-		return this.rfqInfo?.rfq?.destination?.to ? countryList.getName(this.rfqInfo?.rfq?.destination?.to) : "";
+		return this.rfqInfo?.rfq?.destination?.to
+			? countryList.getName(this.rfqInfo?.rfq?.destination?.to)
+			: '';
 	}
 
 	public ngOnDestroy() {

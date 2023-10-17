@@ -62,6 +62,7 @@ export class B2bNgxFileComponent implements ControlValueAccessor, OnInit, OnChan
 	@Input() public label: string;
 
 	@Output() clicked = new EventEmitter<any>();
+	@Output() removeProduct: EventEmitter<string> = new EventEmitter<string>();
 
 	public readonly formControl: FormControl<string>;
 	public readonly id: string;
@@ -212,7 +213,12 @@ export class B2bNgxFileComponent implements ControlValueAccessor, OnInit, OnChan
 	}
 
 	public removeFile(fileName: string): void {
-		this.files = this.files.filter((item: File) => item.name !== fileName)
-		this.onChange(this.files)
+		const filteredFiles = this.files.filter((item: any) => !(item.name === fileName || item._id === fileName));
+		if (filteredFiles.length !== this.files.length) {
+			this.removeProduct.emit(fileName);
+		}
+		this.files = filteredFiles;
+		this.onChange(this.files);
+
 	}
 }

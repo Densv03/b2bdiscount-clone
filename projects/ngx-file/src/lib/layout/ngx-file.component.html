@@ -28,8 +28,8 @@
 
 			<li *ngFor="let file of files" (click)="handleClick(file)" class="ngx-files-list-item">
 				<img b2bNgxIcon name="document" class="ngx-files-list-item-icon" alt="" />
-				<span class="ngx-files-list-item-name">{{ file.name }}</span>
-				<img (click)="removeFile(file.name)" b2bNgxIcon name="cancel" class="cancel" alt="cancel" />
+				<span class="ngx-files-list-item-name">{{ file?.name || file._id }}</span>
+				<img (click)="removeFile(file?.name || file._id)" b2bNgxIcon name="cancel" class="cancel" alt="cancel" />
 			</li>
 		</ul>
 	</div>

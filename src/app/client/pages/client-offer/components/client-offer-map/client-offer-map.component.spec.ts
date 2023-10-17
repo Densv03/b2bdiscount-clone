@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientOfferMapComponent } from "./client-offer-map.component";
+import { ClientOfferMapComponent } from './client-offer-map.component';
 
-describe("ClientOfferMapComponent", () => {
+describe('ClientOfferMapComponent', () => {
 	let component: ClientOfferMapComponent;
 	let fixture: ComponentFixture<ClientOfferMapComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientOfferMapComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

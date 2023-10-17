@@ -1,6 +1,6 @@
 export interface GetPaymentPlanResponse {
 	_id: string;
-	typePlan: "subscription" | "quotes";
+	typePlan: 'subscription' | 'quotes';
 	title: string;
 	price: number;
 	description: string;

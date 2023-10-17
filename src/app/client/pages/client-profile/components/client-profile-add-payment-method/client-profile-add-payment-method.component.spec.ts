@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileAddPaymentMethod } from "./client-profile-add-payment-method.component";
+import { ClientProfileAddPaymentMethod } from './client-profile-add-payment-method.component';
 
-describe("ClientProfileAddPaymentMethod", () => {
+describe('ClientProfileAddPaymentMethod', () => {
 	let component: ClientProfileAddPaymentMethod;
 	let fixture: ComponentFixture<ClientProfileAddPaymentMethod>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileAddPaymentMethod", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

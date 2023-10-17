@@ -1,16 +1,24 @@
 <div class="cookies">
-	<p class="title">{{ "COOKIES.TTILE" | translate }}</p>
+	<p class="title">{{ 'COOKIES.TTILE' | translate }}</p>
 	<p class="description">
-		{{ "COOKIES.DESCRIPTION" | translate }}
-		<a [routerLink]="b2bNgxLinkService.getLink('/cookie-policy') | async"> {{ "COOKIES.ABOUT" | translate }} </a>.
+		{{ 'COOKIES.DESCRIPTION' | translate }}
+		<a [routerLink]="b2bNgxLinkService.getLink('/cookie-policy') | async">
+			{{ 'COOKIES.ABOUT' | translate }} </a
+		>.
 	</p>
 
 	<div class="buttons">
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK" (click)="closeModal(false)">
-			{{ "BUTTONS.ACCEPT" | translate }}
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
+			(click)="closeModal(false)">
+			{{ 'BUTTONS.ACCEPT' | translate }}
 		</button>
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" (click)="closeModal(true)">
-			{{ "BUTTONS.DECLINE" | translate }}
+		<button
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+			(click)="closeModal(true)">
+			{{ 'BUTTONS.DECLINE' | translate }}
 		</button>
 	</div>
 </div>

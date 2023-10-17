@@ -1,13 +1,47 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .marketplace-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(274px, 1fr));
+	grid-template-columns: repeat(auto-fill, 274px);
 	@include breakpoint('3') {
 		padding: 0 15px;
+		justify-content: center;
 	}
 	gap: 15px;
-	.grid-item {
-		margin-bottom: 15px;
+}
+
+.marketplace-grid .grid-item {
+	margin-bottom: 15px;
+	position: relative;
+}
+
+.marketplace-grid .divider {
+	grid-column: span 3;
+}
+
+@media (max-width: 1311px) {
+	.marketplace-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.marketplace-grid .divider {
+		grid-column: span 2;
+	}
+}
+@media (max-width: 576px) {
+	.marketplace-grid {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	.marketplace-grid .divider {
+		grid-column: span 1;
+
+		.grid-item {
+			margin-bottom: 15px;
+			width: 274px;
+			@include breakpoint('1') {
+				margin-bottom: 0;
+			}
+		}
 	}
 }

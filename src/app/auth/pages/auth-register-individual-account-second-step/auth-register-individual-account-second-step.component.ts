@@ -1,43 +1,45 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
-import {catchError, filter, first, map, tap} from "rxjs/operators";
-import { AuthService } from "../../services/auth/auth.service";
-import { MatDialog } from "@angular/material/dialog";
-import {Observable, throwError} from "rxjs";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { catchError, filter, first, map, tap } from 'rxjs/operators';
+import { AuthService } from '../../services/auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable, throwError } from 'rxjs';
 // import { FormBuilder, FormGroup } from "@ngneat/reactive-forms";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { fullName } from "../../../core/helpers/validator/full-name";
-import { onlyLatin } from "../../../core/helpers/validator/only-latin";
-import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { animate, style, transition, trigger } from "@angular/animations";
-import {ActivatedRoute, Router} from "@angular/router";
-import { HotToastService } from "@ngneat/hot-toast";
-import { FirstStepDataModel } from "../auth-register-individual-account/shared/first-step-data.model";
-import { BrowserStorageKeysEnum} from "../../../client/shared/enums/browser-storage-keys.enum";
-import {onlyLatinAndNumberAndSymbols} from "../../../core/helpers/validator/only -latin-numbers-symbols";
-import {TranslateService} from "@ngx-translate/core";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { fullName } from '../../../core/helpers/validator/full-name';
+import { onlyLatin } from '../../../core/helpers/validator/only-latin';
+import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
+import { FirstStepDataModel } from '../auth-register-individual-account/shared/first-step-data.model';
+import { BrowserStorageKeysEnum } from '../../../client/shared/enums/browser-storage-keys.enum';
+import { onlyLatinAndNumberAndSymbols } from '../../../core/helpers/validator/only -latin-numbers-symbols';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-	selector: "b2b-auth-register-individual-account-second-step",
-	templateUrl: "./auth-register-individual-account-second-step.component.html",
-	styleUrls: ["./auth-register-individual-account-second-step.component.scss"],
+	selector: 'b2b-auth-register-individual-account-second-step',
+	templateUrl: './auth-register-individual-account-second-step.component.html',
+	styleUrls: ['./auth-register-individual-account-second-step.component.scss'],
 	animations: [
-		trigger("fadeInOut", [
-			transition(":enter", [
+		trigger('fadeInOut', [
+			transition(':enter', [
 				// :enter is alias to 'void => *'
 				style({ opacity: 0 }),
 				animate(500, style({ opacity: 1 })),
 			]),
-			transition(":leave", [
+			transition(':leave', [
 				// :leave is alias to '* => void'
 				animate(500, style({ opacity: 0 })),
 			]),
 		]),
 	],
 })
-export class AuthRegisterIndividualAccountSecondStepComponent implements OnInit {
+export class AuthRegisterIndividualAccountSecondStepComponent
+	implements OnInit
+{
 	public form: FormGroup = this.getFormGroup();
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
@@ -57,12 +59,17 @@ export class AuthRegisterIndividualAccountSecondStepComponent implements OnInit 
 		private hotToastrService: HotToastService,
 		private changeDetectorRef: ChangeDetectorRef
 	) {
-		this.firstStepDataObj = JSON.parse(localStorage.getItem(BrowserStorageKeysEnum.FIRST_STEP_DATA)!);
+		this.firstStepDataObj = JSON.parse(
+			localStorage.getItem(BrowserStorageKeysEnum.FIRST_STEP_DATA)!
+		);
 	}
 
 	ngOnInit() {
-		if (this.firstStepDataObj?.companyName !== undefined && this.firstStepDataObj?.companyName !== null) {
-			this.form.get("company")?.setValue(this.firstStepDataObj.companyName);
+		if (
+			this.firstStepDataObj?.companyName !== undefined &&
+			this.firstStepDataObj?.companyName !== null
+		) {
+			this.form.get('company')?.setValue(this.firstStepDataObj.companyName);
 		}
 	}
 
@@ -70,11 +77,15 @@ export class AuthRegisterIndividualAccountSecondStepComponent implements OnInit 
 		return this.authService.getRoles().pipe(
 			map((roles) =>
 				roles.map((role) => {
-					const roleName = this.translateService.instant(`ROLES.${role.name.toUpperCase()}_NAME`);
+					const roleName = this.translateService.instant(
+						`ROLES.${role.name.toUpperCase()}_NAME`
+					);
 
 					return {
 						...role,
-						description: this.translateService.instant(`ROLES.${role.name.toUpperCase()}`),
+						description: this.translateService.instant(
+							`ROLES.${role.name.toUpperCase()}`
+						),
 						displayName: roleName.charAt(0).toUpperCase() + roleName.slice(1),
 					};
 				})
@@ -91,24 +102,34 @@ export class AuthRegisterIndividualAccountSecondStepComponent implements OnInit 
 
 		const { email, password } = this.firstStepDataObj;
 
-		const body: any = { email, password, ...formGroup.value, preferences: formGroup.value.categories };
+		const body: any = {
+			email,
+			password,
+			...formGroup.value,
+			preferences: formGroup.value.categories,
+		};
 
 		if (localStorage.getItem('ref')) {
-			body.refId = localStorage.getItem('ref')
+			body.refId = localStorage.getItem('ref');
 		}
-
 
 		try {
 			this.authService
-				.registerWithForm({ ...body, passwordConfirm: password, password, email })
+				.registerWithForm({
+					...body,
+					passwordConfirm: password,
+					password,
+					email,
+				})
 				.pipe(
 					catchError((er) => {
 						this.hotToastrService.show(
-							`This email ${formGroup.get("securityData")?.get("email")?.value} is already registered.`,
+							`This email ${formGroup.get('securityData')?.get('email')
+								?.value} is already registered.`,
 							{
 								dismissible: true,
 								style: {
-									border: "1px solid #E63D3D",
+									border: '1px solid #E63D3D',
 								},
 								autoClose: false,
 							}
@@ -132,9 +153,9 @@ export class AuthRegisterIndividualAccountSecondStepComponent implements OnInit 
 
 	private getFormGroup(): FormGroup {
 		return this.fb.group({
-			company: ["", [onlyLatinAndNumberAndSymbols(), Validators.required]],
-			fullName: ["", [Validators.required, fullName(), onlyLatin()]],
-			phone: ["", [Validators.required]],
+			company: ['', [onlyLatinAndNumberAndSymbols(), Validators.required]],
+			fullName: ['', [Validators.required, fullName(), onlyLatin()]],
+			phone: ['', [Validators.required]],
 			termsAndConditions: [null, Validators.required],
 			categories: [[], Validators.required],
 			roleId: [null, Validators.required],
@@ -142,5 +163,4 @@ export class AuthRegisterIndividualAccountSecondStepComponent implements OnInit 
 			preferences: [[]],
 		});
 	}
-
 }

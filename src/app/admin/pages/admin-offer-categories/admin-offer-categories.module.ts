@@ -1,13 +1,13 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { AdminOfferCategoriesRoutingModule } from "./admin-offer-categories-routing.module";
-import { AdminOfferCategoriesComponent } from "./layout/admin-offer-categories.component";
-import { B2bNgxInputModule } from "@b2b/ngx-input";
-import { B2bNgxSelectModule } from "@b2b/ngx-select";
-import { ReactiveFormsModule } from "@angular/forms";
-import { B2bNgxButtonModule } from "@b2b/ngx-button";
-import { B2bNgxToggleModule } from "@b2b/ngx-toggle";
+import { AdminOfferCategoriesRoutingModule } from './admin-offer-categories-routing.module';
+import { AdminOfferCategoriesComponent } from './layout/admin-offer-categories.component';
+import { B2bNgxInputModule } from '@b2b/ngx-input';
+import { B2bNgxSelectModule } from '@b2b/ngx-select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { B2bNgxToggleModule } from '@b2b/ngx-toggle';
 
 @NgModule({
 	declarations: [AdminOfferCategoriesComponent],

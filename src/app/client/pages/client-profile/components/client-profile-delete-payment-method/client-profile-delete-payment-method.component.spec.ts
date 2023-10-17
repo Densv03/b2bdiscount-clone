@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileDeletePaymentMethodComponent } from "./client-profile-delete-payment-method.component";
+import { ClientProfileDeletePaymentMethodComponent } from './client-profile-delete-payment-method.component';
 
-describe("ClientProfileDeletePaymentMethodComponent", () => {
+describe('ClientProfileDeletePaymentMethodComponent', () => {
 	let component: ClientProfileDeletePaymentMethodComponent;
 	let fixture: ComponentFixture<ClientProfileDeletePaymentMethodComponent>;
 
@@ -13,12 +13,14 @@ describe("ClientProfileDeletePaymentMethodComponent", () => {
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(ClientProfileDeletePaymentMethodComponent);
+		fixture = TestBed.createComponent(
+			ClientProfileDeletePaymentMethodComponent
+		);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

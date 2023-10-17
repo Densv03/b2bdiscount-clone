@@ -1,14 +1,13 @@
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
-import {ApiService} from "../../../../core/services/api/api.service";
+import { Observable } from 'rxjs';
+import { ApiService } from '../../../../core/services/api/api.service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class HomepageService {
-
-  constructor(private apiService: ApiService) { }
+	constructor(private apiService: ApiService) {}
 
 	public getCarouselItems(): Observable<any[]> {
 		return this.apiService.get('cache/first-screen-carousel');
@@ -18,8 +17,10 @@ export class HomepageService {
 		return this.apiService.post('product/update-first-screen-carousel', data);
 	}
 
-	public updateSubscription(model: {	categoriesId: string[],
-		email: string}): Observable<any> {
+	public updateSubscription(model: {
+		categoriesId: string[];
+		email: string;
+	}): Observable<any> {
 		return this.apiService.post('subscription/update-user-subscription', model);
 	}
 }

@@ -1,7 +1,7 @@
-import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
-import { B2bNgxImageModule } from "@b2b/ngx-image";
-import { AuthRecoverAccountComponent } from "./auth-recover-account.component";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { B2bNgxImageModule } from '@b2b/ngx-image';
+import { AuthRecoverAccountComponent } from './auth-recover-account.component';
 
 @NgModule({
 	declarations: [AuthRecoverAccountComponent],

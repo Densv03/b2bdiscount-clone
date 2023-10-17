@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientMarketplaceFiltersMobileComponent } from "./client-marketplace-filters-mobile.component";
+import { ClientMarketplaceFiltersMobileComponent } from './client-marketplace-filters-mobile.component';
 
-describe("ClientMarketplaceFiltersMobileComponent", () => {
+describe('ClientMarketplaceFiltersMobileComponent', () => {
 	let component: ClientMarketplaceFiltersMobileComponent;
 	let fixture: ComponentFixture<ClientMarketplaceFiltersMobileComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientMarketplaceFiltersMobileComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

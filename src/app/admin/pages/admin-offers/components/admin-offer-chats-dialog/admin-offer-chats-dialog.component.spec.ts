@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminOfferChatsDialogComponent } from "./admin-offer-chats-dialog.component";
+import { AdminOfferChatsDialogComponent } from './admin-offer-chats-dialog.component';
 
-describe("AdminOfferChatsDialogComponent", () => {
+describe('AdminOfferChatsDialogComponent', () => {
 	let component: AdminOfferChatsDialogComponent;
 	let fixture: ComponentFixture<AdminOfferChatsDialogComponent>;
 
@@ -18,7 +18,7 @@ describe("AdminOfferChatsDialogComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

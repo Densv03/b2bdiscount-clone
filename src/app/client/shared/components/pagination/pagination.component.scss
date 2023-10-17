@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	ul {
@@ -47,7 +47,7 @@
 			margin-right: 0;
 		}
 	}
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		gap: 10px;
 		.ngx-pagination-item {
 			width: 30px;

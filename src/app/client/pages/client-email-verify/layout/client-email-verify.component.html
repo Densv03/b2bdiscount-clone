@@ -2,9 +2,11 @@
 	<div class="registration-complete__header"></div>
 	<div class="registration-complete__body">
 		<img b2bNgxImage name="recieve_email" />
-		<p class="registration-complete__body-title">{{ "EMAIL_VERIFY.TITLE" | translate }}</p>
+		<p class="registration-complete__body-title">
+			{{ 'EMAIL_VERIFY.TITLE' | translate }}
+		</p>
 		<span>
-			{{ "EMAIL_VERIFY.SUBTITLE" | translate }}
+			{{ 'EMAIL_VERIFY.SUBTITLE' | translate }}
 		</span>
 		<div class="registration-complete__body__email-wrapper">
 			<input
@@ -13,7 +15,10 @@
 				(focusout)="editEmail(true)"
 				[formControl]="formControl"
 				[size]="formControl.value.length"
-				[style]="{ 'padding-left': isInputDisabled ? 0 : null, 'padding-right': isInputDisabled ? 0 : null }"
+				[style]="{
+					'padding-left': isInputDisabled ? 0 : null,
+					'padding-right': isInputDisabled ? 0 : null
+				}"
 				[theme]="isInputDisabled ? null : b2bNgxInputThemeEnum.BACKGROUND_WHITE"
 				class="registration-complete__body__email-wrapper-input" />
 			<img b2bNgxImage name="edit" (click)="editEmail()" />
@@ -26,20 +31,23 @@
 				[disabled]="isDisabled"
 				class="client-profile-settings-footer-save-button"
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-				{{ "EMAIL_VERIFY.SEND_EMAIL_AGAIN" | translate }}
+				{{ 'EMAIL_VERIFY.SEND_EMAIL_AGAIN' | translate }}
 				<span #time *ngIf="isDisabled">01:00</span>
 			</button>
 		</div>
 		<span class="registration-complete__body-notification">
-			{{ "EMAIL_VERIFY.CONFIRM_EMAIL" | translate }}
+			{{ 'EMAIL_VERIFY.CONFIRM_EMAIL' | translate }}
 		</span>
 	</div>
 	<div class="registration-complete__footer">
 		<p>
-			{{ "EMAIL_VERIFY.FOOTER_DESCRIPTION_1" | translate }}<span> {{ "EMAIL_VERIFY.FOOTER_BOLD" | translate }}</span>
-			{{ "EMAIL_VERIFY.FOOTER_DESCRIPTION_2" | translate}}
-			<button (click)="openContactUsModal()">{{ "EMAIL_VERIFY.FOOTER_BUTTON" | translate}}</button>
-			{{ "EMAIL_VERIFY.FOOTER_DESCRIPTION_3" | translate}}
+			{{ 'EMAIL_VERIFY.FOOTER_DESCRIPTION_1' | translate
+			}}<span> {{ 'EMAIL_VERIFY.FOOTER_BOLD' | translate }}</span>
+			{{ 'EMAIL_VERIFY.FOOTER_DESCRIPTION_2' | translate }}
+			<button (click)="openContactUsModal()">
+				{{ 'EMAIL_VERIFY.FOOTER_BUTTON' | translate }}
+			</button>
+			{{ 'EMAIL_VERIFY.FOOTER_DESCRIPTION_3' | translate }}
 		</p>
 	</div>
 </div>

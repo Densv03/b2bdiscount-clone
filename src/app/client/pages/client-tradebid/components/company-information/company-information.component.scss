@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.wrapper {
@@ -19,11 +19,11 @@
 			width: 80%;
 			margin: auto;
 			margin-bottom: 30px;
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				flex-direction: column;
 				padding: 0 20px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				justify-content: space-around;
 			}
 
@@ -34,7 +34,7 @@
 				justify-content: center;
 				align-items: center;
 				line-height: 50px;
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					font-size: 2em;
 					line-height: 36px;
 				}
@@ -44,16 +44,16 @@
 				height: 100%;
 				width: auto;
 
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					height: 70%;
 					margin: auto;
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					height: 50%;
 				}
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					margin: 0 0 0 auto;
 				}
 			}
@@ -109,12 +109,12 @@
 					justify-content: space-between;
 					align-items: flex-start;
 					margin-top: 25px;
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						flex-direction: column;
 					}
 
 					.column {
-						@include breakpoint("3") {
+						@include breakpoint('3') {
 							width: 100%;
 						}
 						width: 47%;

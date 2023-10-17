@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientTermsAndConditionsComponent } from "./layout/client-terms-and-conditions.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientTermsAndConditionsComponent } from './layout/client-terms-and-conditions.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientTermsAndConditionsComponent,
 	},
 ];

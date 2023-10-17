@@ -109,9 +109,12 @@
       "@b2b/breadcrumbs": [
         "projects/b2b-breadcrumbs/src/public-api"
       ],
+      "@b2b/datepicker": [
+        "projects/b2b-datepicker/src/public-api"
+      ],
       "@b2b/ngx-list": [
         "projects/ngx-list/src/public-api"
-      ]
+      ],
     },
     "declaration": false,
     "downlevelIteration": true,

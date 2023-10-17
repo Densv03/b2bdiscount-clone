@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { Observable } from "rxjs";
-import { io } from "socket.io-client";
-import { UserService } from "../services/user/user.service";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import {User} from "../../../../core/models/user/user.model";
-import {AuthService} from "../../../../auth/services/auth/auth.service";
-import {environment} from "../../../../../environments/environment";
+import {
+	ChangeDetectionStrategy,
+	Component,
+	OnDestroy,
+	OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { io } from 'socket.io-client';
+import { UserService } from '../services/user/user.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { User } from '../../../../core/models/user/user.model';
+import { AuthService } from '../../../../auth/services/auth/auth.service';
+import { environment } from '../../../../../environments/environment';
 
 interface SidenavOption {
 	label: string;
@@ -17,9 +22,9 @@ interface SidenavOption {
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-profile",
-	templateUrl: "./client-profile.component.html",
-	styleUrls: ["./client-profile.component.scss"],
+	selector: 'b2b-client-profile',
+	templateUrl: './client-profile.component.html',
+	styleUrls: ['./client-profile.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientProfileComponent implements OnInit, OnDestroy {
@@ -48,7 +53,7 @@ export class ClientProfileComponent implements OnInit, OnDestroy {
 			.pipe(untilDestroyed(this))
 			.subscribe((token) => {
 				this._socket = io(environment.apiUrl, {
-					path: "/app",
+					path: '/app',
 					auth: {
 						token,
 					},
@@ -64,51 +69,51 @@ export class ClientProfileComponent implements OnInit, OnDestroy {
 
 	private async logOut() {
 		// this._ampService.logEvent("Logout success");
-		this._socket.emit("logout");
+		this._socket.emit('logout');
 		this.authService.logOut();
-		await this.router.navigateByUrl("");
+		await this.router.navigateByUrl('');
 	}
 
 	private getAccountOptions(): SidenavOption[] {
 		return [
 			{
-				label: "Settings",
-				icon: "sidenav-line",
-				link: "/profile/your-account/settings",
+				label: 'Settings',
+				icon: 'sidenav-line',
+				link: '/profile/your-account/settings',
 			},
 			{
-				label: "Company information",
-				icon: "sidenav-line",
-				link: "/profile/your-account/company-information",
+				label: 'Company information',
+				icon: 'sidenav-line',
+				link: '/profile/your-account/company-information',
 			},
 			{
-				label: "",
-				icon: "",
-				link: "",
+				label: '',
+				icon: '',
+				link: '',
 			},
 		];
 	}
 	private getWorkspaceOptions(): SidenavOption[] {
 		return [
 			{
-				label: "B2B Market",
-				link: "/profile/your-workspace/b2bmarket",
-				icon: "sidenav-line",
+				label: 'B2B Market',
+				link: '/profile/your-workspace/b2bmarket',
+				icon: 'sidenav-line',
 			},
 			{
-				label: "Unclaimed cargo",
-				link: "/profile/your-workspace/unclaimed-cargo",
-				icon: "sidenav-line",
+				label: 'Unclaimed cargo',
+				link: '/profile/your-workspace/unclaimed-cargo',
+				icon: 'sidenav-line',
 			},
 			{
-				label: "TradeBid",
-				link: "/profile/your-workspace/tradebid",
-				icon: "sidenav-line",
+				label: 'Sourcing Request',
+				link: '/profile/your-workspace/tradebid',
+				icon: 'sidenav-line',
 			},
 			{
-				label: "SIDENAV.LOG_OUT",
+				label: 'SIDENAV.LOG_OUT',
 				onClick: () => this.logOut(),
-				icon: "log-out",
+				icon: 'log-out',
 			},
 		];
 	}

@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import { HotToastService } from "@ngneat/hot-toast";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
-import {OffersService} from "../../../../../services/offers/offers.service";
-import {NgxSkeletonLoaderConfig} from "ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { HotToastService } from '@ngneat/hot-toast';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { OffersService } from '../../../../../services/offers/offers.service';
+import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-profile-saved-offers",
-	templateUrl: "./client-profile-saved-offers.component.html",
-	styleUrls: ["./client-profile-saved-offers.component.scss"],
+	selector: 'b2b-client-profile-saved-offers',
+	templateUrl: './client-profile-saved-offers.component.html',
+	styleUrls: ['./client-profile-saved-offers.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientProfileSavedOffersComponent {
@@ -27,7 +27,7 @@ export class ClientProfileSavedOffersComponent {
 		private readonly _hotToastService: HotToastService,
 		private readonly _offersService: OffersService,
 		private readonly _router: Router,
-		public readonly b2bNgxLinkService: B2bNgxLinkService,
+		public readonly b2bNgxLinkService: B2bNgxLinkService
 	) {
 		this.offers$ = this.getSavedOffers();
 		this.offersSkeletonOptions = this.getOffersSkeletonOptions();
@@ -48,14 +48,12 @@ export class ClientProfileSavedOffersComponent {
 	public getMenuOptions() {
 		return [
 			{
-				label: "Remove from saved",
-				icon: "delete-red",
+				label: 'Remove from saved',
+				icon: 'delete-red',
 				onClick: (info: any) => {
 					this._offersService
 						.removeFavoriteOffer(info._id)
-						.pipe(
-							untilDestroyed(this),
-						)
+						.pipe(untilDestroyed(this))
 						.subscribe((respone) => {});
 				},
 			},
@@ -66,13 +64,13 @@ export class ClientProfileSavedOffersComponent {
 		const skeleton = [
 			{
 				count: 10,
-				animation: "progress",
+				animation: 'progress',
 				theme: {
-					height: "76px",
+					height: '76px',
 				},
 			},
 		];
 
-    return (skeleton as Partial<NgxSkeletonLoaderConfig>);
+		return skeleton as Partial<NgxSkeletonLoaderConfig>;
 	}
 }

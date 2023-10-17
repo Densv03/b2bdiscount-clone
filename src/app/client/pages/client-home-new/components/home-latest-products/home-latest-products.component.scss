@@ -1,9 +1,9 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.component {
 		padding: 0 100px 50px 100px;
-		background-color: #FFFFFF;
+		background-color: #ffffff;
 		@include breakpoint('5') {
 			padding: 0 60px 50px 60px;
 		}
@@ -25,7 +25,7 @@
 		font-weight: 700;
 		font-size: 32px;
 		line-height: 36px;
-		letter-spacing: .01em;
+		letter-spacing: 0.01em;
 		color: #000;
 		@include breakpoint('2') {
 			font-size: 25px;
@@ -50,11 +50,9 @@
 			text-align: right;
 			letter-spacing: 0.01em;
 			text-decoration-line: underline;
-			color: #005DFF;
-
+			color: #005dff;
 		}
 	}
-
 }
 
 :host::ng-deep {
@@ -105,7 +103,7 @@
 			font-size: 16px;
 
 			&.active {
-				color: #0F0F11;
+				color: #0f0f11;
 				font-weight: 700;
 			}
 		}
@@ -141,5 +139,4 @@
 			opacity: 1;
 		}
 	}
-
 }

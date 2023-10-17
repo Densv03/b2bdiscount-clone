@@ -1,21 +1,34 @@
-import { Injectable } from "@angular/core";
-import { ApiService } from "../../../../../core/services/api/api.service";
-import { BehaviorSubject, Observable } from "rxjs";
-import { filter, first } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { ApiService } from '../../../../../core/services/api/api.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class ClientProfileTradebidService {
-	private rfqChatsSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	private quotationChatsSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	private rfqManageSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	private rfqArchivedSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	private rfqChatsSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+		[]
+	);
+	private quotationChatsSource: BehaviorSubject<any[]> = new BehaviorSubject<
+		any[]
+	>([]);
+	private rfqManageSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+		[]
+	);
+	private rfqArchivedSource: BehaviorSubject<any[]> = new BehaviorSubject<
+		any[]
+	>([]);
 
-	private quotationChatsLength: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-	private rfqChatsLength: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-	private rfqManageLength: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-	private rfqArchivedLength: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private quotationChatsLength: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
+	private rfqChatsLength: BehaviorSubject<number> = new BehaviorSubject<number>(
+		0
+	);
+	private rfqManageLength: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
+	private rfqArchivedLength: BehaviorSubject<number> =
+		new BehaviorSubject<number>(0);
 
 	constructor(private apiService: ApiService) {}
 
@@ -45,7 +58,10 @@ export class ClientProfileTradebidService {
 		return this.rfqArchivedLength.asObservable();
 	}
 
-	public getRfqChats(typeRoom: "rfq" | "quotation", queryString: string): Observable<any> {
+	public getRfqChats(
+		typeRoom: 'rfq' | 'quotation',
+		queryString: string
+	): Observable<any> {
 		return this.apiService.get(`my/chats?typeRoom=${typeRoom}${queryString}`);
 	}
 	public getRfqManage(queryString: string): Observable<any> {
@@ -73,8 +89,8 @@ export class ClientProfileTradebidService {
 			});
 	}
 
-	public updateRfqChatsList(queryString: string = "&limit=7&"): void {
-		this.getRfqChats("rfq", queryString)
+	public updateRfqChatsList(queryString: string = '&limit=7&'): void {
+		this.getRfqChats('rfq', queryString)
 			.pipe(first())
 			.subscribe((data) => {
 				this.rfqChatsSource.next(data.chats);
@@ -82,8 +98,8 @@ export class ClientProfileTradebidService {
 			});
 	}
 
-	public updateQuotationChatsList(queryString: string = "&limit=7&"): void {
-		this.getRfqChats("quotation", queryString)
+	public updateQuotationChatsList(queryString: string = '&limit=7&'): void {
+		this.getRfqChats('quotation', queryString)
 			.pipe(first())
 			.subscribe((data) => {
 				this.quotationChatsSource.next(data.chats);
@@ -98,13 +114,17 @@ export class ClientProfileTradebidService {
 		return this.apiService.post(`tradebid/activate-rfq`, { rfqId: id });
 	}
 	public deleteItem(id: any): Observable<any> {
-		return this.apiService.delete(`tradebid/delete-rfq`, { body: { rfqId: id } });
+		return this.apiService.delete(`tradebid/delete-rfq`, {
+			body: { rfqId: id },
+		});
 	}
 	public editItem(body: any): Observable<any> {
 		return this.apiService.patch(`tradebid/update-user-rfq`, body);
 	}
 
 	public getRfqById(RfqId: string): Observable<any> {
-		return this.apiService.get<any>(`tradeBid/quotation/${RfqId}`).pipe(filter((data) => !!data));
+		return this.apiService
+			.get<any>(`tradeBid/quotation/${RfqId}`)
+			.pipe(filter((data) => !!data));
 	}
 }

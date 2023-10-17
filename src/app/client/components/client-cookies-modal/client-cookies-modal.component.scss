@@ -1,11 +1,11 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .cookies {
 	width: 570px;
 
 	padding: 25px 58px 25px 0;
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		width: 100%;
 		padding: 15px 0;
 	}
@@ -33,14 +33,14 @@
 		margin-top: 24px;
 		display: flex;
 		justify-content: space-between;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			margin-top: 10px;
 		}
 		button {
 			width: 49%;
 			padding: 15px 0;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding: 5px 0;
 			}
 		}

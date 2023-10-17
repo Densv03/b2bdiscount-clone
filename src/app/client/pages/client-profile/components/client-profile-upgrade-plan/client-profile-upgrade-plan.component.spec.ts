@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileUpgradePlan } from "./client-profile-upgrade-plan.component";
+import { ClientProfileUpgradePlan } from './client-profile-upgrade-plan.component';
 
-describe("ClientProfileUpgradePlan", () => {
+describe('ClientProfileUpgradePlan', () => {
 	let component: ClientProfileUpgradePlan;
 	let fixture: ComponentFixture<ClientProfileUpgradePlan>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileUpgradePlan", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

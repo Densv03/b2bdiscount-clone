@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .page-wrapper {
 	background-color: white;
@@ -9,7 +9,7 @@
 		display: none;
 	}
 
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 0 18px;
 	}
 
@@ -18,9 +18,11 @@
 		justify-content: space-between;
 		padding: 32px 61px;
 		border-radius: 14px;
-		box-shadow: 4px 4px 8px 0 #E5F2FD, -4px -4px 8px 0 #E5F2FD;
+		box-shadow:
+			4px 4px 8px 0 #e5f2fd,
+			-4px -4px 8px 0 #e5f2fd;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 0;
 			box-shadow: none;
 		}
@@ -31,7 +33,7 @@
 			height: 168px;
 			object-fit: cover;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100px;
 				height: 100px;
 			}
@@ -46,13 +48,13 @@
 				font-weight: 700;
 				margin: 0;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					font-size: 24px;
 					line-height: 32px;
 				}
 			}
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				padding-left: 16px;
 			}
 
@@ -66,7 +68,7 @@
 				span {
 					color: #979797;
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						display: block;
 						padding-bottom: 8px;
 
@@ -76,7 +78,7 @@
 					}
 				}
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					padding-bottom: 0;
 				}
 
@@ -90,7 +92,7 @@
 	.latest-block {
 		padding-top: 128px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding-top: 32px;
 		}
 	}

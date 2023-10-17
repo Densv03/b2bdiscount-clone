@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .latest-offers-header {
 	display: flex;
@@ -6,7 +6,7 @@
 	justify-content: space-between;
 	padding: 1.25rem 99px;
 	border-bottom: 1px solid #e3eaf1;
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		flex-direction: column;
 		padding: 1.25rem 18px;
 	}
@@ -20,7 +20,7 @@
 		.latest-offers-header-icon {
 			display: none;
 		}
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			.latest-offers-header-icon {
 				display: block;
@@ -30,7 +30,7 @@
 	.latest-offers-header-search {
 		width: 40%;
 		display: block;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			width: 100%;
 			margin-top: 24px;
 		}
@@ -46,7 +46,7 @@
 			align-items: center;
 		}
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			.latest-offers-header-display-type {
 				display: none;
 			}
@@ -69,11 +69,11 @@
 		width: 80%;
 		padding: 25px 0 25px 25px;
 	}
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		width: 95%;
 	}
 
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		width: 100%;
 		justify-content: space-between;
 		.filters {

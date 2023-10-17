@@ -1,0 +1,136 @@
+@import 'projects/shared/src/styles/colors';
+@import 'projects/shared/src/styles';
+:host {
+	.content {
+		max-width: 1000px;
+		&__header {
+			text-align: right;
+			@include breakpoint('1') {
+				margin-top: 15px;
+			}
+		}
+		&__title,
+		&__subtitle {
+			color: $color-black-900;
+			text-align: center;
+			margin-top: 16px;
+		}
+		&__title {
+			font-size: 24px;
+			font-weight: 700;
+			letter-spacing: 0.24px;
+			margin-top: 18px;
+			@include breakpoint('1') {
+				font-size: 18px;
+				margin-top: 5px;
+			}
+		}
+		&__subtitle {
+			font-size: 16px;
+			font-weight: 400;
+			line-height: 148%;
+			letter-spacing: 0.16px;
+			padding: 0 50px;
+			@include breakpoint('3') {
+				font-size: 14px;
+				padding: 0 30px;
+			}
+			@include breakpoint('1') {
+				padding: 0;
+				font-size: 10px;
+			}
+		}
+
+		&__description {
+			&-title {
+				color: $color-black-900;
+				font-size: 18px;
+				font-weight: 700;
+				letter-spacing: 0.18px;
+				margin-top: 48px;
+				text-align: center;
+				@include breakpoint('3') {
+					margin-top: 25px;
+				}
+				@include breakpoint('1') {
+					margin-top: 15px;
+				}
+			}
+			&-wrapper {
+				margin-top: 24px;
+				display: flex;
+				justify-content: center;
+				gap: 16px;
+				margin-bottom: 40px;
+				@include breakpoint('1') {
+					flex-direction: column;
+				}
+			}
+		}
+		&__info {
+			max-width: 415px;
+			border-radius: 14px;
+			background: rgba(207, 222, 255, 0.2);
+			padding: 16px;
+			@include breakpoint('4') {
+				width: 50%;
+			}
+			@include breakpoint('1') {
+				width: 100%;
+				height: 160px;
+			}
+			&-icon {
+				@include breakpoint('1') {
+					width: 35px;
+					height: 35px;
+					svg {
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+			&-header {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			&-title {
+				color: $color-black-900;
+				font-size: 18px;
+				font-weight: 700;
+				line-height: 134%;
+				letter-spacing: 0.18px;
+				@include breakpoint('1') {
+					font-size: 15px;
+				}
+			}
+			&-description {
+				color: $color-black-900;
+				font-size: 16px;
+				line-height: 148%;
+				letter-spacing: 0.16px;
+				margin-top: 8px;
+				font-weight: 300;
+				@include breakpoint('3') {
+					font-size: 14px;
+				}
+				@include breakpoint('1') {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+}
+::ng-deep {
+	@include breakpoint('1') {
+		.cdk-overlay-pane {
+			width: 90vw !important;
+		}
+		.mat-dialog-container {
+			padding: 0 20px !important;
+		}
+	}
+	.cdk-dialog-container {
+		border-radius: 14px;
+	}
+}

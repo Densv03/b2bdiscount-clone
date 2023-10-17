@@ -1,0 +1,27 @@
+@import '/projects/shared/src/styles/breakpoints';
+:host {
+	button {
+		border-radius: 14px;
+	}
+	.listing-banner-button {
+		padding: 9px 38px;
+		@include breakpoint('5') {
+			padding: 9px 25px;
+		}
+		@include breakpoint('1') {
+			padding: 9px 38px;
+		}
+	}
+	.subheader-button {
+		border-radius: 8px;
+		position: absolute;
+		left: 100px;
+		top: 16px;
+		font-size: 18px;
+		line-height: 25px;
+		padding: 5.5px 31px;
+		@include breakpoint('3') {
+			display: none;
+		}
+	}
+}

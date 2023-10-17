@@ -20,56 +20,86 @@
 		}
 	}
 	.product {
+		list-style-type: none;
 		overflow: hidden;
 		width: 100%;
-		height: 395px;
+		height: 375px;
 		box-shadow: 2px 2px 8px #e3eaf1;
 		background-color: #ffffff;
-		border-radius: 4px;
+		border-radius: 14px;
 		cursor: pointer;
 		position: relative;
+		list-style-type: none;
+		.save {
+			fill: rgba(255, 255, 255, 0.2);
+			backdrop-filter: blur(20px);
+			width: 48px;
+			height: 48px;
+			position: absolute;
+			border-radius: 50%;
+			overflow: hidden;
+			right: 8px;
+			top: 8px;
+			display: grid;
+			place-items: center;
+		}
 		img {
 			width: 100%;
 			object-fit: cover;
-			height: 150px;
+			height: 148px;
 		}
 		.product-title {
-			padding: 18px 24px;
+			padding: 18px 16px;
 			font-weight: 700;
 			font-size: 16px;
 			line-height: 20px;
 			letter-spacing: 0.01em;
 			color: #0f0f11;
 		}
+		.product-description {
+			color: #000;
+			font-feature-settings:
+				'clig' off,
+				'liga' off;
+			font-size: 12px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 140%;
+			letter-spacing: 0.12px;
+			height: 70px;
+			padding: 0 16px;
+			overflow: hidden;
+			word-break: break-word;
+		}
 		.supplier-info {
 			display: flex;
 			align-items: center;
 			margin-top: 2px;
-			padding-left: 24px;
+			padding-left: 16px;
 			&:first-child {
 				margin-top: 0;
 			}
 			img {
-				width: 26px;
-				height: 30px;
-				margin-right: 15px;
+				width: 16px;
+				height: 12px;
+				margin-right: 8px;
 				object-fit: contain;
 			}
 			.text {
 				letter-spacing: 0.01em;
 				color: #0f0f11;
-				font-size: 16px;
+				font-size: 12px;
 				font-weight: 400;
 			}
 		}
-		.divider {
-			width: 100%;
-			height: 0;
-			border-bottom: 1px solid #dfe8f5;
-			margin-top: 12px;
-			position: absolute;
-			bottom: 60px;
-		}
+		//.divider {
+		//	width: 100%;
+		//	height: 0;
+		//	border-bottom: 1px solid #dfe8f5;
+		//	margin-top: 12px;
+		//	position: absolute;
+		//	bottom: 60px;
+		//}
 
 		&-item-footer-button {
 			position: absolute;
@@ -78,9 +108,11 @@
 			align-items: center;
 			justify-content: center;
 			padding: 10px 0;
-			width: 90%;
+			width: 200px;
 			height: 40px;
-			left: 5%;
+			transform: translateX(-50%);
+			left: 50%;
+			border-radius: 8px;
 
 			img {
 				width: 25px;

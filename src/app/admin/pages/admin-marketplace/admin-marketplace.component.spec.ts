@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminMarketplaceComponent } from "./admin-marketplace.component";
+import { AdminMarketplaceComponent } from './admin-marketplace.component';
 
-describe("AdminMarketplaceComponent", () => {
+describe('AdminMarketplaceComponent', () => {
 	let component: AdminMarketplaceComponent;
 	let fixture: ComponentFixture<AdminMarketplaceComponent>;
 
@@ -18,7 +18,7 @@ describe("AdminMarketplaceComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

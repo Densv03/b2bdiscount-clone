@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { Query } from "@datorama/akita";
-import { Observable } from "rxjs";
-import {OffersState, OffersStore} from "./offers.store";
+import { Injectable } from '@angular/core';
+import { Query } from '@datorama/akita';
+import { Observable } from 'rxjs';
+import { OffersState, OffersStore } from './offers.store';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class OffersQuery extends Query<OffersState> {
 	public readonly selectAllOffers$: Observable<any>;
 	public readonly selectMyOffers$: Observable<any>;
@@ -15,11 +15,11 @@ export class OffersQuery extends Query<OffersState> {
 	constructor(protected override store: OffersStore) {
 		super(store);
 
-		this.selectAllOffers$ = this.select("allOffers");
-		this.selectMyOffers$ = this.select("myOffers");
-		this.selectOffer$ = this.select("offer");
-		this.selectSavedOffers$ = this.select("savedOffers");
-		this.selectAllOffersCount$ = this.select("allOffersCount");
-		this.selectSeaLines$ = this.select("seaLines");
+		this.selectAllOffers$ = this.select('allOffers');
+		this.selectMyOffers$ = this.select('myOffers');
+		this.selectOffer$ = this.select('offer');
+		this.selectSavedOffers$ = this.select('savedOffers');
+		this.selectAllOffersCount$ = this.select('allOffersCount');
+		this.selectSeaLines$ = this.select('seaLines');
 	}
 }

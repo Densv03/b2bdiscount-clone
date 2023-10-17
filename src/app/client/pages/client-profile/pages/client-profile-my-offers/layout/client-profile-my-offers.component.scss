@@ -1,10 +1,10 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .client-profile-my-offers {
-	@include breakpoint("3") {
+	@include breakpoint('3') {
 		padding: 40px 20px;
 	}
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		padding: 20px 10px;
 	}
 	.client-profile-my-offers-title {

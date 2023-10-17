@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileMarketplaceEditProductComponent } from "./client-profile-marketplace-edit-product.component";
+import { ClientProfileMarketplaceEditProductComponent } from './client-profile-marketplace-edit-product.component';
 
-describe("ClientProfileMarketplaceEditProductComponent", () => {
+describe('ClientProfileMarketplaceEditProductComponent', () => {
 	let component: ClientProfileMarketplaceEditProductComponent;
 	let fixture: ComponentFixture<ClientProfileMarketplaceEditProductComponent>;
 
@@ -13,12 +13,14 @@ describe("ClientProfileMarketplaceEditProductComponent", () => {
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(ClientProfileMarketplaceEditProductComponent);
+		fixture = TestBed.createComponent(
+			ClientProfileMarketplaceEditProductComponent
+		);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

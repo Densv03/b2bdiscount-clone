@@ -1,5 +1,5 @@
 export interface CompanyKeyInfoModel {
-	value: string,
-	icon: string,
-	label: string
+	value: string;
+	icon: string;
+	label: string;
 }

@@ -11,16 +11,18 @@
 			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY">
 			Type of company
 		</b2b-ngx-select>
-		<b2b-ngx-category-dropdowns formControlName="categories" class="auth-register-individual-account__main-input">
+		<b2b-ngx-category-dropdowns
+			formControlName="categories"
+			class="auth-register-individual-account__main-input">
 		</b2b-ngx-category-dropdowns>
 
 		<button
 			b2bNgxButton
-			[disabled]="form.invalid"
+			[disabled]="form.invalid || isSubmitting"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 			class="auth-register-individual-account__create-account-button"
 			type="submit">
-			{{"BUTTONS.CREATE_ACCOUNT" | translate }}
+			{{ 'BUTTONS.CREATE_ACCOUNT' | translate }}
 		</button>
 	</form>
 </div>

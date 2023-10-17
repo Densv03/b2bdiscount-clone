@@ -7,10 +7,10 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
 import { ClientPricingComponent } from './layout/client-pricing.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientPricingComponent],
+	declarations: [ClientPricingComponent],
 	imports: [
 		CommonModule,
 		ClientPricingRoutingModule,

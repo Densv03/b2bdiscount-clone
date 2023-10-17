@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoriesDialogComponent } from "./categories-dialog.component";
+import { CategoriesDialogComponent } from './categories-dialog.component';
 
-describe("NgxCategoriesDialogComponent", () => {
+describe('NgxCategoriesDialogComponent', () => {
 	let component: CategoriesDialogComponent;
 	let fixture: ComponentFixture<CategoriesDialogComponent>;
 
@@ -18,7 +18,7 @@ describe("NgxCategoriesDialogComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

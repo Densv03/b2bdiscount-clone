@@ -41,6 +41,14 @@
         background-color: $color-blue-100;
       }
     }
+		&.background-gray {
+			background-color: $button-gray;
+			color: $color-black-900;
+			&:hover {
+				background-color: $color-black-800;
+				color: $color-white-900;
+			}
+		}
     &.background-hover-black {
       border-color: #dfe8f5;
       transition: 0.2s;

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileUnclaimedCargoComponent } from "./client-profile-unclaimed-cargo.component";
+import { ClientProfileUnclaimedCargoComponent } from './client-profile-unclaimed-cargo.component';
 
-describe("ClientProfileUnclaimedCargoComponent", () => {
+describe('ClientProfileUnclaimedCargoComponent', () => {
 	let component: ClientProfileUnclaimedCargoComponent;
 	let fixture: ComponentFixture<ClientProfileUnclaimedCargoComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileUnclaimedCargoComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

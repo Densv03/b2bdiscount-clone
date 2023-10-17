@@ -1,9 +1,12 @@
 <aside class="admin-sidenav">
 	<ul class="admin-sidenav__list">
 		<li *ngFor="let option of options" class="admin-sidenav__list-item">
-			<a [routerLink]="option.path" class="admin-sidenav__list-item-link" routerLinkActive="active">{{
-				option.label
-			}}</a>
+			<a
+				[routerLink]="option.path"
+				class="admin-sidenav__list-item-link"
+				routerLinkActive="active"
+				>{{ option.label }}</a
+			>
 		</li>
 	</ul>
 </aside>

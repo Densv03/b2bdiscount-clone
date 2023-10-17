@@ -25,7 +25,7 @@
 		"PRICING": "Pricing",
 		"BILLING": "Billing",
 		"LOG_OUT": "Log Out",
-		"TRADE_BID": "TradeBid"
+		"TRADE_BID": "Sourcing Request"
 	},
 	"HOT_IT_WORKS": "How it works",
 	"HEADER": {
@@ -37,7 +37,7 @@
 		"PRICING": "Pricing",
 		"BLOG": "Blog",
 		"MARKET": "B2B Market",
-		"TRADE_BID": "TradeBid",
+		"TRADE_BID": "Sourcing Request",
 		"ABOUT_US": "About us",
 		"OUR_SERVICES": "Our services",
 		"UNCLAIMED_CARGO": "Unclaimed Cargo",
@@ -48,7 +48,7 @@
 		"BACK": "Go Back",
 		"GO_TO_OFFERS": "Go to offers"
 	},
-"MARKET_PROMO": {
+	"MARKET_PROMO": {
 		"PROMO_TITLE": "MARKETING B2B",
 		"FIRST_BLOCK_WHOLESALE_TRADE": "A sua ferramenta profissional de venda por grosso",
 		"FIRST_BLOCK_PRESENT_PRODUCTS": "Ofereça o seu produto a milhares de potenciais clientes no sector do comércio internacional. Receba encomendas directas, negoceie condições de entrega e conclua acordos lucrativos sem necessidade de intermediários.",

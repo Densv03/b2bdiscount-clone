@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileTradebidComponent } from "./client-profile-tradebid.component";
+import { ClientProfileTradebidComponent } from './client-profile-tradebid.component';
 
-describe("ClientProfileTradebidComponent", () => {
+describe('ClientProfileTradebidComponent', () => {
 	let component: ClientProfileTradebidComponent;
 	let fixture: ComponentFixture<ClientProfileTradebidComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileTradebidComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

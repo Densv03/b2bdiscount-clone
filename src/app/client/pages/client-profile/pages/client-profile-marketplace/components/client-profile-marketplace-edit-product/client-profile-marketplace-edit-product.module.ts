@@ -1,32 +1,37 @@
-import { NgModule } from "@angular/core";
-import { ClientProfileMarketplaceEditProductComponent } from "./client-profile-marketplace-edit-product.component";
-import { ReactiveFormsModule } from "@angular/forms";
-import { B2bNgxInputModule } from "@b2b/ngx-input";
-import { B2bNgxTextareaModule } from "@b2b/ngx-textarea";
-import { B2bNgxSelectModule } from "@b2b/ngx-select";
-import { B2bNgxFileModule } from "@b2b/ngx-file";
-import { B2bNgxMultiselectModule } from "@b2b/ngx-multiselect";
-import { B2bNgxCountrySelectModule } from "@b2b/ngx-country-select";
-import { B2bNgxButtonModule } from "@b2b/ngx-button";
-import { B2bNgxIconModule } from "@b2b/ngx-icon";
-import { CommonModule } from "@angular/common";
-import {CategoriesDialogModule} from "../../../../../../shared/components/categories-dialog/categories-dialog.module";
-
+import { NgModule } from '@angular/core';
+import { ClientProfileMarketplaceEditProductComponent } from './client-profile-marketplace-edit-product.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { B2bNgxInputModule } from '@b2b/ngx-input';
+import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
+import { B2bNgxSelectModule } from '@b2b/ngx-select';
+import { B2bNgxFileModule } from '@b2b/ngx-file';
+import { B2bNgxMultiselectModule } from '@b2b/ngx-multiselect';
+import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
+import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { B2bNgxIconModule } from '@b2b/ngx-icon';
+import { CommonModule } from '@angular/common';
+import { CategoriesDialogModule } from '../../../../../../shared/components/categories-dialog/categories-dialog.module';
+import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        B2bNgxInputModule,
-        B2bNgxTextareaModule,
-        B2bNgxSelectModule,
-        B2bNgxFileModule,
-        B2bNgxMultiselectModule,
-        B2bNgxCountrySelectModule,
-        B2bNgxButtonModule,
-        B2bNgxIconModule,
-        CategoriesDialogModule,
-    ],
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+		B2bNgxInputModule,
+		B2bNgxTextareaModule,
+		B2bNgxSelectModule,
+		B2bNgxFileModule,
+		B2bNgxMultiselectModule,
+		B2bNgxCountrySelectModule,
+		B2bNgxButtonModule,
+		B2bNgxIconModule,
+		CategoriesDialogModule,
+		B2bNgxCheckboxModule,
+		DragDropModule,
+		TranslateModule,
+	],
 	declarations: [ClientProfileMarketplaceEditProductComponent],
 })
 export class ClientProfileMarketplaceEditProductModule {}

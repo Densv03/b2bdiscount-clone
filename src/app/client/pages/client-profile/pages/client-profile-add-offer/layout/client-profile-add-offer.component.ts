@@ -1,43 +1,53 @@
-import {animate, style, transition, trigger} from "@angular/animations";
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {combineLatest, Observable} from "rxjs";
-import {filter, map, startWith, switchMap, tap} from "rxjs/operators";
-
-import {HotToastService} from "@ngneat/hot-toast";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
-
-import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
-import {B2bNgxInputThemeEnum} from "@b2b/ngx-input";
-import {B2bNgxLinkService} from "@b2b/ngx-link";
-import {CategoriesService} from "../../../../../services/categories/categories.service";
-import {OffersService} from "../../../../../services/offers/offers.service";
-import {TransportTypesService} from "../../../../../services/transport-types/transport-types.service";
-import {UnitsService} from "../../../../../services/units/units.service";
-import {environment} from "../../../../../../../environments/environment";
-import {B2bNgxSelectThemeEnum} from "@b2b/ngx-select";
-import {AuthService} from "../../../../../../auth/services/auth/auth.service";
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
-	ClientOfferDocumentComponent
-} from "../../../../client-offer/components/client-offer-document/client-offer-document.component";
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	OnDestroy,
+	OnInit,
+} from '@angular/core';
 import {
-	ClientProfileAddOfferDialogComponent
-} from "../components/client-profile-add-offer-dialog/client-profile-add-offer-dialog.component";
-import {ImageExtensions} from "../../../../../../core/add-offer/image-extensions";
-import {DocumentExtensions} from "../../../../../../core/add-offer/document-extensions";
-import {onlyLatin} from "../../../../../../core/helpers/validator/only-latin";
-import {onlyNumber} from "../../../../../../core/helpers/validator/only-number";
-import {GetUrlExtension} from "../../../../../../core/helpers/function/get-url-extension";
-import {onlyLatinAndNumberAndSymbols} from "../../../../../../core/helpers/validator/only -latin-numbers-symbols";
-import {TradebidService} from "../../../../client-tradebid/tradebid.service";
-import {getOfferFormData} from "../get-offer-form-data";
-import {Dialog} from "@angular/cdk/dialog";
-import {MixpanelService} from "../../../../../../core/services/mixpanel/mixpanel.service";
-import {getName} from "country-list";
-import {MatDialog} from "@angular/material/dialog";
-import {Category} from "../../../../../../core/models/category.model";
-import {TranslateService} from "@ngx-translate/core";
+	AbstractControl,
+	FormBuilder,
+	FormGroup,
+	ValidationErrors,
+	ValidatorFn,
+	Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+
+import { HotToastService } from '@ngneat/hot-toast';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
+import { CategoriesService } from '../../../../../services/categories/categories.service';
+import { OffersService } from '../../../../../services/offers/offers.service';
+import { TransportTypesService } from '../../../../../services/transport-types/transport-types.service';
+import { UnitsService } from '../../../../../services/units/units.service';
+import { environment } from '../../../../../../../environments/environment';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { AuthService } from '../../../../../../auth/services/auth/auth.service';
+import { ClientOfferDocumentComponent } from '../../../../client-offer/components/client-offer-document/client-offer-document.component';
+import { ClientProfileAddOfferDialogComponent } from '../components/client-profile-add-offer-dialog/client-profile-add-offer-dialog.component';
+import { ImageExtensions } from '../../../../../../core/add-offer/image-extensions';
+import { DocumentExtensions } from '../../../../../../core/add-offer/document-extensions';
+import { onlyLatin } from '../../../../../../core/helpers/validator/only-latin';
+import { onlyNumber } from '../../../../../../core/helpers/validator/only-number';
+import { GetUrlExtension } from '../../../../../../core/helpers/function/get-url-extension';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { TradebidService } from '../../../../client-tradebid/tradebid.service';
+import { getOfferFormData } from '../get-offer-form-data';
+import { Dialog } from '@angular/cdk/dialog';
+import { MixpanelService } from '../../../../../../core/services/mixpanel/mixpanel.service';
+import { getName } from 'country-list';
+import { MatDialog } from '@angular/material/dialog';
+import { Category } from '../../../../../../core/models/category.model';
+import { TranslateService } from '@ngx-translate/core';
 
 export function oneContainer(): ValidatorFn {
 	const oneContainer = /^[^. ,]+$/;
@@ -47,7 +57,7 @@ export function oneContainer(): ValidatorFn {
 		}
 
 		if (!oneContainer.test(String(control.value).toLowerCase())) {
-			return {oneContainer: true};
+			return { oneContainer: true };
 		}
 
 		return null;
@@ -55,12 +65,16 @@ export function oneContainer(): ValidatorFn {
 }
 
 export function containerNumber(): ValidatorFn {
-	const bulkVesselType = environment.production ? "60a784830a04b16c574e8147" : "60ba1f30445d001ecf7775b4";
-	const containerNumberType = environment.production ? "60a784830a04b16c574e8146" : "60ba1f30445d001ecf7775b3";
+	const bulkVesselType = environment.production
+		? '60a784830a04b16c574e8147'
+		: '60ba1f30445d001ecf7775b4';
+	const containerNumberType = environment.production
+		? '60a784830a04b16c574e8146'
+		: '60ba1f30445d001ecf7775b3';
 
 	return (control: any): ValidationErrors | null => {
 		// const transportType: any = control.parent?.controls["transportType"];
-		const transportType: any = control.parent?.controls.values?.transportType
+		const transportType: any = control.parent?.controls.values?.transportType;
 
 		if (!transportType) {
 			return null;
@@ -68,12 +82,12 @@ export function containerNumber(): ValidatorFn {
 
 		if (transportType && transportType.value === bulkVesselType) {
 			const isValidFormat = /^\d+$/.test(control.value);
-			return isValidFormat ? null : {bulkVesselFormat: true};
+			return isValidFormat ? null : { bulkVesselFormat: true };
 		}
 
 		if (transportType && transportType.value === containerNumberType) {
 			const isValidFormat = /^[a-zA-Z]{4}[0-9]+$/.test(control.value);
-			return isValidFormat ? null : {containerNumberType: true};
+			return isValidFormat ? null : { containerNumberType: true };
 		}
 
 		return null;
@@ -82,25 +96,27 @@ export function containerNumber(): ValidatorFn {
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-profile-add-offer",
-	templateUrl: "./client-profile-add-offer.component.html",
-	styleUrls: ["./client-profile-add-offer.component.scss"],
+	selector: 'b2b-client-profile-add-offer',
+	templateUrl: './client-profile-add-offer.component.html',
+	styleUrls: ['./client-profile-add-offer.component.scss'],
 	animations: [
-		trigger("fadeInOut", [
-			transition(":enter", [
+		trigger('fadeInOut', [
+			transition(':enter', [
 				// :enter is alias to 'void => *'
-				style({opacity: 0}),
-				animate(500, style({opacity: 1})),
+				style({ opacity: 0 }),
+				animate(500, style({ opacity: 1 })),
 			]),
-			transition(":leave", [
+			transition(':leave', [
 				// :leave is alias to '* => void'
-				animate(500, style({opacity: 0})),
+				animate(500, style({ opacity: 0 })),
 			]),
 		]),
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDestroy, AfterViewInit {
+export class ClientProfileAddOfferComponent
+	implements OnInit, OnDestroy, OnDestroy, AfterViewInit
+{
 	public readonly formGroup: FormGroup;
 	public readonly formState: { [key: string]: AbstractControl };
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
@@ -143,9 +159,9 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 		private readonly dialog: Dialog,
 		private readonly tradebidService: TradebidService,
 		private readonly mixpanelService: MixpanelService,
-		private readonly matDialog: MatDialog,
+		private readonly matDialog: MatDialog
 	) {
-		this.showCancelBtn = !!localStorage.getItem("showCancelButton");
+		this.showCancelBtn = !!localStorage.getItem('showCancelButton');
 		this.formGroup = this.getFormGroup();
 		this.formState = this.formGroup.controls;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -164,48 +180,54 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 		);
 		this.offer$ = this.getOffer();
 		this.containerPlaceholder$ = this.getContainerPlaceholder();
-		this.showContainerNumber$ = this.formGroup?.get("transportType").valueChanges.pipe(
-			// TODO: add logic for to divide prod / dev IDs
-			map(
-				(transportId) =>
-					![
-						"629493f93db39e42eb255af7",
-						"629494023db39e42eb255af8",
-						"629494093db39e42eb255af9",
-						"629493af343a0863bc00b886",
-						"629493c3343a0863bc00b887",
-						"629493cb343a0863bc00b888",
-					].includes(transportId)
-			)
-		);
+		this.showContainerNumber$ = this.formGroup
+			?.get('transportType')
+			.valueChanges.pipe(
+				// TODO: add logic for to divide prod / dev IDs
+				map(
+					(transportId) =>
+						![
+							'629493f93db39e42eb255af7',
+							'629494023db39e42eb255af8',
+							'629494093db39e42eb255af9',
+							'629493af343a0863bc00b886',
+							'629493c3343a0863bc00b887',
+							'629493cb343a0863bc00b888',
+						].includes(transportId)
+				)
+			);
 
 		this.showContainerNumber$ = this.formGroup
-			?.get("transportType")
+			?.get('transportType')
 			.valueChanges.pipe(
 				map(
 					(transportId) =>
 						![
-							"629493f93db39e42eb255af7",
-							"629494023db39e42eb255af8",
-							"629494093db39e42eb255af9",
-							"629493af343a0863bc00b886",
-							"629493c3343a0863bc00b887",
-							"629493cb343a0863bc00b888",
+							'629493f93db39e42eb255af7',
+							'629494023db39e42eb255af8',
+							'629494093db39e42eb255af9',
+							'629493af343a0863bc00b886',
+							'629493c3343a0863bc00b887',
+							'629493cb343a0863bc00b888',
 						].includes(transportId)
 				)
 			);
 	}
 
 	public getContainerPlaceholder() {
-		const id$ = this.formGroup.get("transportType").valueChanges.pipe(startWith(""));
+		const id$ = this.formGroup
+			.get('transportType')
+			.valueChanges.pipe(startWith(''));
 		const transportTypes$ = this.getTransportTypes();
 
 		return combineLatest([transportTypes$, id$]).pipe(
 			map(([transportTypes, id]) => {
-				const foundTransport = transportTypes.find((transportType: any) => transportType._id === id)?.name;
+				const foundTransport = transportTypes.find(
+					(transportType: any) => transportType._id === id
+				)?.name;
 
 				if (!foundTransport) {
-					return "";
+					return '';
 				}
 
 				return `PLACEHOLDERS.${foundTransport.toUpperCase()}`;
@@ -227,13 +249,13 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 			});
 
 		this.formGroup
-			.get("level1Category")
+			.get('level1Category')
 			.valueChanges.pipe(
-			filter((data) => !!data),
-			untilDestroyed(this)
-		)
+				filter((data) => !!data),
+				untilDestroyed(this)
+			)
 			.subscribe(() => {
-				this.formGroup.get("level2Category").setValue(null);
+				this.formGroup.get('level2Category').setValue(null);
 			});
 
 		// this.formGroup.get("container").valueChanges.pipe(untilDestroyed(this)).subscribe();
@@ -243,19 +265,26 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 		// 	const percentFilled = (filledFields.length * 100) / Object.values(val).length;
 		// });
 
-		const transportType$ = this.formGroup.get("transportType").valueChanges;
+		const transportType$ = this.formGroup.get('transportType').valueChanges;
 		combineLatest([this.transportTypes$, transportType$])
 			.pipe(
 				untilDestroyed(this),
-				filter(([transportTypes, transportTypeId]: [any, any]) => transportTypes.length && !!transportTypeId)
+				filter(
+					([transportTypes, transportTypeId]: [any, any]) =>
+						transportTypes.length && !!transportTypeId
+				)
 			)
 			.subscribe(([transportTypes, transportTypeId]) => {
 				this.isTransportTypeBulk =
-					transportTypes.find((transportType: any) => transportType._id === transportTypeId)?.name === "bulk_vessel";
+					transportTypes.find(
+						(transportType: any) => transportType._id === transportTypeId
+					)?.name === 'bulk_vessel';
 				this.isTransportContainer =
-					transportTypes.find((transportType: any) => transportType._id === transportTypeId)?.name === "container_vessel";
+					transportTypes.find(
+						(transportType: any) => transportType._id === transportTypeId
+					)?.name === 'container_vessel';
 				this.formGroup
-					.get("containerNumberType")
+					.get('containerNumberType')
 					.setValidators(this.isTransportTypeBulk ? [Validators.required] : []);
 				this.formGroup.controls['containerNumberType'].updateValueAndValidity();
 			});
@@ -265,22 +294,19 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 		this.patchCompanyDataToForm();
 	}
 
-
 	public patchCompanyDataToForm(): void {
-		this.tradebidService.getCompanyData()
-			.subscribe(companyInfo => {
-				console.log(companyInfo)
-				const {companyName, email, phone} = companyInfo;
-				this.formGroup.patchValue({
-					contactCompanyName: companyName,
-					contactEmail: email,
-					contactPhone: phone
-				})
-			})
+		this.tradebidService.getCompanyData().subscribe((companyInfo) => {
+			const { companyName, email, phone } = companyInfo;
+			this.formGroup.patchValue({
+				contactCompanyName: companyName,
+				contactEmail: email,
+				contactPhone: phone,
+			});
+		});
 	}
 
 	public get showBadge() {
-		return this.translateService.currentLang !== "en";
+		return this.translateService.currentLang !== 'en';
 	}
 
 	public getSeaLines() {
@@ -293,7 +319,7 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 				this.formGroup.reset(this.getFormGroup().value);
 				this.editMode = false;
 			}),
-			map((paramMap) => paramMap.get("id")),
+			map((paramMap) => paramMap.get('id')),
 			filter((id) => !!id),
 			switchMap((id) => this._offersService.getOfferById(id))
 		);
@@ -304,7 +330,9 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 	}
 
 	public backToCompanyForm(): void {
-		this._router.navigate(["tradebid/company-information"], {queryParams: {url: "add-rfq"}});
+		this._router.navigate(['tradebid/company-information'], {
+			queryParams: { url: 'add-rfq' },
+		});
 	}
 
 	public reviewAndPost(formGroup: FormGroup): void {
@@ -316,55 +344,67 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 		this.loading = true;
 		this.mixpanelService.track('Unclaimed cargo posted', {
 			'Product Sector': this.category,
-			'Destination': [getName(formGroup.value.destinationFrom), getName(formGroup.value.destinationTo)]
+			Destination: [
+				getName(formGroup.value.destinationFrom),
+				getName(formGroup.value.destinationTo),
+			],
 		});
 
 		if (!this.editMode) {
-			const dialogRef = this.matDialog.open(ClientProfileAddOfferDialogComponent, {
-				data: {
-					data: formGroup.value,
-					closeButton: false
+			const dialogRef = this.matDialog.open(
+				ClientProfileAddOfferDialogComponent,
+				{
+					data: {
+						data: formGroup.value,
+						closeButton: false,
+					},
 				}
-			})
+			);
 
-			dialogRef.afterClosed()
+			dialogRef
+				.afterClosed()
 				.pipe(
-					tap(({togglers}: any) => {
+					tap(({ togglers }: any) => {
 						this.loading = false;
 						this.patchToggllers(togglers);
 						this._changeDetectorRef.detectChanges();
 					}),
-					filter(({createOffer}) => !!createOffer)
+					filter(({ createOffer }) => !!createOffer)
 				)
 				.subscribe(() => {
-					const {level2Category, ...data} = formGroup.value;
+					const { level2Category, ...data } = formGroup.value;
 
 					const offerToCreate = {
 						...data,
-						category: level2Category
+						category: level2Category,
 					};
 
-
 					const offer = getOfferFormData(offerToCreate);
-
 
 					this._offersService
 						.createOffer(offer)
 						.pipe(
 							untilDestroyed(this),
 							this._hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: () => this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("AUTH.INVALID_EMAIL_ADDRESS"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: () => this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant(
+									'AUTH.INVALID_EMAIL_ADDRESS'
+								),
 							})
 						)
 						.subscribe((response: any) => {
-							this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink(`/offers/${response._id}`));
+							this._router.navigateByUrl(
+								this.b2bNgxLinkService.getStaticLink(`/offers/${response._id}`)
+							);
 							this.loading = false;
 						});
 				});
 		} else {
-			const data = {...formGroup.value, category: formGroup.value.level2Category};
+			const data = {
+				...formGroup.value,
+				category: formGroup.value.level2Category,
+			};
 
 			const offer = getOfferFormData(data);
 
@@ -373,9 +413,9 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 				.pipe(
 					untilDestroyed(this),
 					this._hotToastService.observe({
-						loading: this.translateService.instant("TOASTR.LOADING"),
-						error: this.translateService.instant("AUTH.INVALID_EMAIL_ADDRESS"),
-						success: () => this.translateService.instant("TOASTR.SUCCESS"),
+						loading: this.translateService.instant('TOASTR.LOADING'),
+						error: this.translateService.instant('AUTH.INVALID_EMAIL_ADDRESS'),
+						success: () => this.translateService.instant('TOASTR.SUCCESS'),
 					})
 				)
 				.subscribe(() => {
@@ -385,7 +425,9 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 	}
 
 	public openDocument(ev: any): void {
-		const document = this.formGroup.value.documents.find((el: any) => el._id === ev.name);
+		const document = this.formGroup.value.documents.find(
+			(el: any) => el._id === ev.name
+		);
 
 		const data = {
 			fullPath: environment.apiUrl + document.path,
@@ -396,8 +438,8 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 
 		this.dialog.open(ClientOfferDocumentComponent, {
 			data,
-			width: "80vw",
-			height: "80vh",
+			width: '80vw',
+			height: '80vh',
 		});
 	}
 
@@ -407,7 +449,7 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 		this._categoriesService
 			.getCategories$()
 			.pipe(untilDestroyed(this))
-			.subscribe(({categories}: any) => {
+			.subscribe(({ categories }: any) => {
 				let level1Category;
 				let level2Category;
 
@@ -455,13 +497,13 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 	}
 
 	private checkPrices() {
-		const priceOldControl = this.formGroup.get("priceOld");
-		const priceDiscountControl = this.formGroup.get("priceDiscount");
-		const priceNewControl = this.formGroup.get("priceNew");
+		const priceOldControl = this.formGroup.get('priceOld');
+		const priceDiscountControl = this.formGroup.get('priceDiscount');
+		const priceNewControl = this.formGroup.get('priceNew');
 
 		priceOldControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
-			priceDiscountControl.setValue("", {emitEvent: true});
-			priceNewControl.setValue("", {emitEvent: true});
+			priceDiscountControl.setValue('', { emitEvent: true });
+			priceNewControl.setValue('', { emitEvent: true });
 		});
 
 		priceNewControl.valueChanges
@@ -470,7 +512,7 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 				filter(() => priceOldControl.value)
 			)
 			.subscribe((newValue: any) => {
-				this.newPriceChanged = newValue !== "";
+				this.newPriceChanged = newValue !== '';
 				if (this.discountChanged) {
 					this.discountChanged = false;
 				}
@@ -478,10 +520,13 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 				const oldValueNumber = Number.parseInt(priceOldControl.value);
 
 				if (newValueNumber <= oldValueNumber) {
-					const discount = (100 - (newValueNumber * 100) / oldValueNumber).toFixed(2);
-					priceDiscountControl.setValue(discount, {emitEvent: true});
+					const discount = (
+						100 -
+						(newValueNumber * 100) / oldValueNumber
+					).toFixed(2);
+					priceDiscountControl.setValue(discount, { emitEvent: true });
 				} else {
-					priceDiscountControl.setValue(0, {emitEvent: true});
+					priceDiscountControl.setValue(0, { emitEvent: true });
 				}
 
 				priceDiscountControl.markAsTouched();
@@ -501,16 +546,23 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 				const oldPrice = Number.parseInt(priceOldControl.value);
 				const newPrice = (discount * oldPrice) / 100;
 				this.discountChanged = true;
-				priceNewControl.setValue(oldPrice - newPrice, {emitEvent: false});
+				priceNewControl.setValue(oldPrice - newPrice, { emitEvent: false });
 			});
 	}
 
 	private getLevel2Categories() {
-		return this.formGroup.get("level1Category").valueChanges.pipe(
+		return this.formGroup.get('level1Category').valueChanges.pipe(
 			switchMap((id) => {
 				return this._categoriesService
 					.getCategories$()
-					.pipe(map(({categories}) => categories.find((foundCategory: any) => foundCategory._id === id)?.children));
+					.pipe(
+						map(
+							({ categories }) =>
+								categories.find(
+									(foundCategory: any) => foundCategory._id === id
+								)?.children
+						)
+					);
 			})
 		);
 	}
@@ -518,7 +570,11 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 	private getLevel1Categories() {
 		return this._categoriesService
 			.getCategories$()
-			.pipe(map(({categories}) => categories.filter((category: any) => category.children.length)));
+			.pipe(
+				map(({ categories }) =>
+					categories.filter((category: any) => category.children.length)
+				)
+			);
 	}
 
 	private getUnits() {
@@ -526,7 +582,9 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 			map((units: any[]) =>
 				units.map((unit: any) => ({
 					...unit,
-					displayName: this.translateService.instant(`UNITS.${unit.name.toUpperCase()}`),
+					displayName: this.translateService.instant(
+						`UNITS.${unit.name.toUpperCase()}`
+					),
 				}))
 			),
 			tap((units: any) => {
@@ -545,11 +603,25 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 
 	private getFormGroup() {
 		return this._formBuilder.group({
-			title: [null, [Validators.required, Validators.maxLength(35), onlyLatin()]],
-			description: [null, [Validators.required, onlyLatinAndNumberAndSymbols()]],
+			title: [
+				null,
+				[Validators.required, Validators.maxLength(35), onlyLatin()],
+			],
+			description: [
+				null,
+				[Validators.required, onlyLatinAndNumberAndSymbols()],
+			],
 			priceOld: [null, [Validators.required, onlyNumber()]],
 			priceNew: [null, [Validators.required, onlyNumber()]],
-			priceDiscount: [null, [Validators.required, Validators.min(5), Validators.max(100), onlyNumber()]],
+			priceDiscount: [
+				null,
+				[
+					Validators.required,
+					Validators.min(5),
+					Validators.max(100),
+					onlyNumber(),
+				],
+			],
 			amount: [null, [Validators.required, onlyNumber()]],
 			unit: [null, Validators.required],
 			contactCompanyName: [null, [Validators.required, onlyLatin()]],
@@ -572,18 +644,18 @@ export class ClientProfileAddOfferComponent implements OnInit, OnDestroy, OnDest
 			level2Category: [null, Validators.required],
 			photos: [[], Validators.required],
 			documents: [[], Validators.required],
-			currentLocation: [null, Validators.required]
+			currentLocation: [null, Validators.required],
 		});
 	}
 
 	private patchToggllers(state: { [key: string]: boolean }): void {
 		for (const key in state) {
-			this.formGroup.get(key).setValue(state[key])
+			this.formGroup.get(key).setValue(state[key]);
 		}
 	}
 
 	ngOnDestroy(): void {
 		this.authService.showSidenav = true;
-		localStorage.removeItem("showCancelButton");
+		localStorage.removeItem('showCancelButton');
 	}
 }

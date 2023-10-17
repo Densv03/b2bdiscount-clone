@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminBlogComponent } from "./admin-blog.component";
+import { AdminBlogComponent } from './admin-blog.component';
 
-describe("AdminBlogComponent", () => {
+describe('AdminBlogComponent', () => {
 	let component: AdminBlogComponent;
 	let fixture: ComponentFixture<AdminBlogComponent>;
 
@@ -18,7 +18,7 @@ describe("AdminBlogComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

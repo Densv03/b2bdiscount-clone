@@ -1,0 +1,23 @@
+<div class="custom-carousel" [class.center]="slider.length < 2">
+	<mat-icon (click)="previousSlide()" *ngIf="slider.length > 1"
+		>keyboard_arrow_left</mat-icon
+	>
+
+	<div class="slider-wrapper carousel-content" #carousel>
+		<ng-container *ngFor="let slide of slider; let i = index">
+			<img
+				*ngIf="isImage; else block"
+				[ngClass]="{ hidden: i !== current }"
+				[src]="slide"
+				class="slide-wrapper" />
+		</ng-container>
+
+		<ng-template #block>
+			<ng-content></ng-content>
+		</ng-template>
+	</div>
+
+	<mat-icon (click)="nextSlide()" *ngIf="slider.length > 1"
+		>keyboard_arrow_right</mat-icon
+	>
+</div>

@@ -1,16 +1,18 @@
-import { Component, Inject } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 
 @Component({
-	selector: "b2b-confirmation-dialog",
-	templateUrl: "./confirmation-dialog.component.html",
-	styleUrls: ["./confirmation-dialog.component.scss"],
+	selector: 'b2b-confirmation-dialog',
+	templateUrl: './confirmation-dialog.component.html',
+	styleUrls: ['./confirmation-dialog.component.scss'],
 })
 export class ConfirmationDialogComponent {
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-	public confirmButtonTheme = this.data.confirmButtonTheme as B2bNgxButtonThemeEnum;
-	public cancelButtonTheme = this.data.cancelButtonTheme as B2bNgxButtonThemeEnum;
+	public confirmButtonTheme = this.data
+		.confirmButtonTheme as B2bNgxButtonThemeEnum;
+	public cancelButtonTheme = this.data
+		.cancelButtonTheme as B2bNgxButtonThemeEnum;
 
 	constructor(
 		private dialogRef: MatDialogRef<ConfirmationDialogComponent>,

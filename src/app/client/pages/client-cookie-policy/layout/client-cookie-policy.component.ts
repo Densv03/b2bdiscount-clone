@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 
 const COOKIES_POLICY = [
 	{
-		title: "Оur Website Uses Cookies",
+		title: 'Оur Website Uses Cookies',
 		description: `By using this Website, You consent to Our use of Cookies in accordance with the terms of this Cookie Policy. This Cookie Policy is set to inform Our Users of all tracking, how User’s data is being handled, and with whom it is shared. It informs Our Users on their rights and how to exercise them, and states the technical specifications and purpose of each tracker.`,
 	},
 	{
-		title: "Definitions",
+		title: 'Definitions',
 		description: `The following terms have the meanings as mentioned below:
 
 “B2B Discount” - refers to “B2B Discount Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of the State of Washington of the United States of America (hereinafter – “Company”, “B2B”, “Website”, “We” or “Our”).
@@ -58,93 +58,98 @@ D) Targeting Cookies (advertising)
 These Cookies are used to deliver more relevant ads to User and User’s interests. They are also used to limit the number of times when a User sees the ads, as well as help measure the effectiveness of the advertising campaigns. They are placed by Third-party advertising networks.`,
 		rows: [
 			{
-				name: "_ga",
-				provider: ".b2b.discount",
+				name: '_ga',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "2 years",
-				dataIsSentTo: "Google Analytics https://policies.google.com/technologies/partner-sites?hl=en",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '2 years',
+				dataIsSentTo:
+					'Google Analytics https://policies.google.com/technologies/partner-sites?hl=en',
 			},
 			{
-				name: "_ga_RYZBQW3SPX",
-				provider: ".b2b.discount",
+				name: '_ga_RYZBQW3SPX',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "2 years",
-				dataIsSentTo: "Google Analytics https://policies.google.com/technologies/partner-sites?hl=en",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '2 years',
+				dataIsSentTo:
+					'Google Analytics https://policies.google.com/technologies/partner-sites?hl=en',
 			},
 			{
-				name: "_gat_UA-193007750-1",
-				provider: ".b2b.discount",
+				name: '_gat_UA-193007750-1',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "a few seconds",
-				dataIsSentTo: "Google Analytics https://policies.google.com/technologies/partner-sites?hl=en",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: 'a few seconds',
+				dataIsSentTo:
+					'Google Analytics https://policies.google.com/technologies/partner-sites?hl=en',
 			},
 			{
-				name: "_gid",
-				provider: ".b2b.discount",
-				purpose: "Collects information about the users and their activity on the website for analytics and reporting ",
-				type: "Statistical",
-				expiryPeriod: "a day",
-				dataIsSentTo: "Google Analytics https://policies.google.com/technologies/partner-sites?hl=en",
+				name: '_gid',
+				provider: '.b2b.discount',
+				purpose:
+					'Collects information about the users and their activity on the website for analytics and reporting ',
+				type: 'Statistical',
+				expiryPeriod: 'a day',
+				dataIsSentTo:
+					'Google Analytics https://policies.google.com/technologies/partner-sites?hl=en',
 			},
 			{
-				name: "_hjAbsoluteSessionInProgress",
-				provider: ".b2b.discount",
+				name: '_hjAbsoluteSessionInProgress',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "30 minutes",
-				dataIsSentTo: "Hotjar https://www.hotjar.com/legal/policies/privacy",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '30 minutes',
+				dataIsSentTo: 'Hotjar https://www.hotjar.com/legal/policies/privacy',
 			},
 			{
-				name: "_hjIncludedInPageviewSample",
-				provider: ".b2b.discount",
+				name: '_hjIncludedInPageviewSample',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "30 minutes",
-				dataIsSentTo: "Hotjar https://www.hotjar.com/legal/policies/privacy",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '30 minutes',
+				dataIsSentTo: 'Hotjar https://www.hotjar.com/legal/policies/privacy',
 			},
 			{
-				name: "_hjid",
-				provider: ".b2b.discount",
+				name: '_hjid',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "1 year",
-				dataIsSentTo: "Hotjar https://www.hotjar.com/legal/policies/privacy",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '1 year',
+				dataIsSentTo: 'Hotjar https://www.hotjar.com/legal/policies/privacy',
 			},
 			{
-				name: "_BEAMER_FIRST_VISIT_zeKLgqli17986",
-				provider: ".b2b.discount",
+				name: '_BEAMER_FIRST_VISIT_zeKLgqli17986',
+				provider: '.b2b.discount',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "300 days",
-				dataIsSentTo: "Beamer https://www.getbeamer.com/privacy-policy",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '300 days',
+				dataIsSentTo: 'Beamer https://www.getbeamer.com/privacy-policy',
 			},
 			{
-				name: "_BEAMER_USER_ID_zeKLgqli17986",
-				provider: ".hotjar.com",
+				name: '_BEAMER_USER_ID_zeKLgqli17986',
+				provider: '.hotjar.com',
 				purpose:
-					"Collects information about the users and their activity on the website for analytics and reporting purposes.",
-				type: "Statistical",
-				expiryPeriod: "300 days",
-				dataIsSentTo: "Beamer https://www.getbeamer.com/privacy-policy",
+					'Collects information about the users and their activity on the website for analytics and reporting purposes.',
+				type: 'Statistical',
+				expiryPeriod: '300 days',
+				dataIsSentTo: 'Beamer https://www.getbeamer.com/privacy-policy',
 			},
 		],
 		columns: [
-			{ prop: "name", name: "Name" },
-			{ prop: "provider", name: "Provider" },
-			{ prop: "purpose", name: "Purpose" },
-			{ prop: "type", name: "Type" },
-			{ prop: "expiryPeriod", name: "Expiry Period" },
-			{ prop: "dataIsSentTo", name: "Data is sent to" },
+			{ prop: 'name', name: 'Name' },
+			{ prop: 'provider', name: 'Provider' },
+			{ prop: 'purpose', name: 'Purpose' },
+			{ prop: 'type', name: 'Type' },
+			{ prop: 'expiryPeriod', name: 'Expiry Period' },
+			{ prop: 'dataIsSentTo', name: 'Data is sent to' },
 		],
 	},
 	{
@@ -156,7 +161,7 @@ Our website uses Google Analytics to analyse the User Experience of this website
 Our website publishes Google Adsense personalised advertisements on Our Website. These are tailored by Google to reflect User’s interests. To determine User’s interests, Google will track behaviour of a User across the web using Cookies. A User can view, delete or add interest categories associated with a User's browser using Google's Ads Preference Manager, available at: http://www.google.com/ads/preferences/. A User can opt-out of the Adsense partner network cookie at: http://www.google.com/policies/technologies/ads/.`,
 	},
 	{
-		title: "Cookies management",
+		title: 'Cookies management',
 		description: `Take control of Your Cookies easily! Do You know that You can get a guide on Cookies management on the website aboutcookies.org?
 
 Also, You can delete Cookies that are already set on Your device by clearing the browsing history of Your browser. This can remove certain or even all Cookies from all websites (including Our) You have visited.`,
@@ -188,19 +193,19 @@ Contact us,
 If there any problems or questions about this Cookie Policy occurred, please, drop us a line via email: info@b2b.discount or legal address: 6168 NE Hwy 99 Ste 201 Vancouver WA 98665, USA. We  will try to respond as soon as possible, but no longer than in 60 calendar days.`,
 	},
 	{
-		title: "How Cookies are stored?",
+		title: 'How Cookies are stored?',
 		description: `All relevant information on the period of Cookies storing a User can check in the table in the section “4. Types of Cookies used on Our Website”.`,
 	},
 	{
-		title: "Contact us",
+		title: 'Contact us',
 		description: `If there any problems or questions about this Cookie Policy occurred, please, drop us a line via email: info@b2b.discount or legal address: 6168 NE Hwy 99 Ste 201 Vancouver WA 98665, USA. We  will try to respond as soon as possible, but no longer than in 60 calendar days.`,
 	},
 ];
 
 @Component({
-	selector: "b2b-client-cookie-policy",
-	templateUrl: "./client-cookie-policy.component.html",
-	styleUrls: ["./client-cookie-policy.component.scss"],
+	selector: 'b2b-client-cookie-policy',
+	templateUrl: './client-cookie-policy.component.html',
+	styleUrls: ['./client-cookie-policy.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientCookiePolicyComponent {

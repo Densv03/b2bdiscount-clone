@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminUserComponent } from "./admin-user.component";
+import { AdminUserComponent } from './admin-user.component';
 
-describe("AdminUserComponent", () => {
+describe('AdminUserComponent', () => {
 	let component: AdminUserComponent;
 	let fixture: ComponentFixture<AdminUserComponent>;
 
@@ -18,7 +18,7 @@ describe("AdminUserComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

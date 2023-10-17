@@ -1,4 +1,4 @@
-import {capitalizeFirstLetter} from "../../../../../core/helpers/function/capitalize-first-letter";
+import { capitalizeFirstLetter } from '../../../../../core/helpers/function/capitalize-first-letter';
 
 export function getOfferFormData(offerToCreate: any) {
 	const formData = new FormData();
@@ -6,7 +6,7 @@ export function getOfferFormData(offerToCreate: any) {
 	Object.entries(offerToCreate)
 		.filter(([, value]) => !!value)
 		.forEach(([key, value]: [string, any]) => {
-			if (key === "photos" || key === "documents") {
+			if (key === 'photos' || key === 'documents') {
 				Array.from(value).forEach((file: any) => {
 					formData.append(key, file);
 				});
@@ -16,7 +16,7 @@ export function getOfferFormData(offerToCreate: any) {
 					.forEach((arrayItem) => {
 						formData.append(key, arrayItem);
 					});
-			} else if (typeof value === "object" && value) {
+			} else if (typeof value === 'object' && value) {
 				for (const childKey in value) {
 					const fullKey = `${key}${capitalizeFirstLetter(childKey)}`;
 					formData.append(fullKey, value[childKey]);

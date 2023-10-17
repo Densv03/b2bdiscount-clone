@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientCreatePaymnetInfoModalComponent } from "./client-create-paymnet-info-modal.component";
+import { ClientCreatePaymnetInfoModalComponent } from './client-create-paymnet-info-modal.component';
 
-describe("ClientCreatePaymnetInfoModalComponent", () => {
+describe('ClientCreatePaymnetInfoModalComponent', () => {
 	let component: ClientCreatePaymnetInfoModalComponent;
 	let fixture: ComponentFixture<ClientCreatePaymnetInfoModalComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientCreatePaymnetInfoModalComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

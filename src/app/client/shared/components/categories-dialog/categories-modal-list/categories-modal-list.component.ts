@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-	selector: "b2b-categories-modal-list",
-	templateUrl: "./categories-modal-list.component.html",
-	styleUrls: ["./categories-modal-list.component.scss"],
+	selector: 'b2b-categories-modal-list',
+	templateUrl: './categories-modal-list.component.html',
+	styleUrls: ['./categories-modal-list.component.scss'],
 })
 export class CategoriesModalListComponent {
 	@Input() categoriesList: Array<any>;

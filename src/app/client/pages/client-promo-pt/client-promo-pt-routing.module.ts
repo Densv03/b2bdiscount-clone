@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientPromoPtComponent } from "./layout/client-promo-pt.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientPromoPtComponent } from './layout/client-promo-pt.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientPromoPtComponent,
 	},
 ];

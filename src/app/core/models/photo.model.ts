@@ -2,5 +2,7 @@ export interface Photo {
 	_id: string;
 	path: string;
 	name: string;
-  sm?: string;
+	sm?: string;
+	md?: string;
+	lg?: string;
 }

@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientLatestOffersGridComponent } from "./client-latest-offers-grid.component";
+import { ClientLatestOffersGridComponent } from './client-latest-offers-grid.component';
 
-describe("ClientLatestOffersGridComponent", () => {
+describe('ClientLatestOffersGridComponent', () => {
 	let component: ClientLatestOffersGridComponent;
 	let fixture: ComponentFixture<ClientLatestOffersGridComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientLatestOffersGridComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

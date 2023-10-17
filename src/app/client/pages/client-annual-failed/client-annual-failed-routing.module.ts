@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientAnnualFailedComponent } from "./layout/client-annual-failed.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientAnnualFailedComponent } from './layout/client-annual-failed.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientAnnualFailedComponent,
 	},
 ];

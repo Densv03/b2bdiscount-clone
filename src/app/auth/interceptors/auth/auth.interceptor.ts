@@ -1,9 +1,14 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { catchError, Observable, of, throwError } from "rxjs";
-import { AuthService } from "../../services/auth/auth.service";
-import { HotToastService } from "@ngneat/hot-toast";
+import {
+	HttpEvent,
+	HttpHandler,
+	HttpInterceptor,
+	HttpRequest,
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { AuthService } from '../../services/auth/auth.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -13,16 +18,19 @@ export class AuthInterceptor implements HttpInterceptor {
 		private hotToastService: HotToastService
 	) {}
 
-	intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+	intercept(
+		request: HttpRequest<unknown>,
+		next: HttpHandler
+	): Observable<HttpEvent<unknown>> {
 		const excludedUrls: string[] = [
-			"/auth/login",
-			"/auth/register-credentials",
-			"/auth/forgotPassword",
-			"/create-customer-profile",
-			"/create-payment-by-profile",
-			"/tradebid",
+			'/auth/login',
+			'/auth/register-credentials',
+			'/auth/forgotPassword',
+			'/create-customer-profile',
+			'/create-payment-by-profile',
+			'/tradebid',
 		];
-		const token = localStorage.getItem("token");
+		const token = localStorage.getItem('token');
 		const clonedRequest = request.clone({
 			setHeaders: {
 				Authorization: `Bearer ${token}`,
@@ -34,7 +42,9 @@ export class AuthInterceptor implements HttpInterceptor {
 					return throwError(error);
 				}
 				if (error.status === 401 && !request.url.includes('products')) {
-					if (error.error.message === "User authorization token is not up to date") {
+					if (
+						error.error.message === 'User authorization token is not up to date'
+					) {
 						this.authService.logOut();
 
 						// FIXME: uncomment code below when you will have an idea how to avoid errors which will happen
@@ -52,7 +62,7 @@ export class AuthInterceptor implements HttpInterceptor {
 				if (excludedUrls.some((excludedUrl) => url.includes(excludedUrl))) {
 					return throwError(error);
 				}
-				return throwError(error)
+				return throwError(error);
 			})
 		);
 	}

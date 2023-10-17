@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.about-us {
@@ -8,10 +8,10 @@
 			line-height: 36px;
 			letter-spacing: 0.01em;
 			color: #0f0f11;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 26px;
 			}
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				font-size: 19px;
 				line-height: 24px;
 			}
@@ -23,10 +23,10 @@
 			letter-spacing: 0.01em;
 			color: #556274;
 			margin-top: 10px;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 15px;
 			}
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				line-height: 21px;
 				font-size: 13px;
 			}
@@ -58,7 +58,7 @@
 					}
 				}
 			}
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				.header-wrapper {
 					padding: 40px 0;
 					.title {
@@ -71,7 +71,7 @@
 					}
 				}
 			}
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				.title {
 					width: 85%;
 				}
@@ -235,7 +235,7 @@
 				}
 			}
 
-			@include breakpoint("5") {
+			@include breakpoint('5') {
 				&-content {
 					&-tradebid {
 						&-info {
@@ -250,7 +250,7 @@
 				}
 			}
 
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				width: 95%;
 				&-content {
 					gap: 30px;
@@ -266,7 +266,7 @@
 					}
 				}
 			}
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 95%;
 				padding-top: 30px;
 				.subtitle {
@@ -285,7 +285,7 @@
 					}
 				}
 			}
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				padding: 30px 10px 0;
 				.button {
 					height: 55px;
@@ -331,10 +331,10 @@
 				padding-top: 50px;
 				width: 50%;
 				margin: auto;
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 80%;
 				}
-				@include breakpoint("1") {
+				@include breakpoint('1') {
 					width: 85%;
 				}
 				.title {
@@ -348,7 +348,7 @@
 					line-height: 134%;
 					letter-spacing: 0.01em;
 					color: #ffffff;
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						font-size: 14px;
 					}
 				}
@@ -358,7 +358,7 @@
 					margin: 20px auto 0;
 				}
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				height: 350px;
 			}
 		}

@@ -7,22 +7,19 @@
 		Place new product
 	</button>
 
-	<div  *ngIf="userHasProducts"
-				[formGroup]="form"
-				class="products-filter">
-			<div class="label">Show: </div>
-			<div class="select-wrapper">
-				<b2b-ngx-select
-					[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
-					[options]="sortTypes"
-					(changed)="updateSortType($event)"
-					formControlName="sort"
-					placeholder="All"
-					bindValue="value"
-					bindLabel="label">
-				</b2b-ngx-select>
-			</div>
-
+	<div *ngIf="userHasProducts" [formGroup]="form" class="products-filter">
+		<div class="label">Show:</div>
+		<div class="select-wrapper">
+			<b2b-ngx-select
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				[options]="sortTypes"
+				(changed)="updateSortType($event)"
+				formControlName="sort"
+				placeholder="All"
+				bindValue="value"
+				bindLabel="label">
+			</b2b-ngx-select>
+		</div>
 	</div>
 </div>
 
@@ -32,4 +29,6 @@
 		[product]="product"></b2b-client-profile-marketplace-product-item>
 </div>
 
-<b2b-ngx-skeleton *ngIf="loading$ | async" [option]="marketplaceSkeletonOptions"></b2b-ngx-skeleton>
+<b2b-ngx-skeleton
+	*ngIf="loading$ | async"
+	[option]="marketplaceSkeletonOptions"></b2b-ngx-skeleton>

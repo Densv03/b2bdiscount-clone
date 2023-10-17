@@ -5,10 +5,10 @@ import { ChatsState, ChatsStore } from './chats.store';
 
 @Injectable({ providedIn: 'root' })
 export class ChatsQuery extends Query<ChatsState> {
-  public readonly selectChats: Observable<any>;
-  constructor(protected store: ChatsStore) {
-    super(store);
+	public readonly selectChats: Observable<any>;
+	constructor(protected store: ChatsStore) {
+		super(store);
 
-    this.selectChats = this.select('chats');
-  }
+		this.selectChats = this.select('chats');
+	}
 }

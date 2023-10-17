@@ -1,4 +1,4 @@
-import {Phone} from "../../../../core/models/user/phone.model";
+import { Phone } from '../../../../core/models/user/phone.model';
 
 export interface BasicInfoInterface {
 	fullName: string;

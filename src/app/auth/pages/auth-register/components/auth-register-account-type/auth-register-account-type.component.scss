@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .wrapper {
 	display: flex;
@@ -13,7 +13,7 @@
 		line-height: 36px;
 		color: #000000;
 		margin: 0;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 22px;
 		}
 	}
@@ -30,7 +30,7 @@
 			padding: 20px 25px 20px 20px;
 			position: relative;
 			gap: 60px;
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				display: flex;
 			}
 			button {
@@ -52,7 +52,7 @@
 
 		.mobile-type {
 			display: none;
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				display: block;
 			}
 		}
@@ -67,14 +67,14 @@
 		padding: 33px 61px 45px;
 		min-width: 464px;
 		border-radius: 10px;
-		@include breakpoint("4") {
+		@include breakpoint('4') {
 			min-width: 350px;
 		}
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			min-width: 285px;
 			padding: 23px 21px 35px;
 		}
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			display: none;
 		}
 
@@ -93,7 +93,7 @@
 			font-size: 16px;
 			font-weight: 400;
 			line-height: 148%;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 15px;
 			}
 		}
@@ -125,7 +125,7 @@
 			line-height: 150%;
 			letter-spacing: -0.022em;
 			color: #9fa4bb;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				font-size: 15px;
 				max-width: 273px;
 				text-align: center;

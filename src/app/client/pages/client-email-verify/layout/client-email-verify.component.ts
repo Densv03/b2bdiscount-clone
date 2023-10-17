@@ -5,20 +5,18 @@ import {
 	ElementRef,
 	ViewChild,
 } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {B2bNgxButtonThemeEnum} from '@b2b/ngx-button';
-import {B2bNgxInputThemeEnum} from '@b2b/ngx-input';
-import {HotToastService} from '@ngneat/hot-toast';
-import {FormBuilder, FormControl} from '@angular/forms';
-import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
-import {interval, map, switchMap, take, tap} from 'rxjs';
-import {
-	ClientContactUsModalComponent
-} from '../../../components/client-contact-us-modal/client-contact-us-modal.component';
-import {UserService} from '../../client-profile/services/user/user.service';
-import {AuthService} from 'src/app/auth/services/auth/auth.service';
-import {User} from 'src/app/core/models/user/user.model';
-import {TranslateService} from "@ngx-translate/core";
+import { ActivatedRoute, Router } from '@angular/router';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { HotToastService } from '@ngneat/hot-toast';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { interval, map, switchMap, take, tap } from 'rxjs';
+import { ClientContactUsModalComponent } from '../../../components/client-contact-us-modal/client-contact-us-modal.component';
+import { UserService } from '../../client-profile/services/user/user.service';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { User } from 'src/app/core/models/user/user.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
@@ -55,7 +53,9 @@ export class ClientEmailVerifyComponent implements AfterViewInit {
 		});
 		if (!!this._router.getCurrentNavigation().extras.state?.['email']) {
 			this.email = this._router.getCurrentNavigation().extras.state['email'];
-			this.formControl.setValue(this._router.getCurrentNavigation().extras.state['email'])
+			this.formControl.setValue(
+				this._router.getCurrentNavigation().extras.state['email']
+			);
 		} else {
 			this._activatedRoute.queryParams
 				.pipe(
@@ -152,6 +152,5 @@ export class ClientEmailVerifyComponent implements AfterViewInit {
 		this.formControl[this.isInputDisabled ? 'disable' : 'enable']();
 	}
 
-	public openContactUsModal() {
-	}
+	public openContactUsModal() {}
 }

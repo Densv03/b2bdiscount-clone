@@ -1,5 +1,9 @@
 <div class="admin-articles">
-	<a b2bNgxLink [theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK" routerLink="create" class="admin-articles__link"
+	<a
+		b2bNgxLink
+		[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
+		routerLink="create"
+		class="admin-articles__link"
 		>Add Article</a
 	>
 	<a
@@ -15,5 +19,8 @@
 		[articles]="articles$ | async"
 		[menuOptions]="menuOptions"></app-admin-articles-list>
 
-	<b2b-ngx-pagination [length]="totalCount" [perPage]="10" (togglePageNumber)="setPage($event)"></b2b-ngx-pagination>
+	<b2b-ngx-pagination
+		[length]="totalCount"
+		[perPage]="10"
+		(togglePageNumber)="setPage($event)"></b2b-ngx-pagination>
 </div>

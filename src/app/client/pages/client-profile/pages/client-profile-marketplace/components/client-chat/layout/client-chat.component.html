@@ -1,8 +1,10 @@
 <div class="client-profile-chat-wrapper">
 	<div class="rfq-info">
-		<div routerLink="/profile/your-workspace/b2bmarket" class="client-profile-chat-buyer-info">
+		<div
+			routerLink="/profile/your-workspace/b2bmarket"
+			class="client-profile-chat-buyer-info">
 			<div class="go-back">
-				<img b2bNgxIcon name="arrow-l" alt="icon">
+				<img b2bNgxIcon name="arrow-l" alt="icon" />
 				<div class="label">Go back</div>
 			</div>
 			<ng-container *ngIf="chat?.typeRoom === 'product'">
@@ -20,32 +22,42 @@
 				[formGroup]="formGroup"
 				(ngSubmit)="sendMessage(formGroup.get('message').value)"
 				class="client-profile-chat-container">
-				<p class="client-profile-chat-started">{{ "CHAT.CHAT_STARTED" | translate }}
-					: {{ chatInfo.createdAt | date }}</p>
+				<p class="client-profile-chat-started">
+					{{ 'CHAT.CHAT_STARTED' | translate }} :
+					{{ chatInfo.createdAt | date }}
+				</p>
 
 				<div class="client-profile-chat-messages">
 					<ul class="client-profile-chat-messages-list" #chatContainer>
-						<li *ngFor="let message of messages$ | async" class="client-profile-chat-messages-list-item">
+						<li
+							*ngFor="let message of messages$ | async"
+							class="client-profile-chat-messages-list-item">
 							<p class="client-profile-chat-messages-list-item-info">
-								<span class="client-profile-chat-messages-list-item-from">{{ message.contact.author }}</span>
-								<span class="client-profile-chat-messages-list-item-date">{{ message.createdAt | date }}</span>
+								<span class="client-profile-chat-messages-list-item-from">{{
+									message.contact.author
+								}}</span>
+								<span class="client-profile-chat-messages-list-item-date">{{
+									message.createdAt | date
+								}}</span>
 							</p>
 							<p class="client-profile-chat-messages-list-item-message">
 								{{ message.body }}
 							</p>
 						</li>
-						<li *ngIf="!(messages$ | async)?.length" class="client-profile-chat-no-messages">
-							{{ "CHAT.NO_MESSAGES" | translate }}
+						<li
+							*ngIf="!(messages$ | async)?.length"
+							class="client-profile-chat-no-messages">
+							{{ 'CHAT.NO_MESSAGES' | translate }}
 						</li>
 					</ul>
 				</div>
 
 				<div class="message-wrapper">
-				<textarea
-					formControlName="message"
-					[placeholder]="'PLACEHOLDERS.ENTER_TO_SEND' | translate"
-					class="client-profile-chat-textarea"
-					rows="5"></textarea>
+					<textarea
+						formControlName="message"
+						[placeholder]="'PLACEHOLDERS.ENTER_TO_SEND' | translate"
+						class="client-profile-chat-textarea"
+						rows="5"></textarea>
 				</div>
 				<div class="client-profile-chat-actions">
 					<!--				<div class="chat-actions-item-icons">-->
@@ -112,7 +124,7 @@
 								type="submit"
 								[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 								class="client-profile-chat-actions-send-button">
-								<span>{{ "BUTTONS.SEND" | translate }}</span>
+								<span>{{ 'BUTTONS.SEND' | translate }}</span>
 								<svg
 									class="client-profile-chat-actions-send-button-icon"
 									width="16"
@@ -129,7 +141,7 @@
 						  1.17397 14.3629C1.10545 14.2214 1.09975 14.0576 1.15822 13.9116L3.29929 8.55837H14.4523L1.92034 14.6224ZM3.29932
 						  7.4409L1.15826 2.08763C1.06914 1.87424 1.12447 1.62782 1.29625 1.47303C1.46253 1.31101 1.7136 1.273 1.92034
 						  1.37861L14.4523 7.4409H3.29932Z"
-										fill="#9FA4BB"/>
+										fill="#9FA4BB" />
 								</svg>
 							</button>
 						</div>
@@ -139,9 +151,13 @@
 
 			<div class="client-profile-chat-buyer-info">
 				<div class="buyer-info-profile">
-					<div class="buyer-info-title">{{ chatInfo.displayInfo.role }} info</div>
+					<div class="buyer-info-title">
+						{{ chatInfo.displayInfo.role }} info
+					</div>
 					<div class="buyer-info-header">
-						<div class="buyer-info-header-name">{{ buyerContacts?.fullName }}</div>
+						<div class="buyer-info-header-name">
+							{{ buyerContacts?.fullName }}
+						</div>
 					</div>
 					<!--			<div class="buyer-info-country">from </div>-->
 					<div class="buyer-info-block">
@@ -161,12 +177,17 @@
 					<div class="buyer-info-product-title">Media</div>
 				</div>
 				<div class="buyer-info-warning">
-					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 16 16"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M7.119 1.77272C7.49724 1.07443 8.49934 1.07443 8.87758 1.77272L14.9665 13.0137C15.3274 13.68 14.8449 14.49 14.0872 14.49H1.90941C1.15164 14.49 0.669209 13.68 1.03012 13.0137L7.119 1.77272Z"
 							stroke="#9FA4BB"
 							stroke-width="1.6"
-							stroke-linejoin="round"/>
+							stroke-linejoin="round" />
 					</svg>
 					<div class="buyer-info-warning-link">
 						<a href="">Report this buyer</a>
@@ -179,6 +200,6 @@
 
 <ng-template #userDeleted>
 	<p class="user-deleted">
-		{{ "CHAT.USER_DELETED" | translate }}
+		{{ 'CHAT.USER_DELETED' | translate }}
 	</p>
 </ng-template>

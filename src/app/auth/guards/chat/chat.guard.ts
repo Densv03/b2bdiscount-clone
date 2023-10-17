@@ -1,13 +1,19 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute } from "@angular/router";
-import { combineLatest } from "rxjs";
-import { AuthService } from "../../services/auth/auth.service";
-import { ChatsService } from "../../../client/services/chats/chats.service";
-import { filter, map, tap } from "rxjs/operators";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
+import { Injectable } from '@angular/core';
+import {
+	CanActivate,
+	ActivatedRouteSnapshot,
+	RouterStateSnapshot,
+	Router,
+	ActivatedRoute,
+} from '@angular/router';
+import { combineLatest } from 'rxjs';
+import { AuthService } from '../../services/auth/auth.service';
+import { ChatsService } from '../../../client/services/chats/chats.service';
+import { filter, map, tap } from 'rxjs/operators';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class ChatGuard implements CanActivate {
 	constructor(
@@ -24,10 +30,15 @@ export class ChatGuard implements CanActivate {
 
 		return combineLatest([user$, chat$]).pipe(
 			filter(([user, chat]) => !!user),
-			map(([user, chat]: any) => user._id === chat.seller._id || user._id === chat.buyer._id),
+			map(
+				([user, chat]: any) =>
+					user._id === chat.seller._id || user._id === chat.buyer._id
+			),
 			tap((access) => {
 				if (!access) {
-					this._router.navigateByUrl(this.b2bNgxLinkService.getStaticLink("/latest-offers"));
+					this._router.navigateByUrl(
+						this.b2bNgxLinkService.getStaticLink('/latest-offers')
+					);
 				}
 			})
 		);

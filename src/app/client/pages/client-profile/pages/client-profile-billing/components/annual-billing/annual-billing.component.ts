@@ -1,61 +1,61 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import { HotToastService } from "@ngneat/hot-toast";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { of } from "rxjs";
-import { filter, switchMap, take, tap } from "rxjs/operators";
-import { AuthService } from "../../../../../../../auth/services/auth/auth.service";
-import { PaymentService } from "../../../../../../services/payment/payment.service";
-import { ApiService } from "../../../../../../../core/services/api/api.service";
-import { ClientProfileAddPaymentMethodComponent } from "../../../../components/client-profile-add-payment-method/client-profile-add-payment-method.component";
-import { ClientProfileDeletePaymentMethodComponent } from "../../../../components/client-profile-delete-payment-method/client-profile-delete-payment-method.component";
-import { ClientProfileUpgradePlanComponent } from "../../../../components/client-profile-upgrade-plan/client-profile-upgrade-plan.component";
-import * as CryptoJS from "crypto-js";
-import {MatDialog} from "@angular/material/dialog";
-import {TranslateService} from "@ngx-translate/core";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { HotToastService } from '@ngneat/hot-toast';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { of } from 'rxjs';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
+import { AuthService } from '../../../../../../../auth/services/auth/auth.service';
+import { PaymentService } from '../../../../../../services/payment/payment.service';
+import { ApiService } from '../../../../../../../core/services/api/api.service';
+import { ClientProfileAddPaymentMethodComponent } from '../../../../components/client-profile-add-payment-method/client-profile-add-payment-method.component';
+import { ClientProfileDeletePaymentMethodComponent } from '../../../../components/client-profile-delete-payment-method/client-profile-delete-payment-method.component';
+import { ClientProfileUpgradePlanComponent } from '../../../../components/client-profile-upgrade-plan/client-profile-upgrade-plan.component';
+import * as CryptoJS from 'crypto-js';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 
 const StarterPlan = {
-	type: "free",
+	type: 'free',
 	name: `*Starter Plan*`,
 	price: `Free`,
 };
 
 const BuyerPlan = {
-	type: "buyer",
+	type: 'buyer',
 	name: `Buyer`,
 	price: `$588 / year`,
 };
 
 const DefaultInvoices = [
 	{
-		dataIssued: "March 20, 2021",
-		invoice: "",
-		transactionId: "999999999999",
-		sum: "588 USD",
-		status: "Failed",
+		dataIssued: 'March 20, 2021',
+		invoice: '',
+		transactionId: '999999999999',
+		sum: '588 USD',
+		status: 'Failed',
 	},
 	{
-		dataIssued: "January 27, 2020",
-		invoice: "SR67321",
-		transactionId: "999999169982",
-		sum: "588 USD",
-		status: "Successed",
+		dataIssued: 'January 27, 2020',
+		invoice: 'SR67321',
+		transactionId: '999999169982',
+		sum: '588 USD',
+		status: 'Successed',
 	},
 	{
-		dataIssued: "January 27, 2020",
-		invoice: "SR67321",
-		transactionId: "999999169982",
-		sum: "49 USD",
-		status: "Successed",
+		dataIssued: 'January 27, 2020',
+		invoice: 'SR67321',
+		transactionId: '999999169982',
+		sum: '49 USD',
+		status: 'Successed',
 	},
 ];
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-annual-billing",
-	templateUrl: "./annual-billing.component.html",
-	styleUrls: ["./annual-billing.component.scss"],
+	selector: 'b2b-annual-billing',
+	templateUrl: './annual-billing.component.html',
+	styleUrls: ['./annual-billing.component.scss'],
 })
 export class AnnualBillingComponent implements OnInit {
 	public readonly b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
@@ -64,7 +64,13 @@ export class AnnualBillingComponent implements OnInit {
 	payment: undefined | any;
 	plan = StarterPlan;
 	paymentData: any;
-	invoices: { dataIssued: string; invoice: string; transactionId: string; sum: string; status: string; }[] = [];
+	invoices: {
+		dataIssued: string;
+		invoice: string;
+		transactionId: string;
+		sum: string;
+		status: string;
+	}[] = [];
 
 	constructor(
 		private readonly dialog: MatDialog,
@@ -87,7 +93,7 @@ export class AnnualBillingComponent implements OnInit {
 
 					this.payment = {
 						...user.paymentInfo,
-						type: "mastercard",
+						type: 'mastercard',
 					};
 				}),
 				switchMap(() => this._paymentService.getInvoices()),
@@ -99,13 +105,14 @@ export class AnnualBillingComponent implements OnInit {
 	}
 
 	get isFree() {
-		return this.plan.type === "free";
+		return this.plan.type === 'free';
 	}
 
 	addPaymentMethod() {
 		this.dialog
 			.open(ClientProfileAddPaymentMethodComponent)
-			.afterClosed().pipe(
+			.afterClosed()
+			.pipe(
 				take(1),
 				switchMap((formValue) => {
 					this.paymentData = formValue;
@@ -115,8 +122,12 @@ export class AnnualBillingComponent implements OnInit {
 			.subscribe((response) => {
 				this.payment = {
 					...this.payment,
-					cardNumber: this.paymentData.hasOwnProperty('cardNum') ? this.paymentData?.cardNum.substring(this.paymentData.cardNum.length - 4) : '',
-					type: "mastercard",
+					cardNumber: this.paymentData.hasOwnProperty('cardNum')
+						? this.paymentData?.cardNum.substring(
+								this.paymentData.cardNum.length - 4
+						  )
+						: '',
+					type: 'mastercard',
 				};
 				this.plan = BuyerPlan;
 				this.invoices = DefaultInvoices;
@@ -133,30 +144,38 @@ export class AnnualBillingComponent implements OnInit {
 			.open(ClientProfileAddPaymentMethodComponent, {
 				data: this.payment,
 			})
-			.afterClosed().pipe(
+			.afterClosed()
+			.pipe(
 				take(1),
-				switchMap(res => {
+				switchMap((res) => {
 					const updatedCard = {
 						cardNum: res.cardNum,
-						testMode: "1",
+						testMode: '1',
 						expDate: res.expDate,
 					};
 					this.paymentData = {
 						...res,
-						cardNumber: this.paymentData.cardNum.substring(this.paymentData.cardNum.length - 4),
-						type: "mastercard",
+						cardNumber: this.paymentData.cardNum.substring(
+							this.paymentData.cardNum.length - 4
+						),
+						type: 'mastercard',
 					};
 
 					const body = {
-						hashData: CryptoJS.AES.encrypt(JSON.stringify(updatedCard), "vDS8h!ds#32df").toString(),
+						hashData: CryptoJS.AES.encrypt(
+							JSON.stringify(updatedCard),
+							'vDS8h!ds#32df'
+						).toString(),
 					};
-					return this._apiService.post("authorize-net/update-payment-by-profile", body).pipe(
-						this._hotToastService.observe({
-							loading: this.translateService.instant("TOASTR.LOADING"),
-							success: this.translateService.instant("TOASTR.SUCCESS"),
-							error: this.translateService.instant("TOASTR.ERROR"),
-						})
-					);
+					return this._apiService
+						.post('authorize-net/update-payment-by-profile', body)
+						.pipe(
+							this._hotToastService.observe({
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
+							})
+						);
 				})
 			)
 			.subscribe((payment) => {
@@ -179,20 +198,23 @@ export class AnnualBillingComponent implements OnInit {
 	delete() {
 		this.dialog
 			.open(ClientProfileDeletePaymentMethodComponent)
-			.afterClosed().pipe(
+			.afterClosed()
+			.pipe(
 				untilDestroyed(this),
 				switchMap((res) => {
 					if (!res) {
 						return of(null);
 					}
 
-					return this._apiService.delete("authorize-net/delete-payment-by-profile").pipe(
-						this._hotToastService.observe({
-							loading: this.translateService.instant("TOASTR.LOADING"),
-							success: this.translateService.instant("TOASTR.SUCCESS"),
-							error: this.translateService.instant("TOASTR.ERROR"),
-						})
-					);
+					return this._apiService
+						.delete('authorize-net/delete-payment-by-profile')
+						.pipe(
+							this._hotToastService.observe({
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
+							})
+						);
 				})
 			)
 			.subscribe((res) => {

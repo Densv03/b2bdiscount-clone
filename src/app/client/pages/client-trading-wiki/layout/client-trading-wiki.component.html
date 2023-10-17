@@ -1,7 +1,9 @@
 <form [formGroup]="formGroup" class="wiki">
 	<div class="wiki-header">
 		<h3 class="wiki-header-title">
-			<span class="wiki-header-title-text">{{ "TRADING_WIKI.TITLE" | translate }}</span>
+			<span class="wiki-header-title-text">{{
+				'TRADING_WIKI.TITLE' | translate
+			}}</span>
 			<span class="wiki-header-icon"></span>
 		</h3>
 		<input
@@ -17,7 +19,8 @@
 		<div class="wiki-main-list">
 			<ng-container *ngIf="articles$ | async as articles; else noArticles">
 				<ng-container *ngIf="articles.length; else noArticles">
-					<b2b-client-trading-wiki-list [options]="articles"></b2b-client-trading-wiki-list>
+					<b2b-client-trading-wiki-list
+						[options]="articles"></b2b-client-trading-wiki-list>
 
 					<b2b-ngx-pagination
 						[length]="totalCount"
@@ -28,7 +31,9 @@
 
 			<ng-template #noArticles>
 				<div class="wiki-no-articles" *ngIf="!loading">
-					<p class="wiki-no-articles-title">{{ t("TRADING_WIKI.NO_ARTICLES") }}</p>
+					<p class="wiki-no-articles-title">
+						{{ t('TRADING_WIKI.NO_ARTICLES') }}
+					</p>
 				</div>
 			</ng-template>
 
@@ -37,7 +42,7 @@
 			</ng-container>
 		</div>
 		<div class="wiki-main-filters">
-			<p class="wiki-main-filters__title">{{ t("TRADING_WIKI.FILTERS") }}</p>
+			<p class="wiki-main-filters__title">{{ t('TRADING_WIKI.FILTERS') }}</p>
 			<b2b-ngx-treeview
 				formControlName="categories[]"
 				[items]="categories$ | async"
@@ -47,7 +52,9 @@
 				formControlName="countries[]"
 				[multiple]="true"
 				class="wiki-main-filters__country"
-				[placeholder]="t('PLACEHOLDERS.SELECT_COUNTRY')"></b2b-ngx-country-select>
+				[placeholder]="
+					t('PLACEHOLDERS.SELECT_COUNTRY')
+				"></b2b-ngx-country-select>
 			<b2b-ngx-select
 				[searchable]="true"
 				[multiple]="true"
@@ -65,7 +72,7 @@
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"
 				class="wiki-main-filters__clear-filters">
-				{{ t("TRADING_WIKI.CLEAR_ALL") }}
+				{{ t('TRADING_WIKI.CLEAR_ALL') }}
 			</button>
 		</div>
 	</div>

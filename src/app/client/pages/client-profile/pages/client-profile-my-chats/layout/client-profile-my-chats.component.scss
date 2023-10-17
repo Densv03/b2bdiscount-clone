@@ -1,7 +1,7 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .client-profile-chats {
-	@include breakpoint("2") {
+	@include breakpoint('2') {
 		padding: 40px 20px;
 	}
 	.client-profile-chats-title {

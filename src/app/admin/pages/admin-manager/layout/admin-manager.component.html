@@ -1,5 +1,8 @@
 <div class="admin-manager">
-	<form class="admin-manager__form-group" [formGroup]="formGroup" (ngSubmit)="generateLink(formGroup)">
+	<form
+		class="admin-manager__form-group"
+		[formGroup]="formGroup"
+		(ngSubmit)="generateLink(formGroup)">
 		<div class="admin-manager__form-group__container">
 			<div>
 				<input
@@ -20,13 +23,17 @@
 					label="Enter second name" />
 			</div>
 		</div>
-		<input type="text" b2bNgxInput
-					 [theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-					 formControlName="url"
-					 placeholder="https://b2b.discount/blog"
-					 label="Enter the link for which the ref will be generated"
-					 class="mb-3">
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">Generate Link</button>
+		<input
+			type="text"
+			b2bNgxInput
+			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+			formControlName="url"
+			placeholder="https://b2b.discount/blog"
+			label="Enter the link for which the ref will be generated"
+			class="mb-3" />
+		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+			Generate Link
+		</button>
 	</form>
 
 	<div class="admin-manager__generated-link">
@@ -90,22 +97,33 @@
 			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
 			formControlName="refId"
 			placeholder="Ref id" />
-		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">Submit</button>
+		<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+			Submit
+		</button>
 	</form>
 	<div *ngIf="userList.length">Total count: {{ userList.length }}</div>
 
-	<table *ngIf="userList?.length" mat-table [dataSource]="userList" class="mat-elevation-z8 w-100">
+	<table
+		*ngIf="userList?.length"
+		mat-table
+		[dataSource]="userList"
+		class="mat-elevation-z8 w-100">
 		<ng-container matColumnDef="email">
 			<th class="th-firstName" mat-header-cell *matHeaderCellDef>Email</th>
 			<td mat-cell *matCellDef="let element">
 				{{ element.email }}
 
-				<img *ngIf="element.products?.length && isApproved(element.products)" b2bNgxIcon [name]="'check-blue'" />
+				<img
+					*ngIf="element.products?.length && isApproved(element.products)"
+					b2bNgxIcon
+					[name]="'check-blue'" />
 			</td>
 		</ng-container>
 
 		<ng-container matColumnDef="registrationType">
-			<th class="th-firstName" mat-header-cell *matHeaderCellDef>Registration type</th>
+			<th class="th-firstName" mat-header-cell *matHeaderCellDef>
+				Registration type
+			</th>
 			<td mat-cell *matCellDef="let element">
 				{{ element.typeRegistration }}
 			</td>
@@ -119,14 +137,18 @@
 		</ng-container>
 
 		<ng-container matColumnDef="registrationDate">
-			<th class="th-firstName" mat-header-cell *matHeaderCellDef>Registration date</th>
+			<th class="th-firstName" mat-header-cell *matHeaderCellDef>
+				Registration date
+			</th>
 			<td mat-cell *matCellDef="let element">
-				{{ element.userData[0]?.createdAt | date: "MM/d/yy" }}
+				{{ element.userData[0]?.createdAt | date: 'MM/d/yy' }}
 			</td>
 		</ng-container>
 
 		<ng-container matColumnDef="company">
-			<th class="th-firstName" mat-header-cell *matHeaderCellDef>Company name</th>
+			<th class="th-firstName" mat-header-cell *matHeaderCellDef>
+				Company name
+			</th>
 			<td mat-cell *matCellDef="let element">
 				{{ element?.userData[0]?.company }}
 			</td>

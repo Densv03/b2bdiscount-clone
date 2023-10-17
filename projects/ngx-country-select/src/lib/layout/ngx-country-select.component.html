@@ -1,5 +1,6 @@
 <label class="ngx-country-label"><ng-content></ng-content></label>
 <ng-select
+
 	(open)="emitOpen()"
 	(close)="emitClose()"
 	[searchable]="true"
@@ -10,6 +11,7 @@
 	bindValue="code"
 	[class]="selectClassName"
 	[class.ng-touched]="touched"
+	[class.ng-invalid]="invalid"
 	[placeholder]="placeholder"
 	[formControl]="formControl">
 	<ng-template ng-label-tmp let-item="item">

@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function onlyLatinAndNumber(): ValidatorFn {
 	const latinCharacters = /^[A-Za-z0-9&]+$/;
@@ -8,7 +8,7 @@ export function onlyLatinAndNumber(): ValidatorFn {
 			return null;
 		}
 
-		const str = control.value.replace(/\s+/g, "");
+		const str = control.value.replace(/\s+/g, '');
 		if (!latinCharacters.test(String(str.trim()).toLowerCase())) {
 			return { latin: true };
 		}

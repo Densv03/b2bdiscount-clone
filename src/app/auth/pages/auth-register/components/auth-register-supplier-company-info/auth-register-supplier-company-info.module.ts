@@ -1,12 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AuthRegisterSupplierCompanyInfoComponent} from "./auth-register-supplier-company-info.component";
-import {B2bNgxButtonModule} from "@b2b/ngx-button";
-import {B2bNgxSelectModule} from "@b2b/ngx-select";
-import {NgxCategoryDropdownsModule} from "../../../../../../../projects/ngx-category-dropdowns/src/lib/ngx-category-dropdowns.module";
-import {ReactiveFormsModule} from "@angular/forms";
-import {TranslateModule} from "@ngx-translate/core";
-
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AuthRegisterSupplierCompanyInfoComponent } from './auth-register-supplier-company-info.component';
+import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { B2bNgxSelectModule } from '@b2b/ngx-select';
+import { NgxCategoryDropdownsModule } from '../../../../../../../projects/ngx-category-dropdowns/src/lib/ngx-category-dropdowns.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
 	declarations: [AuthRegisterSupplierCompanyInfoComponent],
@@ -17,8 +16,7 @@ import {TranslateModule} from "@ngx-translate/core";
 		B2bNgxSelectModule,
 		NgxCategoryDropdownsModule,
 		ReactiveFormsModule,
-		TranslateModule
-	]
+		TranslateModule,
+	],
 })
-export class AuthRegisterSupplierCompanyInfoModule {
-}
+export class AuthRegisterSupplierCompanyInfoModule {}

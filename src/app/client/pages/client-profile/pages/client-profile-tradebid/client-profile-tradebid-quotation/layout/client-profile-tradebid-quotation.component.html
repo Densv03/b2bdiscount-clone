@@ -2,7 +2,11 @@
 	<mat-tab-group mat-align-tabs="start">
 		<mat-tab label="Chats">
 			<div class="chats" *ngFor="let item of chatsList$ | async">
-				<b2b-chats-item (deleteChat)="updateChat()" [chatsItem]="item" [chatType]="'my-quotation'"> </b2b-chats-item>
+				<b2b-chats-item
+					(deleteChat)="updateChat()"
+					[chatsItem]="item"
+					[chatType]="'my-quotation'">
+				</b2b-chats-item>
 			</div>
 			<b2b-ngx-pagination
 				(togglePageNumber)="togglePageManageList($event)"

@@ -8,7 +8,10 @@
 			<p class="sidenav-header-description">{{ user.email }}</p>
 		</div>
 		<ul class="sidenav-account">
-			<li routerLink="/profile/your-account" routerLinkActive="active" class="sidenav-list-item">
+			<li
+				routerLink="/profile/your-account"
+				routerLinkActive="active"
+				class="sidenav-list-item">
 				<img b2bNgxIcon [name]="'sidenav-man-skeleton'" class="mr-3" />
 				<a b2bNgxLink class="sidenav-list-item-link">
 					<p>Your account</p>
@@ -22,18 +25,28 @@
 					routerLinkActive="active"
 					[routerLinkActiveOptions]="{ exact: true }"
 					class="sidenav-list-item-link">
-					<ng-container *ngTemplateOutlet="content; context: { $implicit: option }"></ng-container>
+					<ng-container
+						*ngTemplateOutlet="
+							content;
+							context: { $implicit: option }
+						"></ng-container>
 				</a>
 			</li>
 		</ul>
 		<ul class="sidenav-workspace">
-			<li routerLink="/profile/your-workspace" routerLinkActive="active" class="sidenav-list-item">
+			<li
+				routerLink="/profile/your-workspace"
+				routerLinkActive="active"
+				class="sidenav-list-item">
 				<img b2bNgxIcon [name]="'desktop'" class="mr-3" />
 				<a b2bNgxLink class="sidenav-list-item-link">
 					<p>Your workspace</p>
 				</a>
 			</li>
-			<li *ngFor="let option of workspaceOptions" [class.active]="option.active" class="sidenav-list-item">
+			<li
+				*ngFor="let option of workspaceOptions"
+				[class.active]="option.active"
+				class="sidenav-list-item">
 				<img b2bNgxIcon [name]="option.icon" class="mr-3" />
 				<a
 					*ngIf="option.link"
@@ -41,10 +54,22 @@
 					[routerLink]="option.link"
 					routerLinkActive="active"
 					class="sidenav-list-item-link">
-					<ng-container *ngTemplateOutlet="content; context: { $implicit: option }"></ng-container>
+					<ng-container
+						*ngTemplateOutlet="
+							content;
+							context: { $implicit: option }
+						"></ng-container>
 				</a>
-				<button b2bNgxButton class="sidenav-list-item-button" (click)="option.onClick()" *ngIf="option.onClick">
-					<ng-container *ngTemplateOutlet="content; context: { $implicit: option }"></ng-container>
+				<button
+					b2bNgxButton
+					class="sidenav-list-item-button"
+					(click)="option.onClick()"
+					*ngIf="option.onClick">
+					<ng-container
+						*ngTemplateOutlet="
+							content;
+							context: { $implicit: option }
+						"></ng-container>
 				</button>
 			</li>
 		</ul>
@@ -52,22 +77,31 @@
 
 	<ng-template #content let-option>
 		<p class="sidenav-list-item-text">{{ option.label | translate }}</p>
-		<ng-container *ngIf="unreadOfferMessagesCount$ | async as unreadMessagesCount">
-			<span class="unread-messages" *ngIf="option.label === 'Unclaimed cargo' && unreadMessagesCount > 0">{{
-				unreadMessagesCount
-			}}</span>
+		<ng-container
+			*ngIf="unreadOfferMessagesCount$ | async as unreadMessagesCount">
+			<span
+				class="unread-messages"
+				*ngIf="option.label === 'Unclaimed cargo' && unreadMessagesCount > 0"
+				>{{ unreadMessagesCount }}</span
+			>
 		</ng-container>
 
-		<ng-container *ngIf="unreadRfqMessagesCount$ | async as unreadMessagesCount">
-			<span class="unread-messages" *ngIf="option.label === 'TradeBid' && unreadMessagesCount > 0">{{
-				unreadMessagesCount
-			}}</span>
+		<ng-container
+			*ngIf="unreadRfqMessagesCount$ | async as unreadMessagesCount">
+			<span
+				class="unread-messages"
+				*ngIf="option.label === 'Sourcing Request' && unreadMessagesCount > 0"
+				>{{ unreadMessagesCount }}</span
+			>
 		</ng-container>
 
-		<ng-container *ngIf="unreadMarketplaceMessagesCount$ | async as unreadMessagesCount">
-			<span class="unread-messages" *ngIf="option.label === 'B2B Market' && unreadMessagesCount > 0">{{
-				unreadMessagesCount
-			}}</span>
+		<ng-container
+			*ngIf="unreadMarketplaceMessagesCount$ | async as unreadMessagesCount">
+			<span
+				class="unread-messages"
+				*ngIf="option.label === 'B2B Market' && unreadMessagesCount > 0"
+				>{{ unreadMessagesCount }}</span
+			>
 		</ng-container>
 	</ng-template>
 </ng-container>

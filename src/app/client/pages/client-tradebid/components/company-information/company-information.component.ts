@@ -1,19 +1,24 @@
-import {Component, OnInit} from "@angular/core";
-import {B2bNgxLinkThemeEnum} from "@b2b/ngx-link";
-import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
-import {B2bNgxInputThemeEnum} from "@b2b/ngx-input";
-import {B2bNgxSelectThemeEnum} from "@b2b/ngx-select";
-import {Observable, of} from "rxjs";
-import {HotToastService} from "@ngneat/hot-toast";
-import {TradebidService } from "src/app/client/pages/client-tradebid/tradebid.service";
-import {filter, first, map} from "rxjs/operators";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService } from "src/app/auth/services/auth/auth.service";
-import {UserService } from "src/app/client/pages/client-profile/services/user/user.service";
-import {ApiService } from "src/app/core/services/api/api.service";
-import {siteLink } from "src/app/core/helpers/validator/site-link";
-import {animate, style, transition, trigger} from "@angular/animations";
+import { Component, OnInit } from '@angular/core';
+import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { Observable, of } from 'rxjs';
+import { HotToastService } from '@ngneat/hot-toast';
+import { TradebidService } from 'src/app/client/pages/client-tradebid/tradebid.service';
+import { filter, first, map } from 'rxjs/operators';
+import {
+	AbstractControl,
+	FormBuilder,
+	FormGroup,
+	Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/services/auth/auth.service';
+import { UserService } from 'src/app/client/pages/client-profile/services/user/user.service';
+import { ApiService } from 'src/app/core/services/api/api.service';
+import { siteLink } from 'src/app/core/helpers/validator/site-link';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 interface SelectItem {
 	id: string;
@@ -21,17 +26,17 @@ interface SelectItem {
 }
 
 @Component({
-	selector: "b2b-company-information",
-	templateUrl: "./company-information.component.html",
-	styleUrls: ["./company-information.component.scss"],
+	selector: 'b2b-company-information',
+	templateUrl: './company-information.component.html',
+	styleUrls: ['./company-information.component.scss'],
 	animations: [
-		trigger("fadeInOut", [
-			transition(":enter", [
+		trigger('fadeInOut', [
+			transition(':enter', [
 				// :enter is alias to 'void => *'
 				style({ opacity: 0 }),
 				animate(500, style({ opacity: 1 })),
 			]),
-			transition(":leave", [
+			transition(':leave', [
 				// :leave is alias to '* => void'
 				animate(500, style({ opacity: 0 })),
 			]),
@@ -39,10 +44,14 @@ interface SelectItem {
 	],
 })
 export class CompanyInformationComponent implements OnInit {
-	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
-	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-	public readonly b2bNgxInputThemeEnum: typeof B2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
-	public readonly b2bNgxSelectThemeEnum: typeof B2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
+	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum =
+		B2bNgxLinkThemeEnum;
+	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum =
+		B2bNgxButtonThemeEnum;
+	public readonly b2bNgxInputThemeEnum: typeof B2bNgxInputThemeEnum =
+		B2bNgxInputThemeEnum;
+	public readonly b2bNgxSelectThemeEnum: typeof B2bNgxSelectThemeEnum =
+		B2bNgxSelectThemeEnum;
 
 	public businessType$: Observable<SelectItem[]>;
 	public foundationYear$: Observable<SelectItem[]>;
@@ -51,21 +60,32 @@ export class CompanyInformationComponent implements OnInit {
 	public position$: Observable<SelectItem[]>;
 	public form: FormGroup;
 	public initialCompanyData: any = null;
-	public formType: "add-rfq" | "quotation" | "unclaimed-cargo" | "b2bmarket";
+	public formType: 'add-rfq' | 'quotation' | 'unclaimed-cargo' | 'b2bmarket';
 	public navigationUrl!: string;
 	public formState: { [key: string]: AbstractControl };
-	public userRole: string = "";
+	public userRole: string = '';
 
-	private businessTypesArr: string[] = ["Trader", "Manufacturer", "Logistic company", "Broker"];
-	public employeesNumberArr: string[] = ["1-5", "5-10", "10-50", "50-100", "> 100"];
-	public annualRevenueArr: string[] = ["1-5M", "5-10M", "10-50M", "50-100M"];
+	private businessTypesArr: string[] = [
+		'Trader',
+		'Manufacturer',
+		'Logistic company',
+		'Broker',
+	];
+	public employeesNumberArr: string[] = [
+		'1-5',
+		'5-10',
+		'10-50',
+		'50-100',
+		'> 100',
+	];
+	public annualRevenueArr: string[] = ['1-5M', '5-10M', '10-50M', '50-100M'];
 	public positions: string[] = [
-		"Purchase manager",
-		"Office manager",
-		"Sales manager",
-		" FEA Manager",
-		" CEO ",
-		"Company owner",
+		'Purchase manager',
+		'Office manager',
+		'Sales manager',
+		' FEA Manager',
+		' CEO ',
+		'Company owner',
 	];
 	public avaliableRoles!: Array<{ id: string; name: string }>;
 
@@ -96,16 +116,18 @@ export class CompanyInformationComponent implements OnInit {
 		this.businessType$ = this.getObservableForSelect(this.businessTypesArr);
 		this.foundationYear$ = this.getFoundationYear();
 		this.position$ = this.getObservableForSelect(this.positions);
-		this.employeesNumber$ = this.getObservableForSelect(this.employeesNumberArr);
+		this.employeesNumber$ = this.getObservableForSelect(
+			this.employeesNumberArr
+		);
 		this.annualRevenue$ = this.getObservableForSelect(this.annualRevenueArr);
-		this.formType = this.route.snapshot.queryParams["url"];
+		this.formType = this.route.snapshot.queryParams['url'];
 		this.getNavigationLink();
 
 		this.userRole = this.userService.getUser().role.name;
 	}
 
 	ngOnInit(): void {
-		localStorage.setItem("showCancelButton", "true");
+		localStorage.setItem('showCancelButton', 'true');
 	}
 
 	public getRoles() {
@@ -113,28 +135,32 @@ export class CompanyInformationComponent implements OnInit {
 			.getRoles()
 			.pipe(
 				filter((res) => !!res),
-				map((roles) => roles.map((role) => ({id: role._id, name: role.displayName}))),
+				map((roles) =>
+					roles.map((role) => ({ id: role._id, name: role.displayName }))
+				),
 				map((res) => (this.avaliableRoles = res))
 			)
 			.subscribe();
 	}
 
 	public getNavigationLink(): void {
-		if (this.formType === "quotation") {
-			this.navigationUrl = `tradebid/quotation/${localStorage.getItem("quotationId")}`;
-			localStorage.removeItem("quotationId");
-		} else if (this.formType === "add-rfq") {
-			this.navigationUrl = "tradebid/add-rfq";
-		} else if (this.formType === "b2bmarket") {
-			this.navigationUrl = "b2bmarket/product";
+		if (this.formType === 'quotation') {
+			this.navigationUrl = `tradebid/quotation/${localStorage.getItem(
+				'quotationId'
+			)}`;
+			localStorage.removeItem('quotationId');
+		} else if (this.formType === 'add-rfq') {
+			this.navigationUrl = 'tradebid/add-rfq';
+		} else if (this.formType === 'b2bmarket') {
+			this.navigationUrl = 'b2bmarket/product';
 		} else {
-			this.navigationUrl = "offer";
+			this.navigationUrl = 'offer';
 		}
 	}
 
 	public onSave() {
 		this.form.markAllAsTouched();
-		if (this.form.status === "INVALID") {
+		if (this.form.status === 'INVALID') {
 			return;
 		}
 		const companyInfo: any = {
@@ -153,23 +179,24 @@ export class CompanyInformationComponent implements OnInit {
 			.pipe(
 				first(),
 				this.hotToastService.observe({
-					loading: "Updating company information...",
-					success: "Company information successfully updated.",
-					error: "Company information updating failed",
+					loading: 'Updating company information...',
+					success: 'Company information successfully updated.',
+					error: 'Company information updating failed',
 				})
 			)
 			.subscribe({
 				complete: () => {
-					this.apiService.get("user/")
-            .subscribe((data: any) => {
+					this.apiService.get('user/').subscribe((data: any) => {
 						const fullName = data.fullName;
 						const preferences = data.preferences;
 						const roleId =
-							this.userService.getUser().role.name === "admin"
+							this.userService.getUser().role.name === 'admin'
 								? this.userService.getUser().role._id
 								: this.avaliableRoles.find(
-									(role) => role.name.toLowerCase() === this.form.value.businessType.toLowerCase()
-								)?.id;
+										(role) =>
+											role.name.toLowerCase() ===
+											this.form.value.businessType.toLowerCase()
+								  )?.id;
 						const phone = data.phone;
 						this.userService
 							.updateUserSettings({
@@ -193,28 +220,32 @@ export class CompanyInformationComponent implements OnInit {
 
 	private createCompanyInformationGroup(): FormGroup {
 		return this.fb.group({
-			companyName: ["", [Validators.required]],
-			businessType: ["", [Validators.required]],
-			country: ["", [Validators.required]],
-			foundationYear: ["", [Validators.required]],
-			employeesNumber: ["", [Validators.required]],
-			annualRevenue: ["", [Validators.required]],
-			phone: ["", [Validators.required]],
-			address: ["", [Validators.required]],
-			website: ["", [siteLink()]],
-			companyDescription: ["", [
-				Validators.required,
-				Validators.minLength(20),
-				Validators.maxLength(500)]
+			companyName: ['', [Validators.required]],
+			businessType: ['', [Validators.required]],
+			country: ['', [Validators.required]],
+			foundationYear: ['', [Validators.required]],
+			employeesNumber: ['', [Validators.required]],
+			annualRevenue: ['', [Validators.required]],
+			phone: ['', [Validators.required]],
+			address: ['', [Validators.required]],
+			website: ['', [siteLink()]],
+			companyDescription: [
+				'',
+				[
+					Validators.required,
+					Validators.minLength(20),
+					Validators.maxLength(500),
+				],
 			],
-			position: ["", [Validators.required]],
+			position: ['', [Validators.required]],
 		});
 	}
 
 	private patchValueToForm(res: any): void {
 		const role =
-			this.avaliableRoles.filter((role) => role.id === res?.businessType).map((role) => role.name)[0] ||
-			res?.businessType;
+			this.avaliableRoles
+				.filter((role) => role.id === res?.businessType)
+				.map((role) => role.name)[0] || res?.businessType;
 		this.form.patchValue({
 			companyName: res?.companyName,
 			foundationYear: res?.yearOfFoundation,
@@ -244,7 +275,8 @@ export class CompanyInformationComponent implements OnInit {
 	private getFoundationYear(): Observable<SelectItem[]> {
 		const yearsArr: string[] = [];
 		const currentYear: number = new Date(Date.now()).getFullYear();
-		for (let i = currentYear; i > currentYear - 50; i--) yearsArr.push(i.toString());
+		for (let i = currentYear; i > currentYear - 50; i--)
+			yearsArr.push(i.toString());
 		return this.getObservableForSelect(yearsArr);
 	}
 }

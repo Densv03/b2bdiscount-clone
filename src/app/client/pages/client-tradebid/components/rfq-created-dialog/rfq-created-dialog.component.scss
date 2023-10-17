@@ -1,0 +1,68 @@
+@import 'projects/shared/src/styles';
+
+.content {
+	padding: 32px 156px 42px;
+
+	@include breakpoint('2') {
+		padding: 16px;
+	}
+
+	p {
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 24px;
+		letter-spacing: 0.01em;
+		text-align: center;
+		color: white;
+		padding-bottom: 16px;
+
+		@include breakpoint('3') {
+			padding-top: 24px;
+		}
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 16px;
+
+		button {
+			padding: 10px 40px;
+			border-radius: 8px;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 18px;
+
+			@include breakpoint('2') {
+				width: 100%;
+			}
+
+			&:first-child {
+				color: white;
+				border: 2px solid white;
+
+				&:hover {
+					color: black;
+				}
+			}
+		}
+	}
+}
+
+::ng-deep {
+	.rfq-created-pop-up .mat-dialog-container {
+		background: #628cea;
+		border-radius: 8px;
+		color: #fff;
+		position: relative;
+		padding: 0;
+
+		.cross-icon {
+			position: absolute;
+			right: 16px;
+			top: 16px;
+			filter: brightness(0) invert(1);
+		}
+	}
+}

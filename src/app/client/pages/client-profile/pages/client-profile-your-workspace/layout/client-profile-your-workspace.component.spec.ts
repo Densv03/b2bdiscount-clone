@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileYourWorkspaceComponent } from "./client-profile-your-workspace.component";
+import { ClientProfileYourWorkspaceComponent } from './client-profile-your-workspace.component';
 
-describe("ClientProfileYourWorkspaceComponent", () => {
+describe('ClientProfileYourWorkspaceComponent', () => {
 	let component: ClientProfileYourWorkspaceComponent;
 	let fixture: ComponentFixture<ClientProfileYourWorkspaceComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileYourWorkspaceComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

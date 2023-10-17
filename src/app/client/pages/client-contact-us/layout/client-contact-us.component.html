@@ -1,10 +1,18 @@
 <div class="client-contact-us">
 	<div class="client-contact-us-header">
-		<h3 class="client-contact-us-header-title">{{ "CONTACT_US.TITLE" | translate }}</h3>
-		<p class="client-contact-us-header-description">{{ "CONTACT_US.DESCRIPTION" | translate }}</p>
+		<h3 class="client-contact-us-header-title">
+			{{ 'CONTACT_US.TITLE' | translate }}
+		</h3>
+		<p class="client-contact-us-header-description">
+			{{ 'CONTACT_US.DESCRIPTION' | translate }}
+		</p>
 	</div>
 
-	<form errorTailor class="client-contact-us-form" [formGroup]="formGroup" (ngSubmit)="sendMessage(formGroup)">
+	<form
+		errorTailor
+		class="client-contact-us-form"
+		[formGroup]="formGroup"
+		(ngSubmit)="sendMessage(formGroup)">
 		<b2b-ngx-select
 			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 			[options]="subjectOptions"
@@ -31,7 +39,8 @@
 			class="client-contact-us-form-input"
 			[placeholder]="'PLACEHOLDERS.YOUR_PHONE_NUMBER' | translate"
 			formControlName="phone"
-			>{{ "INPUTS.PHONE" | translate }}</b2b-ngx-tel>
+			>{{ 'INPUTS.PHONE' | translate }}</b2b-ngx-tel
+		>
 		<textarea
 			b2bNgxTextarea
 			[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
@@ -44,19 +53,28 @@
 			type="submit"
 			class="client-contact-us-form-button"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-			{{ "BUTTONS.SEND" | translate }}
+			{{ 'BUTTONS.SEND' | translate }}
 		</button>
 	</form>
 	<div class="client-contact-us-footer">
 		<ul class="client-contact-us-footer-icons-list">
-			<li class="client-contact-us-footer-icons-list-item" *ngFor="let socialMedia of socialMedias">
-				<a b2bNgxLink [href]="socialMedia.href" class="client-contact-us-footer-icons-list-item-href">
-					<img b2bNgxIcon [name]="socialMedia.icon" class="client-contact-us-footer-icons-list-item-icon" />
+			<li
+				class="client-contact-us-footer-icons-list-item"
+				*ngFor="let socialMedia of socialMedias">
+				<a
+					b2bNgxLink
+					[href]="socialMedia.href"
+					class="client-contact-us-footer-icons-list-item-href">
+					<img
+						b2bNgxIcon
+						[name]="socialMedia.icon"
+						class="client-contact-us-footer-icons-list-item-icon" />
 				</a>
 			</li>
 		</ul>
 		<p class="client-contact-us-footer-description">
-			{{ "CONTACT_US.FEEDBACK" | translate }} <a href="">support@b2b.discount</a>.
+			{{ 'CONTACT_US.FEEDBACK' | translate }}
+			<a href="">support@b2b.discount</a>.
 		</p>
 	</div>
 </div>

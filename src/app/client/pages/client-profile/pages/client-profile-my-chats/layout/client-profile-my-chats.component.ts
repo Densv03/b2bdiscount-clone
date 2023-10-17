@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { Observable } from "rxjs";
-import { Router } from "@angular/router";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { HotToastService } from "@ngneat/hot-toast";
-import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import { map, tap } from "rxjs/operators";
-import { AuthService } from "../../../../../../auth/services/auth/auth.service";
-import {ChatsService} from "../../../../../services/chats/chats.service";
-import {TranslateService} from "@ngx-translate/core";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { HotToastService } from '@ngneat/hot-toast';
+import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { map, tap } from 'rxjs/operators';
+import { AuthService } from '../../../../../../auth/services/auth/auth.service';
+import { ChatsService } from '../../../../../services/chats/chats.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-profile-my-chats",
-	templateUrl: "./client-profile-my-chats.component.html",
-	styleUrls: ["./client-profile-my-chats.component.scss"],
+	selector: 'b2b-client-profile-my-chats',
+	templateUrl: './client-profile-my-chats.component.html',
+	styleUrls: ['./client-profile-my-chats.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientProfileMyChatsComponent {
@@ -61,9 +61,9 @@ export class ClientProfileMyChatsComponent {
 		return [
 			{
 				count: 10,
-				animation: "progress",
+				animation: 'progress',
 				theme: {
-					height: "120px",
+					height: '120px',
 				},
 			},
 		];
@@ -72,34 +72,34 @@ export class ClientProfileMyChatsComponent {
 	public getBuyerOptions() {
 		return [
 			{
-				label: this.translateService.instant("OFFERS.REQUEST_CONTACTS"),
-				icon: "user-2",
+				label: this.translateService.instant('OFFERS.REQUEST_CONTACTS'),
+				icon: 'user-2',
 				onClick: (chat: any) => {
 					this._chatsService
 						.requestContacts(chat)
 						.pipe(
 							untilDestroyed(this),
 							this._hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("TOASTR.ERROR"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
 							})
 						)
 						.subscribe();
 				},
 			},
 			{
-				label: this.translateService.instant("OFFERS.DELETE"),
-				icon: "delete-red",
-				onClick: (chat: { _id: string; }) => {
+				label: this.translateService.instant('OFFERS.DELETE'),
+				icon: 'delete-red',
+				onClick: (chat: { _id: string }) => {
 					this._chatsService
 						.removeChatById(chat._id)
 						.pipe(
 							untilDestroyed(this),
 							this._hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("TOASTR.ERROR"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
 							})
 						)
 						.subscribe(() => {});
@@ -111,60 +111,60 @@ export class ClientProfileMyChatsComponent {
 	public getSellerOptions() {
 		return [
 			{
-				label: this.translateService.instant("OFFERS.SEND_MY_CONTACTS"),
-				icon: "card",
-				onClick: async (chat: { offer: any; buyer: { _id: string; }; }) => {
+				label: this.translateService.instant('OFFERS.SEND_MY_CONTACTS'),
+				icon: 'card',
+				onClick: async (chat: { offer: any; buyer: { _id: string } }) => {
 					this._chatsService.sendContacts(chat.offer, chat.buyer?._id);
 
-					this._hotToastService.success("Contacts sent successfully!");
+					this._hotToastService.success('Contacts sent successfully!');
 				},
 			},
 			{
-				label: this.translateService.instant("OFFERS.UNHIDE_PRODUCT_INFO"),
-				icon: "trainings",
-				onClick: (chat: { offer: any; buyer: { _id: string; }; }) => {
+				label: this.translateService.instant('OFFERS.UNHIDE_PRODUCT_INFO'),
+				icon: 'trainings',
+				onClick: (chat: { offer: any; buyer: { _id: string } }) => {
 					this._chatsService
 						.openContacts(chat.offer, chat.buyer?._id)
 						.pipe(
 							untilDestroyed(this),
 							this._hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("TOASTR.ERROR"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
 							})
 						)
 						.subscribe();
 				},
 			},
 			{
-				label: this.translateService.instant("OFFERS.HIDE_PRODUCT_INFO"),
-				icon: "card",
-				onClick: (chat: { offer: { _id: string; }; buyer: { _id: string; }; }) => {
+				label: this.translateService.instant('OFFERS.HIDE_PRODUCT_INFO'),
+				icon: 'card',
+				onClick: (chat: { offer: { _id: string }; buyer: { _id: string } }) => {
 					this._chatsService
 						.closeContacts(chat.offer?._id, chat.buyer?._id)
 						.pipe(
 							untilDestroyed(this),
 							this._hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("TOASTR.ERROR"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
 							})
 						)
 						.subscribe();
 				},
 			},
 			{
-				label: this.translateService.instant("OFFERS.DELETE"),
-				icon: "delete-red",
-				onClick: (chat: { _id: string; }) => {
+				label: this.translateService.instant('OFFERS.DELETE'),
+				icon: 'delete-red',
+				onClick: (chat: { _id: string }) => {
 					this._chatsService
 						.removeChatById(chat._id)
 						.pipe(
 							untilDestroyed(this),
 							this._hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("TOASTR.ERROR"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
 							})
 						)
 						.subscribe(() => {});

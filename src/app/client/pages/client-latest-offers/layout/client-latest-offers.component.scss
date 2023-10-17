@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 .latest-offers-no-offers {
 	padding: 50px;
@@ -11,172 +11,182 @@
 	}
 }
 
-.promo-section {
-	background-color: $color-gray-100;
-	padding: 1.25rem 99px;
-	overflow: hidden;
-
-	@include breakpoint("3") {
-		padding: 1.25rem 39px;
-	}
-	@include breakpoint("2") {
-		padding: 1.25rem 0;
-	}
-
-	.promo-content {
-		background: #FFFFFF;
-		position: relative;
-		border-radius: 4px;
-		padding-bottom: 20px;
-
-		.icon-left,
-		.icon-right {
-			max-height: 100%;
-			top: 0;
-			position: absolute;
-		}
-
-		.icon-left {
-			left: 0;
-		}
-
-		.icon-right {
-			right: 0;
-		}
-
-		.promo-content-title {
-			width: 90%;
-			display: flex;
-			margin: auto;
-			padding-top: 15px;
-			justify-content: center;
-			@include breakpoint("2") {
-				width: 100%;
-			}
-			span {
-				font-weight: 700;
-				font-size: 24px;
-				line-height: 134%;
-				z-index: 10;
-				text-align: center;
-				@include breakpoint("2") {
-					font-size: 20px;
-				}
-				@include breakpoint("1") {
-					font-size: 16px;
-					margin-top: 0;
-				}
-			}
-		}
-
-		.main-text {
-			margin-top: 24px;
-			display: flex;
-			justify-content: center;
-			gap: 20px;
-			transition: 2s all;
-			overflow: hidden;
-			@include breakpoint("2") {
-				flex-direction: column;
-				padding: 0 20px;
-			}
-			@include breakpoint("1") {
-				margin-top: 10px;
-			}
-
-			li {
-				width: 45%;
-				color: #556274;
-				z-index: 10;
-				font-weight: 100;
-				height: auto;
-				overflow: hidden;
-				&:first-child {
-					p:first-child {
-						margin-bottom: 10px;
-					}
-				}
-
-				@include breakpoint("2") {
-					width: 100%;
-					.hidden-text-mobile {
-						display: none;
-					}
-				}
-
-				@include breakpoint("1") {
-					color: black;
-				}
-
-				.advertise-title {
-					margin-top: 15px;
-					font-weight: 700;
-					color: #000;
-					font-size: 16px;
-					@include breakpoint("1") {
-						margin-top: 0;
-					}
-				}
-
-				.cargo-link {
-					margin-top: 15px;
-					font-weight: 700;
-					font-size: 16px;
-					color: #005dff;
-					text-decoration: underline;
-					cursor: pointer;
-					transition: 0.2s all;
-
-					&:hover {
-						transform: translateY(-2px);
-					}
-				}
-
-				.market-promo {
-					margin-top: 15px;
-
-					.market-link {
-						font-weight: 700;
-						color: #005dff;
-						cursor: pointer;
-						transition: 0.2s all;
-
-						&:hover {
-							transform: translateY(-2px);
-						}
-					}
-				}
-			}
-		}
-
-		.toggle-state-button {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-top: 20px;
-			cursor: pointer;
-			gap: 10px;
-			transition: 0.2s all;
-
-			.text,
-			img {
-				z-index: 10;
-				transition: 0.2s all;
-			}
-
-			&:hover {
-				transform: translateY(-1px);
-			}
-
-			.rotated-img {
-				transform: rotate(-180deg);
-			}
-		}
+//.promo-section {
+//	background-color: $color-gray-100;
+//	padding: 1.25rem 99px;
+//	overflow: hidden;
+//
+//	@include breakpoint("3") {
+//		padding: 1.25rem 39px;
+//	}
+//	@include breakpoint("2") {
+//		padding: 1.25rem 0;
+//	}
+//
+//	.promo-content {
+//		background: #FFFFFF;
+//		position: relative;
+//		border-radius: 4px;
+//		padding-bottom: 20px;
+//
+//		.icon-left,
+//		.icon-right {
+//			max-height: 100%;
+//			top: 0;
+//			position: absolute;
+//		}
+//
+//		.icon-left {
+//			left: 0;
+//		}
+//
+//		.icon-right {
+//			right: 0;
+//		}
+//
+//		.promo-content-title {
+//			width: 90%;
+//			display: flex;
+//			margin: auto;
+//			padding-top: 15px;
+//			justify-content: center;
+//			@include breakpoint("2") {
+//				width: 100%;
+//			}
+//			span {
+//				font-weight: 700;
+//				font-size: 24px;
+//				line-height: 134%;
+//				z-index: 10;
+//				text-align: center;
+//				@include breakpoint("2") {
+//					font-size: 20px;
+//				}
+//				@include breakpoint("1") {
+//					font-size: 16px;
+//					margin-top: 0;
+//				}
+//			}
+//		}
+//
+//		.main-text {
+//			margin-top: 24px;
+//			display: flex;
+//			justify-content: center;
+//			gap: 20px;
+//			transition: 2s all;
+//			overflow: hidden;
+//			@include breakpoint("2") {
+//				flex-direction: column;
+//				padding: 0 20px;
+//			}
+//			@include breakpoint("1") {
+//				margin-top: 10px;
+//			}
+//
+//			li {
+//				width: 45%;
+//				color: #556274;
+//				z-index: 10;
+//				font-weight: 100;
+//				height: auto;
+//				overflow: hidden;
+//				&:first-child {
+//					p:first-child {
+//						margin-bottom: 10px;
+//					}
+//				}
+//
+//				@include breakpoint("2") {
+//					width: 100%;
+//					.hidden-text-mobile {
+//						display: none;
+//					}
+//				}
+//
+//				@include breakpoint("1") {
+//					color: black;
+//				}
+//
+//				.advertise-title {
+//					margin-top: 15px;
+//					font-weight: 700;
+//					color: #000;
+//					font-size: 16px;
+//					@include breakpoint("1") {
+//						margin-top: 0;
+//					}
+//				}
+//
+//				.cargo-link {
+//					margin-top: 15px;
+//					font-weight: 700;
+//					font-size: 16px;
+//					color: #005dff;
+//					text-decoration: underline;
+//					cursor: pointer;
+//					transition: 0.2s all;
+//
+//					&:hover {
+//						transform: translateY(-2px);
+//					}
+//				}
+//
+//				.market-promo {
+//					margin-top: 15px;
+//
+//					.market-link {
+//						font-weight: 700;
+//						color: #005dff;
+//						cursor: pointer;
+//						transition: 0.2s all;
+//
+//						&:hover {
+//							transform: translateY(-2px);
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//		.toggle-state-button {
+//			display: flex;
+//			align-items: center;
+//			justify-content: center;
+//			margin-top: 20px;
+//			cursor: pointer;
+//			gap: 10px;
+//			transition: 0.2s all;
+//
+//			.text,
+//			img {
+//				z-index: 10;
+//				transition: 0.2s all;
+//			}
+//
+//			&:hover {
+//				transform: translateY(-1px);
+//			}
+//
+//			.rotated-img {
+//				transform: rotate(-180deg);
+//			}
+//		}
+//	}
+//}
+.explanation-banner {
+	margin-top: 60px;
+	@include breakpoint('3') {
+		margin-top: 30px;
 	}
 }
-
 .latest-offers {
 	background-color: $color-gray-100;
+	max-width: 1170px;
+	margin: auto;
+	@include breakpoint('4') {
+		max-width: 95%;
+	}
 
 	.latest-offers-header {
 		display: flex;
@@ -184,7 +194,8 @@
 		justify-content: space-between;
 		padding: 1.25rem 99px;
 		border-bottom: 1px solid #e3eaf1;
-		@include breakpoint("3") {
+		padding-left: 0;
+		@include breakpoint('3') {
 			flex-direction: column;
 			padding: 1.25rem 18px;
 		}
@@ -201,7 +212,7 @@
 				display: none;
 			}
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				.latest-offers-header-icon {
 					display: block;
@@ -212,7 +223,7 @@
 		.latest-offers-header-search {
 			width: 40%;
 			display: block;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				margin-top: 24px;
 			}
@@ -231,7 +242,7 @@
 				align-items: center;
 			}
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				.latest-offers-header-display-type {
 					display: none;
 				}
@@ -241,9 +252,8 @@
 
 	.latest-offers-main {
 		display: flex;
-		padding-left: 99px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 0;
 		}
 
@@ -252,7 +262,7 @@
 			padding-top: 24px;
 			padding-right: 24px;
 			border-right: 1px solid #e3eaf1;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				display: none;
 				padding-left: 24px;
 			}
@@ -272,10 +282,10 @@
 		.latest-offers-main-list {
 			flex: 1;
 			padding: 24px 99px 24px 24px;
-			@include breakpoint("4") {
+			@include breakpoint('4') {
 				padding-right: 24px;
 			}
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				padding: 0;
 			}
 		}

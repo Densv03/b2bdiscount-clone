@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
-import { B2bNgxInputThemeEnum } from "@b2b/ngx-input";
-import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { Validators } from "@angular/forms";
-import { HotToastService } from "@ngneat/hot-toast";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { ApiService } from "../../../../core/services/api/api.service";
-import {FormBuilder, FormGroup} from '@angular/forms'
-import {TranslateService} from "@ngx-translate/core";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { Validators } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ApiService } from '../../../../core/services/api/api.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-client-contact-us",
-	templateUrl: "./client-contact-us.component.html",
-	styleUrls: ["./client-contact-us.component.scss"],
+	selector: 'b2b-client-contact-us',
+	templateUrl: './client-contact-us.component.html',
+	styleUrls: ['./client-contact-us.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientContactUsComponent implements OnInit {
@@ -29,11 +29,17 @@ export class ClientContactUsComponent implements OnInit {
 		private readonly _formBuilder: FormBuilder,
 		private readonly _apiService: ApiService,
 		private readonly _hotToastrService: HotToastService,
-		private readonly translateService: TranslateService,
+		private readonly translateService: TranslateService
 	) {
 		this.subjectOptions = [
-			{ label: this.translateService.instant("CONTACT_US.SUPPORT"), value: "support" },
-			{ label: this.translateService.instant("CONTACT_US.LEGAL_HELP"), value: "legal-help" },
+			{
+				label: this.translateService.instant('CONTACT_US.SUPPORT'),
+				value: 'support',
+			},
+			{
+				label: this.translateService.instant('CONTACT_US.LEGAL_HELP'),
+				value: 'legal-help',
+			},
 		];
 		this.socialMedias = this.getSocialMedias();
 		this.formGroup = this.getFormGroup();
@@ -47,8 +53,8 @@ export class ClientContactUsComponent implements OnInit {
 		return this._formBuilder.group({
 			type: [null, Validators.required],
 			name: [null, Validators.required],
-			email: ["", [Validators.required, Validators.email]],
-			phone: ["", [Validators.required]],
+			email: ['', [Validators.required, Validators.email]],
+			phone: ['', [Validators.required]],
 			text: [null, Validators.required],
 		});
 	}
@@ -64,13 +70,13 @@ export class ClientContactUsComponent implements OnInit {
 		};
 
 		this._apiService
-			.post("mail/contactUs", data)
+			.post('mail/contactUs', data)
 			.pipe(
 				untilDestroyed(this),
 				this._hotToastrService.observe({
-					loading: this.translateService.instant("TOASTR.LOADING"),
-					success: this.translateService.instant("TOASTR.SUCCESS"),
-					error: this.translateService.instant("TOASTR.ERROR"),
+					loading: this.translateService.instant('TOASTR.LOADING'),
+					success: this.translateService.instant('TOASTR.SUCCESS'),
+					error: this.translateService.instant('TOASTR.ERROR'),
 				})
 			)
 			.subscribe(() => {
@@ -81,27 +87,26 @@ export class ClientContactUsComponent implements OnInit {
 	public getSocialMedias() {
 		return [
 			{
-				icon: "facebook",
-				href: "https://www.facebook.com/b2b.discount",
+				icon: 'facebook',
+				href: 'https://www.facebook.com/b2b.discount',
 			},
 			{
-				icon: "twitter",
-				href: "https://twitter.com/DiscountB2b",
+				icon: 'twitter',
+				href: 'https://twitter.com/DiscountB2b',
 			},
 			{
-				icon: "linkedin",
-				href: "https://www.linkedin.com/company/b2b-discount",
+				icon: 'linkedin',
+				href: 'https://www.linkedin.com/company/b2b-discount',
 			},
 			{
-				icon: "youtube",
-				href: "https://www.youtube.com/channel/UCW8RdiD7Fql5RelC37WkjjA",
+				icon: 'youtube',
+				href: 'https://www.youtube.com/channel/UCW8RdiD7Fql5RelC37WkjjA',
 			},
 		];
 	}
 
 	public closeModal() {
 		// const modal = this._ngxSmartModalService.getModal("createContactModal");
-
 		// modal.close();
 	}
 

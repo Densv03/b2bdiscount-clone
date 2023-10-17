@@ -8,10 +8,10 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClientOfferChatComponent } from './layout/client-offer-chat.component';
 import { ClientOfferChatRoutingModule } from './client-offer-chat-routing.module';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientOfferChatComponent],
+	declarations: [ClientOfferChatComponent],
 	imports: [
 		CommonModule,
 		ClientOfferChatRoutingModule,

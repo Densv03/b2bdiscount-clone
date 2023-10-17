@@ -6,10 +6,10 @@ import { B2bNgxSkeletonModule } from '@b2b/ngx-skeleton';
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
 import { ClientProfileMyOfferChatsRoutingModule } from './client-profile-my-offer-chats-routing.module';
 import { ClientProfileMyOfferChatsComponent } from './layout/client-profile-my-offer-chats.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ClientProfileMyOfferChatsComponent],
+	declarations: [ClientProfileMyOfferChatsComponent],
 	imports: [
 		CommonModule,
 		ClientProfileMyOfferChatsRoutingModule,

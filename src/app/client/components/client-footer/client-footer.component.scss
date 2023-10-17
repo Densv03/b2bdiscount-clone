@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.footer {
@@ -7,12 +7,12 @@
 		justify-content: space-between;
 		background-color: $color-black-800;
 		padding: 4.75rem 4rem 0;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 0;
 		}
 
 		.footer__left {
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 				order: 3;
 				margin-top: 56px;
@@ -46,7 +46,7 @@
 			display: none;
 			order: 2;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				display: flex;
 				justify-content: space-between;
 				width: 100%;
@@ -76,7 +76,7 @@
 				}
 
 				.footer__center-list-item {
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						margin: 0;
 						padding: 10px 22px;
 					}
@@ -86,7 +86,7 @@
 						align-items: center;
 
 						.footer__center-list-item-link-label {
-							@include breakpoint("3") {
+							@include breakpoint('3') {
 								font-weight: 500;
 								font-size: 15px;
 								color: #ffffff;
@@ -124,12 +124,12 @@
 				display: flex;
 				position: relative;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 					flex-direction: column;
 					order: 1;
 				}
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					margin-top: 10px;
 				}
 
@@ -141,7 +141,7 @@
 						color: #ffffff14;
 					}
 
-					@include breakpoint("3") {
+					@include breakpoint('3') {
 						margin: 0;
 						padding: 15px 22px;
 					}
@@ -199,13 +199,13 @@
 				margin-top: 10px;
 				max-width: 200px;
 
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					flex-direction: row;
 					max-width: 400px;
 					justify-content: space-between;
 					transform: translateX(0px);
 				}
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					flex-direction: column;
 					width: 100%;
 					transform: translateX(15%);
@@ -246,7 +246,7 @@
 		display: flex;
 		justify-content: center;
 		order: 4;
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			margin-top: 32px;
 		}
 
@@ -257,7 +257,7 @@
 			background-color: rgba(255, 255, 255, 0.08);
 			border-radius: 1.25rem 1.25rem 0 0;
 			padding: 0.75rem 2.25rem;
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 

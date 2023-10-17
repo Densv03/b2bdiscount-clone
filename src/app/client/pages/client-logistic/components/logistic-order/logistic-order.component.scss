@@ -1,0 +1,129 @@
+:host {
+	.order {
+		border-radius: 14px;
+		background: #fff;
+		height: 134px;
+		display: flex;
+		&__info {
+			flex-grow: 1;
+			border-right: 1px solid #e5f2fd;
+		}
+		&__header {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 16px;
+		}
+		&__icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 50%;
+			display: grid;
+			place-items: center;
+			&.Sea {
+				background-color: #179ef2;
+			}
+			&.Air {
+				background-color: #05ab41;
+			}
+		}
+		&__way {
+			padding: 0 16px;
+			&-icon {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				svg {
+					width: 18px;
+					height: 18px;
+				}
+			}
+			&-title {
+				color: #000;
+				font-family: Helvetica Neue;
+				font-size: 16px;
+				font-weight: 500;
+				line-height: 140%;
+				letter-spacing: 0.16px;
+			}
+			&-header {
+				display: flex;
+				justify-content: space-between;
+				position: relative;
+			}
+			&-road {
+				position: relative;
+				height: 2px;
+				margin-top: 8px;
+				&:after,
+				&:before {
+					content: '';
+					display: block;
+					transform: translateY(-6px);
+					width: 16px;
+					height: 16px;
+					border-radius: 50%;
+				}
+				&.Sea {
+					background-color: #1c5bfe;
+					&:before {
+						background-color: #1c5bfe;
+					}
+					&:after {
+						position: absolute;
+						right: 0;
+						top: 0;
+						transform: translateY(-6px);
+						background-color: #1c5bfe;
+					}
+				}
+				&.Air {
+					background-color: #f3be00;
+					&:before,
+					&:after {
+						border: 2px solid #f3be00;
+						background-color: #ffffff;
+					}
+					&:after {
+						position: absolute;
+						right: 0;
+						top: 0;
+						transform: translateY(-6px);
+					}
+				}
+			}
+		}
+
+		&__price {
+			width: 294px;
+			padding: 26px 36px 22px 21px;
+			&-valid {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				.title {
+					color: #979797;
+					font-family: Helvetica Neue;
+					font-size: 16px;
+					font-weight: 500;
+					line-height: 140%;
+					letter-spacing: 0.16px;
+				}
+				.date {
+					font-size: 16px;
+				}
+			}
+			.request-btn {
+				padding: 2px 88px;
+				border-radius: 8px;
+				margin-top: 16px;
+				.btn-text {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}

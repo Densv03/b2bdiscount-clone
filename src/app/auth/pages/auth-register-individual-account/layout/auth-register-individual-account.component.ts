@@ -1,28 +1,28 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
-import { UntilDestroy } from "@ngneat/until-destroy";
-import { NavigationStart, Router } from "@angular/router";
-import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import { BehaviorSubject, Observable } from "rxjs";
-import { filter, tap } from "rxjs/operators";
-import { animate, style, transition, trigger } from "@angular/animations";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import {environment} from "../../../../../environments/environment";
-import {TranslateService} from "@ngx-translate/core";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { NavigationStart, Router } from '@angular/router';
+import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { environment } from '../../../../../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
-	selector: "b2b-auth-register-individual-account",
-	templateUrl: "./auth-register-individual-account.component.html",
-	styleUrls: ["./auth-register-individual-account.component.scss"],
+	selector: 'b2b-auth-register-individual-account',
+	templateUrl: './auth-register-individual-account.component.html',
+	styleUrls: ['./auth-register-individual-account.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	animations: [
-		trigger("fadeInOut", [
-			transition(":enter", [
+		trigger('fadeInOut', [
+			transition(':enter', [
 				// :enter is alias to 'void => *'
 				style({ opacity: 0 }),
 				animate(500, style({ opacity: 1 })),
 			]),
-			transition(":leave", [
+			transition(':leave', [
 				// :leave is alias to '* => void'
 				animate(500, style({ opacity: 0 })),
 			]),
@@ -33,16 +33,16 @@ export class AuthRegisterIndividualAccountComponent implements OnInit {
 	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum;
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
 
-	private isSocialAuthButtonsVisibleSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	private isSocialAuthButtonsVisibleSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 
 	constructor(
 		private readonly router: Router,
 		private readonly translateService: TranslateService,
-		public readonly b2bNgxLinkService: B2bNgxLinkService,
+		public readonly b2bNgxLinkService: B2bNgxLinkService
 	) {
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-
 	}
 
 	public get isSocialAuthButtonsVisible$(): Observable<boolean> {
@@ -50,12 +50,14 @@ export class AuthRegisterIndividualAccountComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.isSocialAuthButtonsVisibleSource.next(this.router.url.includes("first-step"));
+		this.isSocialAuthButtonsVisibleSource.next(
+			this.router.url.includes('first-step')
+		);
 		this.initSocialAuthButtons();
 	}
 
 	public get showBadge() {
-		return this.translateService.currentLang !== "en";
+		return this.translateService.currentLang !== 'en';
 	}
 
 	registerWithGoogle() {
@@ -70,12 +72,14 @@ export class AuthRegisterIndividualAccountComponent implements OnInit {
 		this.router.events
 			.pipe(
 				filter((event: any) => event instanceof NavigationStart),
-				tap((event: NavigationStart) => this.isSocialAuthButtonsVisibleSource.next(event.url.includes("first-step")))
+				tap((event: NavigationStart) =>
+					this.isSocialAuthButtonsVisibleSource.next(
+						event.url.includes('first-step')
+					)
+				)
 			)
 			.subscribe();
 	}
 
-  processSignInClick() {
-
-  }
+	processSignInClick() {}
 }

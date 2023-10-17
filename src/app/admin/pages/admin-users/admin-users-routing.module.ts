@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AdminUsersComponent } from "./layout/admin-users.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AdminUsersComponent } from './layout/admin-users.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AdminUsersComponent,
 	},
 ];

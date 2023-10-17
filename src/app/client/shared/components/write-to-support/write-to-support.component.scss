@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.contact {
@@ -7,7 +7,7 @@
 		align-items: center;
 		padding: 60px 0;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 30px 0;
 		}
 
@@ -17,14 +17,14 @@
 			line-height: 150%;
 			text-align: center;
 			letter-spacing: 0.01em;
-			color: #0F0F11;
+			color: #0f0f11;
 			font-weight: 300;
 
 			@include breakpoint('4') {
 				width: 50%;
 			}
 
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				width: 70%;
 				font-size: 18px;
 				line-height: 27px;
@@ -36,7 +36,7 @@
 			}
 
 			a {
-				color: #005DFF;
+				color: #005dff;
 				text-decoration: underline;
 			}
 		}

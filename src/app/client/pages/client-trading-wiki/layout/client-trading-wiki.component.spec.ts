@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientTradingWikiComponent } from "./client-trading-wiki.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientTradingWikiComponent } from './client-trading-wiki.component';
 
-describe("ClientTradingWikiComponent", () => {
+describe('ClientTradingWikiComponent', () => {
 	let component: ClientTradingWikiComponent;
 	let fixture: ComponentFixture<ClientTradingWikiComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientTradingWikiComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

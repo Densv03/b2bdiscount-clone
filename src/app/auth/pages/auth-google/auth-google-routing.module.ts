@@ -1,11 +1,11 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AuthConfirmEmailComponent} from "../auth-confirm-email/layout/auth-confirm-email.component";
-import { AuthGoogleComponent } from "./layout/auth-google.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthConfirmEmailComponent } from '../auth-confirm-email/layout/auth-confirm-email.component';
+import { AuthGoogleComponent } from './layout/auth-google.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: AuthGoogleComponent,
 	},
 ];

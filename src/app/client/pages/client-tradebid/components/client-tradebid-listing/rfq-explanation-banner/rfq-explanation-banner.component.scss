@@ -1,10 +1,10 @@
-@import "projects/shared/src/styles/colors";
+@import 'projects/shared/src/styles/colors';
 
 :host {
 	.banner {
 		border-radius: 8px;
-		border: 2px solid #D3DFFF;
-		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.10);
+		border: 2px solid #d3dfff;
+		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 		max-width: 1170px;
 		margin: auto;
 		text-align: center;

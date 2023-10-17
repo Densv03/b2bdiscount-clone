@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientProfileDeleteAccountComponent } from "./client-profile-delete-account.component";
+import { ClientProfileDeleteAccountComponent } from './client-profile-delete-account.component';
 
-describe("ClientProfileDeleteAccountComponent", () => {
+describe('ClientProfileDeleteAccountComponent', () => {
 	let component: ClientProfileDeleteAccountComponent;
 	let fixture: ComponentFixture<ClientProfileDeleteAccountComponent>;
 
@@ -18,7 +18,7 @@ describe("ClientProfileDeleteAccountComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

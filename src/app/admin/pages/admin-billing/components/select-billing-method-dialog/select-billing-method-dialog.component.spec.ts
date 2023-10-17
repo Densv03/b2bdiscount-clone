@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectBillingMethodDialogComponent } from "./select-billing-method-dialog.component";
+import { SelectBillingMethodDialogComponent } from './select-billing-method-dialog.component';
 
-describe("SelectBillingMethodDialogComponent", () => {
+describe('SelectBillingMethodDialogComponent', () => {
 	let component: SelectBillingMethodDialogComponent;
 	let fixture: ComponentFixture<SelectBillingMethodDialogComponent>;
 
@@ -18,7 +18,7 @@ describe("SelectBillingMethodDialogComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

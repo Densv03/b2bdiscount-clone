@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientChatComponent } from "./client-chat.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientChatComponent } from './client-chat.component';
 
-describe("ClientChatComponent", () => {
+describe('ClientChatComponent', () => {
 	let component: ClientChatComponent;
 	let fixture: ComponentFixture<ClientChatComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientChatComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

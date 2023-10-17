@@ -1,6 +1,6 @@
 <div class="page-wrapper">
 	<div class="authors-block">
-		<img ngSrc="./assets/icons/user.svg" priority width="168" height="168">
+		<img ngSrc="./assets/icons/user.svg" priority width="168" height="168" />
 		<div class="authors-info">
 			<h2 class="authors-info-name">Samantha Greene</h2>
 
@@ -11,28 +11,30 @@
 			</p>
 
 			<p class="authors-info-text desktop">
-				Samantha Greene brings over a decade of experience in logistics and global trade, working with leading
-				multinational corporations. Her vast understanding of supply chain dynamics and international compliance makes
-				her a valuable asset. Now, as a content marketer in B2B Discount, she leverages her industry knowledge to craft
-				insightful articles for our platform.
+				Samantha Greene brings over a decade of experience in logistics and
+				global trade, working with leading multinational corporations. Her vast
+				understanding of supply chain dynamics and international compliance
+				makes her a valuable asset. Now, as a content marketer in B2B Discount,
+				she leverages her industry knowledge to craft insightful articles for
+				our platform.
 			</p>
 		</div>
 	</div>
 
 	<p class="authors-info-text mobile">
-		Samantha Greene brings over a decade of experience in logistics and global trade, working with leading
-		multinational corporations. Her vast understanding of supply chain dynamics and international compliance makes her a
-		valuable asset. Now, as a content marketer in B2B Discount, she leverages her industry knowledge to craft insightful
-		articles for our platform.
+		Samantha Greene brings over a decade of experience in logistics and global
+		trade, working with leading multinational corporations. Her vast
+		understanding of supply chain dynamics and international compliance makes
+		her a valuable asset. Now, as a content marketer in B2B Discount, she
+		leverages her industry knowledge to craft insightful articles for our
+		platform.
 	</p>
 
 	<div class="latest-block">
-
 		<b2b-blog-grid-list
 			[isBigger]="true"
 			[title]="'Latest'"
-			[getArticles]="articles$ | async"
-		></b2b-blog-grid-list>
+			[getArticles]="articles$ | async"></b2b-blog-grid-list>
 
 		<b2b-pagination
 			[length]="totalBlogLength$ | async"
@@ -41,4 +43,3 @@
 			[currentPage]="currentPage$ | async"></b2b-pagination>
 	</div>
 </div>
-

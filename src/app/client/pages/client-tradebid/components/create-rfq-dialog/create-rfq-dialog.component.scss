@@ -1,60 +1,26 @@
-@import "projects/shared/src/styles";
-
-::ng-deep {
-	.add-rfq-popup .mat-dialog-container {
-		background: #628CEA;
-		color: #fff;
-	}
-}
+@import 'projects/shared/src/styles';
 
 .content {
-	position: relative;
-	width: 869px;
-	padding: 8px 59px 8px 59px;
+	padding: 8px 59px;
 
-	@include breakpoint("4") {
-		width: 700px;
-	}
-
-	@include breakpoint("3") {
-		width: 500px;
-		padding: 0px 10px 0px 10px;
-	}
-
-	@include breakpoint("2") {
-		width: 400px;
-		padding: 10px 0 0 0;
-	}
-
-	@include breakpoint("1") {
-		width: 348px;
-	}
-
-	.cross-icon {
-		position: absolute;
-		right: -3px;
-		top: -6px;
-
-		@include breakpoint("2") {
-			right: 0;
-			top: 10px;
-		}
+	@include breakpoint('2') {
+		padding: 16px 0;
 	}
 
 	.title {
 		font-size: 24px;
 		font-weight: 700;
-		color: #FFF;
+		color: #fff;
 		text-align: center;
 		margin-bottom: 24px;
 		line-height: 32px;
 
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			font-size: 20px;
 			line-height: 28px;
 		}
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			font-size: 18px;
 			line-height: 24px;
 		}
@@ -70,7 +36,7 @@
 
 			&__input {
 				border-radius: 8px;
-				background: #FFF;
+				background: #fff;
 			}
 		}
 
@@ -79,9 +45,9 @@
 			padding-right: 8px;
 			margin-bottom: 15px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
-				padding-right: 0px;
+				padding-right: 0;
 			}
 		}
 
@@ -90,9 +56,9 @@
 			padding-left: 8px;
 			margin-bottom: 15px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
-				padding-left: 0px;
+				padding-left: 0;
 			}
 		}
 
@@ -101,9 +67,7 @@
 			margin-bottom: 15px;
 
 			.comments__textarea {
-				border-radius: 14px;
-
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					height: 96px;
 				}
 			}
@@ -114,9 +78,9 @@
 			padding-right: 8px;
 			margin-bottom: 15px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
-				padding-right: 0px;
+				padding-right: 0;
 			}
 		}
 
@@ -125,9 +89,9 @@
 			padding-left: 8px;
 			margin-bottom: 15px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
-				padding-left: 0px;
+				padding-left: 0;
 			}
 		}
 
@@ -136,10 +100,14 @@
 			padding-right: 8px;
 			margin-bottom: 24px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
-				padding-right: 0px;
+				padding-right: 0;
 				margin-bottom: 15px;
+			}
+
+			.input {
+				height: 49px;
 			}
 		}
 
@@ -148,9 +116,9 @@
 			padding-left: 8px;
 			margin-bottom: 24px;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
-				padding-left: 0px;
+				padding-left: 0;
 			}
 		}
 
@@ -161,7 +129,7 @@
 			display: flex;
 			justify-content: center;
 
-			@include breakpoint("3") {
+			@include breakpoint('3') {
 				width: 100%;
 			}
 
@@ -171,7 +139,7 @@
 				font-size: 14px;
 				font-weight: 500;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					width: 100%;
 				}
 			}
@@ -179,10 +147,28 @@
 	}
 }
 
-
 .label {
-	color: #FFF;
+	color: #fff;
 	font-size: 14px;
 	font-weight: 400;
 	margin-bottom: 6px;
+}
+
+::ng-deep {
+	.add-rfq-popup .mat-dialog-container {
+		background: #628cea;
+		border-radius: 8px;
+		color: #fff;
+		position: relative;
+
+		.cross-icon {
+			position: absolute;
+			right: 16px;
+			top: 16px;
+		}
+	}
+}
+
+.b2b-ngx-input.ng-invalid.ng-touched {
+	background-color: #fff;
 }

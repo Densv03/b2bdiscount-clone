@@ -1,4 +1,4 @@
-import { Phone } from "./user/phone.model";
+import { Phone } from './user/phone.model';
 
 export interface Contact {
 	phone: Phone;

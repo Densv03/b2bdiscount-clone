@@ -1,0 +1,17 @@
+@import 'projects/shared/src/styles/breakpoints';
+@import 'projects/shared/src/styles/success-modal';
+::ng-deep {
+	.rfq-created-pop-up .mat-dialog-container {
+		background: #628cea;
+		border-radius: 8px;
+		color: #fff;
+		position: relative;
+
+		.cross-icon {
+			position: absolute;
+			right: 16px;
+			top: 16px;
+			fill: white;
+		}
+	}
+}

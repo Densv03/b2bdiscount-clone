@@ -7,9 +7,21 @@
 	&:empty {
 		display: none;
 	}
+
+	&.margin-0 {
+		margin-bottom: 0;
+	}
+}
+
+.checkbox-row {
+	width: 100%;
 }
 
 :host::ng-deep {
+	.backgroundWhite .ng-option-selected {
+			background-color: white !important;
+	}
+
 	.ng-placeholder {
 		font-size: 14px;
 		padding-left: 5px;
@@ -22,12 +34,20 @@
 		font-size: 14px;
 		color: #556274;
 		margin-left: 8px;
+
+		p {
+			margin: 0;
+		}
 	}
 
 	.multiple-more {
 		font-size: 14px;
 		color: #556274;
 		margin-left: 8px;
+
+		p {
+			margin: 0;
+		}
 	}
 	.ng-invalid.ng-touched .ng-select-container {
 		background-color: #e63d3d0d!important;

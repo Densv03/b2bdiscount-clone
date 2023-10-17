@@ -1,27 +1,57 @@
-import {Inject, Injectable, InjectionToken, Optional, Renderer2, RendererFactory2} from '@angular/core';
-import {APP_BASE_HREF, DOCUMENT, Location} from "@angular/common";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {filter, map, tap} from "rxjs/operators";
-import {environment} from "../../../../environments/environment";
+import {
+	Inject,
+	Injectable,
+	InjectionToken,
+	Optional,
+	Renderer2,
+	RendererFactory2,
+} from '@angular/core';
+import { APP_BASE_HREF, DOCUMENT, Location } from '@angular/common';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map, tap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class SeoService {
 	private renderer2: Renderer2;
+	private marketListingMetaSource: BehaviorSubject<{
+		[key: string]: any;
+	} | null> = new BehaviorSubject(null);
 
-	constructor(private rendererFactory: RendererFactory2,
-							@Inject(DOCUMENT) private doc: Document,
-							private locationService: Location,
-							private router: Router,
-							private route: ActivatedRoute) {
+	constructor(
+		private rendererFactory: RendererFactory2,
+		@Inject(DOCUMENT) private doc: Document,
+		private locationService: Location,
+		private router: Router,
+		private route: ActivatedRoute
+	) {
 		this.renderer2 = this.rendererFactory.createRenderer(null, null);
 	}
 
-	public addBlogMicroMarkup(document: Document, urlAddress: string, blogName: string, datePublished: Date | string, dateModified: Date | string, images: unknown[], author: string, description: string): void {
+	get marketListingMetaTags$(): Observable<{ [key: string]: any } | null> {
+		return this.marketListingMetaSource.asObservable();
+	}
+
+	public updateMarketListingMeta(category: any): void {
+		this.marketListingMetaSource.next(category);
+	}
+
+	public addBlogMicroMarkup(
+		document: Document,
+		urlAddress: string,
+		blogName: string,
+		datePublished: Date | string,
+		dateModified: Date | string,
+		images: unknown[],
+		author: string,
+		description: string
+	): void {
 		const script = this.renderer2.createElement('script');
 		script.type = `application/ld+json`;
-		script.id = "micro-markup";
+		script.id = 'micro-markup';
 
 		script.text = `
             {
@@ -29,7 +59,11 @@ export class SeoService {
 							"@type": "NewsArticle",
 							"mainEntityOfPage": {
 								"@type": "WebPage",
-								"@id": "${ (environment.apiUrl.includes('dev') ? environment.devUrl : environment.prodUrl ) + this.locationService.path()}"
+								"@id": "${
+									(environment.apiUrl.includes('dev')
+										? environment.devUrl
+										: environment.prodUrl) + this.locationService.path()
+								}"
 							},
 							"headline": "${blogName}",
 							"image": "[${images}]",
@@ -43,7 +77,11 @@ export class SeoService {
    					 "publisher": {
  							"@type": "Organization",
 						  "name": "",
- 						  "url" : "${(environment.apiUrl.includes('dev') ? environment.devUrl : environment.prodUrl )+ this.locationService.path()}",
+ 						  "url" : "${
+								(environment.apiUrl.includes('dev')
+									? environment.devUrl
+									: environment.prodUrl) + this.locationService.path()
+							}",
  							"logo": {
  							 "@type": "ImageObject",
  						   "url": "${images[2]}"
@@ -59,13 +97,15 @@ export class SeoService {
 
 	public addCanonicalRef(): void {
 		this.initCanonicalRef();
-		this.router.events.pipe(
-			filter((event) => event instanceof NavigationEnd),
-			tap(() => {
-				this.removeCanonicalRefs();
-				this.initCanonicalRef();
-			})
-		).subscribe();
+		this.router.events
+			.pipe(
+				filter((event) => event instanceof NavigationEnd),
+				tap(() => {
+					this.removeCanonicalRefs();
+					this.initCanonicalRef();
+				})
+			)
+			.subscribe();
 	}
 
 	private initCanonicalRef(): void {
@@ -91,13 +131,13 @@ export class SeoService {
 
 	private getDateForBlogMarkup(date: Date | string): string {
 		if (typeof date === 'string') {
-			date = new Date()
+			date = new Date();
 		}
 
 		const isoString = date.toISOString(); // returns "2015-02-05T00:00:00.000Z"
 		const dateString = isoString.slice(0, 10); // extract "YYYY-MM-DD" from isoString
 		const timeString = isoString.slice(11, 19); // extract "HH:mm:ss" from isoString
-		const offsetString = "+08:00"; // specify the desired time zone offset
+		const offsetString = '+08:00'; // specify the desired time zone offset
 		const formattedString = dateString + 'T' + timeString + offsetString; // concatenate the components
 		return formattedString;
 	}

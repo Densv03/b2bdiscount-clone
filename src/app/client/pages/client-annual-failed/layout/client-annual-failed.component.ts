@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 
 @Component({
-	selector: "b2b-client-annual-failed",
-	templateUrl: "./client-annual-failed.component.html",
-	styleUrls: ["./client-annual-failed.component.scss"],
+	selector: 'b2b-client-annual-failed',
+	templateUrl: './client-annual-failed.component.html',
+	styleUrls: ['./client-annual-failed.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientAnnualFailedComponent {

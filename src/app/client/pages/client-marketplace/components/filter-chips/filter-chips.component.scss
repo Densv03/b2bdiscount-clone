@@ -4,18 +4,28 @@
 	gap: 16px;
 	&__item {
 		padding: 7px 10px;
-		background: #FFFFFF;
+		background: #ffffff;
 		display: inline-flex;
 		border-radius: 20px;
 		gap: 10px;
-		&-label {
+		height: 32px;
+		align-items: center;
+		h1 {
+			margin-bottom: 0;
+		}
+
+		&-label,
+		h1 {
 			font-size: 14px;
 			font-weight: 500;
 			line-height: 18px;
 			letter-spacing: 0.28px;
+			margin-bottom: 0;
 		}
 		&-icon {
 			cursor: pointer;
+			width: 10px;
+			height: 10px;
 		}
 	}
 }

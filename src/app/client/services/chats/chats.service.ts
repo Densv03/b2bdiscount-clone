@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
-import { ApiService} from "../../../core/services/api/api.service";
-import { BehaviorSubject, combineLatest, Observable, of, toArray } from "rxjs";
-import { map, startWith, switchMap, tap } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { ApiService } from '../../../core/services/api/api.service';
+import { BehaviorSubject, combineLatest, Observable, of, toArray } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
 // import { io } from "socket.io-client";
-import { environment } from "../../../../environments/environment";
-import { AuthService } from "../../../auth/services/auth/auth.service";
-import { SocketService } from "../socket/socket.service";
-import {TranslateService} from "@ngx-translate/core";
+import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../auth/services/auth/auth.service';
+import { SocketService } from '../socket/socket.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class ChatsService {
 	public readonly _chatsBehaviourSubject: BehaviorSubject<any>;
@@ -24,13 +24,12 @@ export class ChatsService {
 		private readonly _apiService: ApiService,
 		private readonly _socketService: SocketService,
 		private readonly translateService: TranslateService,
-		public authService: AuthService,
-
+		public authService: AuthService
 	) {
 		this._chatsBehaviourSubject = new BehaviorSubject<any>([]);
 		this._chats$ = this._chatsBehaviourSubject.asObservable();
 
-		this._endpoint = "chats";
+		this._endpoint = 'chats';
 
 		this.updateChatsByUser = new BehaviorSubject(true);
 		this.updateChats$ = this.updateChatsByUser.asObservable();
@@ -41,8 +40,8 @@ export class ChatsService {
 
 		return this._apiService.post(`request/contacts/${chat._id}`, {}).pipe(
 			tap(() => {
-				this._socket.emit("message", {
-					type: "text",
+				this._socket.emit('message', {
+					type: 'text',
 					body: `Buyer requested contacts`,
 					userId: chat.seller._id,
 					offerId: chat.offer._id,
@@ -77,8 +76,8 @@ export class ChatsService {
 
 		const body = `Seller sent contact details for you\n\nCompany name: ${offer.contact.companyName}\nContact person: ${offer.contact.personName}\nPhone number: ${offer.contact.phone?.e164Number}\nEmail: ${offer.contact.email}\n`;
 
-		this._socket.emit("message", {
-			type: "text",
+		this._socket.emit('message', {
+			type: 'text',
 			body,
 			userId,
 			offerId: offer._id,
@@ -92,8 +91,8 @@ export class ChatsService {
 			tap(() => {
 				const body = `Seller opened product info for you\n\nCompany name: ${offer.contact.companyName}\nContact person: ${offer.contact.personName}\nPhone number: ${offer.contact.phone?.e164Number}\nEmail: ${offer.contact.email}\n`;
 
-				this._socket.emit("message", {
-					type: "text",
+				this._socket.emit('message', {
+					type: 'text',
 					body,
 					userId,
 					offerId: offer._id,
@@ -107,8 +106,8 @@ export class ChatsService {
 
 		return this._apiService.post(`offer/${offerId}/close/${userId}`, {}).pipe(
 			tap(() => {
-				this._socket.emit("message", {
-					type: "text",
+				this._socket.emit('message', {
+					type: 'text',
 					body: `Seller have been decline you contacts request`,
 					userId,
 					offerId,
@@ -120,7 +119,7 @@ export class ChatsService {
 	}
 
 	private chats$(): Observable<any> {
-		return this._apiService.get("my/chats").pipe(
+		return this._apiService.get('my/chats').pipe(
 			toArray(),
 			map((data: any) => data[0].chats)
 		);
@@ -134,14 +133,18 @@ export class ChatsService {
 		let unreadMessagesCount = 0;
 
 		return this.updateChats$.pipe(
-			switchMap(() => combineLatest([status$, newMessage$, this.chats$(), user$])),
+			switchMap(() =>
+				combineLatest([status$, newMessage$, this.chats$(), user$])
+			),
 			map(([status, newMessage, myChats, user]: any) => {
 				const modifiedChats = myChats.map((myChat: any) => {
 					const iAm = true;
 					const isSeller = myChat.lastMessage.author === myChat.seller?._id;
 
-					const displayInfo = isSeller ? { ...myChat.offer?.contact } : { ...myChat.buyer };
-          const author = 'Sasha'
+					const displayInfo = isSeller
+						? { ...myChat.offer?.contact }
+						: { ...myChat.buyer };
+					const author = 'Sasha';
 					return {
 						...myChat,
 						iAm,
@@ -152,34 +155,44 @@ export class ChatsService {
 						},
 					};
 				});
-				const newMessageIndex = modifiedChats.findIndex((modifiedChat: any) => modifiedChat._id === newMessage?.room);
+				const newMessageIndex = modifiedChats.findIndex(
+					(modifiedChat: any) => modifiedChat._id === newMessage?.room
+				);
 
 				if (newMessageIndex !== -1) {
-					const isSeller = newMessage.author === modifiedChats[newMessageIndex].seller?._id;
+					const isSeller =
+						newMessage.author === modifiedChats[newMessageIndex].seller?._id;
 					const displayInfo = isSeller
 						? { ...modifiedChats[newMessageIndex].offer.contact }
 						: { ...modifiedChats[newMessageIndex].buyer };
 					const author = 'Sasha';
 
-
 					modifiedChats[newMessageIndex].lastMessage = {
 						...newMessage,
-						author: isSeller ? modifiedChats[newMessageIndex].seller : modifiedChats[newMessageIndex].buyer,
+						author: isSeller
+							? modifiedChats[newMessageIndex].seller
+							: modifiedChats[newMessageIndex].buyer,
 						displayInfo: { ...displayInfo, author },
 					};
 
 					if (!unreadMessagesCount) {
-						unreadMessagesCount = modifiedChats[newMessageIndex].unreadMessagesCount;
+						unreadMessagesCount =
+							modifiedChats[newMessageIndex].unreadMessagesCount;
 					}
 
-					modifiedChats[newMessageIndex].unreadMessagesCount = ++unreadMessagesCount;
+					modifiedChats[newMessageIndex].unreadMessagesCount =
+						++unreadMessagesCount;
 				}
 
 				const statusIndex = modifiedChats.findIndex(
-					(modifiedChat: any) => modifiedChat.lastMessage.author?._id === status?.user
+					(modifiedChat: any) =>
+						modifiedChat.lastMessage.author?._id === status?.user
 				);
 
-				if (statusIndex !== -1 && modifiedChats[statusIndex].lastMessage.author) {
+				if (
+					statusIndex !== -1 &&
+					modifiedChats[statusIndex].lastMessage.author
+				) {
 					modifiedChats[statusIndex].lastMessage.author.online = status?.online;
 				}
 
@@ -194,22 +207,28 @@ export class ChatsService {
 
 		let unreadMessagesCount = 0;
 
-		return combineLatest([status$, newMessage$, this._apiService.get(`offer/${offerId}/chats`)]).pipe(
+		return combineLatest([
+			status$,
+			newMessage$,
+			this._apiService.get(`offer/${offerId}/chats`),
+		]).pipe(
 			map(([status, newMessage, myChats]: any) => {
 				const modifiedChats = myChats.map((myChat: any) => {
 					const isSeller = myChat.lastMessage.author === myChat.seller?._id;
-					const displayInfo = isSeller ? { ...myChat.offer.contact } : { ...myChat.buyer };
+					const displayInfo = isSeller
+						? { ...myChat.offer.contact }
+						: { ...myChat.buyer };
 					const author =
 						displayInfo?.fullName ||
 						displayInfo?.personName ||
 						`${
-							isSeller 
-								? this.translateService.instant("CHAT.SELLER")
-								: this.translateService.instant("CHAT.BUYER")
+							isSeller
+								? this.translateService.instant('CHAT.SELLER')
+								: this.translateService.instant('CHAT.BUYER')
 						} of ${myChat.offer?.title}`;
 					return {
 						...myChat,
-						iAm: this.translateService.instant("CHAT.SELLER"),
+						iAm: this.translateService.instant('CHAT.SELLER'),
 						lastMessage: {
 							...myChat.lastMessage,
 							author: isSeller ? myChat.seller : myChat.buyer,
@@ -217,10 +236,13 @@ export class ChatsService {
 						},
 					};
 				});
-				const newMessageIndex = modifiedChats.findIndex((modifiedChat: any) => modifiedChat._id === newMessage?.room);
+				const newMessageIndex = modifiedChats.findIndex(
+					(modifiedChat: any) => modifiedChat._id === newMessage?.room
+				);
 
 				if (newMessageIndex !== -1) {
-					const isSeller = newMessage.author === modifiedChats[newMessageIndex].seller?._id;
+					const isSeller =
+						newMessage.author === modifiedChats[newMessageIndex].seller?._id;
 					const displayInfo = isSeller
 						? { ...modifiedChats[newMessageIndex].offer.contact }
 						: { ...modifiedChats[newMessageIndex].buyer };
@@ -228,26 +250,31 @@ export class ChatsService {
 						displayInfo?.fullName ||
 						displayInfo?.personName ||
 						`${
-              isSeller 
-								? this.translateService.instant("CHAT.SELLER")
-								: this.translateService.instant("CHAT.BUYER")
+							isSeller
+								? this.translateService.instant('CHAT.SELLER')
+								: this.translateService.instant('CHAT.BUYER')
 						} of ${modifiedChats[newMessageIndex].offer?.title}`;
 
 					modifiedChats[newMessageIndex].lastMessage = {
 						...newMessage,
-						author: isSeller ? modifiedChats[newMessageIndex].seller : modifiedChats[newMessageIndex].buyer,
+						author: isSeller
+							? modifiedChats[newMessageIndex].seller
+							: modifiedChats[newMessageIndex].buyer,
 						displayInfo: { ...displayInfo, author },
 					};
 
 					if (!unreadMessagesCount) {
-						unreadMessagesCount = modifiedChats[newMessageIndex].unreadMessagesCount;
+						unreadMessagesCount =
+							modifiedChats[newMessageIndex].unreadMessagesCount;
 					}
 
-					modifiedChats[newMessageIndex].unreadMessagesCount = ++unreadMessagesCount;
+					modifiedChats[newMessageIndex].unreadMessagesCount =
+						++unreadMessagesCount;
 				}
 
 				const statusIndex = modifiedChats.findIndex(
-					(modifiedChat: any) => modifiedChat.lastMessage.author?._id === status?.user
+					(modifiedChat: any) =>
+						modifiedChat.lastMessage.author?._id === status?.user
 				);
 
 				if (statusIndex !== -1) {
@@ -274,7 +301,7 @@ export class ChatsService {
 		const chats = this._chatsBehaviourSubject.getValue();
 
 		if (!chats.length) {
-			this._apiService.get("chats").subscribe((chats: any) => {
+			this._apiService.get('chats').subscribe((chats: any) => {
 				this._chatsBehaviourSubject.next(chats);
 			});
 		}

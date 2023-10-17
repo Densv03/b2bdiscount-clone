@@ -1,15 +1,19 @@
-import { Injectable } from "@angular/core";
-import { filter, map } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { filter, map } from 'rxjs/operators';
 
-import { User } from "../../../../../core/models/user/user.model";
-import { Observable, share } from "rxjs";
-import { ADMIN_ID, MANUFACTURER_ID, TRADER_ID } from "../../../../../core/helpers/constant/role-ids";
-import {ApiService} from "../../../../../core/services/api/api.service";
-import {AuthQuery} from "../../../../../auth/state/auth/auth.query";
-import {AuthStore} from "../../../../../auth/state/auth/auth.store";
+import { User } from '../../../../../core/models/user/user.model';
+import { Observable, share } from 'rxjs';
+import {
+	ADMIN_ID,
+	MANUFACTURER_ID,
+	TRADER_ID,
+} from '../../../../../core/helpers/constant/role-ids';
+import { ApiService } from '../../../../../core/services/api/api.service';
+import { AuthQuery } from '../../../../../auth/state/auth/auth.query';
+import { AuthStore } from '../../../../../auth/state/auth/auth.store';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class UserService {
 	constructor(
@@ -19,30 +23,33 @@ export class UserService {
 	) {}
 
 	public isAuth(): boolean {
-		return !!localStorage.getItem("token");
+		return !!localStorage.getItem('token');
 	}
 
 	public getUsers(offset: any, limit = 10, filters: any) {
 		const filtersUrl = filters
 			? Object.entries(filters).reduce((pre, [key, val]) => {
-					const parsedValue = val && !Array.isArray(val) ? (val as any).replace("&", "%26") : val;
-					return pre + (val ? `&${key}=${parsedValue}` : "");
-			  }, "")
-			: "";
+					const parsedValue =
+						val && !Array.isArray(val) ? (val as any).replace('&', '%26') : val;
+					return pre + (val ? `&${key}=${parsedValue}` : '');
+			  }, '')
+			: '';
 
-		return this._apiService.get(`users?offset=${offset * limit}&limit=10${filtersUrl}`);
+		return this._apiService.get(
+			`users?offset=${offset * limit}&limit=10${filtersUrl}`
+		);
 	}
 
 	public getUsersCsv(offset: any, limit = 10, filters: any) {
 		const httpOptions = {
-			responseType: "blob" as "json",
+			responseType: 'blob' as 'json',
 		};
 
 		const filtersUrl = filters
 			? Object.entries(filters).reduce((pre, [key, val]) => {
-					return pre + (val ? `&${key}=${val}` : "");
-			  }, "")
-			: "";
+					return pre + (val ? `&${key}=${val}` : '');
+			  }, '')
+			: '';
 
 		// return this._apiService.get(`users-csv?offset=${offset * limit}&limit=${limit}${filtersUrl}`, httpOptions);
 		return this._apiService.get(`users-csv?${filtersUrl}`, httpOptions);
@@ -74,21 +81,24 @@ export class UserService {
 	}
 
 	public updateUserQuotes(userId: string, rfqNumb: number): Observable<any> {
-		return this._apiService.put("user/update-user-rfq-quotes", { userId, rfqNumb });
+		return this._apiService.put('user/update-user-rfq-quotes', {
+			userId,
+			rfqNumb,
+		});
 	}
 
 	public updateUserSettings(settings: any) {
-		const url = "profile/update";
+		const url = 'profile/update';
 		return this._apiService.put(url, settings);
 	}
 
 	public updateUserEmail(settings: { emailOld: string; emailNew: string }) {
-		const url = "auth/changeRegisterMail";
+		const url = 'auth/changeRegisterMail';
 		return this._apiService.post(url, settings);
 	}
 
 	public updatePassword(password: any) {
-		const url = "password-reset";
+		const url = 'password-reset';
 		return this._apiService.put(url, password);
 	}
 
@@ -109,9 +119,14 @@ export class UserService {
 		userId: string;
 		refId: number;
 		email?: string;
-		typeRegistration: "standard" | "socials";
+		typeRegistration: 'standard' | 'socials';
 	}): Observable<any> {
-		return this._apiService.post("statistics/add-new-entry", { userId, refId, email, typeRegistration });
+		return this._apiService.post('statistics/add-new-entry', {
+			userId,
+			refId,
+			email,
+			typeRegistration,
+		});
 	}
 
 	public getPublicUserInfo(userId: string): Observable<any> {
@@ -122,7 +137,7 @@ export class UserService {
 	}
 
 	public getTotalUsersAmount(): Observable<number> {
-		return this._apiService.get<number>("users/count").pipe(
+		return this._apiService.get<number>('users/count').pipe(
 			filter((data) => !!data),
 			share()
 		);
@@ -137,10 +152,17 @@ export class UserService {
 	}
 
 	public changeRole(token: string, newRoleId: string, newRootRoleId: string) {
-		return this._apiService.post("auth/changeRole", {}, { params: { token, newRoleId, newRootRoleId } });
+		return this._apiService.post(
+			'auth/changeRole',
+			{},
+			{ params: { token, newRoleId, newRootRoleId } }
+		);
 	}
 
-	public updateUserRoleById(userId: string, newRoleId: string): Observable<any> {
-		return this._apiService.put("user/change-user-role", { userId, newRoleId });
+	public updateUserRoleById(
+		userId: string,
+		newRoleId: string
+	): Observable<any> {
+		return this._apiService.put('user/change-user-role', { userId, newRoleId });
 	}
 }

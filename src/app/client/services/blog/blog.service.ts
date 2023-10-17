@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { ApiService } from "../../../core/services/api/api.service";
-import { first } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { ApiService } from '../../../core/services/api/api.service';
+import { first } from 'rxjs/operators';
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class BlogService {
 	public readonly _articlesBehaviourSubject: BehaviorSubject<any[]>;
@@ -17,7 +17,7 @@ export class BlogService {
 	constructor(private readonly apiService: ApiService) {
 		this._articlesBehaviourSubject = new BehaviorSubject<any[]>([]);
 		this._articles$ = this._articlesBehaviourSubject.asObservable();
-		this._endpoint = "blogs/";
+		this._endpoint = 'blogs/';
 	}
 
 	public getTags(str: any) {
@@ -25,7 +25,7 @@ export class BlogService {
 	}
 
 	public createBlog(body: any) {
-		return this.apiService.post("blog/create", body);
+		return this.apiService.post('blog/create', body);
 	}
 
 	public uploadImage(images: any, id: string) {
@@ -37,7 +37,7 @@ export class BlogService {
 	}
 
 	public createArticle(body: any) {
-		return this.apiService.post("blog/create", body);
+		return this.apiService.post('blog/create', body);
 	}
 
 	public getComments(post: any) {
@@ -78,7 +78,7 @@ export class BlogService {
 		return this.apiService.get(`blogs${queryString}`);
 	}
 
-	public updateBlogList(queryString: string = "&limit=7&"): void {
+	public updateBlogList(queryString: string = '&limit=7&'): void {
 		this.getArticles(queryString)
 			.pipe(first())
 			.subscribe((data) => {

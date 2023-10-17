@@ -1,42 +1,52 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { ApiService } from "../../../../../../../core/services/api/api.service";
-import { HotToastService } from "@ngneat/hot-toast";
-import { AuthService } from "../../../../../../../auth/services/auth/auth.service";
-import { PaymentService } from "../../../../../../services/payment/payment.service";
-import { filter, switchMap, take, tap } from "rxjs/operators";
-import { untilDestroyed } from "@ngneat/until-destroy";
-import { BehaviorSubject, Observable } from "rxjs";
-import { UserService } from "../../../../services/user/user.service";
-import { MatDialog } from "@angular/material/dialog";
-import { ClientProfileBillingDialogComponent } from "../../../../components/client-profile-billing-dialog/client-profile-billing-dialog.component";
-import { ClientProfileAddPaymentDialogComponent } from "../../../../components/client-profile-add-payment-dialog/client-profile-add-payment-modal.component";
-import { ClientProfileDeletePaymentMethodDialogComponent } from "../../../../components/client-profile-delete-payment-method-dialog/client-profile-delete-payment-method-dialog.component";
-import { Router } from "@angular/router";
-import { environment } from "../../../../../../../../environments/environment";
-import { GetPaymentPlanResponse } from "../../../../../../../core/models/admin-billing/responses/get-payment-plan-response.model";
-import {AdminBillingService} from "../../../../../../../admin/services/admin-billing.service";
-import {TranslateService} from "@ngx-translate/core";
+import {
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
+import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { ApiService } from '../../../../../../../core/services/api/api.service';
+import { HotToastService } from '@ngneat/hot-toast';
+import { AuthService } from '../../../../../../../auth/services/auth/auth.service';
+import { PaymentService } from '../../../../../../services/payment/payment.service';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
+import { untilDestroyed } from '@ngneat/until-destroy';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { UserService } from '../../../../services/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ClientProfileBillingDialogComponent } from '../../../../components/client-profile-billing-dialog/client-profile-billing-dialog.component';
+import { ClientProfileAddPaymentDialogComponent } from '../../../../components/client-profile-add-payment-dialog/client-profile-add-payment-modal.component';
+import { ClientProfileDeletePaymentMethodDialogComponent } from '../../../../components/client-profile-delete-payment-method-dialog/client-profile-delete-payment-method-dialog.component';
+import { Router } from '@angular/router';
+import { environment } from '../../../../../../../../environments/environment';
+import { GetPaymentPlanResponse } from '../../../../../../../core/models/admin-billing/responses/get-payment-plan-response.model';
+import { AdminBillingService } from '../../../../../../../admin/services/admin-billing.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-	selector: "b2b-tradebid-purchase",
-	templateUrl: "./tradebid-purchase.component.html",
-	styleUrls: ["./tradebid-purchase.component.scss"],
+	selector: 'b2b-tradebid-purchase',
+	templateUrl: './tradebid-purchase.component.html',
+	styleUrls: ['./tradebid-purchase.component.scss'],
 })
 export class TradebidPurchaseComponent implements OnInit {
 	public readonly b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 	public readonly b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 
-	@ViewChild("purchaseForm") form: ElementRef;
+	@ViewChild('purchaseForm') form: ElementRef;
 
 	public paymentData: any;
 	public payment: undefined | any;
 	public invoices: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 	public paymentObj: any;
-	public userHasCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	public userHasCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+		false
+	);
 
-	private invoicesSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	private invoicesSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+		[]
+	);
 
 	public quotesPaymentPlans$: Observable<GetPaymentPlanResponse[]>;
 
@@ -52,11 +62,13 @@ export class TradebidPurchaseComponent implements OnInit {
 		private readonly dialog: MatDialog,
 		private readonly adminBillingService: AdminBillingService
 	) {
-		this.quotesPaymentPlans$ = this.adminBillingService.getQuotesPaymentPlansToDisplay();
+		this.quotesPaymentPlans$ =
+			this.adminBillingService.getQuotesPaymentPlansToDisplay();
 	}
 
 	ngOnInit() {
-		this.userService.getUser().paymentInfo && this.userService.getUser().paymentInfo.cardNumber
+		this.userService.getUser().paymentInfo &&
+		this.userService.getUser().paymentInfo.cardNumber
 			? this.userHasCard.next(true)
 			: null;
 
@@ -80,7 +92,7 @@ export class TradebidPurchaseComponent implements OnInit {
 
 					this.payment = {
 						...user.paymentInfo,
-						type: "mastercard",
+						type: 'mastercard',
 					};
 				}),
 				switchMap(() => this.paymentService.getInvoices()),
@@ -107,9 +119,9 @@ export class TradebidPurchaseComponent implements OnInit {
 							.updateCustomerProfile(formValue)
 							.pipe(
 								this.hotToastService.observe({
-									loading: this.translateService.instant("TOASTR.LOADING"),
-									success: this.translateService.instant("TOASTR.SUCCESS"),
-									error: this.translateService.instant("TOASTR.ERROR"),
+									loading: this.translateService.instant('TOASTR.LOADING'),
+									success: this.translateService.instant('TOASTR.SUCCESS'),
+									error: this.translateService.instant('TOASTR.ERROR'),
 								})
 							)
 							.subscribe();
@@ -118,9 +130,9 @@ export class TradebidPurchaseComponent implements OnInit {
 							.createCustomerProfile(formValue)
 							.pipe(
 								this.hotToastService.observe({
-									loading: this.translateService.instant("TOASTR.LOADING"),
-									success: this.translateService.instant("TOASTR.SUCCESS"),
-									error: this.translateService.instant("TOASTR.ERROR"),
+									loading: this.translateService.instant('TOASTR.LOADING'),
+									success: this.translateService.instant('TOASTR.SUCCESS'),
+									error: this.translateService.instant('TOASTR.ERROR'),
 								})
 							)
 							.subscribe();
@@ -131,8 +143,10 @@ export class TradebidPurchaseComponent implements OnInit {
 				this.userHasCard.next(true);
 				this.payment = {
 					...this.payment,
-					cardNumber: this.paymentData.cardNum.substr(this.paymentData.cardNum.length - 4),
-					type: "mastercard",
+					cardNumber: this.paymentData.cardNum.substr(
+						this.paymentData.cardNum.length - 4
+					),
+					type: 'mastercard',
 				};
 				this.changeDetectorRef.detectChanges();
 			});
@@ -150,9 +164,9 @@ export class TradebidPurchaseComponent implements OnInit {
 						.updateCustomerProfile(res)
 						.pipe(
 							this.hotToastService.observe({
-								loading: this.translateService.instant("TOASTR.LOADING"),
-								success: this.translateService.instant("TOASTR.SUCCESS"),
-								error: this.translateService.instant("TOASTR.ERROR"),
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
 							})
 						)
 						.subscribe();
@@ -165,7 +179,7 @@ export class TradebidPurchaseComponent implements OnInit {
 				this.payment = {
 					...payment,
 					cardNumber: payment.cardNum.substr(payment.cardNum.length - 4),
-					type: "mastercard",
+					type: 'mastercard',
 				};
 				this.changeDetectorRef.detectChanges();
 			});
@@ -179,13 +193,15 @@ export class TradebidPurchaseComponent implements OnInit {
 				untilDestroyed(this),
 				filter((res) => !!res),
 				switchMap(() => {
-					return this.apiService.delete("authorize-net/delete-payment-by-profile").pipe(
-						this.hotToastService.observe({
-							loading: this.translateService.instant("TOASTR.LOADING"),
-							success: this.translateService.instant("TOASTR.SUCCESS"),
-							error: this.translateService.instant("TOASTR.ERROR"),
-						})
-					);
+					return this.apiService
+						.delete('authorize-net/delete-payment-by-profile')
+						.pipe(
+							this.hotToastService.observe({
+								loading: this.translateService.instant('TOASTR.LOADING'),
+								success: this.translateService.instant('TOASTR.SUCCESS'),
+								error: this.translateService.instant('TOASTR.ERROR'),
+							})
+						);
 				})
 			)
 			.subscribe(() => {
@@ -197,27 +213,29 @@ export class TradebidPurchaseComponent implements OnInit {
 
 	public goOnPayPage(quotesCount: number): void {
 		this.userHasCard.value === true
-			? this.router.navigate(["/tradebid-billing", quotesCount])
-			: this.hotToastService.show("Firstly add card please!");
+			? this.router.navigate(['/tradebid-billing', quotesCount])
+			: this.hotToastService.show('Firstly add card please!');
 	}
 
 	public goOnPaymentPage(quotesNumber: string, price: number): void {
 		const requestBody = {
 			amount: price,
 			quotesNumb: quotesNumber,
-			typeTransaction: "rfqQuotes",
+			typeTransaction: 'rfqQuotes',
 			userId: this.userService.getUser()._id,
 		};
-		this.paymentService.getTokenForPurchaseConfirm(requestBody).subscribe((data) => {
-			this.form.nativeElement[0].defaultValue = data.token;
-			this.form.nativeElement.submit();
-		});
+		this.paymentService
+			.getTokenForPurchaseConfirm(requestBody)
+			.subscribe((data) => {
+				this.form.nativeElement[0].defaultValue = data.token;
+				this.form.nativeElement.submit();
+			});
 		// this.form.nativeElement.submit();
 	}
 
 	public getPaymentLink(): string {
-		return environment.apiUrl === "https://api-dev.b2b.discount/"
-			? "https://test.authorize.net/payment/payment"
-			: "https://accept.authorize.net/payment/payment";
+		return environment.apiUrl === 'https://api-dev.b2b.discount/'
+			? 'https://test.authorize.net/payment/payment'
+			: 'https://accept.authorize.net/payment/payment';
 	}
 }

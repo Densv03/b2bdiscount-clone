@@ -1,10 +1,10 @@
-import { TransportType } from "./transport-type.model";
-import { Amount } from "./amount.model";
-import { Price } from "./price.model";
-import { Destination } from "./destination.model";
-import { Visibility } from "./visibility.model";
-import { Location } from "./location.model";
-import { Category } from "./category.model";
+import { TransportType } from './transport-type.model';
+import { Amount } from './amount.model';
+import { Price } from './price.model';
+import { Destination } from './destination.model';
+import { Visibility } from './visibility.model';
+import { Location } from './location.model';
+import { Category } from './category.model';
 
 export interface Offer {
 	_id: string;
@@ -18,7 +18,7 @@ export interface Offer {
 	viewedBy: string[];
 	openedFor: string[];
 	chatStarted: string[];
-	status: "new" | "arrived" | "sold";
+	status: 'new' | 'arrived' | 'sold';
 	offerApproved: boolean;
 	offerRejected: string;
 	title: string;
@@ -33,11 +33,11 @@ export interface Offer {
 	seaLine: string;
 	location: Location;
 	reasonForDeletion?:
-		| "I sold a cargo at B2B Discount"
-		| "I sold a cargo elsewhere"
+		| 'I sold a cargo at B2B Discount'
+		| 'I sold a cargo elsewhere'
 		| "I don't sell cargo anymore"
-		| "Deleted by admin";
+		| 'Deleted by admin';
 	hidden?: boolean;
-	userTypeWhoHideOffer?: "admin" | "user" | null;
+	userTypeWhoHideOffer?: 'admin' | 'user' | null;
 	// TODO: complete offer model
 }

@@ -1,12 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	Output,
+	SimpleChanges,
+} from '@angular/core';
 // import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from "@b2b/ngx-link";
-import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
+import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 
 @Component({
-	selector: "b2b-client-latest-offers-list",
-	templateUrl: "./client-latest-offers-list.component.html",
-	styleUrls: ["./client-latest-offers-list.component.scss"],
+	selector: 'b2b-client-latest-offers-list',
+	templateUrl: './client-latest-offers-list.component.html',
+	styleUrls: ['./client-latest-offers-list.component.scss'],
 })
 export class ClientLatestOffersListComponent implements OnChanges {
 	@Output() public starClicked: EventEmitter<string>;

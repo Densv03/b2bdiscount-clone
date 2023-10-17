@@ -1,5 +1,10 @@
-<form class="quotation__wrapper__form" [formGroup]="form" (ngSubmit)="submitForm(form)">
-	<div class="quotation__wrapper__form__container" formGroupName="quotationForm">
+<form
+	class="quotation__wrapper__form"
+	[formGroup]="form"
+	(ngSubmit)="submitForm(form)">
+	<div
+		class="quotation__wrapper__form__container"
+		formGroupName="quotationForm">
 		<h2>Quotation form</h2>
 
 		<input
@@ -93,8 +98,10 @@
 				<p
 					*ngIf="
 						form.get('quotationForm').get('price').get('price').touched &&
-						form.get('quotationForm').get('price').get('price').errors?.number &&
-						!form.get('quotationForm').get('price').get('price').errors?.required
+						form.get('quotationForm').get('price').get('price').errors
+							?.number &&
+						!form.get('quotationForm').get('price').get('price').errors
+							?.required
 					"
 					class="error price-error"
 					[@fadeInOut]>
@@ -190,13 +197,26 @@
 			class="error"
 			[@fadeInOut]>
 			Please, put more than 20 letters, now
-			{{ form.get("quotationForm").get("moreInformation").errors?.minlength.actualLength }} letters
+			{{
+				form.get('quotationForm').get('moreInformation').errors?.minlength
+					.actualLength
+			}}
+			letters
 		</p>
 		<div class="file-wrapper ngx-file-wrapper">
-			<b2b-ngx-file formControlName="photos" [isPhoto]="false" label="Choose file">Products picture </b2b-ngx-file>
+			<b2b-ngx-file
+				formControlName="photos"
+				[isPhoto]="false"
+				label="Choose file"
+				>Products picture
+			</b2b-ngx-file>
 		</div>
-		<span class="empty-file-label" *ngIf="isFileLabelVisible">No File Chosen</span>
-		<div class="quotation__label">Please use only real photos. All photos will be checked by the moderators.</div>
+		<span class="empty-file-label" *ngIf="isFileLabelVisible"
+			>No File Chosen</span
+		>
+		<div class="quotation__label">
+			Please use only real photos. All photos will be checked by the moderators.
+		</div>
 	</div>
 	<button
 		b2bNgxButton

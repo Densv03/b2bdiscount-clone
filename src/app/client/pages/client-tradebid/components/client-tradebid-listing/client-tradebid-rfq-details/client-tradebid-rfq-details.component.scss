@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.container {
@@ -15,7 +15,7 @@
 			background-color: #fff;
 			margin: 0 auto;
 			padding: 3% 5%;
-			@include breakpoint("1") {
+			@include breakpoint('1') {
 				padding: 3% 5% 0% 5%;
 			}
 
@@ -30,7 +30,7 @@
 				justify-content: space-between;
 				margin-top: 30px;
 
-				@include breakpoint("3") {
+				@include breakpoint('3') {
 					flex-direction: column;
 				}
 
@@ -53,13 +53,13 @@
 				position: sticky;
 				bottom: 0;
 				display: none;
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					display: block;
 				}
 			}
 			button {
 				padding: 15px 40px;
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					transform: translateX(5%);
 					width: 83%;
 					position: sticky;
@@ -73,7 +73,7 @@
 :host::ng-deep {
 	.desktop-btn {
 		display: block;
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			display: none;
 		}
 	}

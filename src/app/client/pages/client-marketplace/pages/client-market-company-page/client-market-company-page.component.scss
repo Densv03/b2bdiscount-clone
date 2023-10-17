@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.company {
@@ -18,7 +18,7 @@
 				.logo {
 					max-height: 191px;
 					max-width: 215px;
-					@include breakpoint("1") {
+					@include breakpoint('1') {
 						margin: auto;
 					}
 
@@ -35,7 +35,7 @@
 						font-size: 32px;
 						line-height: 28px;
 						letter-spacing: 0.01em;
-						color: #0F0F11;
+						color: #0f0f11;
 					}
 
 					.location {
@@ -61,7 +61,7 @@
 				.mobile-contact {
 					position: sticky;
 					bottom: 0;
-					background: #FFFFFF;
+					background: #ffffff;
 					z-index: 20000;
 					min-height: 115px;
 					padding: 10px;
@@ -94,15 +94,14 @@
 			width: 25%;
 		}
 
-		@include breakpoint("5") {
+		@include breakpoint('5') {
 			padding: 50px 70px;
 		}
-		@include breakpoint("4") {
+		@include breakpoint('4') {
 			padding: 50px;
 		}
 
-
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			padding: 20px 20px 0;
 			.main {
 				width: 100%;
@@ -117,7 +116,7 @@
 			}
 		}
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			.main {
 				.header {
 					.description {
@@ -133,8 +132,7 @@
 			}
 		}
 
-
-		@include breakpoint("1") {
+		@include breakpoint('1') {
 			padding: 20px 0 0;
 			.main {
 				.header {
@@ -150,7 +148,7 @@
 }
 
 :host::ng-deep {
-	@include breakpoint("1") {
+	@include breakpoint('1') {
 		.mat-tab-group {
 			padding: 0 10px;
 		}

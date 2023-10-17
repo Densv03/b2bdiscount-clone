@@ -5,12 +5,13 @@
 				<h3 class="chats-profile-name">{{ fullName }}</h3>
 				<div class="mobile-activity">{{ activeStatus }}</div>
 			</div>
-
 		</div>
 		<div class="product-divider"></div>
 	</div>
 	<div class="chats-product">
-		<div *ngIf="productDescription" class="chats-product-item main-product-item">
+		<div
+			*ngIf="productDescription"
+			class="chats-product-item main-product-item">
 			<div class="product-label">Product:</div>
 			<div class="chats-product-main">
 				<div class="chats-product-descr">{{ productDescription }}</div>

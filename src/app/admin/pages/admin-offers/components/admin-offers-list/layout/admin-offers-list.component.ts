@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { AdminListType } from "../../../../../admin-list-type";
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AdminListType } from '../../../../../admin-list-type';
 
 @Component({
-	selector: "app-admin-offers-list",
-	templateUrl: "./admin-offers-list.component.html",
-	styleUrls: ["./admin-offers-list.component.scss"],
+	selector: 'app-admin-offers-list',
+	templateUrl: './admin-offers-list.component.html',
+	styleUrls: ['./admin-offers-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminOffersListComponent {

@@ -3,19 +3,33 @@
 		<div class="header-wrapper">
 			<div class="header-text-block">
 				<h1>B2B DISCOUNT</h1>
-				<div class="header-advertise-title">an international platform <br> for wholesale trade</div>
-				<div class="header-subtitle">Buy and sell goods, find the best deals on unclaimed cargo, and stay
+				<div class="header-advertise-title">
+					an international platform <br />
+					for wholesale trade
+				</div>
+				<div class="header-subtitle">
+					Buy and sell goods, find the best deals on unclaimed cargo, and stay
 					updated on industry news
 				</div>
 				<div class="buttons">
-					<button [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-						[routerLink]="(user$ | async) ? '/profile/your-workspace/b2bmarket' : '/auth/register-credentials'"
-						b2bNgxButton class="home-btn" id="header-get-started-supplier">
+					<button
+						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+						(click)="navigateToMarketProfile()"
+						b2bNgxButton
+						class="home-btn"
+						id="header-get-started-supplier">
 						Apply as a supplier
 					</button>
-					<button [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-						[routerLink]="(user$ | async) ? '/profile/your-workspace/b2bmarket' : '/auth/register-credentials'"
-						b2bNgxButton class="home-btn" id="header-get-started-buyer">
+					<button
+						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+						[routerLink]="
+							(user$ | async)
+								? '/profile/your-workspace/b2bmarket'
+								: '/auth/register-credentials'
+						"
+						b2bNgxButton
+						class="home-btn"
+						id="header-get-started-buyer">
 						Apply as a buyer
 					</button>
 				</div>
@@ -42,15 +56,13 @@
 						<h2>Marketplace</h2>
 					</div>
 					<p>
-						Engage in the wholesale trade around the globe. Find buyers and sellers of all kinds of products
-						on every
-						continent. Establish new business relations, enhance existing supply chains, and negotiate
-						profitable
-						contracts.
+						Engage in the wholesale trade around the globe. Find buyers and
+						sellers of all kinds of products on every continent. Establish new
+						business relations, enhance existing supply chains, and negotiate
+						profitable contracts.
 					</p>
 				</div>
 			</a>
-
 
 			<a [routerLink]="isAuth() ? '/latest-offers' : ''">
 				<div class="solutions-item">
@@ -62,10 +74,10 @@
 						<h2>Unclaimed Cargo</h2>
 					</div>
 					<p>
-						Use our platform to sell unclaimed cargo. Provide supporting documentation and put goods on
-						offer at a
-						discount
-						of 5% to 90%. You will quickly find a new buyer among the thousands of our registered users.
+						Use our platform to sell unclaimed cargo. Provide supporting
+						documentation and put goods on offer at a discount of 5% to 90%. You
+						will quickly find a new buyer among the thousands of our registered
+						users.
 					</p>
 				</div>
 			</a>
@@ -81,14 +93,15 @@
 					</div>
 
 					<p>
-						Make your products stand out by promoting them on the platform. Reach a carefully selected
-						target audience
-						through our social media and order bespoke ad campaigns from our creative team to boost sales.
+						Make your products stand out by promoting them on the platform.
+						Reach a carefully selected target audience through our social media
+						and order bespoke ad campaigns from our creative team to boost
+						sales.
 					</p>
 				</div>
 			</a>
 
-			<a routerLink="/tradebid">
+			<a routerLink="/tradebid/listing">
 				<div class="solutions-item">
 					<div class="head-title">
 						<div class="icon-container background-light-blue">
@@ -99,9 +112,9 @@
 					</div>
 
 					<p>
-						Get any product you need at a desired price from direct suppliers worldwide. Don’t waste time
-						searching for
-						the right offer. Make a request and let sellers come with their bids to you.
+						Get any product you need at a desired price from direct suppliers
+						worldwide. Don’t waste time searching for the right offer. Make a
+						request and let sellers come with their bids to you.
 					</p>
 				</div>
 			</a>
@@ -117,51 +130,68 @@
 					</div>
 
 					<p>
-						Get access to a curated database of wholesale buyers inside your personal account. Filter them
-						by country or
-						product category and contact them directly using the built-in chat to make your commercial
-						offer.
+						Get access to a curated database of wholesale buyers inside your
+						personal account. Filter them by country or product category and
+						contact them directly using the built-in chat to make your
+						commercial offer.
 					</p>
 				</div>
 			</a>
 		</div>
 
-		<div class="solutions-block align-items-center justify-content-between mt-128">
+		<div
+			class="solutions-block align-items-center justify-content-between mt-128">
 			<div class="w-47">
-				<h1 class="solutions-title">The B2B marketplace <br /> you were looking for</h1>
+				<h1 class="solutions-title">
+					The B2B marketplace <br />
+					you were looking for
+				</h1>
 
 				<p class="solutions-description">
-					B2B Discount is a B2B marketplace platform intended to help wholesale traders find new buyers or
-					suppliers on
-					the global market. Become a supplier on our platform to provide your company with higher visibility
-					on the
-					internet, to bring in more customers and boost sales. Our B2B wholesale marketplace will help your
-					business
-					prosper.
-					Every day we improve the platform to make it a marketplace B2B sellers and buyers can count on. Come
-					for new
-					clients and profitable deals, for direct business connections, and for useful industry insights.
-					B2B Discount is an online B2B marketplace accessible to everyone. We don’t charge commissions or
-					interfere
-					with the negotiation process. Join us to integrate your business into the global wholesale market.
+					B2B Discount is a B2B marketplace platform intended to help wholesale
+					traders find new buyers or suppliers on the global market. Become a
+					supplier on our platform to provide your company with higher
+					visibility on the internet, to bring in more customers and boost
+					sales. Our B2B wholesale marketplace will help your business prosper.
+					Every day we improve the platform to make it a marketplace B2B sellers
+					and buyers can count on. Come for new clients and profitable deals,
+					for direct business connections, and for useful industry insights. B2B
+					Discount is an online B2B marketplace accessible to everyone. We don’t
+					charge commissions or interfere with the negotiation process. Join us
+					to integrate your business into the global wholesale market.
 				</p>
 			</div>
 
-			<img b2bNgxImage class="w-47" name="solutions-collage" imageExtension="webp" />
+			<img
+				b2bNgxImage
+				class="w-47"
+				name="solutions-collage"
+				imageExtension="webp" />
 		</div>
 	</section>
 
-	<section class="blog" *ngIf="(articles$ | async) && (articles$ | async)?.length">
+	<section
+		class="blog"
+		*ngIf="(articles$ | async) && (articles$ | async)?.length">
 		<div class="d-flex justify-content-between align-items-center">
 			<h2 class="blog-title">Read our Blog</h2>
 
-			<a routerLink="/blog" class="desktop-link" [theme]="b2bNgxLinkThemeEnum.TEXT_BLUE" b2bNgxLink>View all
-				articles</a>
+			<a
+				routerLink="/blog"
+				class="desktop-link"
+				[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
+				b2bNgxLink
+				>View all articles</a
+			>
 		</div>
 
 		<div class="block d-flex">
-			<a *ngFor="let article of articles$ | async; let i = index"
-				[routerLink]="article?.path ? '/blog/' + article.path : '/blog/' + article._id" b2bNgxLink>
+			<a
+				*ngFor="let article of articles$ | async; let i = index"
+				[routerLink]="
+					article?.path ? '/blog/' + article.path : '/blog/' + article._id
+				"
+				b2bNgxLink>
 				<div class="block-item">
 					<img [name]="article.image?.lg" alt="" b2bNgxImage />
 
@@ -177,37 +207,57 @@
 			</a>
 		</div>
 
-		<a [theme]="b2bNgxLinkThemeEnum.TEXT_BLUE" b2bNgxLink class="mobile-link" routerLink="/blog">View all
-			articles</a>
+		<a
+			[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
+			b2bNgxLink
+			class="mobile-link"
+			routerLink="/blog"
+			>View all articles</a
+		>
 	</section>
 
 	<section class="subscription d-flex flex-column align-items-center">
 		<div class="subscription-container">
 			<h1 class="subscription-title">
-				Subscribe to our newsletter to receive notifications about new and popular offers from suppliers.
+				Subscribe to our newsletter to receive notifications about new and
+				popular offers from suppliers
 			</h1>
 
 			<div class="values d-flex flex-wrap justify-content-between">
-				<b2b-ngx-checkbox (checkboxChange)="selectedCategories($event, category.value)"
-					*ngFor="let category of categories" [checked]="$any(category).checked"
-					customIconClass="subs-checkbox" [customClass]="'subscription-checkbox'">
+				<b2b-ngx-checkbox
+					(checkboxChange)="selectedCategories($event, category.value)"
+					*ngFor="let category of categories"
+					[checked]="$any(category).checked"
+					customIconClass="subs-checkbox"
+					[customClass]="'subscription-checkbox'">
 					<div class="d-flex checkbox-content">
-						<img [src]="category.icon" class="checkbox-icon">
+						<img [src]="category.icon" class="checkbox-icon" />
 
-						<span class="checkbox-text">{{$any(category).text}}</span>
+						<span class="checkbox-text">{{ $any(category).text }}</span>
 					</div>
 				</b2b-ngx-checkbox>
 			</div>
 
 			<div class="subscription-field d-flex justify-content-center">
-				<b2b-ngx-treeview (change)="selectedCategories($event)" [(ngModel)]="selectedCategory" [config]="config"
-					[items]="categories" label="All sectors:"></b2b-ngx-treeview>
+				<b2b-ngx-treeview
+					(change)="selectedCategories($event)"
+					[(ngModel)]="selectedCategory"
+					[config]="config"
+					[items]="categories"
+					label="All sectors:"></b2b-ngx-treeview>
 
-				<input [formControl]="email" [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY" b2bNgxInput
-					labelClass="auth-register-individual-account__main-input" placeholder="Your email" />
+				<input
+					[formControl]="email"
+					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+					b2bNgxInput
+					labelClass="auth-register-individual-account__main-input"
+					placeholder="Your email" />
 
-				<button (click)="subscribeOnCategories()" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" b2bNgxButton>
-					{{ email.value ? 'Done' : 'Subscribe'}}
+				<button
+					(click)="subscribeOnCategories()"
+					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+					b2bNgxButton>
+					{{ email.value ? 'Done' : 'Subscribe' }}
 				</button>
 			</div>
 		</div>
@@ -224,12 +274,19 @@
 				With us, you can find new buyers or reliable suppliers.
 			</p>
 
-			<button (click)="smoothScrollToSolutions()" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" b2bNgxButton
+			<button
+				(click)="smoothScrollToSolutions()"
+				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+				b2bNgxButton
 				id="footer-get-started">
 				Get started
 			</button>
 		</div>
 
-		<img b2bNgxImage name="join-us-laptop" imageExtension="webp" class="join-us-image">
+		<img
+			b2bNgxImage
+			name="join-us-laptop"
+			imageExtension="webp"
+			class="join-us-image" />
 	</section>
 </div>

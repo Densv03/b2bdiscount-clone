@@ -1,5 +1,7 @@
 <div class="client-profile-saved-offers">
-	<h3 class="client-profile-saved-offers-title">{{ "OFFERS.SAVED_OFFERS" | translate }}</h3>
+	<h3 class="client-profile-saved-offers-title">
+		{{ 'OFFERS.SAVED_OFFERS' | translate }}
+	</h3>
 
 	<div class="client-profile-saved-offers-container">
 		<ng-container *ngIf="offers$ | async as offers; else noSavedOffers">
@@ -13,14 +15,14 @@
 		<ng-template #noSavedOffers>
 			<div class="client-profile-saved-offers-no-offers" *ngIf="!loading">
 				<p class="client-profile-saved-offers-no-offers-title">
-					{{ "OFFERS.NO_SAVED_OFFERS" | translate }}
+					{{ 'OFFERS.NO_SAVED_OFFERS' | translate }}
 				</p>
 				<a
 					b2bNgxLink
 					[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
 					class="client-profile-saved-offers-no-offers-button"
 					[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
-					>{{ "OFFERS.LATEST_OFFERS" | translate }}</a
+					>{{ 'OFFERS.LATEST_OFFERS' | translate }}</a
 				>
 			</div>
 		</ng-template>

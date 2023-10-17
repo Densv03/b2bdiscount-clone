@@ -1,42 +1,16 @@
 <div class="subheader-wrapper">
-	<button
-		*ngIf="(addOfferUrl | async) && (rootRole$ | async)"
-		id="add-offer-header"
-		[routerLink]="'/offer'"
-		b2bNgxButton
-		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-		class="add-button">
-		+ Add cargo
-	</button>
-
-	<button
-		*ngIf="makeRfqUrl | async"
-		routerLink="/tradebid/add-rfq"
-		b2bNgxButton
-		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-		type="submit"
-		class="add-button">
-		Make RFQ
-	</button>
-
-	<button
-		*ngIf="(addProductUrl | async) && (rootRole$ | async)"
-		b2bNgxButton
-		[id]="(isAuth$ | async) ? 'add-product' : 'add-company'"
-		[routerLink]="(isAuth$ | async) === true ? '/b2bmarket/product' : '/profile/your-account/company-information'"
-		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-		type="submit"
-		class="add-button">
-		{{ (isAuth$ | async) ? "Add product" : "Add my company" }}
-	</button>
+	<b2b-claim-buttons
+		[buttonClass]="claimButtonClasses.SUBHEADER_BUTTON"
+		[buttonTheme]="b2bNgxButtonTheme.BACKGROUND_BLUE"></b2b-claim-buttons>
 
 	<div class="search-wrapper">
 		<input
 			b2bNgxInput
+			(keydown.enter)="searchOnClick.emit(search.value)"
 			[formControl]="search"
 			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
 			class="subheader-search"
-			placeholder="Search"/>
-		<img b2bNgxIcon name="search"/>
+			placeholder="Search" />
+		<img (click)="searchOnClick.emit(search.value)" b2bNgxIcon name="search" />
 	</div>
 </div>

@@ -1,31 +1,48 @@
 <div class="wrapper">
 	<div *ngIf="formType === 'add-rfq'" class="rfq-header">
 		<h1>Tell the vendors what are you looking to buy</h1>
-		<img b2bNgxImage name="tradebid_rfq-header" imageExtension="png"/>
+		<img b2bNgxImage name="tradebid_rfq-header" imageExtension="png" />
 	</div>
-	<img *ngIf="formType === 'quotation'" b2bNgxImage name="tradebid-quotation-header" imageExtension="png"/>
+	<img
+		*ngIf="formType === 'quotation'"
+		b2bNgxImage
+		name="tradebid-quotation-header"
+		imageExtension="png" />
 	<div class="company-information">
 		<form [formGroup]="form" class="company-form">
 			<div class="warning">
 				<div class="icon">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 20 20"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
 						<g clip-path="url(#clip0_1603_268)">
 							<path
 								d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20Z"
-								fill="#005DFF"/>
-							<path d="M10 14.375V10" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-							<path d="M10 6.66675H10.0089" stroke="white" stroke-width="2" stroke-linecap="round"/>
+								fill="#005DFF" />
+							<path
+								d="M10 14.375V10"
+								stroke="white"
+								stroke-width="1.6"
+								stroke-linecap="round" />
+							<path
+								d="M10 6.66675H10.0089"
+								stroke="white"
+								stroke-width="2"
+								stroke-linecap="round" />
 						</g>
 						<defs>
 							<clipPath id="clip0_1603_268">
-								<rect width="20" height="20" fill="white"/>
+								<rect width="20" height="20" fill="white" />
 							</clipPath>
 						</defs>
 					</svg>
 				</div>
 				<div class="text">
-					Please fill up your company’s information profile. You only need to do it once, it won’t be required with a
-					further iteraсtions.
+					Please fill up your company’s information profile. You only need to do
+					it once, it won’t be required with a further iteraсtions.
 				</div>
 			</div>
 			<div class="title">Company information</div>
@@ -39,7 +56,7 @@
 							b2bNgxInput
 							placeholder="Company name"
 							label="Company name"
-							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"/>
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY" />
 						<!--		<p-->
 						<!--			*ngIf="this.form.get('quotationForm').get('productName').touched && this.form.get('quotationForm').get('productName').errors?.latin"-->
 						<!--			class="error"-->
@@ -75,7 +92,7 @@
 							formControlName="country"
 							[touched]="formState['country'].touched"
 							[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-						>Country
+							>Country
 						</b2b-ngx-country-select>
 					</div>
 					<div class="form-control-wrapper">
@@ -117,7 +134,7 @@
 				</div>
 				<div class="column">
 					<div class="form-control-wrapper">
-<!--						<b2b-ngx-tel formControlName="phone" [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"> Phone</b2b-ngx-tel>-->
+						<!--						<b2b-ngx-tel formControlName="phone" [theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"> Phone</b2b-ngx-tel>-->
 					</div>
 					<div class="form-control-wrapper">
 						<input
@@ -125,7 +142,7 @@
 							label="Office address "
 							placeholder="Address"
 							formControlName="address"
-							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"/>
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY" />
 					</div>
 					<div class="form-control-wrapper">
 						<input
@@ -133,7 +150,7 @@
 							label="Website"
 							placeholder="Website"
 							formControlName="website"
-							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"/>
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY" />
 						<!--				<p-->
 						<!--					*ngIf="form.get('suppliersCompanyInfo').get('website').touched && form.get('suppliersCompanyInfo').get('website').errors?.latin"-->
 						<!--					class="supplier-info-error"-->
@@ -156,12 +173,22 @@
 							formControlName="companyDescription"
 							class="quotation__textarea quotation__middle-space"></textarea>
 
-						<p [@fadeInOut] class="form-error"
-							 *ngIf="formState['companyDescription'].errors?.['minlength'] && formState['companyDescription'].touched">
+						<p
+							[@fadeInOut]
+							class="form-error"
+							*ngIf="
+								formState['companyDescription'].errors?.['minlength'] &&
+								formState['companyDescription'].touched
+							">
 							Company description should contain more than 20 symbols
 						</p>
-						<p [@fadeInOut] class="form-error"
-							 *ngIf="formState['companyDescription']?.errors?.['maxlength'] && formState['companyDescription'].touched">
+						<p
+							[@fadeInOut]
+							class="form-error"
+							*ngIf="
+								formState['companyDescription']?.errors?.['maxlength'] &&
+								formState['companyDescription'].touched
+							">
 							Company description should contain less than 500 symbols
 						</p>
 
@@ -195,12 +222,21 @@
 			</div>
 		</form>
 	</div>
-	<button (click)="onSave()" [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK" b2bNgxButton class="next-step-btn">
+	<button
+		(click)="onSave()"
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+		b2bNgxButton
+		class="next-step-btn">
 		<span>1/2 Next step </span>
-		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 16 16"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M11.5657 8.56569C11.8781 8.25327 11.8781 7.74673 11.5657 7.43431L6.47452 2.34315C6.1621 2.03073 5.65556 2.03073 5.34315 2.34315C5.03073 2.65557 5.03073 3.1621 5.34315 3.47452L9.86863 8L5.34315 12.5255C5.03073 12.8379 5.03073 13.3444 5.34315 13.6569C5.65557 13.9693 6.1621 13.9693 6.47452 13.6569L11.5657 8.56569ZM10 8.8L11 8.8L11 7.2L10 7.2L10 8.8Z"
-				fill="white"/>
+				fill="white" />
 		</svg>
 	</button>
 </div>

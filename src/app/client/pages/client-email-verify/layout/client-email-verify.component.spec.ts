@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ClientEmailVerifyComponent } from "./client-email-verify.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClientEmailVerifyComponent } from './client-email-verify.component';
 
-describe("ClientEmailVerifyComponent", () => {
+describe('ClientEmailVerifyComponent', () => {
 	let component: ClientEmailVerifyComponent;
 	let fixture: ComponentFixture<ClientEmailVerifyComponent>;
 
@@ -17,7 +17,7 @@ describe("ClientEmailVerifyComponent", () => {
 		fixture.detectChanges();
 	});
 
-	it("should create", () => {
+	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 });

@@ -24,7 +24,7 @@ export class CategoriesTreeviewI18n extends DefaultTreeviewI18n {
 
 	override getText(selection: TreeviewSelection): string {
 		if (selection.uncheckedItems.length === 0) {
-			return "INPUTS.ALL_CATEGORIES";
+			return this.translateService.instant("INPUTS.ALL_CATEGORIES");
 		}
 
 		switch (selection.checkedItems.length) {
@@ -128,7 +128,7 @@ export class B2bNgxTreeviewComponent implements OnChanges, ControlValueAccessor 
 		if (!changes.items) {
 			return;
 		}
-		this.itemsToDisplay = changes.items.currentValue.map((item: any) => new TreeviewItem(item));
+		this.itemsToDisplay = changes.items.currentValue?.map((item: any) => new TreeviewItem(item));
 
 		this.setItemsToDisplay();
 	}
@@ -136,7 +136,7 @@ export class B2bNgxTreeviewComponent implements OnChanges, ControlValueAccessor 
 	public setItemsToDisplay() {
 		this.setSelected(this.items, this.formControl.value);
 
-		this.itemsToDisplay = this.items.map((item: any) => new TreeviewItem(item));
+		this.itemsToDisplay = this.items?.map((item: any) => new TreeviewItem(item));
 
 		this.changeDetectorRef.detectChanges();
 	}
@@ -154,7 +154,7 @@ export class B2bNgxTreeviewComponent implements OnChanges, ControlValueAccessor 
 	}
 
 	public setSelected(items: any[], selected: any) {
-		items.forEach((item) => {
+		items?.forEach((item) => {
 			if (selected && selected.includes(item.value)) {
 				item.checked = true;
 			}

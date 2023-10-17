@@ -17,7 +17,9 @@
 		<div mat-dialog-title class="title">Select the product you deal with</div>
 		<div class="tab-demo">
 			<mat-tab-group [(selectedIndex)]="demo1TabIndex">
-				<div *ngFor="let category of categories$ | async; let i = index" class="tabs-wrapper">
+				<div
+					*ngFor="let category of categories$ | async; let i = index"
+					class="tabs-wrapper">
 					<mat-tab [label]="category.text">
 						<b2b-categories-modal-list
 							[categoriesList]="category.children"
@@ -31,7 +33,12 @@
 		</div>
 		<div class="modal-footer">
 			<div class="footer-text">Follow at least 1 product to continue</div>
-			<button (click)="save()" b2bNgxButton [theme]="B2bNgxButtonThemeEnum.BACKGROUND_BLUE">Save</button>
+			<button
+				(click)="save()"
+				b2bNgxButton
+				[theme]="B2bNgxButtonThemeEnum.BACKGROUND_BLUE">
+				Save
+			</button>
 		</div>
 	</div>
 </div>

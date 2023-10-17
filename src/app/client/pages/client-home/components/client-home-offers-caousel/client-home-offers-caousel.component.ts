@@ -6,21 +6,23 @@ import {
 	OnChanges,
 	SimpleChanges,
 	ViewChild,
-} from "@angular/core";
-import { B2bNgxLinkService } from "@b2b/ngx-link";
+} from '@angular/core';
+import { B2bNgxLinkService } from '@b2b/ngx-link';
 
 function shuffle(array: any[]) {
 	array.sort(() => Math.random() - 0.5);
 }
 
 @Component({
-	selector: "b2b-client-home-offers-caousel",
-	templateUrl: "./client-home-offers-caousel.component.html",
-	styleUrls: ["./client-home-offers-caousel.component.scss"],
+	selector: 'b2b-client-home-offers-caousel',
+	templateUrl: './client-home-offers-caousel.component.html',
+	styleUrls: ['./client-home-offers-caousel.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientHomeOffersCaouselComponent implements AfterViewInit, OnChanges {
-	@ViewChild("carousel") public readonly carousel: any;
+export class ClientHomeOffersCaouselComponent
+	implements AfterViewInit, OnChanges
+{
+	@ViewChild('carousel') public readonly carousel: any;
 
 	@Input() public readonly options: any[];
 	@Input() public readonly link: string;
@@ -29,7 +31,10 @@ export class ClientHomeOffersCaouselComponent implements AfterViewInit, OnChange
 
 	public readonly optionsToDisplay: any[];
 
-	constructor(public readonly b2bNgxLinkService: B2bNgxLinkService, private readonly _ampService: AmplitudeService) {
+	constructor(
+		public readonly b2bNgxLinkService: B2bNgxLinkService,
+		private readonly _ampService: AmplitudeService
+	) {
 		this.optionsToDisplay = [];
 	}
 
@@ -48,33 +53,44 @@ export class ClientHomeOffersCaouselComponent implements AfterViewInit, OnChange
 		const { currentValue } = changes.options;
 
 		// shuffle(currentValue);
-		const updatedValue = [...currentValue.slice(7, 10), ...currentValue.slice(0, 7)];
+		const updatedValue = [
+			...currentValue.slice(7, 10),
+			...currentValue.slice(0, 7),
+		];
 
 		const optionsToDisplay = Math.round(10 / updatedValue.length);
 
 		const arraysCount = optionsToDisplay < 1 ? 1 : optionsToDisplay;
 
-		const newOptionsToDisplay = new Array(arraysCount).fill(null).reduce((array, _) => [...array, ...updatedValue], []);
+		const newOptionsToDisplay = new Array(arraysCount)
+			.fill(null)
+			.reduce((array, _) => [...array, ...updatedValue], []);
 
 		this.optionsToDisplay.push(...newOptionsToDisplay);
 	}
 
-	public moveCarousel(shiftType: "left" | "right") {
+	public moveCarousel(shiftType: 'left' | 'right') {
 		const { transform } = this.carousel.nativeElement.style;
 
-		const translateX = transform.substring(transform.lastIndexOf("(") + 1, transform.lastIndexOf("px"));
-		const shiftValue = shiftType === "left" ? 396 : -396;
+		const translateX = transform.substring(
+			transform.lastIndexOf('(') + 1,
+			transform.lastIndexOf('px')
+		);
+		const shiftValue = shiftType === 'left' ? 396 : -396;
 		const newTranslateX = Number.parseInt(translateX) - shiftValue;
 
 		this.carousel.nativeElement.style.transition = `0s`;
 		this.carousel.nativeElement.style.transform = `translateX(${newTranslateX}px)`;
 
-		const leftIndex = this.options.findIndex((x) => x._id === this.optionsToDisplay[0]._id);
+		const leftIndex = this.options.findIndex(
+			(x) => x._id === this.optionsToDisplay[0]._id
+		);
 		const rightIndex = this.options.findIndex(
-			(x) => x._id === this.optionsToDisplay[this.optionsToDisplay.length - 1]._id
+			(x) =>
+				x._id === this.optionsToDisplay[this.optionsToDisplay.length - 1]._id
 		);
 
-		if (shiftType === "left") {
+		if (shiftType === 'left') {
 			const index = leftIndex - 1 <= 0 ? this.options.length : leftIndex;
 			this.optionsToDisplay.unshift(this.options[index - 1]);
 			this.optionsToDisplay.pop();
@@ -91,6 +107,8 @@ export class ClientHomeOffersCaouselComponent implements AfterViewInit, OnChange
 	}
 
 	processOfferClick() {
-		this._ampService.logEvent("Click on offers", { source: localStorage.getItem("source") });
+		this._ampService.logEvent('Click on offers', {
+			source: localStorage.getItem('source'),
+		});
 	}
 }

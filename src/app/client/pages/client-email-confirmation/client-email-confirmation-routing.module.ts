@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ClientEmailConfirmationComponent } from "./layout/client-email-confirmation.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientEmailConfirmationComponent } from './layout/client-email-confirmation.component';
 
 const routes: Routes = [
 	{
-		path: ":id",
+		path: ':id',
 		component: ClientEmailConfirmationComponent,
 	},
 ];

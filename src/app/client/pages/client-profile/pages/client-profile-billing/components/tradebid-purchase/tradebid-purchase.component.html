@@ -24,11 +24,18 @@
 			<!--			</ng-template>-->
 
 			<div class="tariffs">
-				<div *ngFor="let paymentPlan of quotesPaymentPlans$ | async" class="card">
+				<div
+					*ngFor="let paymentPlan of quotesPaymentPlans$ | async"
+					class="card">
 					<div class="card-title">{{ paymentPlan?.amountOfQuotes }} quotes</div>
 					<div class="card-info">
 						<div class="card-info-text">
-							<svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<svg
+								width="10"
+								height="8"
+								viewBox="0 0 10 8"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
 								<path
 									fill-rule="evenodd"
 									clip-rule="evenodd"
@@ -38,15 +45,27 @@
 							  1.52421 3.56978L3.57014 5.7278L8.47774 0.275664C8.8262 -0.0918881 9.39117 -0.0918881 9.73963 0.275664Z"
 									fill="#005DFF" />
 							</svg>
-							<div class="text">To contact {{ paymentPlan!.amountOfQuotes }} buyers</div>
+							<div class="text">
+								To contact {{ paymentPlan!.amountOfQuotes }} buyers
+							</div>
 						</div>
 						<div class="subtitle">For {{ paymentPlan.price }}$</div>
 					</div>
-					<form #purchaseForm method="post" [action]="getPaymentLink()" name="formAuthorizeNetTestPage" target="blank">
+					<form
+						#purchaseForm
+						method="post"
+						[action]="getPaymentLink()"
+						name="formAuthorizeNetTestPage"
+						target="blank">
 						<input type="hidden" name="token" [value]="" />
 						<button
 							type="button"
-							(click)="goOnPaymentPage(paymentPlan!.amountOfQuotes.toString(), paymentPlan.price)"
+							(click)="
+								goOnPaymentPage(
+									paymentPlan!.amountOfQuotes.toString(),
+									paymentPlan.price
+								)
+							"
 							b2bNgxButton
 							[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
 							class="upgrade-plan b2b-ngx-button background background-blue"

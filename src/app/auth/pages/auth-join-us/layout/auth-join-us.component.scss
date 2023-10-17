@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.auth-join-us__wrapper {
@@ -23,7 +23,7 @@
 				}
 			}
 
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				width: 90%;
 				justify-content: center;
 			}
@@ -36,7 +36,7 @@
 			flex-direction: column;
 			justify-content: flex-start;
 			margin-top: 10%;
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				flex: none;
 				justify-content: flex-start;
 			}
@@ -53,7 +53,7 @@
 				font-weight: 300;
 				margin-top: 0.5rem;
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					width: 100%;
 				}
 			}
@@ -61,17 +61,17 @@
 				margin-top: 2.8rem;
 				width: 100%;
 
-				@include breakpoint("2") {
+				@include breakpoint('2') {
 					width: 100%;
 				}
 			}
 
-			@include breakpoint("2") {
+			@include breakpoint('2') {
 				width: 90%;
 			}
 		}
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			flex-direction: column-reverse;
 			justify-content: flex-end;
 		}

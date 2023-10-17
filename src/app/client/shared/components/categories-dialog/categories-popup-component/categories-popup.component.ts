@@ -1,54 +1,69 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MatTabGroup} from "@angular/material/tabs";
-import {BehaviorSubject, EMPTY, filter, Observable} from "rxjs";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {map, take} from "rxjs/operators";
-import { SelectCategoryModel } from "../select-category.model";
-import {CategoriesService} from "../../../../services/categories/categories.service";
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Inject,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
+import { MatTabGroup } from '@angular/material/tabs';
+import { BehaviorSubject, EMPTY, filter, Observable } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { map, take } from 'rxjs/operators';
+import { SelectCategoryModel } from '../select-category.model';
+import { CategoriesService } from '../../../../services/categories/categories.service';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 
 @Component({
-  selector: 'b2b-categories-popup-component',
-  templateUrl: './categories-popup.component.html',
-  styleUrls: ['./categories-popup.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	selector: 'b2b-categories-popup-component',
+	templateUrl: './categories-popup.component.html',
+	styleUrls: ['./categories-popup.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesPopupComponent implements OnInit {
-
 	public B2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public demo1TabIndex = 1;
 
-	public isMultipleMode = this.data.multiple === undefined ? true : this.data.multiple;
+	public isMultipleMode =
+		this.data.multiple === undefined ? true : this.data.multiple;
 
-	@ViewChild("demo3Tab", { static: false }) demo3Tab: MatTabGroup | undefined;
+	@ViewChild('demo3Tab', { static: false }) demo3Tab: MatTabGroup | undefined;
 
-	private categoriesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	private categoriesSubject: BehaviorSubject<any[]> = new BehaviorSubject<
+		any[]
+	>([]);
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public data: { selectedCategories: Array<string>; required?: boolean; multiple?: boolean },
+		@Inject(MAT_DIALOG_DATA)
+		public data: {
+			selectedCategories: Array<string>;
+			required?: boolean;
+			multiple?: boolean;
+		},
 		public dialogRef: MatDialogRef<CategoriesPopupComponent>,
-		private categoriesService: CategoriesService,
+		private categoriesService: CategoriesService
 	) {}
 
 	ngOnInit(): void {
 		this.categoriesService
 			.getCategories$()
 			.pipe(
-				filter(data => !!data),
+				filter((data) => !!data),
 				map((categoriesData) => categoriesData.categories),
 				map((categories) =>
-					categories.map((category: { name: any; _id: any; children: any[]; }) => ({
-						text: category.name,
-						value: category._id,
-						checked: false,
-						children: category.children.map((level2Category) => ({
-							text: level2Category.name,
-							value: level2Category._id,
+					categories.map(
+						(category: { name: any; _id: any; children: any[] }) => ({
+							text: category.name,
+							value: category._id,
 							checked: false,
-							parentId: category._id,
-							visible: true,
-						})),
-					}))
+							children: category.children.map((level2Category) => ({
+								text: level2Category.name,
+								value: level2Category._id,
+								checked: false,
+								parentId: category._id,
+								visible: true,
+							})),
+						})
+					)
 				),
 				take(1)
 			)
@@ -73,23 +88,29 @@ export class CategoriesPopupComponent implements OnInit {
 	public save(): void {
 		let placeholder: any[] = [];
 
-		const categories: SelectCategoryModel[] = this.categoriesSubject.getValue().reduce((acc, val) => {
-			val.children.forEach((item: { checked: any; value: any; text: any; }) => {
-				if (item.checked) {
-					acc.push({
-						value: item.value,
-						text: item.text,
-					});
+		const categories: SelectCategoryModel[] = this.categoriesSubject
+			.getValue()
+			.reduce((acc, val) => {
+				val.children.forEach(
+					(item: { checked: any; value: any; text: any }) => {
+						if (item.checked) {
+							acc.push({
+								value: item.value,
+								text: item.text,
+							});
 
-					if (placeholder.length < 2) {
-						placeholder.push(item.text);
+							if (placeholder.length < 2) {
+								placeholder.push(item.text);
+							}
+						}
 					}
-				}
-			});
-			return acc;
-		}, []);
+				);
+				return acc;
+			}, []);
 		if (this.data.required) {
-			categories.length ? this.dialogRef.close({ categories, placeholder }) : null;
+			categories.length
+				? this.dialogRef.close({ categories, placeholder })
+				: null;
 		} else {
 			this.dialogRef.close({ categories, placeholder });
 		}
@@ -97,9 +118,15 @@ export class CategoriesPopupComponent implements OnInit {
 
 	public onChangeSelectedId(categoryId: string): void {
 		if (this.isMultipleMode) {
-			this.updateCategoriesSource([categoryId], this.categoriesSubject.getValue());
+			this.updateCategoriesSource(
+				[categoryId],
+				this.categoriesSubject.getValue()
+			);
 		} else {
-			this.updateCategoriesSingleMode(categoryId, this.categoriesSubject.getValue());
+			this.updateCategoriesSingleMode(
+				categoryId,
+				this.categoriesSubject.getValue()
+			);
 		}
 	}
 
@@ -110,16 +137,17 @@ export class CategoriesPopupComponent implements OnInit {
 				this.resetCategories();
 			} else {
 				for (let parent of categories) {
-					parent.children = parent.children.map((child: { visible: any; value: string; checked: any; }) => {
-						if (child.visible !== undefined) {
-							return {
-								...child,
-								visible: child.value === id,
-								checked: child.value === id ? !child.checked : child.checked,
-							};
+					parent.children = parent.children.map(
+						(child: { visible: any; value: string; checked: any }) => {
+							if (child.visible !== undefined) {
+								return {
+									...child,
+									visible: child.value === id,
+									checked: child.value === id ? !child.checked : child.checked,
+								};
+							} else return EMPTY;
 						}
-            else return EMPTY;
-					});
+					);
 				}
 
 				this.updateCategoriesList(categories);
@@ -129,7 +157,9 @@ export class CategoriesPopupComponent implements OnInit {
 
 	private findCategoryById(id: string, categories: any[]): any {
 		for (let parent of categories) {
-			const necessaryChild = parent.children.find((child: { value: string; }) => child.value === id);
+			const necessaryChild = parent.children.find(
+				(child: { value: string }) => child.value === id
+			);
 
 			if (id === parent.value) {
 				return parent;
@@ -145,7 +175,7 @@ export class CategoriesPopupComponent implements OnInit {
 		const categories = this.categoriesSubject.getValue().map((parent) => {
 			return {
 				...parent,
-				children: parent.children.map((child: { visible: any; }) => {
+				children: parent.children.map((child: { visible: any }) => {
 					if (child.visible !== undefined) {
 						return { ...child, visible: true, checked: false };
 					}
@@ -162,18 +192,22 @@ export class CategoriesPopupComponent implements OnInit {
 			if (IDs.some((id) => id === parent.value)) {
 				parent.checked = !parent.checked;
 
-				parent.children = parent.children.map((child: { checked: any; }) => {
+				parent.children = parent.children.map((child: { checked: any }) => {
 					child.checked = parent.checked;
 					return child;
 				});
 			} else {
-				parent.children = parent.children.map((child: { value: string; checked: boolean; }) => {
-					if (IDs.some((id) => id === child.value)) {
-						child.checked = !child.checked;
-						parent.checked = parent.children.every((child: { checked: any; }) => child.checked);
+				parent.children = parent.children.map(
+					(child: { value: string; checked: boolean }) => {
+						if (IDs.some((id) => id === child.value)) {
+							child.checked = !child.checked;
+							parent.checked = parent.children.every(
+								(child: { checked: any }) => child.checked
+							);
+						}
+						return child;
 					}
-					return child;
-				});
+				);
 			}
 		}
 		this.updateCategoriesList(categories);
@@ -192,15 +226,20 @@ export class CategoriesPopupComponent implements OnInit {
 			this.categoriesSubject.getValue().map((parent) => {
 				return {
 					...parent,
-					children: parent.children.map((child: { visible: any; value: string; }) => {
-						if (child.visible !== undefined) {
-							return { ...child, visible: child.value === category, checked: child.value === category };
+					children: parent.children.map(
+						(child: { visible: any; value: string }) => {
+							if (child.visible !== undefined) {
+								return {
+									...child,
+									visible: child.value === category,
+									checked: child.value === category,
+								};
+							}
+							return child;
 						}
-						return child;
-					}),
+					),
 				};
 			})
 		);
 	}
-
 }

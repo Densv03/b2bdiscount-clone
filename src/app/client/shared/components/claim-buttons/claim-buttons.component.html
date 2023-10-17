@@ -1,0 +1,86 @@
+<button
+	*ngIf="(addOfferUrl | async) && (supplierOrAdmin$ | async); else makeRfq"
+	id="add-offer-header"
+	[routerLink]="'/offer'"
+	(click)="track()"
+	b2bNgxButton
+	[theme]="buttonTheme"
+	class="add-button {{ buttonClass }}">
+	+ Add cargo
+</button>
+
+<ng-template #makeRfq>
+	<button
+		*ngIf="addOfferUrl | async"
+		(click)="openCreateRfqDialog()"
+		b2bNgxButton
+		[theme]="buttonTheme"
+		type="submit"
+		class="add-button {{ buttonClass }}">
+		+ Add RFQ
+	</button>
+</ng-template>
+
+<button
+	*ngIf="(makeRfqUrl | async) && (isBuyer$ | async)"
+	(click)="openCreateRfqDialog()"
+	b2bNgxButton
+	[theme]="buttonTheme"
+	type="submit"
+	class="add-button {{ buttonClass }}">
+	+ Add RFQ
+</button>
+
+<button
+	*ngIf="(makeRfqUrl | async) && (supplierOrAdmin$ | async)"
+	routerLink="/b2bmarket/product"
+	(click)="track()"
+	b2bNgxButton
+	[theme]="buttonTheme"
+	type="submit"
+	class="add-button {{ buttonClass }}">
+	+ Add product
+</button>
+
+<button
+	*ngIf="(makeRfqUrl | async) && !(isAuth$ | async)"
+	(click)="openCreateRfqDialog()"
+	b2bNgxButton
+	[theme]="buttonTheme"
+	type="submit"
+	class="add-button {{ buttonClass }}">
+	+ Add RFQ
+</button>
+
+<button
+	*ngIf="(addProductUrl | async) && (supplierOrAdmin$ | async)"
+	b2bNgxButton
+	[id]="(isAuth$ | async) ? 'add-product' : 'add-company'"
+	[routerLink]="'/b2bmarket/product'"
+	(click)="track()"
+	[theme]="buttonTheme"
+	type="submit"
+	class="add-button {{ buttonClass }}">
+	+ Add product
+</button>
+<button
+	*ngIf="(addProductUrl | async) && (isBuyer$ | async) && (isAuth$ | async)"
+	b2bNgxButton
+	[id]="'add-product'"
+	(click)="openCreateRfqDialog()"
+	[theme]="buttonTheme"
+	type="submit"
+	class="add-button {{ buttonClass }}">
+	+ Add RFQ
+</button>
+
+<button
+	*ngIf="(addProductUrl | async) && !(isAuth$ | async)"
+	b2bNgxButton
+	[id]="'add-product'"
+	routerLink="/auth/register-credentials"
+	[theme]="buttonTheme"
+	type="submit"
+	class="add-button {{ buttonClass }}">
+	+ Add product
+</button>

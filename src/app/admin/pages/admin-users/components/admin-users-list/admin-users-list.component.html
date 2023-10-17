@@ -1,11 +1,16 @@
 <ul class="admin-users-list">
 	<li *ngFor="let user of users" class="admin-users-list-item">
 		<a [routerLink]="user._id" class="admin-users-list-item-link">
-			<img class="admin-users-list-item-img" b2bNgxImage [name]="user.previewPhoto" />
+			<img
+				class="admin-users-list-item-img"
+				b2bNgxImage
+				[name]="user.previewPhoto" />
 			<div class="admin-users-list-item-info">
 				<p class="admin-users-list-item-info-title">{{ user.email }}</p>
 				<p class="admin-users-list-item-info-additional">
-					<span class="admin-users-list-item-info-added">{{ user.role?.displayName }}</span>
+					<span class="admin-users-list-item-info-added">{{
+						user.role?.displayName
+					}}</span>
 				</p>
 			</div>
 			<div class="admin-users-list-item-chats" *ngIf="false">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 const TERMS_AND_CONDITIONS = [
 	{
@@ -242,9 +242,9 @@ In case of any FAQs on technical support, please contact Us via instant messagin
 ];
 
 @Component({
-	selector: "b2b-client-terms-and-conditions",
-	templateUrl: "./client-terms-and-conditions.component.html",
-	styleUrls: ["./client-terms-and-conditions.component.scss"],
+	selector: 'b2b-client-terms-and-conditions',
+	templateUrl: './client-terms-and-conditions.component.html',
+	styleUrls: ['./client-terms-and-conditions.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientTermsAndConditionsComponent {

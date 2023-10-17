@@ -1,10 +1,10 @@
 <div class="hot-it-works" #howItWorks (scroll)="onScroll()">
 	<div class="container">
-		<h2 class="title">{{ "HOW_IT_WORKS.TITLE" | translate  }}</h2>
+		<h2 class="title">{{ 'HOW_IT_WORKS.TITLE' | translate }}</h2>
 		<p class="description">
-			{{ "HOW_IT_WORKS.DESCRIPTION_1" | translate  }} <br /><br />
-			{{ "HOW_IT_WORKS.DESCRIPTION_2" | translate  }} <br /><br />
-			{{ "HOW_IT_WORKS.DESCRIPTION_3" | translate }}
+			{{ 'HOW_IT_WORKS.DESCRIPTION_1' | translate }} <br /><br />
+			{{ 'HOW_IT_WORKS.DESCRIPTION_2' | translate }} <br /><br />
+			{{ 'HOW_IT_WORKS.DESCRIPTION_3' | translate }}
 		</p>
 
 		<div class="video-wrapper">
@@ -15,7 +15,13 @@
 				poster="assets/images/client_home_background.png"
 				(ended)="video.load()"
 				#video>
-				<source [src]="ruVideo ? 'assets/videos/promo_eng.mp4' : 'assets/videos/how-it-works.mp4'" type="video/mp4" />
+				<source
+					[src]="
+						ruVideo
+							? 'assets/videos/promo_eng.mp4'
+							: 'assets/videos/how-it-works.mp4'
+					"
+					type="video/mp4" />
 			</video>
 
 			<button class="video-button" *ngIf="video.paused" (click)="video.play()">
@@ -23,13 +29,19 @@
 			</button>
 		</div>
 
-		<h3 class="subtitle">{{ "HOW_IT_WORKS.SUBTITLE" | translate  }}</h3>
-		<p class="subdescription">{{ "HOW_IT_WORKS.SUBDESCRIPTION" | translate  }}</p>
+		<h3 class="subtitle">{{ 'HOW_IT_WORKS.SUBTITLE' | translate }}</h3>
+		<p class="subdescription">
+			{{ 'HOW_IT_WORKS.SUBDESCRIPTION' | translate }}
+		</p>
 
 		<section class="section">
 			<div class="section-info">
-				<h4 class="section-title">{{ "HOW_IT_WORKS.SECTION_1_TITLE" | translate }}</h4>
-				<p class="section-description">{{ "HOW_IT_WORKS.SECTION_1_DESCRIPTION" | translate }}</p>
+				<h4 class="section-title">
+					{{ 'HOW_IT_WORKS.SECTION_1_TITLE' | translate }}
+				</h4>
+				<p class="section-description">
+					{{ 'HOW_IT_WORKS.SECTION_1_DESCRIPTION' | translate }}
+				</p>
 			</div>
 			<div class="section-img">
 				<img b2bNgxImage name="about-us-1" src="" alt="" />
@@ -41,15 +53,23 @@
 				<img b2bNgxImage name="about-us-2" src="" alt="" />
 			</div>
 			<div class="section-info">
-				<h4 class="section-title">{{ "HOW_IT_WORKS.SECTION_2_TITLE" | translate }}</h4>
-				<p class="section-description">{{ "HOW_IT_WORKS.SECTION_2_DESCRIPTION" | translate }}</p>
+				<h4 class="section-title">
+					{{ 'HOW_IT_WORKS.SECTION_2_TITLE' | translate }}
+				</h4>
+				<p class="section-description">
+					{{ 'HOW_IT_WORKS.SECTION_2_DESCRIPTION' | translate }}
+				</p>
 			</div>
 		</section>
 
 		<section class="section">
 			<div class="section-info">
-				<h4 class="section-title">{{ "HOW_IT_WORKS.SECTION_3_TITLE" | translate  }}</h4>
-				<p class="section-description">{{ "HOW_IT_WORKS.SECTION_3_DESCRIPTION" | translate}}</p>
+				<h4 class="section-title">
+					{{ 'HOW_IT_WORKS.SECTION_3_TITLE' | translate }}
+				</h4>
+				<p class="section-description">
+					{{ 'HOW_IT_WORKS.SECTION_3_DESCRIPTION' | translate }}
+				</p>
 			</div>
 			<div class="section-img">
 				<img b2bNgxImage name="about-us-3" src="" alt="" />
@@ -61,14 +81,25 @@
 		<div class="footer-container">
 			<div class="footer-info">
 				<h1 class="footer-title">
-					{{ "HOW_IT_WORKS.FOOTER_TITLE"| translate }} <span> {{ "HOW_IT_WORKS.FOOTER_DISCOUNT" | translate }}</span>
+					{{ 'HOW_IT_WORKS.FOOTER_TITLE' | translate }}
+					<span> {{ 'HOW_IT_WORKS.FOOTER_DISCOUNT' | translate }}</span>
 				</h1>
-				<p class="footer-description">{{ "HOW_IT_WORKS.FOOTER_DESCRIPTION"| translate }}</p>
+				<p class="footer-description">
+					{{ 'HOW_IT_WORKS.FOOTER_DESCRIPTION' | translate }}
+				</p>
 			</div>
 			<div class="footer-buttons">
-				<a [routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async" class="footer-buy">{{ "B2B.BUY" | translate }}</a>
+				<a
+					[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
+					class="footer-buy"
+					>{{ 'B2B.BUY' | translate }}</a
+				>
 				<span class="footer-and">&</span>
-				<a [routerLink]="b2bNgxLinkService.getLink('/offer') | async" class="footer-sell">{{ "B2B.SELL" | translate }}</a>
+				<a
+					[routerLink]="b2bNgxLinkService.getLink('/offer') | async"
+					class="footer-sell"
+					>{{ 'B2B.SELL' | translate }}</a
+				>
 			</div>
 		</div>
 	</div>

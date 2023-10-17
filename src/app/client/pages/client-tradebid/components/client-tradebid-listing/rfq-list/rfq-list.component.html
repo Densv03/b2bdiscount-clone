@@ -1,9 +1,43 @@
-<div *ngIf="(rfqList$ | async).length; else listLoader"
+<div
+	*ngIf="(rfqList$ | async).length && rfqListIsLoaded$ | async; else noProducts"
 	class="rfq-list">
-	<b2b-rfq-item *ngFor="let rfqItem of rfqList$ | async" [rfqItem]="rfqItem"></b2b-rfq-item>
-</div>
-<ng-template #listLoader>
-	<div class="loader">
-		<b2b-ngx-skeleton [option]="skeletonOptions"></b2b-ngx-skeleton>
+	<div *ngFor="let rfqItem of rfqList$ | async; let i = index">
+		<ng-container
+			*ngIf="
+				(rfqList$ | async).length > BANNER_POSITION
+					? i === BANNER_POSITION
+					: i === (rfqList$ | async).length - 1
+			">
+			<!--			<div class="popup">-->
+			<!--				<div class="text-content">-->
+			<!--					Need relevant offers from sellers? Submit a sourcing request.-->
+			<!--				</div>-->
+			<div class="listing-banner">
+				<b2b-client-marketplace-banner
+					[siteSection]="siteSections.SOURCING_REQUEST"
+					class="divider"></b2b-client-marketplace-banner>
+			</div>
+			<!--				<div class="button-content">-->
+			<!--&lt;!&ndash;					<button b2bNgxButton [theme]="b2bNgxButtonTheme.BACKGROUND_WHITE" class="add-request-btn">{{getActionButtonText()}}</button>&ndash;&gt;-->
+			<!--&lt;!&ndash;				<div>&ndash;&gt;-->
+			<!--					<b2b-claim-buttons-->
+			<!--						[buttonClass]="claimButtonClasses.LISTING_BANNER_BUTTON"-->
+			<!--						[buttonTheme]="b2bNgxButtonTheme.BACKGROUND_WHITE"></b2b-claim-buttons>-->
+			<!--&lt;!&ndash;					<button b2bNgxButton [theme]="b2bNgxButtonTheme.BACKGROUND_WHITE" class="add-request-btn" (click)="makeAction()">{{getActionButtonText()}}</button>&ndash;&gt;-->
+			<!--&lt;!&ndash;				</div>&ndash;&gt;-->
+			<!--			</div>-->
+			<!--				</div>-->
+		</ng-container>
+		<b2b-rfq-item [rfqItem]="rfqItem"></b2b-rfq-item>
 	</div>
+</div>
+
+<ng-template #noProducts>
+	<ng-container *ngIf="rfqListIsLoaded$ | async">
+		No products with that filters
+	</ng-container>
 </ng-template>
+
+<div *ngIf="!(rfqListIsLoaded$ | async)" class="loader">
+	<b2b-ngx-skeleton [option]="skeletonOptions"></b2b-ngx-skeleton>
+</div>

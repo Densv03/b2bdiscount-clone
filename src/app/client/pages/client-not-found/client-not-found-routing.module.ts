@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import {ClientNotFoundComponent} from "./layout/client-not-found.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ClientNotFoundComponent } from './layout/client-not-found.component';
 
 const routes: Routes = [
 	{
-		path: "",
+		path: '',
 		component: ClientNotFoundComponent,
 	},
 ];

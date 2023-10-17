@@ -1,32 +1,39 @@
 <div *ngIf="rfqItem" class="item" [routerLink]="rfqItem.path">
 	<div class="item__column">
-		<div class="item__name">Product: {{rfqItem.productName}}</div>
-		<div class="item__quantity item__subinfo"><span>Quantity:</span> <span class="value">{{ rfqItem.amount.count + " " + measureName }}</span></div>
+		<div class="item__name">Product: {{ rfqItem.productName }}</div>
+		<div class="item__quantity item__subinfo">
+			<span>Quantity:</span>
+			<span class="value">{{ rfqItem.amount.count + ' ' + measureName }}</span>
+		</div>
 		<div class="item__column-footer">
 			<div class="item__country item__subinfo">
-				Request from:
+				Delivery Location:
 				<img
 					class="item__country-flag"
 					b2bNgxIcon
 					group="flags/"
 					[name]="countryIconName"
-					alt="flag">
-				<span class="item__country-name">{{ getCountryNameByCode(rfqItem?.destination?.to) }}</span>
+					alt="flag" />
+				<span class="item__country-name">{{
+					getCountryNameByCode(rfqItem?.destination?.to)
+				}}</span>
 			</div>
 			<div class="item__posted item__subinfo">
-				Posted: <span class="item__posted-date">{{ rfqItem.createdAt | date }}</span>
+				Posted:
+				<span class="item__posted-date">{{ rfqItem.createdAt | date }}</span>
 			</div>
 		</div>
 	</div>
 	<div class="item__column">
-		<div class="item__username">{{rfqItem.contact.personName}}</div>
+		<div class="item__username">{{ rfqItem.contact.personName }}</div>
 	</div>
 	<div class="item__column">
 		<button
 			class="item__quote"
 			b2bNgxButton
 			[theme]="b2bNgxButtonTheme.BACKGROUND_GRAY"
-			[routerLink]="rfqItem._id">Quote Now</button>
+			[routerLink]="rfqItem._id">
+			Quote now
+		</button>
 	</div>
 </div>
-

@@ -1,4 +1,4 @@
-@import "projects/shared/src/styles";
+@import 'projects/shared/src/styles';
 
 :host {
 	.registration-complete {
@@ -13,7 +13,7 @@
 			height: 76px;
 			object-fit: cover;
 		}
-		@include breakpoint("3") {
+		@include breakpoint('3') {
 			min-height: calc(100vh - 72px);
 		}
 
@@ -54,7 +54,7 @@
 					font-weight: 500;
 					padding: 15px 18px;
 				}
-				@include breakpoint("4") {
+				@include breakpoint('4') {
 					flex-direction: column;
 				}
 			}
