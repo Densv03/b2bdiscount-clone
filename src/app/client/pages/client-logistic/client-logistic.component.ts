@@ -49,7 +49,7 @@ export class ClientLogisticComponent implements OnInit {
 					shipmentType: 'FCL',
 				},
 				maxWidth: 767,
-				maxHeight: 770,
+				maxHeight: "100vh",
 				width: '80%',
 
 				panelClass: 'submit-inquiry-dialog',
