@@ -2,10 +2,8 @@
 .cross-icon {
 	position: absolute;
 	right: -7px;
-	top: -18px;
+	top: -5px;
 }
-
-
 
 .submit-inquiry {
 	width: 100%;
@@ -27,8 +25,15 @@
 		}
 
 		.header-text {
+			width: 80%;
 			text-align: center;
-			margin-bottom: 15px;
+			margin: 0 auto 15px;
+			color: #000;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 134%;
+			letter-spacing: 0.18px;
 		}
 
 		.shipment-info {
@@ -172,6 +177,10 @@
 			border-radius: 14px;
 			background: #f3f6f8;
 			box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
+		}
+
+		@include breakpoint("2") {
+			width: 100vw !important;
 		}
 	}
 }

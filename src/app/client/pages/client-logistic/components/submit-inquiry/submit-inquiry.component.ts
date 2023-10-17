@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import {
 	AbstractControl,
@@ -35,6 +35,7 @@ import { FadeInOutAnimation } from 'src/app/client/shared/animations/fade-in-out
 		B2bNgxTelModule,
 		B2bNgxTextareaModule,
 		B2bNgxButtonModule,
+		MatDialogModule,
 	],
 	standalone: true,
 	animations: [FadeInOutAnimation],
