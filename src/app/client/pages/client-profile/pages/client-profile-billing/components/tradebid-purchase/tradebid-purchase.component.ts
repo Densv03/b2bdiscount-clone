@@ -22,7 +22,7 @@ import { ClientProfileDeletePaymentMethodDialogComponent } from '../../../../com
 import { Router } from '@angular/router';
 import { environment } from '../../../../../../../../environments/environment';
 import { GetPaymentPlanResponse } from '../../../../../../../core/models/admin-billing/responses/get-payment-plan-response.model';
-import { AdminBillingService } from '../../../../../../../admin/services/admin-billing.service';
+import { AdminBillingService } from '../../../../../../../../../admin/src/app/services/admin-billing.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

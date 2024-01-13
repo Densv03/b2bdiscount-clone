@@ -10,6 +10,7 @@ import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { UserService } from '../../../../../client-profile/services/user/user.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { PlatformService } from '../../../../../../services/platform/platform.service';
 
 @Component({
 	selector: 'b2b-companies-counter',
@@ -27,10 +28,14 @@ export class CompaniesCounterComponent implements AfterViewInit {
 
 	constructor(
 		private readonly userService: UserService,
-		private router: Router
+		private readonly router: Router,
+		private readonly platformService: PlatformService
 	) {}
 
 	ngAfterViewInit(): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		const ready = (selector: any, callback: any) => {
 			const elems = [document.querySelector(selector)];
 			if (elems.length) {

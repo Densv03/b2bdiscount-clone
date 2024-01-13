@@ -1,3 +1,4 @@
+@import 'projects/shared/src/styles';
 :host {
 	::ng-deep {
 		.nsm-dialog {
@@ -10,26 +11,40 @@
 }
 
 .client-contact-us {
+	width: 450px;
+	.close-button {
+		text-align: right;
+		cursor: pointer;
+	}
 	.client-contact-us-header {
 		width: 80%;
-		margin: 60px auto 0;
+		margin: 20px auto 0;
+		margin-top: 0;
+
 		.client-contact-us-header-title {
 			font-weight: bold;
-			font-size: 32px;
+			font-size: 30px;
 			color: #0f0f11;
 			text-align: center;
+			margin-bottom: 10px;
+			@include breakpoint('1') {
+				font-size: 26px;
+			}
 		}
 		.client-contact-us-header-description {
 			font-weight: normal;
 			color: #556274;
 			text-align: center;
 			margin-top: 10px;
+			margin: 0;
 		}
 	}
 
 	.client-contact-us-form {
 		width: 80%;
 		margin: 32px auto;
+		margin-top: 10px;
+		margin-bottom: 0;
 		.client-contact-us-form-select {
 			display: block;
 		}

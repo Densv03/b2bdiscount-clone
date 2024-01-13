@@ -1,0 +1,19 @@
+<div class="info">
+	<div class="info__list">
+		<div class="info__main">
+			<div class="info__title">{{ info[listType].title }}</div>
+			<div class="info__description">{{ info[listType].description }}</div>
+		</div>
+		<div class="info__items">
+			<div *ngFor="let item of info[listType].items" class="info__item">
+				<a
+					[routerLink]="item.link"
+					(click)="changePopupState()"
+					class="info__item-wrapper">
+					<div class="info__item-title">{{ item.name }}</div>
+					<div class="info__item-description">{{ item.description }}</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

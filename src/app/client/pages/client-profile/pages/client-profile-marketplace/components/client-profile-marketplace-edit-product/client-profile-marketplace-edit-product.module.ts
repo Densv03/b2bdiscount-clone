@@ -14,6 +14,7 @@ import { CategoriesDialogModule } from '../../../../../../shared/components/cate
 import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClientProfileAddOfferModule } from '../../../client-profile-add-offer/client-profile-add-offer.module';
 
 @NgModule({
 	imports: [
@@ -31,6 +32,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		B2bNgxCheckboxModule,
 		DragDropModule,
 		TranslateModule,
+		ClientProfileAddOfferModule,
 	],
 	declarations: [ClientProfileMarketplaceEditProductComponent],
 })

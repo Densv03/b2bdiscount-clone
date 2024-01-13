@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../client-profile/services/user/user.service';
 import { PaginationParamsModel } from '../../../../../core/models/pagination-params.model';
 import { PublicUserInfo } from '../../../../../core/models/shared/public-user-info';
+import { SeoService } from '../../../../../core/services/seo/seo.service';
 
 @Component({
 	selector: 'b2b-client-marketplace-supplier-listing',
@@ -37,7 +38,8 @@ export class ClientMarketplaceSupplierListingComponent implements OnInit {
 	constructor(
 		private readonly clientMarketplaceService: ClientMarketplaceService,
 		private route: ActivatedRoute,
-		private userService: UserService
+		private userService: UserService,
+		private seoService: SeoService
 	) {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.user$ = this.userService.getUser$();
@@ -53,6 +55,7 @@ export class ClientMarketplaceSupplierListingComponent implements OnInit {
 		this.supplierProducts$ = this.clientMarketplaceService.supplierListing$;
 		this.totalSupplierProductsLength$ =
 			this.clientMarketplaceService.supplierListingLength$;
+		this.addSeoTags();
 	}
 
 	public updateFilter(filter: any): void {
@@ -77,6 +80,10 @@ export class ClientMarketplaceSupplierListingComponent implements OnInit {
 		);
 	}
 
+	public setSearch(searchValue: string): void {
+		this.formGroup.controls['q'].setValue(searchValue);
+	}
+
 	public loadMoreProducts(clicksAmount: number): void {
 		// this.filteredQueryObj = {...this.filteredQueryObj, limit: this.filteredQueryObj.limit + this.PRODUCTS_LIMIT};
 		// this.clientMarketplaceService.updateSupplierListing(this.supplierId,this.filteredQueryObj, clicksAmount);
@@ -92,6 +99,17 @@ export class ClientMarketplaceSupplierListingComponent implements OnInit {
 			q: new FormControl(null),
 			offset: new FormControl(0),
 			limit: new FormControl(12),
+		});
+	}
+
+	private addSeoTags() {
+		this.supplierInfo$.subscribe(({ companyName }) => {
+			this.seoService.setTitle(
+				`All Products from Supplier ${companyName} | Buy Wholesale Globy Marketplace`
+			);
+			this.seoService.setDescription(
+				`Explore the whole range of products by ${companyName} on our wholesale online marketplace. Reach out to the supplier directly for any questions or orders`
+			);
 		});
 	}
 }

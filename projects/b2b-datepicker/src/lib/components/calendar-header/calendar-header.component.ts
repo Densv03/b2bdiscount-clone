@@ -1,21 +1,20 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-} from '@angular/core';
-import { MatCalendar, MatCalendarCell, MatCalendarView } from "@angular/material/datepicker";
-import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from "@angular/material/core";
+import {ChangeDetectorRef, Component, Inject,} from '@angular/core';
+import {MatCalendar, MatCalendarCell, MatCalendarView} from "@angular/material/datepicker";
+import {DateAdapter, MAT_DATE_FORMATS, MatDateFormats} from "@angular/material/core";
+import moment from "moment";
 
 @Component({
   templateUrl: './calendar-header.component.html',
   styleUrls: ['./calendar-header.component.scss']
 })
 export class CalendarHeaderComponent<D> {
+	public currentView: string;
+
   constructor(
-    private _calendar: MatCalendar<D>,
-    private _dateAdapter: DateAdapter<D>,
-    @Inject(MAT_DATE_FORMATS) private _dateFormats: MatDateFormats,
-    private cdr: ChangeDetectorRef,
+    private readonly _calendar: MatCalendar<D>,
+    private readonly _dateAdapter: DateAdapter<D>,
+    @Inject(MAT_DATE_FORMATS) private readonly _dateFormats: MatDateFormats,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     _calendar.stateChanges.subscribe(() => {
       cdr.markForCheck();
@@ -23,10 +22,13 @@ export class CalendarHeaderComponent<D> {
   }
 
   public get periodLabel(): string | number {
-    return this._calendar.currentView === 'month' ?
-      this._dateAdapter
-        .format(this._calendar.activeDate, this._dateFormats.display.monthYearLabel)
-        .toLocaleUpperCase() : this._dateAdapter.getYear(this._calendar.activeDate);
+		this.currentView = this._calendar.currentView;
+			const period = this._calendar.currentView === 'year' ?
+			this._dateAdapter.getYear(this._calendar.activeDate) :
+			this._dateAdapter
+				.format(this._calendar.activeDate, this._dateFormats.display.monthYearLabel);
+
+			return this.currentView ? period : moment(period).format('LL');
   }
 
   public previousClicked(): void {
@@ -49,7 +51,7 @@ export class CalendarHeaderComponent<D> {
   }
 
   public changeViewMode(): void {
-    this.setCalendarViewMode(this._calendar.currentView);
+		this.setCalendarViewMode(this._calendar.currentView);
     if (this._calendar.currentView === 'year') {
       setTimeout(() => {
         this.updateYearViewRows(this.flattenYearViewRows());

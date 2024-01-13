@@ -37,6 +37,7 @@ export class AuthRegisterSupplierCompanyInfoComponent {
 		'50-100',
 		'> 100',
 	];
+	private selectedCategoriesNames: string[] = [];
 
 	constructor(
 		private readonly fb: FormBuilder,
@@ -50,7 +51,16 @@ export class AuthRegisterSupplierCompanyInfoComponent {
 		this.foundationYear$ = this.getFoundationYear();
 	}
 
+	public setSelectedCategoriesNames(event: string[]): void {
+		this.selectedCategoriesNames = event;
+	}
+
 	public send(): void {
+		if (this.isSubmitting) {
+			this.isSubmitting = false;
+			return;
+		}
+
 		this.authService
 			.getRootRoles()
 			.pipe(untilDestroyed(this))
@@ -59,6 +69,7 @@ export class AuthRegisterSupplierCompanyInfoComponent {
 					...this.form.value,
 					rootRoleId: rootRoles.find((el) => el.name === this.rootRole)!._id,
 					rootRoleName: rootRoles.find((el) => el.name === this.rootRole)!.name,
+					categoriesNames: this.selectedCategoriesNames,
 				};
 				this.supplierCompanyInfo.emit(model);
 			});

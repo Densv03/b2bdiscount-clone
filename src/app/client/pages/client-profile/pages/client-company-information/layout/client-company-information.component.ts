@@ -12,7 +12,7 @@ import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { B2bNgxInputModule, B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxSelectModule, B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { BehaviorSubject, combineLatest, Observable, of, tap } from 'rxjs';
-import { TradebidService } from '../../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../../client-sourcing-request/sourcing-request.service';
 import { filter, first, map } from 'rxjs/operators';
 import {
 	AbstractControl,
@@ -144,7 +144,7 @@ export class ClientCompanyInformationComponent
 		private readonly authService: AuthService,
 		private readonly hotToastService: HotToastService,
 		private readonly translateService: TranslateService,
-		private readonly tradebidService: TradebidService,
+		private readonly sourcingRequestService: SourcingRequestService,
 		private readonly userService: UserService,
 		private readonly apiService: ApiService,
 		private readonly dialog: MatDialog,
@@ -268,7 +268,6 @@ export class ClientCompanyInformationComponent
 		const uploadedDocs = form.value.documents?.filter(
 			(document: any) => !(document instanceof File)
 		);
-
 		const companyInfo = getFormData({
 			...form.value,
 			documents,
@@ -285,7 +284,7 @@ export class ClientCompanyInformationComponent
 			),
 		});
 
-		this.tradebidService
+		this.sourcingRequestService
 			.updateCompanyInfo(companyInfo)
 			.pipe(
 				first(),
@@ -323,6 +322,7 @@ export class ClientCompanyInformationComponent
 						rootRole: this.rootRoles.find(
 							(rootRole) => rootRole._id === rootRoleId
 						),
+						preferences: [...form.value.categories],
 					});
 				});
 		}
@@ -341,6 +341,7 @@ export class ClientCompanyInformationComponent
 			.subscribe(() => {
 				this.authService.updateUser({
 					...this.userService.getUser(),
+					company: form.value.companyName,
 					phone: {
 						countryCode: phoneObj.phoneCountryCode,
 						number: phoneObj.phoneNumber,
@@ -442,7 +443,7 @@ export class ClientCompanyInformationComponent
 			foundationYear: ['', [Validators.required]],
 			employeesNumber: ['', [Validators.required]],
 			annualRevenue: ['', [Validators.required]],
-			phone: ['', [b2bNgxTel(), Validators.required]],
+			phone: ['', [Validators.required]],
 			address: ['', [Validators.required]],
 			website: ['', [siteLink()]],
 			companyDescription: [
@@ -579,18 +580,23 @@ export class ClientCompanyInformationComponent
 	}
 
 	private patchContactsToForm(): void {
-		this.tradebidService
-			.getCompanyData()
-			.pipe(
-				first(),
-				map((res) => {
-					this.initialCompanyData = res;
-					const objectToPatch = this.initialCompanyData;
-					this.patchValueToForm(objectToPatch);
-					this.changeDetectorRef.detectChanges();
-				})
-			)
-			.subscribe();
+		this.patchValueToForm(this.authService.company);
+		if (this.authService.company) {
+			this.patchValueToForm(this.authService.company);
+			this.initialCompanyData = this.authService.company;
+		} else {
+			this.authService
+				.getCompany$()
+				.pipe(
+					first(),
+					map((company) => {
+						this.initialCompanyData = company;
+						this.patchValueToForm(company);
+						this.changeDetectorRef.detectChanges();
+					})
+				)
+				.subscribe();
+		}
 	}
 
 	private scrollToTop(): void {

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from '../../../../environments/environment.prod';
+import { environment } from '../../../../environments/environment';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {
@@ -45,7 +45,10 @@ export class AuthEnterCredentialsComponent {
 			[Validators.required, Validators.email],
 			[this.uniqEmail.uniqLogin()],
 		],
-		password: ['', [Validators.required, Validators.minLength(6)]],
+		password: [
+			'',
+			[Validators.required, Validators.minLength(6), Validators.maxLength(30)],
+		],
 		termsAndConditions: [null, Validators.requiredTrue],
 	});
 

@@ -1,11 +1,21 @@
 <div class="input-wrapper">
+
 	<input [placeholder]="placeholder ? placeholder : 'Choose a date'" [matDatepicker]="picker"
+				 [formControl]="datePicker" [class.has-value]="datePicker.value"
+				 [min]="today"
 				 (click)="picker.open()" readonly [class]="inputClassName">
-	<img *ngIf="iconName"
+
+	<img matDatepickerToggleIcon
 			 b2bNgxIcon [name]="iconName"
 			 [style.top]="iconPosition.top"
 			 [style.left]="iconPosition.left"
 			 [style.right]="iconPosition.right"
 			 [style.bottom]="iconPosition.bottom">
 </div>
-<mat-datepicker #picker [calendarHeaderComponent]="customHeader"></mat-datepicker>
+
+<mat-datepicker #picker [calendarHeaderComponent]="customHeader" [touchUi]="mobileSize$ | async">
+	<mat-datepicker-actions>
+		<button mat-button matDatepickerCancel class="">Cancel</button>
+		<button mat-raised-button matDatepickerApply class="b2b-ngx-button background background-blue">Apply</button>
+	</mat-datepicker-actions>
+</mat-datepicker>

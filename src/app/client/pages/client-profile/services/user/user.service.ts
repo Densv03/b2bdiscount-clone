@@ -60,7 +60,7 @@ export class UserService {
 	}
 
 	public getUser$(): Observable<User> {
-		return this._authQuery.selectUser$.pipe(filter((user) => !!user));
+		return this._authQuery.selectUser$.pipe();
 	}
 
 	public getToken() {

@@ -12,6 +12,7 @@
 	<span>{{childCategory.name}}</span>
 
 	<b2b-ngx-checkbox
+		[customClass]="'selectablePart'"
 		(checkboxChange)="updateCheckbox($event, childCategory._id, category._id)"
 		[checked]="childCategory.checked"></b2b-ngx-checkbox>
 </div>

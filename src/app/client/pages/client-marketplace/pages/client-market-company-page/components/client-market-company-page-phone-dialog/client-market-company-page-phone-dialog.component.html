@@ -1,4 +1,4 @@
-<div class="modal-wrapper">
+<div *ngIf="user$ | async; else withoutUser" class="modal-wrapper">
 	<div>
 		<div class="modal-wrapper__header">
 			<h2 class="modal-wrapper__header__title">Additional telephone numbers</h2>
@@ -38,3 +38,22 @@
 		</div>
 	</div>
 </div>
+
+<ng-template #withoutUser>
+	<div class="wrapper">
+		<img
+			mat-dialog-close
+			class="close-btn"
+			(click)="closeModal()"
+			b2bNgxIcon
+			name="quit" />
+		<div class="text">Only authorized users are able to see contact info.</div>
+		<button
+			b2bNgxButton
+			mat-dialog-close
+			(click)="navigateToLogin()"
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
+			Sign In
+		</button>
+	</div>
+</ng-template>

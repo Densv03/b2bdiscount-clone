@@ -10,7 +10,7 @@
 						(click)="
 							processTitleBtnsClick('Click on Buy button', { type: 'buy1' })
 						"
-						[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
+						[routerLink]="b2bNgxLinkService.getLink('/unclaimed-cargo') | async"
 						class="client-home__title-buy"
 						[class.ru]="ruVideo">
 						{{ 'B2B.BUY' | translate }}</a
@@ -120,7 +120,7 @@
 						processTitleBtnsClick('Click on Buy button', { type: 'buy2' })
 					"
 					class="client-home__main-block-1-header-link"
-					[routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async"
+					[routerLink]="b2bNgxLinkService.getLink('/unclaimed-cargo') | async"
 					[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLUE"
 					>{{ 'B2B.WANT_TO_BUY' | translate }}</a
 				>

@@ -17,6 +17,7 @@ import { NgxPasswordModule } from '@b2b/ngx-password';
 import { MatDialogModule } from '@angular/material/dialog';
 import { B2bNgxDividerModule } from '@b2b/ngx-divider';
 import { TranslateModule } from '@ngx-translate/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 // import {NgxPasswordModule} from "@b2b/ngx-password";
 
 @NgModule({
@@ -39,6 +40,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		// NgxPasswordModule,
 		MatDialogModule,
 		B2bNgxDividerModule,
+		AngularSvgIconModule,
 	],
 })
 export class AuthLogInModule {}

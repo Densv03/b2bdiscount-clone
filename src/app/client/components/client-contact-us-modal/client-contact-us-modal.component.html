@@ -1,4 +1,7 @@
 <div class="client-contact-us">
+	<div mat-dialog-close="" class="close-button">
+		<svg-icon src="assets/icons/quit.svg"></svg-icon>
+	</div>
 	<div class="client-contact-us-header">
 		<h3 class="client-contact-us-header-title">
 			{{ 'CONTACT_US.TITLE' | translate }}
@@ -56,25 +59,25 @@
 			{{ 'BUTTONS.SEND' | translate }}
 		</button>
 	</form>
-	<div class="client-contact-us-footer">
-		<ul class="client-contact-us-footer-icons-list">
-			<li
-				class="client-contact-us-footer-icons-list-item"
-				*ngFor="let socialMedia of socialMedias">
-				<a
-					b2bNgxLink
-					[href]="socialMedia.href"
-					class="client-contact-us-footer-icons-list-item-href">
-					<img
-						b2bNgxIcon
-						[name]="socialMedia.icon"
-						class="client-contact-us-footer-icons-list-item-icon" />
-				</a>
-			</li>
-		</ul>
-		<p class="client-contact-us-footer-description">
-			{{ 'CONTACT_US.FEEDBACK' | translate }}
-			<a href="">support@b2b.discount</a>.
-		</p>
-	</div>
+	<!--	<div class="client-contact-us-footer">-->
+	<!--		<ul class="client-contact-us-footer-icons-list">-->
+	<!--			<li-->
+	<!--				class="client-contact-us-footer-icons-list-item"-->
+	<!--				*ngFor="let socialMedia of socialMedias">-->
+	<!--				<a-->
+	<!--					b2bNgxLink-->
+	<!--					[href]="socialMedia.href"-->
+	<!--					class="client-contact-us-footer-icons-list-item-href">-->
+	<!--					<img-->
+	<!--						b2bNgxIcon-->
+	<!--						[name]="socialMedia.icon"-->
+	<!--						class="client-contact-us-footer-icons-list-item-icon" />-->
+	<!--				</a>-->
+	<!--			</li>-->
+	<!--		</ul>-->
+	<!--		<p class="client-contact-us-footer-description">-->
+	<!--			{{ 'CONTACT_US.FEEDBACK' | translate }}-->
+	<!--			<a href="">support@b2b.discount</a>.-->
+	<!--		</p>-->
+	<!--	</div>-->
 </div>

@@ -5,6 +5,7 @@
     [config]="config"
     [theme]="'gray'"
     formControlName="categoryLevel1"
+		class="category-dropdowns-treeview"
   ></b2b-ngx-treeview>
 
   <div class="subcategory">
@@ -16,16 +17,16 @@
       #subcategory
     >
       <div class="input">
-        <p *ngIf="selectedSubcategories.length === 0; else showCategories">
+        <p *ngIf="selectedSubcategoriesNames.length === 0; else showCategories">
           {{ childCategoryLabel }}
         </p>
 
         <ng-template #showCategories>
           <p>
             {{
-              selectedSubcategories.length > 1
-                ? selectedSubcategories.length + " subcategories selected"
-                : this.selectedSubcategories[0]
+              selectedSubcategoriesNames.length > 1
+                ? selectedSubcategoriesNames.length + " subcategories selected"
+                : this.selectedSubcategoriesNames[0]
             }}
           </p>
         </ng-template>

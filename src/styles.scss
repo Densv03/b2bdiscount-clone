@@ -35,21 +35,29 @@ $fe-b2b-theme: mat.define-light-theme(
 @include mat.all-component-themes($fe-b2b-theme);
 
 @import 'projects/shared/src/styles/index';
+@import 'src/styles/material-override';
+@import 'src/styles/fonts';
 
 html,
 body {
 	height: 100%;
 }
+
 body {
 	margin: 0;
-	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 
 html,
 body {
 	height: 100%;
 }
+
 body {
 	margin: 0;
-	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	font-family: 'Inter', sans-serif;
+}
+
+.mat-tab-group .mat-tab-header {
+	border-bottom: none;
 }

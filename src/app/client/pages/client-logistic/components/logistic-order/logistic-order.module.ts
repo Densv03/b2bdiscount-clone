@@ -3,10 +3,16 @@ import { CommonModule } from '@angular/common';
 import { LogisticOrderComponent } from './logistic-order.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @NgModule({
 	declarations: [LogisticOrderComponent],
 	exports: [LogisticOrderComponent],
-	imports: [CommonModule, AngularSvgIconModule, B2bNgxButtonModule],
+	imports: [
+		CommonModule,
+		AngularSvgIconModule,
+		B2bNgxButtonModule,
+		PageLoaderModule,
+	],
 })
 export class LogisticOrderModule {}

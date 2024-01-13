@@ -64,7 +64,7 @@
 				</div>
 			</a>
 
-			<a [routerLink]="isAuth() ? '/latest-offers' : ''">
+			<a [routerLink]="isAuth() ? '/unclaimed-cargo' : ''">
 				<div class="solutions-item">
 					<div class="head-title">
 						<div class="icon-container background-second-light-blue">
@@ -101,7 +101,7 @@
 				</div>
 			</a>
 
-			<a routerLink="/tradebid/listing">
+			<a routerLink="/sourcing-request/listing">
 				<div class="solutions-item">
 					<div class="head-title">
 						<div class="icon-container background-light-blue">
@@ -147,19 +147,28 @@
 					you were looking for
 				</h1>
 
-				<p class="solutions-description">
-					B2B Discount is a B2B marketplace platform intended to help wholesale
-					traders find new buyers or suppliers on the global market. Become a
-					supplier on our platform to provide your company with higher
-					visibility on the internet, to bring in more customers and boost
-					sales. Our B2B wholesale marketplace will help your business prosper.
-					Every day we improve the platform to make it a marketplace B2B sellers
-					and buyers can count on. Come for new clients and profitable deals,
-					for direct business connections, and for useful industry insights. B2B
-					Discount is an online B2B marketplace accessible to everyone. We don’t
-					charge commissions or interfere with the negotiation process. Join us
-					to integrate your business into the global wholesale market.
-				</p>
+				<div class="solutions-description">
+					<p>
+						Globy is a B2B marketplace platform intended to help wholesale
+						traders find new buyers or suppliers on the global market. Become a
+						supplier on our platform to provide your company with higher
+						visibility on the internet, to bring in more customers and boost
+						sales.
+					</p>
+					<br />
+					<p>
+						Our B2B wholesale marketplace will help your business prosper. Every
+						day we improve the platform to make it a marketplace B2B sellers and
+						buyers can count on. Come for new clients and profitable deals, for
+						direct business connections, and for useful industry insights.
+					</p>
+					<br />
+					<p>
+						Globy is an online B2B marketplace accessible to everyone. We don’t
+						charge commissions or interfere with the negotiation process. Join
+						us to integrate your business into the global wholesale market.
+					</p>
+				</div>
 			</div>
 
 			<img
@@ -170,9 +179,7 @@
 		</div>
 	</section>
 
-	<section
-		class="blog"
-		*ngIf="(articles$ | async) && (articles$ | async)?.length">
+	<section *ngIf="articles$ | async as articles" class="blog">
 		<div class="d-flex justify-content-between align-items-center">
 			<h2 class="blog-title">Read our Blog</h2>
 
@@ -187,7 +194,7 @@
 
 		<div class="block d-flex">
 			<a
-				*ngFor="let article of articles$ | async; let i = index"
+				*ngFor="let article of articles; let i = index"
 				[routerLink]="
 					article?.path ? '/blog/' + article.path : '/blog/' + article._id
 				"

@@ -1,6 +1,6 @@
 <label class="ngx-country-label"><ng-content></ng-content></label>
 <ng-select
-
+	[appendTo]="'body'"
 	(open)="emitOpen()"
 	(close)="emitClose()"
 	[searchable]="true"

@@ -1,6 +1,7 @@
 import { Phone } from './user/phone.model';
 import { Photo } from './photo.model';
 import { DocumentModel } from './document.model';
+import { B2bAuthRoleInterface } from '../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
 
 export interface PublicCompanyInfoModel {
 	address: string;
@@ -12,6 +13,7 @@ export interface PublicCompanyInfoModel {
 	country: string;
 	createdAt: string;
 	documents: DocumentModel[];
+	role?: B2bAuthRoleInterface;
 	logo: Photo;
 	email: string;
 	employeesNumber: string;

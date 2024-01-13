@@ -1,0 +1,13 @@
+<b2b-breadcrumbs [breadcrumbLabel]="'Tariffs'"> </b2b-breadcrumbs>
+
+<div class="profile-wrapper">
+	<mat-tab-group [(selectedIndex)]="selectedIndex">
+		<mat-tab label="Sea">
+			<b2b-sea-profile></b2b-sea-profile>
+		</mat-tab>
+
+		<mat-tab label="Air">
+			<b2b-air-profile></b2b-air-profile>
+		</mat-tab>
+	</mat-tab-group>
+</div>

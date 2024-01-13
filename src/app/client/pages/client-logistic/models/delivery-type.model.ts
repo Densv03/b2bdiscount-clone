@@ -4,4 +4,4 @@ export interface DeliveryTypeModel {
 	activeIcon: string;
 }
 
-export type deliveryType = 'Sea' | 'Air';
+export type deliveryType = 'sea' | 'air';

@@ -40,7 +40,7 @@ import { onlyLatin } from '../../../../../../core/helpers/validator/only-latin';
 import { onlyNumber } from '../../../../../../core/helpers/validator/only-number';
 import { GetUrlExtension } from '../../../../../../core/helpers/function/get-url-extension';
 import { onlyLatinAndNumberAndSymbols } from '../../../../../../core/helpers/validator/only -latin-numbers-symbols';
-import { TradebidService } from '../../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../../client-sourcing-request/sourcing-request.service';
 import { getOfferFormData } from '../get-offer-form-data';
 import { Dialog } from '@angular/cdk/dialog';
 import { MixpanelService } from '../../../../../../core/services/mixpanel/mixpanel.service';
@@ -157,7 +157,7 @@ export class ClientProfileAddOfferComponent
 		private readonly translateService: TranslateService,
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
 		private readonly dialog: Dialog,
-		private readonly tradebidService: TradebidService,
+		private readonly sourcingRequestService: SourcingRequestService,
 		private readonly mixpanelService: MixpanelService,
 		private readonly matDialog: MatDialog
 	) {
@@ -295,7 +295,7 @@ export class ClientProfileAddOfferComponent
 	}
 
 	public patchCompanyDataToForm(): void {
-		this.tradebidService.getCompanyData().subscribe((companyInfo) => {
+		this.sourcingRequestService.getCompanyData().subscribe((companyInfo) => {
 			const { companyName, email, phone } = companyInfo;
 			this.formGroup.patchValue({
 				contactCompanyName: companyName,
@@ -330,7 +330,7 @@ export class ClientProfileAddOfferComponent
 	}
 
 	public backToCompanyForm(): void {
-		this._router.navigate(['tradebid/company-information'], {
+		this._router.navigate(['sourcing-request/company-information'], {
 			queryParams: { url: 'add-rfq' },
 		});
 	}

@@ -3,10 +3,10 @@ import { B2bNgxLinkService } from '@b2b/ngx-link';
 import { getName } from 'country-list';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { UserService } from '../../../client-profile/services/user/user.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { io } from 'socket.io-client';
 import { environment } from '../../../../../../environments/environment';
-import { mergeMap, Observable, of } from 'rxjs';
+import { combineLatest, mergeMap, Observable, of } from 'rxjs';
 import { AuthService } from '../../../../../auth/services/auth/auth.service';
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { User } from '../../../../../core/models/user/user.model';
@@ -14,6 +14,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ContactSupplierFormDialogComponent } from 'src/app/client/pages/client-marketplace/components/contact-supplier-form-dialog/contact-supplier-form-dialog.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SupplierContactSuccessDialogComponent } from '../supplier-contact-success-dialog/supplier-contact-success-dialog.component';
+import { checkSerialNumber } from '../../../../../core/helpers/function/check-serial-number';
+import { Photo } from '../../../../../core/models/photo.model';
 
 const URLS_WITHOUT_CHATS = ['supplier-listing', 'products'];
 
@@ -27,12 +29,13 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 	@Input() product: any;
 	@Input() logoLink: string;
 	@Input() isListing: boolean = false;
+	public params: Params;
 	public chatPossibilityIsHidden: boolean = false;
 	public buttonTitle$: Observable<string> = of('');
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum =
 		B2bNgxButtonThemeEnum;
 	public readonly user$: Observable<User> = this.userService.getUser$();
-
+	public productPhoto: string[];
 	private _socket: any;
 	private token: string = '';
 
@@ -41,10 +44,35 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		private readonly userService: UserService,
 		private readonly router: Router,
 		private readonly authService: AuthService,
-		private readonly dialog: MatDialog
+		private readonly dialog: MatDialog,
+		private readonly activatedRoute: ActivatedRoute
 	) {}
 
 	public ngOnInit(): void {
+		this.productPhoto =
+			this.product.photos.every((photo: any) => 'serialNumber' in photo) &&
+			checkSerialNumber(this.product.photos)
+				? this.product.photos.reduce((acc: any[], val: any) => {
+						acc[val?.serialNumber] = val?.lg;
+						return acc.filter((el) => !!el);
+				  }, [])
+				: this.product.photos
+						.filter((el: Photo) => el.lg)
+						.map((el: Photo) => el.lg);
+
+		combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
+			.pipe(untilDestroyed(this))
+			.subscribe(([params, queryParams]) => {
+				if (this.router.url.includes('/listing')) {
+					this.params = {
+						...queryParams,
+						companyId: params['companyId'] || null,
+						category: params['category'] || null,
+						childCategory: params['childCategory'] || null,
+					};
+				}
+			});
+
 		this.buttonTitle$ = this.user$.pipe(
 			startWith(this.userService.getUser()),
 			map((user) => {
@@ -122,24 +150,30 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
 		if (!this.userService.getUser()) {
+			localStorage.setItem('blocked-route', this.router.url);
 			this.router.navigate(['/auth/log-in']);
 			return;
 		}
+		console.log(this.product.user, this.userService.getUser()?._id);
 		if (this.product.user === this.userService.getUser()?._id) {
-			this.goTo('/b2bmarket/listing/products/' + this.product._id);
+			this.goTo(
+				'/b2bmarket/listing/products/' + this.product.path || this.product._id
+			);
 			return;
 		}
 
 		if (this.product.chatStarted.includes(this.userService.getUser()._id)) {
-			this.chatStart();
+			console.log(
+				'if',
+				this.product.chatStarted,
+				this.userService.getUser()._id
+			);
+			this.chatStart(true);
 		} else {
 			const dialog = this.dialog.open(ContactSupplierFormDialogComponent, {
 				data: {
 					product: this.product,
 				},
-				width: '729px',
-				maxWidth: '729px',
-				maxHeight: '85vh',
 				panelClass: 'contact-supplier-form-dialog',
 			});
 

@@ -1,0 +1,73 @@
+<div class="dialog-wrapper">
+	<h2 class="dialog-title" mat-dialog-title>
+		Create direction
+		<button class="close-button" mat-dialog-close mat-icon-button>
+			<mat-icon class="close-icon">close</mat-icon>
+		</button>
+	</h2>
+
+	<section [formGroup]="directionForm">
+		<div class="search-wrapper">
+			<b2b-ngx-select
+				formControlName="type"
+				[options]="types"
+				bindValue="type"
+				bindLabel="name"
+				placeholder="Select direction type"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY">
+			</b2b-ngx-select>
+		</div>
+
+		<div class="search-wrapper" *ngIf="directionForm.controls['type'].value">
+			<b2b-ngx-country-select
+				*ngIf="
+					directionForm.controls['type'].value === 'city' ||
+						directionForm.controls['type'].value === 'country';
+					else isCity
+				"
+				[customOptions]="countryOptions | async"
+				formControlName="country"
+				class="admin-article__country"
+				placeholder="Select Country"></b2b-ngx-country-select>
+
+			<ng-template #isCity>
+				<b2b-ngx-country-select
+					[customOptions]="cityOptions | async"
+					formControlName="country"
+					class="admin-article__country"
+					placeholder="Select city"></b2b-ngx-country-select>
+			</ng-template>
+		</div>
+
+		<div class="search-wrapper" *ngIf="showNameInput">
+			<input
+				formControlName="name"
+				class="b2b-ngx-input background background-gray"
+				placeholder="Input name of direction" />
+
+			<p
+				[@fadeInOut]
+				class="error"
+				*ngIf="
+					directionForm.get('name').touched &&
+					directionForm.get('name').errors?.['cityExists']
+				">
+				This {{ directionForm.controls['type'].value }} already exist
+			</p>
+		</div>
+
+		<b2b-ngx-checkbox
+			formControlName="active"
+			*ngIf="directionForm.controls['type'].value"
+			>Active</b2b-ngx-checkbox
+		>
+
+		<div class="button-wrapper mt-16">
+			<button
+				class="b2b-ngx-button background background-black"
+				(click)="save()">
+				Save
+			</button>
+		</div>
+	</section>
+</div>

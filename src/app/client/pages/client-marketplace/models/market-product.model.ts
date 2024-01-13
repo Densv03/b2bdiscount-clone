@@ -7,6 +7,7 @@ import { Visibility } from '../../../../core/models/visibility.model';
 export interface MarketProductModel {
 	chatStarted: string[];
 	reasonForDeletion: string;
+	deleted?: boolean;
 	price: Price;
 	amount: Amount;
 	contact: Contact;
@@ -36,7 +37,7 @@ export interface MarketProductModel {
 	title: string;
 	specifications: string;
 	country: string;
-	category: Category[];
+	category: Category | Category[];
 	suppliersType: string;
 	user: string;
 	photos: Photo[];

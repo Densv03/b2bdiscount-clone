@@ -1,5 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+	MAT_DIALOG_DATA,
+	MatDialogModule,
+	MatDialogRef,
+} from '@angular/material/dialog';
 import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import {
 	AbstractControl,
@@ -20,6 +24,11 @@ import { B2bNgxButtonModule, B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { CommonModule } from '@angular/common';
 import { productNameWithHS } from 'src/app/core/helpers/validator/product-name-with-HS';
 import { FadeInOutAnimation } from 'src/app/client/shared/animations/fade-in-out.animation';
+import { TariffsResponse } from 'src/app/client/pages/client-logistic/models/tariffs/tariffs-response.model';
+import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatin } from 'src/app/core/helpers/validator/only-latin';
+import { fullName } from 'src/app/core/helpers/validator/full-name';
+import { UserService } from '../../../client-profile/services/user/user.service';
 
 @Component({
 	selector: 'b2b-submit-inquiry',
@@ -42,14 +51,17 @@ import { FadeInOutAnimation } from 'src/app/client/shared/animations/fade-in-out
 })
 export class SubmitInquiryComponent implements OnInit {
 	public submitInquiryForm: FormGroup = new FormGroup<any>({
-		productName: new FormControl(null, [
+		productNameWithCode: new FormControl(null, [
 			Validators.required,
-			productNameWithHS(),
+			onlyLatinAndNumberAndSymbols(),
 		]),
-		weight: new FormControl(null, [Validators.required]),
-		fullName: new FormControl(null, [Validators.required]),
+		weight: new FormControl(null, [
+			Validators.required,
+			onlyLatinAndNumberAndSymbols(),
+		]),
+		fullName: new FormControl(null, [Validators.required, onlyLatin()]),
 		country: new FormControl(null, [Validators.required]),
-		phoneNumber: new FormControl(null, [Validators.required]),
+		phone: new FormControl(null, [Validators.required]),
 		email: new FormControl(null, [Validators.required, Validators.email]),
 		description: new FormControl(null),
 	});
@@ -67,19 +79,71 @@ export class SubmitInquiryComponent implements OnInit {
 
 	constructor(
 		public dialogRef: MatDialogRef<SubmitInquiryComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: any
+		@Inject(MAT_DIALOG_DATA) public data: TariffsResponse | any,
+		private userService: UserService
 	) {}
 
 	ngOnInit(): void {
-		console.log(this.data);
+		this.patchForm();
+	}
+	private convertCustomDateStringToDate(customDateString: string): string {
+		const dateComponents = customDateString.split('.');
+
+		const year = parseInt(dateComponents[0]);
+		const month = parseInt(dateComponents[1]);
+		const day = parseInt(dateComponents[2]);
+
+		const dateObject = new Date(year, month - 1, day); // Note: months are zero-based in JavaScript Date objects
+
+		return dateObject.toISOString().split('T')[0];
 	}
 
 	public submitForm(): void {
-		console.log(this.submitInquiryForm.value);
 		if (this.submitInquiryForm.invalid) {
 			this.submitInquiryForm.markAllAsTouched();
 			return;
 		}
-		// request to BE
+		const {
+			countryFrom,
+			countryTo,
+			portFrom,
+			portTo,
+			airportFrom,
+			airportTo,
+			_id,
+			readyToLoad,
+			seaLine,
+			tariffSeaId,
+			tariffAirId,
+		} = this.data;
+
+		this.dialogRef.close({
+			...this.submitInquiryForm.value,
+			transportType: portFrom ? 'sea' : 'air',
+			countryFrom: countryFrom._id,
+			countryTo: countryTo?._id,
+			portFrom: portFrom?._id,
+			portTo: portTo?._id,
+			airportFrom: airportFrom?._id,
+			airportTo: airportTo?._id,
+			tariffSeaId,
+			tariffAirId,
+			readyToLoad: this.convertCustomDateStringToDate(readyToLoad),
+			seaLine,
+		});
+	}
+
+	private patchForm(): void {
+		if (!this.userService.isAuth()) {
+			return;
+		}
+
+		const user = this.userService.getUser();
+		this.submitInquiryForm.patchValue({
+			fullName: user.fullName,
+			email: user.email,
+			phone: user.phone,
+			country: user.country,
+		});
 	}
 }

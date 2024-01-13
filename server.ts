@@ -1,164 +1,227 @@
 import 'zone.js/dist/zone-node';
 
-import {ngExpressEngine} from '@nguniversal/express-engine';
+import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
-import {join} from 'path';
+import { join } from 'path';
 
-import {AppServerModule} from './src/main.server';
-import {APP_BASE_HREF} from '@angular/common';
-import {existsSync} from 'fs';
+import { AppServerModule } from './src/main.server';
+import { APP_BASE_HREF } from '@angular/common';
+import { existsSync } from 'fs';
 import cookieParser from 'cookie-parser';
-import * as domino from 'domino';
-import * as fs from 'fs';
-import * as path from 'path';
 import 'localstorage-polyfill';
-import {environment} from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
+import * as crypto from 'crypto';
+import * as cors from 'cors';
+import redirectMiddleware from "./ssr/middlewares/redirect.middleware";
+import { MixpanelService } from "./ssr/core/services/mixpanel.service";
+import { corsOptions } from "./ssr/middlewares/cors/cors.middleware";
 
-const MockBrowser = require('mock-browser').mocks.MockBrowser;
-const mock = new MockBrowser();
-const template = fs
-	.readFileSync(
-		path.join(process.cwd(), 'dist/fe-b2b/browser', 'index.html')
-	)
-	.toString();
+var bodyParser = require('body-parser')
 
-global['navigator'] = mock.getNavigator();
-global['localStorage'] = localStorage;
-const window = domino.createWindow(template);
-global['window'] = window as any;
+const MockBrowser                          = require('mock-browser').mocks.MockBrowser;
+const mock                                 = new MockBrowser();
+global['navigator']                        = mock.getNavigator();
+global['localStorage']                     = localStorage;
+global['window']                           = mock.getWindow();
 (global as any)['window']['cookieconsent'] = {
-	initialise: function () {
-		console.warn('Cookie consent is not working on server side');
-	},
+    initialise: function () {
+        console.warn('Cookie consent is not working on server side');
+    },
 };
-global['document'] = window.document;
+global['document']                         = window.document;
+const secretKey                            = environment.intercomSecretKey;
+
+function generateIntercomHMAC(userEmail: string): string {
+    return crypto.createHmac('sha256',
+                             secretKey).update(userEmail).digest('hex');
+}
+
+// create application/json parser
+var jsonParser = bodyParser.json();
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
-	const server = express();
-	const distFolder = join(process.cwd(), 'dist/fe-b2b/browser');
-	const indexHtml = existsSync(join(distFolder, 'index.original.html'))
-		? 'index.original.html'
-		: 'index';
+    const server     = express();
+    const distFolder = join(process.cwd(),
+                            'dist/fe-b2b/browser');
+    const indexHtml  = existsSync(join(distFolder,
+                                       'index.original.html'))
+        ? 'index.original.html'
+        : 'index';
 
-	server.use(cookieParser());
+    const mixpanelService = new MixpanelService();
+    server.use(cookieParser());
+    server.use(cors());
 
-	// Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-	server.engine(
-		'html',
-		ngExpressEngine({
-			bootstrap: AppServerModule,
-		})
-	);
+    // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
+    server.engine(
+        'html',
+        ngExpressEngine({
+                            bootstrap: AppServerModule,
+                        }),
+    );
+    server.set('view engine',
+               'html');
+    server.set('views',
+               distFolder);
 
-	server.set('view engine', 'html');
-	server.set('views', distFolder);
 
-	// Example Express Rest API endpoints
-	// server.get('/api/**', (req, res) => { });
-	// Serve static files from /browser
-	server.get(
-		'*.*',
-		express.static(distFolder, {
-			maxAge: '1y',
-		})
-	);
+    server.post('/mixpanel/track',
+                jsonParser,
+                (
+                    req: express.Request,
+                    res: express.Response) => {
+                    return mixpanelService.initTrack(req,
+                                                     res);
+                });
 
-	server.use('/assets', express.static(`${distFolder}/assets`));
+    server.post('/mixpanel/people/:action',
+                jsonParser,
+                (
+                    req: express.Request,
+                    res: express.Response) => {
+                    return mixpanelService.initPeople(req,
+                                                     res);
+                });
 
-	server.use((req, res, next) => {
-		const url = normalizeUrl(req.url);
-		const excludedUrls = [
-			'registration-complete',
-			'email-verify',
-			'register-google-account',
-			'register-linkedin-account',
-			'google-sign-in-success',
-			'admin',
-			'email-confirmation',
-			'b2bmarket',
-			'profile'
-		];
+    // Example Express Rest API endpoints
+    // server.get('/api/**', (req, res) => { });
+    // Serve static files from /browser
+    server.get(
+        '*.*',
+        express.static(distFolder,
+                       {
+                           maxAge: '1y',
+                       }),
+    );
 
-		const shouldExclude = excludedUrls.some(urlPart => req.url.includes(urlPart));
-		const redirectToFaceBook = req.headers['user-agent'].indexOf('facebookexternalhit') === -1;
-		if (shouldExclude && !redirectToFaceBook) {
-			next();
-		}
-		else {
-			if (url !== req.url && !shouldExclude && redirectToFaceBook) {
-				res.redirect(301, url);
-			} else {
-				next();
-			}
-		}
-	});
+    server.get('/intercom/hmac',
+               (
+                   req,
+                   res) => {
+                   const userEmail = req.query['userEmail'] as string;
 
-	// All regular routes use the Universal engine
-	server.get('*', (req, res) => {
-		console.log('REQQQQQQQQQQ')
-		console.log(req.url)
-		console.log(req.get('host'))
+                   if (typeof userEmail !== 'string' || !userEmail) {
+                       res.status(400).send('User email is required.');
+                       return;
+                   }
 
-		res.render(indexHtml, {
-			req,
-			providers: [{provide: APP_BASE_HREF, useValue: req.baseUrl}],
-		});
-	});
+                   try {
+                       const hmac = generateIntercomHMAC(userEmail);
+                       res.json({hmac});
+                   } catch (error) {
+                       res.status(500).send('Error generating HMAC.');
+                   }
+               });
 
-	return server;
+
+    server.use('/assets',
+               express.static(`${distFolder}/assets`));
+
+    server.use(redirectMiddleware)
+
+    server.use((
+                   req,
+                   res,
+                   next) => {
+        const url          = normalizeUrl(req.url);
+        const excludedUrls = [
+            'registration-complete',
+            'email-verify',
+            'register-google-account',
+            'register-linkedin-account',
+            'google-sign-in-success',
+            'admin',
+            'email-confirmation',
+            'b2bmarket',
+            'profile',
+        ];
+
+        const shouldExclude      = excludedUrls.some(urlPart => req.url.includes(urlPart));
+        const redirectToFaceBook = req.headers['user-agent'].indexOf('facebookexternalhit') === -1;
+        if (shouldExclude && !redirectToFaceBook) {
+            next();
+        } else {
+            if (url !== req.url && !shouldExclude && redirectToFaceBook) {
+                res.redirect(301,
+                             url);
+            } else {
+                next();
+            }
+        }
+    });
+
+    // All regular routes use the Universal engine
+    server.get('*',
+               (
+                   req,
+                   res) => {
+                   res.render(indexHtml,
+                              {
+                                  req,
+                                  providers: [{
+                                      provide:  APP_BASE_HREF,
+                                      useValue: req.baseUrl,
+                                  }],
+                              });
+               });
+    return server;
 }
 
 function run(): void {
-	const port = process.env['PORT'] || 4000;
+    const port = process.env['PORT'] || 4000;
 
-	// Start up the Node server
-	const server = app();
+    // Start up the Node server
+    const server = app();
 
-	server.listen(port, () => {
-		console.log(`Node Express server listening on http://localhost:${port}`);
-	});
+    server.listen(port,
+                  () => {
+                      console.log(`Node Express server listening on http://localhost:${port}`);
+                  });
 }
 
 function normalizeUrl(url: string): string {
-	url = url.toLowerCase();
-	url = url.replace(/\/+/g, '/');
 
-	if (
-		url.endsWith('index.php') ||
-		url.endsWith('home.php') ||
-		url.endsWith('index.html') ||
-		url.endsWith('home.html') ||
-		url.endsWith('index.htm') ||
-		url.endsWith('home.htm')
-	) {
-		url = url.replace(/\/(index|home)\.(php|html|htm)$/, '/');
-	}
-	if (!url.endsWith('/')) {
-		url += '/';
-	}
+    const urlParts    = url.split('?');
+    let normalizedUrl = urlParts[0]?.toLowerCase();
 
-	if (url.endsWith('.')) {
-		url = url.slice(0, -1);
-	}
-	// if (url.includes('www.')) {
-	// 	url = url.replace(/^www\./, '');
-	// }
-	// if (!url.startsWith('https://')) {
-	// 	url = url.replace(/^http:\/\//, 'https://');
-	// }
+    if (urlParts.length > 1) {
+        normalizedUrl += `?${urlParts[1]}`;
+    }
 
-	return url;
+    if (url.includes('#')) {
+        const fragmentParts = normalizedUrl.split('#');
+        const fragment      = fragmentParts[1]?.toLowerCase();
+        normalizedUrl       = fragmentParts[0] + '#' + fragment;
+    }
+
+    if (normalizedUrl.endsWith('.')) {
+        normalizedUrl = normalizedUrl.slice(0,
+                                            -1);
+    }
+
+    if (
+        normalizedUrl.endsWith('index.php') ||
+        normalizedUrl.endsWith('home.php') ||
+        normalizedUrl.endsWith('index.html') ||
+        normalizedUrl.endsWith('home.html') ||
+        normalizedUrl.endsWith('index.htm') ||
+        normalizedUrl.endsWith('home.htm')
+    ) {
+        normalizedUrl = normalizedUrl.replace(/\/(index|home)\.(php|html|htm)$/,
+                                              '/');
+    }
+    return normalizedUrl;
 }
 
 // Webpack will replace 'require' with '__webpack_require__'
 // '__non_webpack_require__' is a proxy to Node 'require'
 // The below code is to ensure that the server is run only when not requiring the bundle.
 declare const __non_webpack_require__: NodeRequire;
-const mainModule = __non_webpack_require__.main;
+const mainModule     = __non_webpack_require__.main;
 const moduleFilename = (mainModule && mainModule.filename) || '';
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
-	run();
+    run();
 }
 
 export * from './src/main.server';

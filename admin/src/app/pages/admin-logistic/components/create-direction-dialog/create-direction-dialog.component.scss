@@ -1,0 +1,31 @@
+.dialog-title {
+	display: flex;
+	justify-content: space-between;
+}
+
+.mt-16 {
+	margin-top: 16px;
+}
+
+section {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	min-height: 300px;
+
+	.button-wrapper {
+		display: flex;
+		justify-content: center;
+
+		button {
+			padding: 7.5px 15px;
+		}
+	}
+}
+
+.error {
+	font-size: 14px;
+	color: #e63d3d;
+	margin-top: 7px;
+	margin-bottom: 0;
+}

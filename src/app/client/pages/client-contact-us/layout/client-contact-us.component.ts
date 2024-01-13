@@ -8,6 +8,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ApiService } from '../../../../core/services/api/api.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { SeoService } from '../../../../core/services/seo/seo.service';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +30,8 @@ export class ClientContactUsComponent implements OnInit {
 		private readonly _formBuilder: FormBuilder,
 		private readonly _apiService: ApiService,
 		private readonly _hotToastrService: HotToastService,
-		private readonly translateService: TranslateService
+		private readonly translateService: TranslateService,
+		private readonly seoService: SeoService
 	) {
 		this.subjectOptions = [
 			{
@@ -47,6 +49,10 @@ export class ClientContactUsComponent implements OnInit {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
+	}
+
+	ngOnInit() {
+		this.addSeoTags();
 	}
 
 	private getFormGroup() {
@@ -110,5 +116,10 @@ export class ClientContactUsComponent implements OnInit {
 		// modal.close();
 	}
 
-	ngOnInit() {}
+	private addSeoTags() {
+		this.seoService.setTitle('Contact Globy B2B Marketplace Customer Service');
+		this.seoService.setDescription(
+			'Leave us your email address and a contact number, and we will reach out to you shortly'
+		);
+	}
 }

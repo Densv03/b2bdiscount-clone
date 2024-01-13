@@ -20,7 +20,9 @@ export class AuthRegisterBuyerCompanyInfoComponent {
 	@Output() public buyerCompanyInfo = new EventEmitter<any>();
 
 	@Input() public rootRole: string = '';
-	@Input() public set setSubmitting(value: boolean) {
+
+	@Input()
+	public set setSubmitting(value: boolean) {
 		this.isSubmitting = value;
 	}
 
@@ -29,6 +31,8 @@ export class AuthRegisterBuyerCompanyInfoComponent {
 	public readonly b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 	public readonly b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public form: FormGroup<any> = this.getFormGroup();
+
+	private selectedCategoriesNames: string[] = [];
 
 	constructor(
 		private readonly fb: FormBuilder,
@@ -39,6 +43,11 @@ export class AuthRegisterBuyerCompanyInfoComponent {
 	}
 
 	public send(): void {
+		if (this.isSubmitting) {
+			this.isSubmitting = false;
+			return;
+		}
+
 		this.authService
 			.getRootRoles()
 			.pipe(untilDestroyed(this))
@@ -48,9 +57,14 @@ export class AuthRegisterBuyerCompanyInfoComponent {
 					rootRoleId: rootRoles.find((el) => el.name === this.rootRole)!._id,
 					rootRoleName: rootRoles.find((el) => el.name === this.rootRole)!.name,
 					categories: this.form.value.categories,
+					categoriesNames: this.selectedCategoriesNames,
 				};
 				this.buyerCompanyInfo.emit(model);
 			});
+	}
+
+	public setSelectedCategoriesNames(event: string[]): void {
+		this.selectedCategoriesNames = event;
 	}
 
 	private getFormGroup(): FormGroup {

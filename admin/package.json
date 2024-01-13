@@ -1,0 +1,8 @@
+{
+	"name": "admin",
+	"version": "0.0.1",
+	"dependencies": {
+		"@kolkov/angular-editor": "^3.0.0-beta.0"
+	},
+	"sideEffects": false
+}

@@ -1,37 +1,24 @@
-<!--<div *ngIf="(loading$ | async) === false">-->
-<!--	<ul *ngIf="marketplaceProducts?.length; else noMarketplaceProducts" class="marketplace-grid">-->
-<!--		<div *ngFor="let product of marketplaceProducts" class="grid-item">-->
-<!--			<b2b-client-marketplace-product-item [product]="product"> </b2b-client-marketplace-product-item>-->
-<!--		</div>-->
-<!--	</ul>-->
-<!--	<ng-template #noMarketplaceProducts> No products with that filters. </ng-template>-->
-<!--</div>-->
-
-<div class="marketplace-grid">
-	<ng-container *ngIf="(isMobileView$ | async) === true; else desktopView">
-		<ng-container
-			*ngIf="marketplaceProducts?.length; else noMarketplaceProducts">
-			<ng-container *ngFor="let item of mobileMarketplaceProducts">
-				<ng-container *ngIf="item === 'divider'; else product">
-					<b2b-client-marketplace-banner
-						*ngIf="showBanner"
-						[siteSection]="siteSections.B2B_MARKET"
-						class="divider"></b2b-client-marketplace-banner>
+<ng-container *ngIf="marketplaceProducts?.length; else noMarketplaceProducts">
+	<div class="marketplace-grid" [class.grid-between]="classGridBetween">
+		<ng-container *ngIf="(isMobileView$ | async) === true; else desktopView">
+			<ng-container
+				*ngIf="marketplaceProducts?.length; else noMarketplaceProducts">
+				<ng-container *ngFor="let item of mobileMarketplaceProducts">
+					<ng-container *ngIf="item === 'divider'; else product">
+						<b2b-client-marketplace-banner
+							*ngIf="showBanner"
+							[siteSection]="siteSections.B2B_MARKET"
+							class="divider"></b2b-client-marketplace-banner>
+					</ng-container>
+					<ng-template #product>
+						<b2b-client-marketplace-product-item
+							[isListing]="showBanner"
+							[product]="item"></b2b-client-marketplace-product-item>
+					</ng-template>
 				</ng-container>
-				<ng-template #product>
-					<b2b-client-marketplace-product-item
-						[isListing]="true"
-						[product]="item"></b2b-client-marketplace-product-item>
-				</ng-template>
 			</ng-container>
 		</ng-container>
-		<ng-template #noMarketplaceProducts>
-			No products with that filters.</ng-template
-		>
-	</ng-container>
-	<ng-template #desktopView>
-		<ng-container
-			*ngIf="marketplaceProducts?.length; else noMarketplaceProducts">
+		<ng-template #desktopView>
 			<ng-container *ngFor="let item of desktopMarketplaceProducts">
 				<ng-container *ngIf="item === 'divider'; else product">
 					<b2b-client-marketplace-banner
@@ -41,17 +28,18 @@
 				</ng-container>
 				<ng-template #product>
 					<b2b-client-marketplace-product-item
-						[isListing]="true"
+						[isListing]="showBanner"
 						[product]="item"></b2b-client-marketplace-product-item>
 				</ng-template>
 			</ng-container>
-		</ng-container>
-		<ng-template #noMarketplaceProducts>
-			No products with that filters.</ng-template
-		>
-	</ng-template>
-</div>
+		</ng-template>
+	</div>
+</ng-container>
 
 <b2b-ngx-skeleton
 	*ngIf="loading$ | async"
 	[option]="marketplaceSkeletonOptions"></b2b-ngx-skeleton>
+
+<ng-template #noMarketplaceProducts>
+	<b2b-no-products></b2b-no-products>
+</ng-template>

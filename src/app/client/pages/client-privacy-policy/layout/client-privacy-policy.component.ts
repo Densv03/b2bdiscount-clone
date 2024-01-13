@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { SeoService } from '../../../../core/services/seo/seo.service';
 
 const PRIVACY_POLICY = [
 	{
@@ -12,7 +13,7 @@ We have to warn that We use all possible ways to safely store Your Personal Data
 	},
 	{
 		title: `Terms & Conditions`,
-		description: `“B2B Discount” - refers to “B2B Discount Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of State of Washington of the United States of America (hereinafter – “Company”, “We”, “Us” or “Our”).
+		description: `“Globy” - refers to “Globy Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of State of Washington of the United States of America (hereinafter – “Company”, “We”, “Us” or “Our”).
 
 “Platform” — the website https://b2b.discount/ and all its content and links, which can be used by You (hereinafter “Platform”).
 
@@ -38,7 +39,7 @@ We have to warn that We use all possible ways to safely store Your Personal Data
 	},
 	{
 		title: `Controller info`,
-		description: `Name of the legal person: B2B Discount Inc.
+		description: `Name of the legal person: Globy Inc.
 EIN: 86-3844749
 Origin and/or legal address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665
 `,
@@ -265,6 +266,19 @@ As We do not store any credit card details or transaction information, it is imp
 	styleUrls: ['./client-privacy-policy.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientPrivacyPolicyComponent {
+export class ClientPrivacyPolicyComponent implements OnInit {
 	public readonly options = PRIVACY_POLICY;
+
+	constructor(private seoService: SeoService) {}
+
+	ngOnInit() {
+		this.addSeoTags();
+	}
+
+	private addSeoTags() {
+		this.seoService.setTitle('Privacy Policy | Globy B2B Marketplace');
+		this.seoService.setDescription(
+			'Read Globy’s privacy policy. Learn how we protect your data and adhere to confidentiality and security standards.'
+		);
+	}
 }

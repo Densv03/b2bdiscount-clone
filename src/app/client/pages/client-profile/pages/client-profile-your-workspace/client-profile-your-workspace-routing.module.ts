@@ -12,15 +12,15 @@ const routes: Routes = [
 			{
 				path: '',
 				pathMatch: 'full',
-				redirectTo: 'tradebid',
+				redirectTo: 'sourcing-request',
 			},
 			{
-				path: 'tradebid',
+				path: 'sourcing-request',
 				canActivate: [DefaultRoleGuard],
 				loadChildren: () =>
 					import(
-						'../client-profile-tradebid/client-profile-tradebid.module'
-					).then((m) => m.ClientProfileTradebidModule),
+						'../client-profile-sourcing-request/client-profile-sourcing-request.module'
+					).then((m) => m.ClientProfileSourcingRequestModule),
 			},
 			{
 				path: 'b2bmarket',

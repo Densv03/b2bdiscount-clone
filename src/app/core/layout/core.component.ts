@@ -1,19 +1,18 @@
 import {
 	AfterViewInit,
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	OnInit,
 	ViewChild,
 } from '@angular/core';
-import { filter, map, startWith } from 'rxjs/operators';
+import { debounceTime, filter, map, startWith } from 'rxjs/operators';
 
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
-// import { ClientContactUsModalComponent } from "../../client/components/client-contact-us-modal/client-contact-us-modal.component";
-// import { CoreSidenavAnimation } from "../../shared/animations/core-sidenav.animation";
 import { MobileSidenavLinkModel } from '../models/mobile-sidenav-link.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SocketService } from '../../client/services/socket/socket.service';
 import { AuthService } from '../../auth/services/auth/auth.service';
 import { UserService } from '../../client/pages/client-profile/services/user/user.service';
@@ -21,13 +20,12 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { Observable } from 'rxjs';
 import { User } from '../models/user/user.model';
 import { SlideInOutAnimation } from '../../client/shared/animations/slide-in-out.animation';
-import {
-	NgcCookieConsentService,
-	NgcStatusChangeEvent,
-} from 'ngx-cookieconsent';
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PlatformService } from '../../client/services/platform/platform.service';
 import { overwrite } from 'country-list';
+import { HeaderService } from '../../client/components/header/header.service';
+import { HeaderPopupState } from '../../client/components/header/types/header-popup-state.interface';
 
 @UntilDestroy()
 @Component({
@@ -38,6 +36,10 @@ import { overwrite } from 'country-list';
 	animations: [SlideInOutAnimation],
 })
 export class CoreComponent implements OnInit, AfterViewInit {
+	public headerPopupState$: Observable<HeaderPopupState> =
+		this.headerService.popupState$();
+	public toolTipIsOpened$: Observable<boolean> =
+		this.headerService.toolTipIsOpened$();
 	public readonly sidenavAccountOptions!: any[];
 	public readonly sidenavWorkspaceOptions!: any[];
 	public readonly headerLinks!: any[];
@@ -50,9 +52,11 @@ export class CoreComponent implements OnInit, AfterViewInit {
 	public readonly sidenavOptions: any;
 	public isUserLoading$: Observable<boolean> =
 		this.authService.isUserLoading$.pipe(startWith(true));
+	public headerIsTransparent = true;
 
 	public isMobileView = false;
 	public animationState: 'in' | 'out' = 'out';
+	public mobileProfileOptions: any[] = this.getMobileProfileOptions();
 	@ViewChild('backdrop', { static: true }) backdrop?: ElementRef;
 
 	constructor(
@@ -63,8 +67,9 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		private readonly userService: UserService,
 		private readonly hotToastService: HotToastService,
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
-		private ccService: NgcCookieConsentService,
-		private platformService: PlatformService
+		private readonly ccService: NgcCookieConsentService,
+		private readonly platformService: PlatformService,
+		private readonly headerService: HeaderService
 	) {
 		if (this.platformService.isBrowser) {
 			this.initSession();
@@ -81,6 +86,15 @@ export class CoreComponent implements OnInit, AfterViewInit {
 	}
 
 	public ngOnInit(): void {
+		this.updateNavOnStateChange();
+		if (this.platformService.isServer) {
+			return;
+		}
+
+		this.ccService.statusChange$.subscribe((data) => {
+			this.setCookie('cookieconsent_status', data.status, 365);
+		});
+
 		this.userService
 			.getUser$()
 			.pipe(filter((user) => !!user))
@@ -99,13 +113,34 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		this.isMobileView = 888 > innerWidth;
 	}
 
+	private updateNavOnStateChange(): void {
+		this.headerService.profileNavIsOpened$().subscribe((state) => {
+			if (!state) {
+				this.animationState = 'out';
+			}
+		});
+	}
+
 	public get isBrowser(): boolean {
 		return this.platformService.isBrowser;
 	}
 
 	public toggleShowPopUp(link?: string): void {
+		const popupWasHidden = this.animationState === 'out';
+
 		if (link) this._router.navigate([link]);
 		this.animationState = this.animationState === 'in' ? 'out' : 'in';
+		if (this.animationState === 'in') {
+			this.headerService.updateHeaderTransparent(false);
+			this.headerService.updateProfileNavIsOpened(true);
+		} else {
+			const headerIsTransparent =
+				this._router.url.replace(/\?.*$/, '') === '/' && window.scrollY < 100;
+			if (headerIsTransparent) {
+				this.headerService.updateHeaderTransparent(true);
+			}
+			this.headerService.updateProfileNavIsOpened(false);
+		}
 	}
 
 	public openInDevelopmentPopUp(option: MobileSidenavLinkModel): void {
@@ -199,7 +234,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 
 	public async logOut(): Promise<void> {
 		this.authService.logOut();
-		await this._router.navigateByUrl('');
+		await this._router.navigate(['']);
 	}
 
 	public onActivate(): void {
@@ -232,7 +267,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			},
 			{
 				label: 'SIDENAV.TRADE_BID',
-				link: '/tradebid/listing',
+				link: '/sourcing-request/listing',
 				icon: 'tradebid',
 			},
 			{
@@ -283,9 +318,15 @@ export class CoreComponent implements OnInit, AfterViewInit {
 				label: 'new',
 				labelBackground: '#e80202',
 			},
+			// {
+			// 	text: 'Quick Logistics',
+			// 	link: '/quick-logistics',
+			// 	label: 'new',
+			// 	labelBackground: '#e80202',
+			// },
 			{
 				text: 'HEADER.UNCLAIMED_CARGO',
-				link: '/latest-offers',
+				link: '/unclaimed-cargo',
 				labelBackground: '#005dff',
 			},
 			// {
@@ -295,7 +336,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			// },
 			{
 				text: 'HEADER.TRADE_BID',
-				link: '/tradebid/listing',
+				link: '/sourcing-request/listing',
 			},
 			{
 				text: 'HEADER.BLOG',
@@ -321,16 +362,16 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			{
 				label: 'HEADER.MARKET',
 				link: '/b2bmarket',
-				isNew: true,
+				// isNew: true,
 			},
-			{
-				label: 'LOGISTIC',
-				link: '/logistic',
-				isNew: true,
-			},
+			// {
+			// 	label: 'Quick Logistics',
+			// 	link: '/quick-logistics',
+			// 	isNew: true,
+			// },
 			{
 				label: 'HEADER.UNCLAIMED_CARGO',
-				link: '/latest-offers',
+				link: '/unclaimed-cargo',
 			},
 			// {
 			//   label: "HEADER.CALCULATE_LOGISTICS",
@@ -339,7 +380,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			// },
 			{
 				label: 'HEADER.TRADE_BID',
-				link: '/tradebid/listing',
+				link: '/sourcing-request/listing',
 			},
 			{
 				label: 'HEADER.BLOG',
@@ -376,7 +417,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		return [
 			{
 				label: 'Trade Bid',
-				link: '/tradebid',
+				link: '/sourcing-request',
 			},
 			// {
 			// 	label: "Trade Wiki",
@@ -423,7 +464,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			},
 			{
 				label: 'Sourcing Request',
-				link: '/profile/your-workspace/tradebid',
+				link: '/profile/your-workspace/sourcing-request',
 				icon: 'sidenav-line',
 			},
 			{
@@ -444,6 +485,46 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			{ code: 'KP', name: 'Korea' },
 			{ code: 'SH', name: 'St. Helena Island' },
 			{ code: 'VC', name: 'St. Vincent Island' },
+			{ code: 'TR', name: 'Turkey' },
+			{ code: 'TW', name: 'Taiwan' },
+			{ code: 'KP', name: 'North Korea' },
+			{ code: 'KR', name: 'South Korea' },
 		]);
+	}
+
+	closeHeaderPopup(): void {
+		this.headerService.closeHeader();
+	}
+
+	private getMobileProfileOptions(): any[] {
+		return [
+			{
+				name: 'My products',
+				icon: 'assets/icons/header/profile/my-products-profile.svg',
+				link: '/profile/your-workspace/b2bmarket',
+			},
+			{
+				name: 'Sourcing Request',
+				icon: 'assets/icons/header/profile/sourcing-request-profile.svg',
+				link: '/profile/your-workspace/sourcing-request',
+			},
+			{
+				name: 'Unclaimed Cargo',
+				icon: 'assets/icons/header/profile/unclaimed-cargo-profile.svg',
+				link: '/profile/your-workspace/unclaimed-cargo',
+			},
+			{
+				name: 'Settings',
+				icon: 'assets/icons/header/profile/settings-profile.svg',
+				link: '/profile/settings',
+			},
+		];
+	}
+
+	private setCookie(name: string, value: string, days: number): void {
+		const d = new Date();
+		d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+		const expires = 'expires=' + d.toUTCString();
+		document.cookie = name + '=' + value + ';' + expires + ';path=/';
 	}
 }

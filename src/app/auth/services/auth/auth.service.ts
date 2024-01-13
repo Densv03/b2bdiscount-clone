@@ -9,6 +9,9 @@ import { AuthStore } from '../../state/auth/auth.store';
 import { RegisterResponseInterface } from '../../../../../projects/shared/src/interfaces/auth-responses.interface';
 import { B2bAuthRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
 import { MixpanelService } from '../../../core/services/mixpanel/mixpanel.service';
+import { Router } from '@angular/router';
+import { PlatformService } from '../../../client/services/platform/platform.service';
+import { PublicCompanyInfoModel } from '../../../core/models/public-company-info.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -27,7 +30,9 @@ export class AuthService {
 		private readonly apiService: ApiService,
 		private readonly authStore: AuthStore,
 		private readonly authQuery: AuthQuery,
-		private readonly mixpanelService: MixpanelService
+		private readonly mixpanelService: MixpanelService,
+		private readonly platformService: PlatformService,
+		private readonly router: Router
 	) {
 		setTimeout(() => {
 			this.initUser();
@@ -38,16 +43,32 @@ export class AuthService {
 		const token = this.getToken();
 		this.updateToken(token || '');
 
-		this.apiService.get<User>('user/').subscribe({
-			next: (user) => {
-				this.updateUser(<User>user);
-				this.isUserLoadingSource.next(false);
-			},
-			error: () => {
-				this.updateUser(null);
-				this.isUserLoadingSource.next(false);
-			},
-		});
+		this.apiService
+			.get<User>('user/')
+			.pipe(take(1))
+			.subscribe({
+				next: (user) => {
+					this.updateUser(<User>user);
+					this.isUserLoadingSource.next(false);
+					this.backToBlockedRoute();
+				},
+				error: () => {
+					this.updateUser(null);
+					this.isUserLoadingSource.next(false);
+				},
+			});
+
+		this.apiService
+			.get<PublicCompanyInfoModel>('tradeBid/get-company-data')
+			.pipe(take(1))
+			.subscribe({
+				next: (company) => {
+					this.updateCompany(<PublicCompanyInfoModel>company);
+				},
+				error: () => {
+					this.updateCompany(null);
+				},
+			});
 	}
 
 	public returnInitedUser(): Observable<User> {
@@ -71,12 +92,22 @@ export class AuthService {
 		});
 	}
 
+	public updateCompany(company: PublicCompanyInfoModel | null): void {
+		this.authStore.update({
+			company,
+		});
+	}
+
 	public sendEmailAgain(email: any) {
 		return this.apiService.post('auth/sendRegisterMail', { email });
 	}
 
 	public getUser() {
 		return this.authQuery.selectUser$;
+	}
+
+	public getCompany$() {
+		return this.authQuery.selectCompany$;
 	}
 
 	public get role(): B2bAuthRoleInterface | null {
@@ -89,6 +120,10 @@ export class AuthService {
 
 	public get user(): User {
 		return this.authQuery.getValue().user;
+	}
+
+	public get company(): PublicCompanyInfoModel {
+		return this.authQuery.getValue().company;
 	}
 
 	public getToken() {
@@ -110,10 +145,13 @@ export class AuthService {
 	public logOut() {
 		localStorage.removeItem('token');
 		this.mixpanelService.logout();
-		this.authStore.update({
-			user: null,
-			token: null,
-		});
+		if (this.platformService.isBrowser) {
+			this.authStore.update({
+				user: null,
+				token: null,
+				company: null,
+			});
+		}
 	}
 
 	public getRoles(): Observable<B2bAuthRoleInterface[]> {
@@ -183,5 +221,14 @@ export class AuthService {
 					this.initUser();
 				})
 			);
+	}
+
+	private backToBlockedRoute(): void {
+		if (!localStorage.getItem('blocked-route')) {
+			return;
+		}
+
+		this.router.navigate([localStorage.getItem('blocked-route')]);
+		localStorage.removeItem('blocked-route');
 	}
 }

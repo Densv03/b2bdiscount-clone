@@ -1,10 +1,10 @@
 <div class="filter">
 	<div [ngSwitch]="deliveryType$ | async">
 		<ng-container
-			*ngSwitchCase="'Sea'"
+			*ngSwitchCase="'sea'"
 			[ngTemplateOutlet]="containerTypesFilter">
 		</ng-container>
-		<ng-container *ngSwitchCase="'Air'" [ngTemplateOutlet]="shipmentFilter">
+		<ng-container *ngSwitchCase="'air'" [ngTemplateOutlet]="shipmentFilter">
 		</ng-container>
 	</div>
 
@@ -16,31 +16,31 @@
 					<div class="shipment__item-title">{{ shipment.name }}</div>
 					<div class="shipment__item-info">
 						<input
+							#weightInput
 							type="number"
 							id="weightValue"
-							[(ngModel)]="shipment.defaultValue"
+							[value]="shipInputValue"
+							(input)="
+								+weightInput.value > 11000
+									? (weightInput.value = '11000')
+									: null;
+								shipInputValue = +weightInput.value
+							"
 							[min]="shipment.min"
 							[max]="shipment.max" />
 						<div class="shipment__item-measure">{{ shipment.measure }}</div>
 					</div>
 				</div>
-				<mat-slider
-					[(ngModel)]="shipment.defaultValue"
-					[min]="shipment.min"
-					[max]="shipment.max"
-					[step]="shipment.step">
-					<input matSliderThumb />
-				</mat-slider>
-				<!--				<input type="range" id="weightInput" name="weight" [(ngModel)]="shipment.defaultValue" [min]="shipment.min" [max]="shipment.max" [step]="shipment.step">-->
-
-				<!--				<input-->
-				<!--					#rangeInput-->
-				<!--					[value]="item.defaultValue"-->
-				<!--					[min]="item.min"-->
-				<!--					[max]="item.max"-->
-				<!--					[step]="item.step"-->
-				<!--					type="range"-->
-				<!--					class="shipment__item-range">-->
+				<div class="air-slider">
+					<mat-slider
+						[(ngModel)]="shipInputValue"
+						[min]="shipment.min"
+						(input)="onSliderInput($event)"
+						[max]="shipment.max"
+						[step]="shipment.step">
+						<input matSliderThumb />
+					</mat-slider>
+				</div>
 			</div>
 		</div>
 	</ng-template>
@@ -49,15 +49,16 @@
 		<div class="filter__name">Types of container</div>
 		<div class="filter__list">
 			<label
-				*ngFor="let containerType of containerTypes"
-				(click)="chooseContainerType(containerType)"
+				*ngFor="let containerItem of containerItems"
+				(click)="chooseContainerType(containerItem.code)"
 				class="filter__item">
 				<input
 					type="radio"
+					[checked]="containerItem.checked"
 					class="filter__radio-input"
 					name="containerType"
-					[value]="containerType" />
-				<div class="filter__label">{{ containerType }}</div>
+					[value]="containerItem.code" />
+				<div class="filter__label">{{ containerItem.name }}</div>
 			</label>
 		</div>
 	</ng-template>

@@ -1,8 +1,11 @@
 @import "projects/shared/src/styles";
 
 ::ng-deep {
-	.ngx-treeview-item-button {
-		flex-direction: row-reverse;
+	.category-dropdowns-treeview {
+		.ngx-treeview-item-button {
+			flex-direction: row-reverse;
+			padding-right: 30px !important;
+		}
 	}
 }
 

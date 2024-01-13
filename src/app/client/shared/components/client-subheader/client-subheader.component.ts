@@ -7,7 +7,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { NavigationStart, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserService } from '../../../pages/client-profile/services/user/user.service';
-import { CreateRfqDialogComponent } from '../../../pages/client-tradebid/components/create-rfq-dialog/create-rfq-dialog.component';
+import { CreateRfqDialogComponent } from '../../../pages/client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ClaimButtonsClassesEnum } from '../../enums/claim-buttons-classes.enum';
 

@@ -42,5 +42,6 @@ import { TranslateModule } from '@ngx-translate/core';
 		B2bNgxRadioModule,
 		TranslateModule,
 	],
+	exports: [B2bScrollToInvalidControl],
 })
 export class ClientProfileAddOfferModule {}

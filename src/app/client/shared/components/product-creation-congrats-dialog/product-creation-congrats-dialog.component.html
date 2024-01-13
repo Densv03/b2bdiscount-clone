@@ -21,9 +21,9 @@
 		<div class="content__buttons">
 			<button
 				mat-dialog-close=""
-				routerLink="/profile/your-workspace/tradebid/my-rfq"
 				[theme]="b2bNgxButtonThemeEnum.OUTLINE_WHITE"
 				class="content__button"
+				(click)="redirectToMyRfq()"
 				b2bNgxButton>
 				My requests
 			</button>

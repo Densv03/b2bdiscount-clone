@@ -141,6 +141,9 @@ export class AuthRegisterGoogleAccountComponent implements OnInit {
 			await this._userService.deleteUser().toPromise();
 			await this._authService.logOut();
 		}
+		if (this.platformService.isServer) {
+			return;
+		}
 		window.location.href = '/';
 	}
 
@@ -214,14 +217,11 @@ export class AuthRegisterGoogleAccountComponent implements OnInit {
 						})
 					)
 					.subscribe((user) => {
-						console.log('USER: ', user);
 						this.user = user;
 						this.token = updatedToken;
-						const mixpanel = {
-							User_id: user?._id,
+						this.mixpanelService.track('Sign-Up 1st step completed', {
 							'Auth Method': user?.socialAuthType,
-						};
-						this.mixpanelService.signUp(mixpanel, 'Sign-Up 1st step completed');
+						});
 						this._authService.updateToken(updatedToken);
 						this._authService.updateRole(role);
 						this.router.navigate(['/auth/register']);
@@ -235,11 +235,6 @@ export class AuthRegisterGoogleAccountComponent implements OnInit {
 				// 		console.log('USER: ', user)
 				// 		this.user = user;
 				// 		this.token = updatedToken;
-				// 		const mixpanel = {
-				// 			'User_id': user?._id,
-				// 			'Auth Method': user?.socialAuthType
-				// 		};
-				// 		this.mixpanelService.signUp(mixpanel, 'Sign-Up 1st step completed');
 				// 		this._authService.updateToken(updatedToken);
 				// 		this._authService.updateRole(role);
 				// 		this.router.navigate(['/auth/register']);

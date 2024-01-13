@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { ParticipateStepModel } from './models/participate-step.model';
 import { ProgramBenefitModel } from './models/program-benefit.model';
@@ -11,15 +11,17 @@ import { untilDestroyed } from '@ngneat/until-destroy';
 import { PromotionFeatureModel } from './models/promotion-feature.model';
 import { AuthService } from '../../../auth/services/auth/auth.service';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { take } from 'rxjs/operators';
+import { SeoService } from '../../../core/services/seo/seo.service';
 
 @Component({
 	selector: 'b2b-client-market-promotion',
 	templateUrl: './client-market-promotion.component.html',
 	styleUrls: ['./client-market-promotion.component.scss'],
 })
-export class ClientMarketPromotionComponent {
+export class ClientMarketPromotionComponent implements OnInit {
 	public readonly b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public readonly b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 
@@ -33,7 +35,9 @@ export class ClientMarketPromotionComponent {
 		private readonly authService: AuthService,
 		private readonly _hotToastrService: HotToastService,
 		private readonly translateService: TranslateService,
-		private readonly activatedRoute: ActivatedRoute
+		private readonly activatedRoute: ActivatedRoute,
+		private readonly router: Router,
+		private readonly seoService: SeoService
 	) {
 		if (this.activatedRoute.snapshot.params?.['lang']) {
 			this.lang = this.activatedRoute.snapshot.params['lang'];
@@ -43,8 +47,39 @@ export class ClientMarketPromotionComponent {
 		this.user$ = this.authService.user$;
 	}
 
+	ngOnInit() {
+		this.seoService.setTitle(
+			'Supplier Promotion Program: Elevate Your Wholesale Business with Globy'
+		);
+		this.seoService.setDescription(
+			'Take advantage of the Globy Promotion Program for Suppliers. Utilize the power of B2B e-commerce, expand your brand, and attract more buyers.'
+		);
+	}
+
 	public scrollToBlock(el: HTMLElement) {
 		el.scrollIntoView({ behavior: 'smooth' });
+	}
+
+	public joinUs(): void {
+		this.user$.pipe(take(1)).subscribe((user) => {
+			if (user) {
+				this.router.navigate(['/profile/your-workspace/b2bmarket']);
+			} else {
+				this.router.navigate(['/auth/register-credentials']);
+				localStorage.setItem('blocked-route', this.router.url);
+			}
+		});
+	}
+
+	public applyAsSupplier(): void {
+		this.user$.pipe(take(1)).subscribe((user) => {
+			if (user) {
+				this.router.navigate(['/b2bmarket/product']);
+			} else {
+				localStorage.setItem('blocked-route', this.router.url);
+				this.router.navigate(['/auth/register-credentials']);
+			}
+		});
 	}
 
 	public sendMessage(formGroup: FormGroup) {
@@ -77,19 +112,19 @@ export class ClientMarketPromotionComponent {
 			{
 				title: 'MARKET_PROMOTION.ACCESS_FOR_SUPPLIERS',
 				description: 'MARKET_PROMOTION.OUR_DATABASE_OF_BUYERS',
-				releaseDate: 'MARKET_PROMOTION.COMING_IN_SEPTEMBER',
+				releaseDate: 'MARKET_PROMOTION.COMING_IN_MAY',
 				photo: 'market-promotion/workspace',
 			},
 			{
 				title: 'MARKET_PROMOTION.COMPANY_STATUS',
 				description: 'MARKET_PROMOTION.AFTER_PRE-MODERATION',
-				releaseDate: 'MARKET_PROMOTION.COMING_IN_SEPTEMBER',
+				releaseDate: 'MARKET_PROMOTION.COMING_IN_MAY',
 				photo: 'market-promotion/market',
 			},
 			{
 				title: 'MARKET_PROMOTION.BRAND_PROMOTION',
 				description: 'MARKET_PROMOTION.YOU_WILL_BE_ABLE',
-				releaseDate: 'MARKET_PROMOTION.COMING_IN_OCTOBER',
+				releaseDate: 'MARKET_PROMOTION.COMING_IN_JUNE',
 				photo: 'market-promotion/chart',
 			},
 		];

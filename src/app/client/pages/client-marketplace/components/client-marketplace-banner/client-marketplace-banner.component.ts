@@ -15,7 +15,7 @@ import { ClaimButtonsClassesEnum } from '../../../../shared/enums/claim-buttons-
 import { ApplicationSectionsEnum } from '../../../../shared/enums/application-sections.enum';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { CreateRfqDialogComponent } from '../../../client-tradebid/components/create-rfq-dialog/create-rfq-dialog.component';
+import { CreateRfqDialogComponent } from '../../../client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
 
 type userRoles = 'unauthorized' | 'buyer' | 'supplier';
@@ -132,9 +132,9 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 
 	ngAfterViewInit() {
 		setTimeout(() => {
-			this.bannerTextSource.next(this.getBannerText());
-			this.buttonSource.next(
-				this.bannerText[this.siteSection][this.detectUserRole()].button
+			this?.bannerTextSource.next(this.getBannerText());
+			this?.buttonSource.next(
+				this.bannerText[this.siteSection][this.detectUserRole()]?.button
 			);
 			this.cdr.detectChanges();
 		}, 200);
@@ -148,10 +148,7 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 
 		if (button.modal) {
 			this.dialog.open(button.modal, {
-				maxHeight: '90vh',
-				maxWidth: '90vw',
-				width: '65vw',
-				panelClass: 'add-rfq-popup',
+				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
 			});
 		} else {
 			this.router.navigate([button.link]);

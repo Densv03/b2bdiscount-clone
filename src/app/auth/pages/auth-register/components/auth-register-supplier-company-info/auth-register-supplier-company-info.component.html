@@ -13,6 +13,7 @@
 		</b2b-ngx-select>
 
 		<b2b-ngx-category-dropdowns
+			(emitNames)="setSelectedCategoriesNames($event)"
 			formControlName="categories"
 			class="auth-register-individual-account__main-input">
 		</b2b-ngx-category-dropdowns>
@@ -47,7 +48,7 @@
 
 		<button
 			b2bNgxButton
-			[disabled]="form.invalid || isSubmitting"
+			[disabled]="form.invalid"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 			class="auth-register-individual-account__create-account-button"
 			type="submit">

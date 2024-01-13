@@ -11,11 +11,7 @@
 					class="supplier-btn"
 					b2bNgxButton
 					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-					[routerLink]="
-						(isAuth$ | async) === true
-							? '/profile/your-workspace/b2bmarket'
-							: '/auth/register-credentials'
-					">
+					(click)="applyAsSupplier('/profile/your-workspace/b2bmarket')">
 					{{ 'MARKET_PROMO.APPLY_AS_SUPPLIER' | translate }}
 				</button>
 				<button
@@ -154,11 +150,7 @@
 			<button
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-				[routerLink]="
-					(isAuth$ | async) === true
-						? '/b2bmarket/product'
-						: '/auth/register-credentials'
-				">
+				(click)="applyAsSupplier('/b2bmarket/product')">
 				{{ 'MARKET_PROMO.ADD_PRODUCT' | translate }}
 			</button>
 		</div>
@@ -169,7 +161,7 @@
 		<p [innerHTML]="'MARKET_PROMO.DONT_WAIT_FOR_BUYERS' | translate"></p>
 	</section>
 
-	<section class="map">
+	<section class="map d-flex justify-content-center align-items-center">
 		<div class="d-flex justify-content-center align-items-center flex-column">
 			<h2 class="map-title">
 				{{ 'MARKET_PROMO.COMPANY_MISSION' | translate }}
@@ -179,51 +171,51 @@
 		</div>
 	</section>
 
-	<div class="registration">
-		<div class="title">{{ 'MARKET_PROMO.FREE_REGISTRATION' | translate }}</div>
-		<div class="subtitle">
-			{{ 'MARKET_PROMO.STARTUP_THAT_ENTERED' | translate }}
-		</div>
-		<div #circle class="skill">
-			<div class="outer">
-				<div class="inner">
-					<div id="number">
-						{{ getDaysToEndDate() }}
-					</div>
-					<div class="label">{{ 'MARKET_PROMO.DAYS' | translate }}</div>
-					<div class="text">
-						{{ 'MARKET_PROMO.BEFORE_THE_END' | translate }}
-					</div>
-				</div>
-			</div>
-			<svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1">
-				<circle
-					id="circle"
-					cx="50"
-					cy="50"
-					[attr.r]="radius"
-					[attr.stroke-width]="width"
-					id="circle"
-					[attr.stroke-dashoffset]="getStrokeOffset()"
-					[attr.stroke-dasharray]="circleLength" />
-			</svg>
-		</div>
+	<!--	<div class="registration">-->
+	<!--		<div class="title">{{ 'MARKET_PROMO.FREE_REGISTRATION' | translate }}</div>-->
+	<!--		<div class="subtitle">-->
+	<!--			{{ 'MARKET_PROMO.STARTUP_THAT_ENTERED' | translate }}-->
+	<!--		</div>-->
+	<!--		<div #circle class="skill">-->
+	<!--			<div class="outer">-->
+	<!--				<div class="inner">-->
+	<!--					<div id="number">-->
+	<!--						{{ getDaysToEndDate() }}-->
+	<!--					</div>-->
+	<!--					<div class="label">{{ 'MARKET_PROMO.DAYS' | translate }}</div>-->
+	<!--					<div class="text">-->
+	<!--						{{ 'MARKET_PROMO.BEFORE_THE_END' | translate }}-->
+	<!--					</div>-->
+	<!--				</div>-->
+	<!--			</div>-->
+	<!--			<svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1">-->
+	<!--				<circle-->
+	<!--					id="circle"-->
+	<!--					cx="50"-->
+	<!--					cy="50"-->
+	<!--					[attr.r]="radius"-->
+	<!--					[attr.stroke-width]="width"-->
+	<!--					id="circle"-->
+	<!--					[attr.stroke-dashoffset]="getStrokeOffset()"-->
+	<!--					[attr.stroke-dasharray]="circleLength" />-->
+	<!--			</svg>-->
+	<!--		</div>-->
 
-		<div class="remind">
-			{{ 'MARKET_PROMO.DO_NOT_MISS_OPPORTUNITY' | translate }}
-		</div>
+	<!--		<div class="remind">-->
+	<!--			{{ 'MARKET_PROMO.DO_NOT_MISS_OPPORTUNITY' | translate }}-->
+	<!--		</div>-->
 
-		<button
-			b2bNgxButton
-			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-			[routerLink]="
-				(isAuth$ | async) === true
-					? '/b2bmarket/product'
-					: '/auth/register-credentials'
-			">
-			{{ 'MARKET_PROMO.CREATE_A_FREE_ACCOUNT' | translate }}
-		</button>
-	</div>
+	<!--		<button-->
+	<!--			b2bNgxButton-->
+	<!--			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"-->
+	<!--			[routerLink]="-->
+	<!--				(isAuth$ | async) === true-->
+	<!--					? '/b2bmarket/product'-->
+	<!--					: '/auth/register-credentials'-->
+	<!--			">-->
+	<!--			{{ 'MARKET_PROMO.CREATE_A_FREE_ACCOUNT' | translate }}-->
+	<!--		</button>-->
+	<!--	</div>-->
 
 	<b2b-write-to-support></b2b-write-to-support>
 </div>

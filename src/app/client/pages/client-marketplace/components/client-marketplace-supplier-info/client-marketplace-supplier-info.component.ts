@@ -6,6 +6,9 @@ import { environment } from '../../../../../../environments/environment';
 import { User } from '../../../../../core/models/user/user.model';
 import { UserService } from '../../../client-profile/services/user/user.service';
 import { Router } from '@angular/router';
+import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { ClientMarketCompanyPagePhoneDialogComponent } from '../../pages/client-market-company-page/components/client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'b2b-client-marketplace-supplier-info',
@@ -16,20 +19,25 @@ export class ClientMarketplaceSupplierInfoComponent implements OnInit {
 	@Input() supplierInfo: PublicUserInfo;
 	@Input() supplierId: string;
 
+	public apiAddress = environment.apiUrl;
+	public b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 	public b2bNgxButtonTheme: typeof B2bNgxButtonThemeEnum =
 		B2bNgxButtonThemeEnum;
 	public user: User;
 	public token: string;
 	public userIsAuth: boolean;
 	private socket: any;
+	private isPhoneNumberVisible = false;
 
 	constructor(
 		private readonly userService: UserService,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly dialog: MatDialog
 	) {
 		this.user = this.userService.getUser();
 		this.userIsAuth = this.userService.isAuth();
 	}
+
 	ngOnInit(): void {
 		this.userService.getToken$().subscribe((token) => {
 			this.token = token;
@@ -44,10 +52,9 @@ export class ClientMarketplaceSupplierInfoComponent implements OnInit {
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
 
-		// if (this.product.user === this.user._id) {
-		// 	this.goTo('/marketplace/products/' + this.product._id);
-		// 	return;
-		// }
+		if (this.supplierInfo?._id === this.user?._id) {
+			return;
+		}
 
 		if (!this.userIsAuth) {
 			this.router.navigate(['/auth/log-in']);
@@ -62,6 +69,21 @@ export class ClientMarketplaceSupplierInfoComponent implements OnInit {
 				this.goTo('profile/your-workspace/b2bmarket/chat/' + data._id);
 			});
 		}
+	}
+
+	public openPhoneModal(): void {
+		this.dialog
+			.open(ClientMarketCompanyPagePhoneDialogComponent, {
+				data: {
+					dialCode: this.supplierInfo.dialCode,
+					phoneNumber: this.supplierInfo.number,
+					isPhoneVisible: this.isPhoneNumberVisible,
+				},
+			})
+			.afterClosed()
+			.subscribe((data) => {
+				this.isPhoneNumberVisible = data;
+			});
 	}
 
 	private openConnection(token: string): void {

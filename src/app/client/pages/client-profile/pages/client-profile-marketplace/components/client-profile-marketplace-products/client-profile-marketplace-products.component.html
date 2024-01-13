@@ -26,7 +26,10 @@
 <div *ngIf="!(loading$ | async)" class="products">
 	<b2b-client-profile-marketplace-product-item
 		*ngFor="let product of products$ | async"
-		[product]="product"></b2b-client-profile-marketplace-product-item>
+		[product]="product"
+		[sortType]="
+			sortType$ | async
+		"></b2b-client-profile-marketplace-product-item>
 </div>
 
 <b2b-ngx-skeleton

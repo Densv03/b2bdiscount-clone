@@ -1,6 +1,9 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { PlatformService } from '../../../services/platform/platform.service';
+import { ActivatedRoute } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'b2b-pagination',
 	templateUrl: './pagination.component.html',
@@ -14,7 +17,19 @@ export class PaginationComponent {
 
 	private readonly deviceIsMobile: boolean;
 
-	constructor(private platformService: PlatformService) {
+	constructor(
+		private platformService: PlatformService,
+		private readonly activatedRoute: ActivatedRoute
+	) {
+		this.activatedRoute.queryParams
+			.pipe(untilDestroyed(this))
+			.subscribe((params) => {
+				if (!params?.hasOwnProperty('page')) {
+					this.togglePage(1);
+				} else {
+					this.togglePage(Number(params?.['page']));
+				}
+			});
 		this.togglePageNumber = new EventEmitter<number>();
 		this.currentPage = 1;
 		this.togglePage(1);
@@ -30,7 +45,7 @@ export class PaginationComponent {
 		}
 		const count = Math.ceil(this.length / this.perPage);
 		let emptyArray = [];
-		if (count <= 9) {
+		if (count <= 8) {
 			emptyArray = new Array(Math.ceil(count)).fill(null);
 			return emptyArray.map((item, index) => ({
 				label: (index + 1).toString(),
@@ -46,24 +61,30 @@ export class PaginationComponent {
 		if (number === this.currentPage) {
 			return;
 		}
+
 		this.currentPage = number;
 		this.togglePageNumber.emit(number);
+		this.scroll();
 	}
 
 	public togglePrevPage() {
 		if (this.currentPage == 1) {
 			return;
 		}
+
 		this.currentPage = this.currentPage - 1;
 		this.togglePageNumber.emit(this.currentPage);
+		this.scroll();
 	}
 
 	public toggleNextPage() {
 		if (this.currentPage == Math.ceil(this.length / this.perPage)) {
 			return;
 		}
+
 		this.currentPage = this.currentPage + 1;
 		this.togglePageNumber.emit(this.currentPage);
+		this.scroll();
 	}
 
 	private fillEmptyArray(
@@ -122,5 +143,13 @@ export class PaginationComponent {
 		}
 
 		return arr;
+	}
+
+	public scroll(): void {
+		window.scroll({
+			top: 0,
+			left: 0,
+			behavior: 'smooth',
+		});
 	}
 }

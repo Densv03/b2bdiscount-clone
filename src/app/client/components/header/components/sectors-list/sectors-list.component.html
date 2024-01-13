@@ -1,0 +1,18 @@
+<div [@fadeIn] class="sectors">
+	<div class="sectors__list">
+		<a
+			*ngFor="let sector of (categories$ | async)?.categories"
+			[routerLink]="['/b2bmarket', sector.path]"
+			(click)="changePopupState()"
+			class="sectors__item">
+			<div class="sectors__item-icon">
+				<svg-icon
+					class="{{ sector.path }}"
+					[src]="getCategoryIconLink(sector.path)">
+				</svg-icon>
+			</div>
+
+			<span class="sector__item-text">{{ sector.name }}</span>
+		</a>
+	</div>
+</div>

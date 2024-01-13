@@ -1,0 +1,13 @@
+<div class="content">
+	<div class="list">
+		<a
+			*ngFor="let item of instructions[listType].items"
+			[routerLink]="item.link.length ? item.link : ''"
+			(click)="hideTooltip(item.link)"
+			class="list__item">
+			<img b2bNgxIcon [name]="item.icon" group="header/" alt="icon" />
+			<div class="list__item-title">{{ item.title }}</div>
+			<div class="list__item-description">{{ item.description }}</div>
+		</a>
+	</div>
+</div>

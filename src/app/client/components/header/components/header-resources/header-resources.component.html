@@ -1,0 +1,33 @@
+<div class="resources">
+	<div *ngFor="let column of resourcesOptions" class="resources__column">
+		<div class="resources__column-header">
+			<img [src]="column.icon" class="resources__column-icon" />
+			<div class="resources__column-name">{{ column.name }}</div>
+		</div>
+		<div class="resources__column-list">
+			<ng-container *ngFor="let item of column.options">
+				<a
+					*ngIf="!item?.navigate?.isExternal; else externalLink"
+					[routerLink]="item?.navigate?.link || ''"
+					[target]="item?.navigate?._target || '_self'"
+					(click)="processLinkClick(item)"
+					class="resources__item">
+					<div class="resources__item-name">{{ item.name }}</div>
+					<div class="resources__item-description">{{ item.description }}</div>
+				</a>
+				<ng-template #externalLink>
+					<a
+						href="{{ item?.navigate?.link }}"
+						[target]="item?.navigate?._target || '_blank'"
+						(click)="processLinkClick(item)"
+						class="resources__item">
+						<div class="resources__item-name">{{ item.name }}</div>
+						<div class="resources__item-description">
+							{{ item.description }}
+						</div>
+					</a>
+				</ng-template>
+			</ng-container>
+		</div>
+	</div>
+</div>

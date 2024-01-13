@@ -10,6 +10,17 @@
 	height: 100%;
 	position: relative;
 
+	&::ng-deep {
+		input::placeholder,
+		textarea::placeholder {
+			opacity: 0.6;
+		}
+
+		input,
+		textarea {
+			border-radius: 8px;
+		}
+	}
 
 	.content {
 		width: calc(100% - 206px);
@@ -46,7 +57,6 @@
 			@include breakpoint('2') {
 				padding: 16px 16px 16px 16px;
 			}
-
 
 			.shipment-row {
 				display: flex;
@@ -111,6 +121,10 @@
 					}
 
 					&__control {
+						&__textarea {
+							height: 96px;
+						}
+
 						@include breakpoint('2') {
 							margin-bottom: 16px;
 						}
@@ -173,13 +187,13 @@
 // mat dialog override
 ::ng-deep {
 	.submit-inquiry-dialog {
-		.mat-dialog-container {
+		.mat-mdc-dialog-container .mdc-dialog__surface {
 			border-radius: 14px;
 			background: #f3f6f8;
 			box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
 		}
 
-		@include breakpoint("2") {
+		@include breakpoint('2') {
 			width: 100vw !important;
 		}
 	}

@@ -54,7 +54,7 @@
 		"CHOOSE_ROLE": "Please choose the role for registration.",
 		"CONFIRM_DESCRIPTION": "Yes, we know. <br>\n\t\t\tAn email to confirm an email.\n\t\t\tPlease validate your email address in order to get started.",
 		"RECOVERY": "Recovery link sent",
-		"CHECK": "”Pls check your inbox or spam email. If you don't receive the instructions within a minute or two, try again  or contact us support@b2b.discount.",
+		"CHECK": "”A follow-up email has been sent. Pls check your inbox or spam email. If you don't receive the instructions within a minute or two, try again  or contact us support@b2b.discount.",
 		"RESEND": "resend the link ",
 		"PASSWORD_RECOVERY": "Password recovery",
 		"PASSWORD_RECOVERY_DESCRIPTION": "Enter your email & we'll send you a recovery link",
@@ -75,7 +75,7 @@
 		"REGISTER_GOOGLE": "Register with Google",
 		"REGISTER_LINKEDIN": "Register with LinkedIn",
 		"AGREE": "I agree to",
-		"BADGE": "B2B Discount is an international platform, so all the data you enter during registration must be in English.",
+		"BADGE": "Globy is an international platform, so all the data you enter during registration must be in English.",
 		"INVALID_EMAIL_ADDRESS": "Invalid email address, please try again"
 	},
 	"SIDENAV": {
@@ -193,12 +193,12 @@
 	"HOW_IT_WORKS": {
 		"TITLE": "How it works",
 		"DESCRIPTION_1": "The world's first marketplace for unclaimed cargo.",
-		"DESCRIPTION_2": "B2B Discount – is a global marketplace aimed at minimizing the risk for the company that has unclaimed cargo and enabling the importer and exporter to purchase such goods at a significant discount.",
+		"DESCRIPTION_2": "Globy – is a global marketplace aimed at minimizing the risk for the company that has unclaimed cargo and enabling the importer and exporter to purchase such goods at a significant discount.",
 		"DESCRIPTION_3": "Below you can see how it works.",
 		"SUBTITLE": "That's how it is",
 		"SUBDESCRIPTION": "Often there are situations when the importer refuses the cargo that is already in transit/on the way. This has many consequences: demurrage, loss of money, time and cargo.",
 		"SECTION_1_TITLE": "Find a counterparty",
-		"SECTION_1_DESCRIPTION": "In such situations, B2B Discount helps the seller to find a new buyer and the buyer to get the goods they need at a profit.",
+		"SECTION_1_DESCRIPTION": "In such situations, Globy helps the seller to find a new buyer and the buyer to get the goods they need at a profit.",
 		"SECTION_2_TITLE": "Minimum discount 5%",
 		"SECTION_2_DESCRIPTION": "Listing goods for sale, the seller provides the description and photos of the items and submits shipping documents. He also sets the price with a special discount at a minimum of 5% of the contract value.",
 		"SECTION_3_TITLE": "Deal",
@@ -212,8 +212,8 @@
 		"INTER_LEGAL": "Interlegal",
 		"DESCRIPTION_1": "Provided by our partners",
 		"DESCRIPTION_2": "In general, our team replies within 24 hours.",
-		"DESCRIPTION_3": "Here at B2B Discount we aim to create a perfect environment for our users and help them tackle the problem of unclaimed cargo in the smoothest way possible.\n\nWe understand that international trade is already complicated, but dealing with abandoned cargo requires even more effort and knowledge of legal matters. Importers and exporters simply can’t follow all the changes in regulations worldwide.\n\nThis is exactly why B2B Discount decided to partner with the international law firm Interlegal for user assistance. Initial consultation will be free for any user registered at B2B Discount. Further legal support in unclaimed cargo cases can be requested by the client from the Interlegal experts.\n\n",
-		"DESCRIPTION_4": "specializes in shipping, transportation, and international trade laws. The company has been on the market since 1995 and its lawyers excel in solving all kinds of legal troubles including unclaimed cargo. They are also very customer-oriented and apply a flexible approach to every case. B2B Discount’s partnership with Interlegal is our way to ensure that no trader will be left without help in their unclaimed cargo predicament. Register now and get advice from one of the most experienced law firms in the field."
+		"DESCRIPTION_3": "Here at Globy we aim to create a perfect environment for our users and help them tackle the problem of unclaimed cargo in the smoothest way possible.\n\nWe understand that international trade is already complicated, but dealing with abandoned cargo requires even more effort and knowledge of legal matters. Importers and exporters simply can’t follow all the changes in regulations worldwide.\n\nThis is exactly why Globy decided to partner with the international law firm Interlegal for user assistance. Initial consultation will be free for any user registered at Globy. Further legal support in unclaimed cargo cases can be requested by the client from the Interlegal experts.\n\n",
+		"DESCRIPTION_4": "specializes in shipping, transportation, and international trade laws. The company has been on the market since 1995 and its lawyers excel in solving all kinds of legal troubles including unclaimed cargo. They are also very customer-oriented and apply a flexible approach to every case. Globy’s partnership with Interlegal is our way to ensure that no trader will be left without help in their unclaimed cargo predicament. Register now and get advice from one of the most experienced law firms in the field."
 	},
 	"NOT_FOUND": {
 		"TITLE": "Sorry, this page isn’t found"
@@ -247,7 +247,7 @@
 		"DOCUMENTS_DESCRIPTION": "Please add documents confirming your ownership of the shipment. All documents will be checked by site administration. If you do not want to show documents to users, move the switch to Hidden.",
 		"REVIEW": "Review and post",
 		"LAST_ACTIVITY": "Last Activity",
-		"BADGE": "B2B Discount is an international platform, therefore, the product info must be entered in English",
+		"BADGE": "Globy is an international platform, therefore, the product info must be entered in English",
 		"BADGE_MODERATE": "Usually moderation occurs within an hour. However, sometimes it can be longer, up to 24 hours",
 		"VESSEL_NUMBER": "Vessel number",
 		"CONTAINER_NUMBER": "Container number",
@@ -285,7 +285,7 @@
 	},
 	"GOOGLE-AUTH-COMPLETE": {
 		"TITLE": "Your account has been created successfully",
-		"SUBTITLE": "Thank you for registering at B2B Discount. We're glad you've become a user of our platform and hope that you'll greatly enjoy your experience.",
+		"SUBTITLE": "Thank you for registering at Globy. We're glad you've become a user of our platform and hope that you'll greatly enjoy your experience.",
 		"BACK_TO_HOME": "Back to Homepage",
 		"VIEW_OFFERS": "View offers",
 		"B2BMarket": "B2B Market"
@@ -304,7 +304,7 @@
 
 	"REGISTRATION_COMPLETE": {
 		"TITLE": "You are almost done creating your account.",
-		"SUBTITLE": "Thank you for registering at B2B Discount. We're glad you've become a user of our platform and hope that you'll greatly enjoy your experience.",
+		"SUBTITLE": "Thank you for registering at Globy. We're glad you've become a user of our platform and hope that you'll greatly enjoy your experience.",
 		"LOG_IN": "Please log in to start.",
 		"SEND_EMAIL_AGAIN": "Send Email Again"
 	},
@@ -463,7 +463,8 @@
 		"VIEW_OFFERS": "view offers",
 		"LATEST_OFFERS": "view offers",
 		"PAYMENT_DETAILS": "add payment details",
-		"ADD_PAYMENT_DETAILS": "add payment details"
+		"ADD_PAYMENT_DETAILS": "add payment details",
+		"ADD_PRODUCT": "add product"
 	},
 	"UNITS": {
 		"TONS": "tons",
@@ -572,7 +573,7 @@
 	"ACCOUNT_NOT_REGISTERED": {
 		"TITLE_1": "This account",
 		"TITLE_2": "is not registered",
-		"SUBTITLE": "Log in at B2B Discount",
+		"SUBTITLE": "Log in at Globy",
 		"ANOTHER_ACCOUNT": "Log in with another account",
 		"NEW_ACCOUNT": "Create new account"
 	},
@@ -643,11 +644,11 @@
 		"DISPLAY_AS_MANY_PRODUCTS": "Display as many products as you like and as often as you need. No restrictions or charges are applied to the quantity or regularity of your uploads.",
 		"ADD_PRODUCT": "ADD PRODUCT",
 		"INSTANT_ACCESS_TO_CUSTOMERS": "Instant access to customers",
-		"DONT_WAIT_FOR_BUYERS": "Don't wait for buyers to write to you, start communication first. After adding a product to the <a class=\"link\" href=\"/b2bmarket/listing\">B2B Market</a>, you will have access to our database of over 25,000 buyers around the world",
+		"DONT_WAIT_FOR_BUYERS": "Don't wait for buyers to write to you, start communication first. After adding a product to the <a class=\"link\" href=\"/b2bmarket/listing\">B2B Market</a>, you will have access to our database of over 40,000 buyers around the world",
 		"COMPANY_MISSION": "The company’s mission",
 		"BRING_TOGETHER": "Bring together all FEA participants to create a more comfortable and secure environment for all parties involved in international trade and logistics.",
 		"FREE_REGISTRATION": "Free Registration",
-		"STARTUP_THAT_ENTERED": "B2B Discount is a US-based startup that entered the international market in the summer of 2021. All services of the platform will be free of charge until 31.12.2023.",
+		"STARTUP_THAT_ENTERED": "Globy is a US-based startup that entered the international market in the summer of 2021. All services of the platform will be free of charge until 31.12.2023.",
 		"DAYS": "Days",
 		"BEFORE_THE_END": "before the end of the free period",
 		"DO_NOT_MISS_OPPORTUNITY": "Do not miss the opportunity to get all the benefits of our service now.",
@@ -655,12 +656,12 @@
 	},
 	"MARKET_PROMOTION": {
 		"SUPPLIER_PROMOTION_PROGRAM": "SUPPLIER PROMOTION PROGRAM",
-		"RAPIDLY_GROWING_INTERNATIONAL": "<b>B2B Discount</b> is a rapidly growing international platform for wholesale trade with more than <b>30 000</b> registered users. Further development of our platform lies in mutually beneficial and close cooperation with suppliers.",
+		"RAPIDLY_GROWING_INTERNATIONAL": "<b>Globy</b> is a rapidly growing international platform for wholesale trade with more than <b>45 000</b> registered users. Further development of our platform lies in mutually beneficial and close cooperation with suppliers.",
 		"LAUNCHING_NEW_SERVICE": "This is why we’re launching a new service called <b>the B2B Market Suppliers Promotion Program (SPP).</b>",
 		"WITH_THIS_SERVICE": "With this service, we will promote registered suppliers in the digital space and through our business partners.",
 		"JOIN_US": "Join us",
 		"SERVICE_WILL_BE_FREE": "The new service will be free",
-		"SERVICE_DATE": "until August 31, 2023",
+		"SERVICE_DATE": "until May 31, 2024",
 		"ALL_SPP": "for all those joining the SPP.",
 		"PARTICIPATE_PROGRAM": "Here is what you need to do to participate in the Program:",
 		"REGISTER_AS_SUPPLIER": "Register on the platform as a supplier.",
@@ -690,10 +691,10 @@
 		"COMING_ON_AUGUST": "Coming on August 2023.",
 		"COMPANY_STATUS": "Company status and rating system",
 		"AFTER_PRE-MODERATION": "After pre-moderation, you will get a few badges and a personal rating to help boost trust towards your company. Your products will also go to the top of the list in the catalog. \n",
-		"COMING_IN_SEPTEMBER": "Coming in September 2023.",
+		"COMING_IN_MAY": "Coming in May 2024.",
 		"BRAND_PROMOTION": "Brand promotion",
 		"YOU_WILL_BE_ABLE": "You will be able to order bespoke ad campaigns with fully developed creative content and promotion on Facebook, LinkedIn, and Google to the carefully selected target audience.",
-		"COMING_IN_OCTOBER": "Coming in October 2023.",
+		"COMING_IN_JUNE": "Coming in June 2024.",
 		"WE_WANT_TO_MAKE": "We want to make the platform even better and more functional. You can help us with this by writing your wishes and ideas to us at"
 	}
 }

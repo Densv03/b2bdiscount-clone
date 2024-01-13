@@ -5,6 +5,7 @@ import { User } from '../../../core/models/user/user.model';
 import { B2bAuthRootRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface';
 import { AuthState, AuthStore } from './auth.store';
 import { B2bAuthRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
+import { PublicCompanyInfoModel } from '../../../core/models/public-company-info.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<AuthState> {
@@ -14,6 +15,7 @@ export class AuthQuery extends Query<AuthState> {
 	public readonly selectRootRole$: Observable<B2bAuthRootRoleInterface | null>;
 	public readonly selectUser$: Observable<User>;
 	public readonly selectToken$: Observable<any>;
+	public readonly selectCompany$: Observable<PublicCompanyInfoModel | null>;
 
 	constructor(protected override store: AuthStore) {
 		super(store);
@@ -24,5 +26,6 @@ export class AuthQuery extends Query<AuthState> {
 		this.selectRootRole$ = this.select('rootRole');
 		this.selectUser$ = this.select('user');
 		this.selectToken$ = this.select('token');
+		this.selectCompany$ = this.select('company');
 	}
 }

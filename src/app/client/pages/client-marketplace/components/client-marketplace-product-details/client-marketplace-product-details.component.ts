@@ -10,9 +10,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
 	BehaviorSubject,
 	exhaustMap,
+	finalize,
 	mergeMap,
 	Observable,
+	of,
 	Subject,
+	switchMap,
 } from 'rxjs';
 import { getName } from 'country-list';
 import { ClientOfferReportComponent } from '../../../client-offer/components/client-offer-report/client-offer-report.component';
@@ -23,7 +26,7 @@ import { UserService } from '../../../client-profile/services/user/user.service'
 import { io } from 'socket.io-client';
 import { environment } from '../../../../../../environments/environment';
 import { User } from '../../../../../core/models/user/user.model';
-import { filter, first, map, skip, takeUntil } from 'rxjs/operators';
+import { filter, first, map, skip, startWith, takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../../../auth/services/auth/auth.service';
 import { MarketProductModel } from '../../models/market-product.model';
 import { Meta, Title } from '@angular/platform-browser';
@@ -34,6 +37,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Photo } from '../../../../../core/models/photo.model';
 import { ProductDetailsModel } from '../../models/product-details.model';
 import { ClientMarketCompanyPagePhoneDialogComponent } from '../../pages/client-market-company-page/components/client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
+import { checkSerialNumber } from '../../../../../core/helpers/function/check-serial-number';
+import { SeoService } from '../../../../../core/services/seo/seo.service';
 
 @UntilDestroy()
 @Component({
@@ -45,7 +50,7 @@ import { ClientMarketCompanyPagePhoneDialogComponent } from '../../pages/client-
 export class ClientMarketplaceProductDetailsComponent
 	implements OnInit, OnDestroy
 {
-	@Input() public product: MarketProductModel;
+	@Input() public productView: MarketProductModel;
 	@Input() public companyInfo: PublicCompanyInfoModel;
 
 	public productSource: BehaviorSubject<MarketProductModel> =
@@ -63,6 +68,10 @@ export class ClientMarketplaceProductDetailsComponent
 	public apiAddress = environment.apiUrl;
 	public isAuth$: Observable<boolean>;
 	public isAmount: boolean = false;
+	public isCurrentUser: boolean = false;
+	public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+		false
+	);
 	public readonly getName = getName;
 
 	private socket: any;
@@ -78,114 +87,92 @@ export class ClientMarketplaceProductDetailsComponent
 		private readonly authService: AuthService,
 		private readonly title: Title,
 		private readonly meta: Meta,
-		private readonly dialog: MatDialog
+		private readonly dialog: MatDialog,
+		private readonly seoService: SeoService
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 
-		this.user = this.userService.getUser();
 		this.isAuth$ = this.authService.user$.pipe(map((user) => !!user));
 	}
 
 	ngOnInit(): void {
-		if (!this.product) {
+		this.getUser();
+		if (!this.productView) {
 			this.activatedRoute.params
 				.pipe(
-					skip(1),
-					takeUntil(this.componentIsDestroyed),
-					exhaustMap(({ productId }) => {
+					switchMap(({ productId }) => {
+						this.productSource.next(null);
+						this.isLoading$.next(true);
+
 						return this.marketService.getProductById(productId);
-					})
+					}),
+					untilDestroyed(this)
 				)
 				.subscribe(
 					({ product, otherProducts, otherSuppliersProducts, company }) => {
+						this.isLoading$.next(false);
 						const productModel: MarketProductModel = {
 							...product,
-							photosUrl: product.photos.map((el) => this.apiAddress + el.lg),
+							photosUrl:
+								product.photos.every((photo: any) => 'serialNumber' in photo) &&
+								checkSerialNumber(product.photos)
+									? product.photos.reduce((acc: any[], val: any) => {
+											acc[val?.serialNumber] = this.apiAddress + val.lg;
+											return acc.filter((el) => !!el);
+									  }, [])
+									: product.photos
+											.filter((el) => el.lg)
+											.map((el: Photo) => this.apiAddress + el.lg),
 							ports:
 								product.ports.length > 0 && product.ports[0] !== null
 									? this.getPorts(product)
 									: [],
 						};
-						this.isAmount =
-							!!productModel.amount?.count ||
-							typeof productModel.amount === 'number';
+
 						this.isSpecificationList = productModel.specificationList.some(
 							({ specification, item }) => !!specification || !!item
 						);
+						this.isAmount =
+							!!productModel.amount?.count ||
+							typeof productModel.amount === 'number';
+
 						this.productSource.next(productModel);
+						this.isCurrentUser = productModel.user !== this.user?._id;
+
 						this.otherProducts = otherProducts;
 						this.companyId = company.path || company._id;
 						this.addSeoTags(product);
 						this.companyInfo = company;
+						this.companyName = company.companyName;
 						this.otherSuppliersProducts = otherSuppliersProducts;
+						if (
+							product.deleted &&
+							this.userService.getUser()?._id !== product.user &&
+							this.userService.getUser()?.role?.name !== 'admin'
+						) {
+							this.router.navigate(['/not-found']);
+						}
 					}
 				);
-
-			this.marketService
-				.getProductById(this.activatedRoute.snapshot.params['productId'])
-				.pipe(
-					first(),
-					mergeMap(
-						({
-							product,
-							otherProducts,
-							otherSuppliersProducts,
-							company,
-						}: any) => {
-							const productModel: MarketProductModel = {
-								...product,
-								photosUrl: product.photos.map(
-									(el: Photo) => this.apiAddress + el.lg
-								),
-								ports:
-									product.ports.length > 0 && product.ports[0] !== null
-										? this.getPorts(product)
-										: [],
-							};
-
-							this.isSpecificationList = productModel.specificationList.some(
-								({ specification, item }) => !!specification || !!item
-							);
-							this.isAmount =
-								!!productModel.amount?.count ||
-								typeof productModel.amount === 'number';
-
-							this.productSource.next(productModel);
-							this.otherProducts = otherProducts;
-							this.companyId = company.path || company._id;
-							this.addSeoTags(product);
-							this.companyInfo = company;
-							this.otherSuppliersProducts = otherSuppliersProducts;
-							if (
-								product.deleted &&
-								this.userService.getUser()?._id !== product.user &&
-								this.userService.getUser()?.role?.name !== 'admin'
-							) {
-								this.router.navigate(['/not-found']);
-							}
-							return this.userService.getPublicUserInfo(product.user);
-						}
-					)
-				)
-				.subscribe(({ companyName }) => {
-					this.companyName = companyName;
-				});
 		} else {
 			const product = {
-				...this.product,
+				...this.productView,
 				ports:
-					this.product.ports.length > 0 && this.product.ports[0] !== null
-						? this.getPorts(this.product)
+					this.productView.ports.length > 0 &&
+					this.productView.ports[0] !== null
+						? this.getPorts(this.productView)
 						: [],
 			};
 			this.isAmount = !!product.amount;
 			this.productSource.next(product);
+			this.isCurrentUser = product.user !== this.user?._id;
 
-			this.isSpecificationList = this.product?.specificationList.some(
+			this.isSpecificationList = this.productView?.specificationList.some(
 				({ specification, item }) => !!specification || !!item
 			);
 		}
+
 		this.userService.getToken$().subscribe((token) => {
 			this.token = token;
 		});
@@ -215,7 +202,7 @@ export class ClientMarketplaceProductDetailsComponent
 	}
 
 	public navigateOnProductDetail(productId: string): void {
-		this.router.navigate([`b2bmarket/listing/products`, productId]);
+		this.router.navigate([`/b2bmarket/listing/products/`, productId]);
 	}
 
 	public openReportPopover() {
@@ -247,9 +234,11 @@ export class ClientMarketplaceProductDetailsComponent
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
 		if (!this.userService.getUser()) {
+			localStorage.setItem('blocked-route', this.router.url);
 			this.router.navigate(['/auth/log-in']);
 			return;
 		}
+
 		if (
 			this.productSource
 				.getValue()
@@ -261,9 +250,6 @@ export class ClientMarketplaceProductDetailsComponent
 				data: {
 					product: this.productSource.getValue(),
 				},
-				width: '729px',
-				maxWidth: '729px',
-				maxHeight: '85vh',
 				panelClass: 'contact-supplier-form-dialog',
 			});
 
@@ -300,11 +286,13 @@ export class ClientMarketplaceProductDetailsComponent
 	}
 
 	private addSeoTags(product: any): void {
-		this.title.setTitle(`Buy ${product.title.trim()} with B2B Discount`);
-		this.meta.updateTag({
-			name: 'description',
-			content: `${product.title.trim()} Wholesale with B2B Discount at the best prices! Discover more great deals on the B2B Discount website`,
-		});
+		const { title } = product;
+		this.seoService.setTitle(
+			`Buy ${title.trim()} Online Wholesale from Direct Suppliers`
+		);
+		this.seoService.setDescription(
+			`Buy ${title.trim()} wholesale online directly from suppliers for competitive pricing and reliable quality`
+		);
 	}
 
 	private getPorts(
@@ -332,11 +320,6 @@ export class ClientMarketplaceProductDetailsComponent
 	private startChat(): void {
 		const { user, _id } = this.productSource.getValue();
 
-		if (user === this.userService.getUser()?._id) {
-			this.goTo('/b2bmarket/listing/products/' + _id);
-			return;
-		}
-
 		this.openConnection(this.token);
 		this.socket.emit('start_chat', {
 			userId: user,
@@ -349,9 +332,16 @@ export class ClientMarketplaceProductDetailsComponent
 		});
 	}
 
+	private getUser(): void {
+		this.userService
+			.getUser$()
+			.pipe(untilDestroyed(this))
+			.subscribe((user) => (this.user = user));
+	}
+
 	ngOnDestroy(): void {
 		this.componentIsDestroyed.next();
-		this.title.setTitle('B2B Discount');
+		this.title.setTitle('Globy');
 	}
 
 	protected readonly Number = Number;

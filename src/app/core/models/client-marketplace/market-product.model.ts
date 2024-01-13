@@ -36,6 +36,7 @@ export interface MarketProductModel {
 	createdAt: Date;
 	updatedAt: Date;
 	hidden: boolean;
+	deleted?: boolean;
 }
 
 export interface Price {

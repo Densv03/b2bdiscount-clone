@@ -4,7 +4,7 @@ import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { environment } from '../../../../../environments/environment.prod';
+import { environment } from '../../../../../environments/environment';
 
 @UntilDestroy()
 @Component({

@@ -16,6 +16,10 @@ import { B2bNgxSelectModule } from '@b2b/ngx-select';
 import { ClientCookiesModalComponent } from './components/client-cookies-modal/client-cookies-modal.component';
 import { ClientComponent } from './layout/client.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { PageLoaderComponent } from '../core/components/page-loader/page-loader.component';
+import { ClientDropdownComponent } from './components/client-dropdown/client-dropdown.component';
+import { ClientDropdownModule } from './components/client-dropdown/client-dropdown.module';
+import { SvgIconComponent } from 'angular-svg-icon';
 // import { CookieService } from "ngx-cookie-service";
 
 @NgModule({
@@ -40,6 +44,8 @@ import { TranslateModule } from '@ngx-translate/core';
 		// B2bNgxTextareaModule,
 		B2bNgxSelectModule,
 		TranslateModule,
+		ClientDropdownModule,
+		SvgIconComponent,
 		// NgxSmartModalModule.forChild(),
 		// SocketIoModule.forRoot({
 		// 	url: environment.apiUrl,

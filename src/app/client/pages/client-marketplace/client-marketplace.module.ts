@@ -52,6 +52,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../../shared/components/shared.module';
 import { MatInputModule } from '@angular/material/input';
+import { PageLoaderModule } from '../../../core/components/page-loader/page-loader.module';
 
 @NgModule({
 	declarations: [
@@ -108,6 +109,7 @@ import { MatInputModule } from '@angular/material/input';
 		MatTooltipModule,
 		SharedModule,
 		MatInputModule,
+		PageLoaderModule,
 	],
 	exports: [
 		ClientMarketplaceFiltersMobileComponent,

@@ -17,8 +17,8 @@ const routes: Routes = [
 			).then((m) => m.ClientBlogAuthorsPageModule),
 		data: {
 			meta: {
-				title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-				description: 'B2B Discount - Trading Wiki',
+				title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+				description: 'Globy - Trading Wiki',
 			},
 		},
 	},

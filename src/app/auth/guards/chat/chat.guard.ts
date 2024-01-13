@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-	CanActivate,
 	ActivatedRouteSnapshot,
 	RouterStateSnapshot,
 	Router,
@@ -15,7 +14,7 @@ import { B2bNgxLinkService } from '@b2b/ngx-link';
 @Injectable({
 	providedIn: 'root',
 })
-export class ChatGuard implements CanActivate {
+export class ChatGuard {
 	constructor(
 		private readonly _router: Router,
 		private readonly _activatedRoute: ActivatedRoute,
@@ -37,7 +36,7 @@ export class ChatGuard implements CanActivate {
 			tap((access) => {
 				if (!access) {
 					this._router.navigateByUrl(
-						this.b2bNgxLinkService.getStaticLink('/latest-offers')
+						this.b2bNgxLinkService.getStaticLink('/unclaimed-cargo')
 					);
 				}
 			})

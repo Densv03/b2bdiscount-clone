@@ -1,0 +1,125 @@
+:host {
+	.popup {
+		border-top: 1px #cfdeff;
+		background-color: white;
+		z-index: 1000;
+		padding: 16px 0 22px 0;
+		overflow: hidden;
+		&.becomeSupplier,
+		&.forBuyer {
+			width: 50%;
+			float: right;
+			border-radius: 0px 0px 0px 8px;
+		}
+		&.profile {
+			width: 379px;
+			float: right;
+			border-radius: 0px 0px 0px 8px;
+		}
+	}
+	.popup-burger {
+		height: 100vh;
+		animation: expandWidth 0.3s ease-in-out forwards;
+		.popup-burger-title {
+			color: #979797;
+			font-size: 18px;
+			font-weight: 700;
+			line-height: 148%;
+			letter-spacing: 0.18px;
+		}
+
+		@keyframes expandWidth {
+			from {
+				width: 0;
+				//opacity: 0;
+			}
+			to {
+				width: 355px;
+				//opacity: 1;
+				background: white;
+			}
+		}
+
+		.content {
+			padding: 40px;
+			border-top: 1px solid #cfdeff;
+			animation: fadeIn 1.3s ease-in-out;
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+				}
+				to {
+					opacity: 1;
+				}
+			}
+			.solutions {
+				padding-bottom: 29px;
+				border-bottom: 1px solid #cfdeff;
+				&__list {
+					display: flex;
+					flex-direction: column;
+					gap: 16px;
+					margin-top: 24px;
+				}
+				&__item {
+					display: flex;
+					align-items: flex-start;
+					gap: 16px;
+					cursor: pointer;
+					&-body {
+						max-width: 227px;
+					}
+					&-title {
+						font-weight: 600;
+					}
+					&-description {
+						color: #979797;
+						font-size: 12px;
+						letter-spacing: 0.12px;
+						line-height: 15px;
+						margin-top: 5px;
+					}
+					&:hover {
+						.solutions__item-icon {
+							path {
+								fill: #1c5bfe;
+							}
+						}
+						.solutions__item-title {
+							color: #1c5bfe;
+						}
+					}
+				}
+			}
+
+			.resources {
+				padding-top: 32px;
+				border-bottom: 1px solid #cfdeff;
+				&__list {
+					display: flex;
+					flex-direction: column;
+					gap: 16px;
+					margin-top: 15px;
+					padding-bottom: 32px;
+				}
+				&__item {
+					color: #000;
+					font-weight: 500;
+					line-height: 18px;
+					letter-spacing: 0.16px;
+					cursor: pointer;
+					&:hover {
+						color: #1c5bfe;
+					}
+				}
+			}
+			.contact-us {
+				margin-top: 30px;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+			}
+		}
+	}
+}

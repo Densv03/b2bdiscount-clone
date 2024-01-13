@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { SeoService } from '../../../../core/services/seo/seo.service';
 
 const TERMS_AND_CONDITIONS = [
 	{
 		title: `A few general words`,
 		description: `
-These Terms and Conditions contained herein (the “Terms and Conditions”, “T&C”, “Agreement”, “Terms”) govern the possibilities of use by You, as a Trader, Logistician, or Carrier of this Platform. B2B Discount is a Platform that helps Users to profitably trade cargo (in containers or bulk) and also facilitates business communication between Users.
+These Terms and Conditions contained herein (the “Terms and Conditions”, “T&C”, “Agreement”, “Terms”) govern the possibilities of use by You, as a Trader, Logistician, or Carrier of this Platform. Globy is a Platform that helps Users to profitably trade cargo (in containers or bulk) and also facilitates business communication between Users.
 
 Please, read these Terms and Conditions carefully before You start using the Platform, as it will apply to Your use. These conditions will be permanently accessible on the Platform. If You do not agree to all of the terms of these Terms and Conditions or Privacy Policy, or You do not have such authority or do not meet the eligibility requirements, You should cease any and all access or use of the Platform. By using Our Platform, You confirm that You accept these Terms and Conditions and agree to comply with them. 
 
@@ -16,7 +17,7 @@ In case You have any questions relating to the terms contained in this Agreement
 
 “Platform” — the website https://b2b.discount/ and all its content and links, which can be used by You (hereinafter “Platform”).
 
-“B2B Discount” - refers to “B2B Discount Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of State of Washington of the United States of America (hereinafter – “Company”, “B2B Discount”, “Us”, “We” or “Our”).
+“Globy” - refers to “Globy Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of State of Washington of the United States of America (hereinafter – “Company”, “Globy”, “Us”, “We” or “Our”).
 
 “Service” — the services, Company provides through the Platform as well as service which helps and facilitates business communication and deals between Users, and helps to avoid the loss of cargo by one User, and facilitates the purchase of such cargo on favorable terms by another User. The Company provides Services through the Platform but is not responsible for the success or failure of deals between Users.
 
@@ -25,8 +26,8 @@ In case You have any questions relating to the terms contained in this Agreement
 “Registration” - providing the Company the necessary data by filling out the registration form.`,
 	},
 	{
-		title: `About B2B Discount Platform`,
-		description: `Our Platform is practically unparalleled and is a unique solution to cases that may arise during the transportation of cargo in containers or bulk. B2B Discount presents a Platform that provides up-to-date information about refused containerized or bulk cargo. The Company helps and facilitates communication between Users, which avoids the loss of cargo by one User and facilitates the acquisition of such cargo on favorable terms by another User. The User can receive contact information for communication with another User on the subject of the transaction or communicate with another User directly through the Platform, discussing all the necessary details of the transaction in correspondence. How it works, You can watch the video on the Platform (in English and Russian languages).`,
+		title: `About Globy Platform`,
+		description: `Our Platform is practically unparalleled and is a unique solution to cases that may arise during the transportation of cargo in containers or bulk. Globy presents a Platform that provides up-to-date information about refused containerized or bulk cargo. The Company helps and facilitates communication between Users, which avoids the loss of cargo by one User and facilitates the acquisition of such cargo on favorable terms by another User. The User can receive contact information for communication with another User on the subject of the transaction or communicate with another User directly through the Platform, discussing all the necessary details of the transaction in correspondence. How it works, You can watch the video on the Platform (in English and Russian languages).`,
 	},
 	{
 		title: `Subject`,
@@ -40,7 +41,7 @@ In addition, after сlicking the necessary bottom in the check-box ”Agree with
 `,
 	},
 	{
-		title: `Using B2B Discount`,
+		title: `Using Globy`,
 		description: `The Users can use the Platform and Services after Registration and providing of certain basic information about themselves that User authorizes the Company to use and disclose, as described in Our Privacy Policy.
 
 You agree to be bound by all terms of this Agreement and any future amendments and additions to it that We may publish from time to time. Please read this Agreement carefully. If You do not agree to accept and obey the terms of this Agreement, you must immediately stop using the Platform.
@@ -117,7 +118,7 @@ The Company is not responsible for the actions of lawyers, namely for the releva
 When using Services or accessing the Platform, You are not allowed to:
 use Our Services or Platform if You are not able to form legally binding contracts (for example, if you are under 18 years old);
 interfere with the infrastructure of Our Website, or impose an unreasonable or disproportionately large load on Our infrastructure;
-infringe the copyright, trademark, patent, publicity, moral, database, and/or other intellectual property rights (collectively called “Intellectual Property Rights”) that belong to or are licensed to B2B Discount; \t
+infringe the copyright, trademark, patent, publicity, moral, database, and/or other intellectual property rights (collectively called “Intellectual Property Rights”) that belong to or are licensed to Globy; \t
 commercialize the Platform;
 disguise the origin of information transmitted through the Platform;
 place false or misleading information on the Platform, including transport documents;
@@ -127,7 +128,7 @@ input or upload to the Platform any information that may contain viruses, Trojan
 	},
 	{
 		title: `Payments`,
-		description: `B2B Discount provides both: paid and free of charge Services. 
+		description: `Globy provides both: paid and free of charge Services. 
 
 If the User wants to place advertisements for the sale of the container or bulk cargo, such placements are free and unlimited. 
 
@@ -171,18 +172,18 @@ The User is obliged to fully comply with the terms of this Agreement and look th
 The Company has the right at any time to unilaterally change these T&C completely or partially. The Company is not obliged to inform Users about the changes that were made. The updated T&C are posted on the Platform, indicating the date of such an update. 
 
 
-Our Platform is an object of intellectual property which belongs to the Company, and is also subject to protection in accordance with the legislation of USA, international treaties, and Conventions ratified by USA, Bern Convention on Protection of Works of Literature and Art (Paris Act as of 24.07.1971, as amended and restated on 02.10.1979), Universal Copyright Convention, 1952 as well as other international regulations. Elements of the Platform are also protected by trade dress, trade secret, unfair competition laws, and other laws and may not be copied or imitated in whole or in part. Except as otherwise expressly authorized by these Terms and Conditions, You may not copy, reproduce, modify, amend, lease, loan, sell and/or create derivative works from, upload, transmit, and/or distribute the intellectual property of the Platform in any way without B2B Discount's prior written permission. Any copying of information, text, images, other data, trademarks and logos, elements of the Platform will be perceived as a violation of the copyright of the Company and may serve as a reason for legal proceedings, bringing the violator to justice, in accordance with the laws of State of Vancouver of the United States of America.
+Our Platform is an object of intellectual property which belongs to the Company, and is also subject to protection in accordance with the legislation of USA, international treaties, and Conventions ratified by USA, Bern Convention on Protection of Works of Literature and Art (Paris Act as of 24.07.1971, as amended and restated on 02.10.1979), Universal Copyright Convention, 1952 as well as other international regulations. Elements of the Platform are also protected by trade dress, trade secret, unfair competition laws, and other laws and may not be copied or imitated in whole or in part. Except as otherwise expressly authorized by these Terms and Conditions, You may not copy, reproduce, modify, amend, lease, loan, sell and/or create derivative works from, upload, transmit, and/or distribute the intellectual property of the Platform in any way without Globy's prior written permission. Any copying of information, text, images, other data, trademarks and logos, elements of the Platform will be perceived as a violation of the copyright of the Company and may serve as a reason for legal proceedings, bringing the violator to justice, in accordance with the laws of State of Vancouver of the United States of America.
 
-The name B2B Discount and other B2B Discount marks, commercial names, logos, designs, and phrases that We use in connection with Our Platform, ways and methods of their use, may not be used without the express written prior permission of the Company.
+The name Globy and other Globy marks, commercial names, logos, designs, and phrases that We use in connection with Our Platform, ways and methods of their use, may not be used without the express written prior permission of the Company.
 
-The Users undertake not to infringe in any way the intellectual property rights held by B2B Discount. 
+The Users undertake not to infringe in any way the intellectual property rights held by Globy. 
 `,
 	},
 	{
 		title: `Limitation of Liability. Disclaimer of Warranties`,
 		description: `The Platform is provided “as is” and “as available”. The Company makes no representation, warranty, or guarantee regarding the reliability, timeliness, quality, suitability, or availability of the Platform or that the Platform will be uninterrupted or error-free. The Company does not guarantee the quality, suitability, safety, or ability of third-party providers.
 
-You expressly agree that the entire risk arising out of your use of the Platform remains solely with You, to the maximum extent permitted under applicable law. You agree that from time to time, B2B Discount may remove or change the content at any time, or otherwise limit or disable Your access to the Platform without notice to You.
+You expressly agree that the entire risk arising out of your use of the Platform remains solely with You, to the maximum extent permitted under applicable law. You agree that from time to time, Globy may remove or change the content at any time, or otherwise limit or disable Your access to the Platform without notice to You.
 
 The Company is not responsible for the accuracy of the data contained in topics, comments, as well as in documents uploaded by Users to the Platform.
 
@@ -247,6 +248,17 @@ In case of any FAQs on technical support, please contact Us via instant messagin
 	styleUrls: ['./client-terms-and-conditions.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientTermsAndConditionsComponent {
+export class ClientTermsAndConditionsComponent implements OnInit {
 	public readonly options = TERMS_AND_CONDITIONS;
+	constructor(private seoService: SeoService) {}
+	ngOnInit() {
+		this.addSeoTags();
+	}
+
+	private addSeoTags(): void {
+		this.seoService.setTitle('Terms and Conditions | Globy B2B Marketplace');
+		this.seoService.setDescription(
+			"Find out about Globy's terms and conditions for a transparent and beneficial partnership"
+		);
+	}
 }

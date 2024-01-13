@@ -32,34 +32,6 @@ const routes: Routes = [
 		},
 	},
 	{
-		path: 'listing/:id',
-		loadChildren: () =>
-			import('./layout/client-marketplace-listing.module').then(
-				(m) => m.ClientMarketplaceListingModule
-			),
-		data: {
-			breadcrumbs: [
-				{ label: 'Home', url: '/' },
-				{ label: 'B2BMARKET', url: '/b2bmarket' },
-				{ label: 'OFFERS', url: '/b2bmarket/listing' },
-			],
-		},
-	},
-	{
-		path: 'listing/:id/:childCategory',
-		loadChildren: () =>
-			import('./layout/client-marketplace-listing.module').then(
-				(m) => m.ClientMarketplaceListingModule
-			),
-		data: {
-			breadcrumbs: [
-				{ label: 'Home', url: '/' },
-				{ label: 'B2BMARKET', url: '/b2bmarket' },
-				{ label: 'OFFERS', url: '/b2bmarket/listing' },
-			],
-		},
-	},
-	{
 		path: 'supplier-listing/:id',
 		component: ClientMarketplaceSupplierListingComponent,
 	},
@@ -91,7 +63,7 @@ const routes: Routes = [
 			),
 	},
 	{
-		path: 'company/:id',
+		path: 'company/:companyId',
 		component: ClientMarketCompanyPageComponent,
 	},
 	{
@@ -100,6 +72,13 @@ const routes: Routes = [
 			import(
 				'./components/product-posting-complete/product-posting-complete.module'
 			).then((m) => m.ProductPostingCompleteModule),
+	},
+	{
+		path: ':category',
+		loadChildren: () =>
+			import('./components/market-sector/market-sector.module').then(
+				(m) => m.MarketSectorModule
+			),
 	},
 ];
 

@@ -1,0 +1,173 @@
+@import 'projects/shared/src/styles';
+
+.content {
+	padding: 8px 59px;
+
+	@include breakpoint('2') {
+		padding: 16px 0;
+	}
+
+	.title {
+		font-size: 24px;
+		font-weight: 700;
+		color: #fff;
+		text-align: center;
+		margin-bottom: 24px;
+		line-height: 32px;
+
+		@include breakpoint('3') {
+			font-size: 20px;
+			line-height: 28px;
+		}
+
+		@include breakpoint('2') {
+			font-size: 18px;
+			line-height: 24px;
+		}
+	}
+
+	.rfq-form {
+		display: flex;
+		flex-wrap: wrap;
+
+		.product-name {
+			margin-bottom: 16px;
+			width: 100%;
+
+			&__input {
+				border-radius: 8px;
+				background: #fff;
+			}
+		}
+
+		.product-sector {
+			width: 50%;
+			padding-right: 8px;
+			margin-bottom: 15px;
+
+			@include breakpoint('3') {
+				width: 100%;
+				padding-right: 0;
+			}
+		}
+
+		.product-category {
+			width: 50%;
+			padding-left: 8px;
+			margin-bottom: 15px;
+
+			@include breakpoint('3') {
+				width: 100%;
+				padding-left: 0;
+			}
+		}
+
+		.comments {
+			width: 100%;
+			margin-bottom: 15px;
+
+			.comments__textarea {
+				@include breakpoint('3') {
+					height: 96px;
+				}
+			}
+		}
+
+		.terms-of-delivery {
+			width: 50%;
+			padding-right: 8px;
+			margin-bottom: 15px;
+
+			@include breakpoint('3') {
+				width: 100%;
+				padding-right: 0;
+			}
+		}
+
+		.delivery-location {
+			width: 50%;
+			padding-left: 8px;
+			margin-bottom: 15px;
+
+			@include breakpoint('3') {
+				width: 100%;
+				padding-left: 0;
+			}
+		}
+
+		.required-amount {
+			width: 50%;
+			padding-right: 8px;
+			margin-bottom: 24px;
+
+			@include breakpoint('3') {
+				width: 100%;
+				padding-right: 0;
+				margin-bottom: 15px;
+			}
+
+			.input {
+				height: 49px;
+			}
+		}
+
+		.unit {
+			width: 50%;
+			padding-left: 8px;
+			margin-bottom: 24px;
+
+			@include breakpoint('3') {
+				width: 100%;
+				padding-left: 0;
+			}
+		}
+
+		.btn-submit-wrapper {
+			margin: 0 auto;
+			width: 113px;
+			height: 48px;
+			display: flex;
+			justify-content: center;
+
+			@include breakpoint('3') {
+				width: 100%;
+			}
+
+			.btn-submit {
+				width: 113px;
+				border-radius: 8px;
+				font-size: 14px;
+				font-weight: 500;
+
+				@include breakpoint('3') {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+
+.label {
+	color: #fff;
+	font-size: 14px;
+	font-weight: 400;
+	margin-bottom: 6px;
+}
+
+::ng-deep {
+	.add-rfq-popup .mat-dialog-container {
+		background: #628cea;
+		color: #fff;
+		position: relative;
+
+		.cross-icon {
+			position: absolute;
+			right: 16px;
+			top: 16px;
+		}
+	}
+}
+
+.b2b-ngx-input.ng-invalid.ng-touched {
+	background-color: #fff;
+}

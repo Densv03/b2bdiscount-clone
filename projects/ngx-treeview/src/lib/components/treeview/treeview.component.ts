@@ -159,7 +159,7 @@ export class TreeviewComponent implements OnChanges, OnInit {
   private updateFilterItems(): void {
     if (this.filterText !== '') {
       const filterItems: TreeviewItem[] = [];
-      const filterText = this.filterText.toLowerCase();
+      const filterText = this.filterText?.toLowerCase();
       this.items.forEach(item => {
         const newItem = this.filterItem(item, filterText);
         if (!isNil(newItem)) {
@@ -175,7 +175,7 @@ export class TreeviewComponent implements OnChanges, OnInit {
   }
 
   private filterItem(item: TreeviewItem, filterText: string): TreeviewItem {
-    const isMatch = includes(item.text.toLowerCase(), filterText);
+    const isMatch = includes(item.text?.toLowerCase(), filterText);
     if (isMatch) {
       return item;
     } else {

@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
-import { first, Observable, of } from 'rxjs';
-import { RfqButtonTypeEnum } from '../../../client-profile-tradebid/client-profile-tradebid-rfq/shared/enums/RfqButtonType.enum';
+import { BehaviorSubject, first, Observable, of } from 'rxjs';
+import { RfqButtonTypeEnum } from '../../../client-profile-sourcing-request/client-profile-sourcing-request-rfq/shared/enums/RfqButtonType.enum';
 import { SortType } from '../../../../../../../core/models/sort-type.model';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { ClientMarketplaceService } from '../../../../../../shared/services/client-marketplace-service/client-marketplace.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { filter } from 'rxjs/operators';
+import { Sort } from '@angular/material/sort';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace-products',
@@ -30,6 +31,11 @@ export class ClientProfileMarketplaceProductsComponent implements OnInit {
 	});
 	public userHasProducts = false;
 
+	private sortTypeSource: BehaviorSubject<string | null> = new BehaviorSubject<
+		string | null
+	>(null);
+	public sortType$ = this.sortTypeSource.asObservable();
+
 	constructor(private clientMarketplaceService: ClientMarketplaceService) {}
 
 	ngOnInit() {
@@ -45,6 +51,7 @@ export class ClientProfileMarketplaceProductsComponent implements OnInit {
 
 	public updateSortType(e: SortType): void {
 		this.clientMarketplaceService.updateManageProducts(0, e.value);
+		this.sortTypeSource.next(e.value);
 	}
 	private getSortTypes(): SortType[] {
 		return [
@@ -57,7 +64,7 @@ export class ClientProfileMarketplaceProductsComponent implements OnInit {
 				label: 'Published',
 			},
 			{
-				value: 'hide',
+				value: 'hideSold',
 				label: 'Archival',
 			},
 		];

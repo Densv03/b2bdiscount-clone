@@ -10,9 +10,8 @@ import {
 } from "projects/b2b-datepicker/src/lib/components/calendar-header/calendar-header.component";
 import { MatButtonModule } from "@angular/material/button";
 import { B2bNgxIconModule } from "@b2b/ngx-icon";
-import { NgIf } from "@angular/common";
-
-
+import {AsyncPipe, DatePipe, NgIf} from "@angular/common";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
 	declarations: [B2bDatepickerComponent, CalendarHeaderComponent],
@@ -25,7 +24,10 @@ import { NgIf } from "@angular/common";
 		MatButtonModule,
 		B2bNgxIconModule,
 		NgIf,
+		DatePipe,
+		ReactiveFormsModule,
+		AsyncPipe,
 	],
-	exports: [B2bDatepickerComponent],
+	exports: [B2bDatepickerComponent]
 })
 export class B2bDatepickerModule {}

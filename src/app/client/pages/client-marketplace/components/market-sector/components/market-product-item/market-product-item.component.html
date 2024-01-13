@@ -1,0 +1,62 @@
+<a
+	[routerLink]="['/b2bmarket/listing/products/', product?.path || product._id]"
+	[queryParams]="params">
+	<div class="product" [ngClass]="customClass">
+		<div class="general-block">
+			<img
+				b2bNgxImage
+				[name]="productPhoto ? productPhoto[0] : null"
+				class="product-header" />
+
+			<div *ngIf="product.hidden" class="hidden-product">
+				<p>HIDDEN</p>
+			</div>
+			<h2 class="product-title">{{ cutString(product.title, 18) }}</h2>
+
+			<p class="product-description">
+				{{ cutString(product?.specifications, 53) }}
+			</p>
+		</div>
+
+		<div
+			*ngIf="product.company; else productWithoutCompany"
+			class="supplier-info">
+			<img
+				b2bNgxIcon
+				group="flags/"
+				[name]="product.company[0]?.country | uppercase"
+				alt="" />
+
+			<p class="text">
+				{{
+					cutString(
+						product.company
+							? product.company[0]?.companyName
+							: product.contact.companyName,
+						17
+					)
+				}}
+			</p>
+		</div>
+
+		<ng-template #productWithoutCompany>
+			<div class="supplier-info">
+				<img
+					b2bNgxIcon
+					group="flags/"
+					[name]="product.country | uppercase"
+					alt="" />
+				<p class="text">
+					{{
+						cutString(
+							product.company
+								? product.company[0]?.companyName
+								: product.contact?.companyName,
+							17
+						)
+					}}
+				</p>
+			</div>
+		</ng-template>
+	</div>
+</a>

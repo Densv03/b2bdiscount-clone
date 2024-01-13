@@ -1,0 +1,25 @@
+:host {
+	.content {
+		background: #ffff;
+		border-radius: 14px;
+		padding: 20px;
+		text-align: center;
+		&__title {
+		}
+		&__subtitle,
+		&__title {
+			color: #000;
+			text-align: center;
+			font-size: 14px;
+			line-height: 148%;
+			letter-spacing: 0.14px;
+		}
+		&__subtitle {
+			font-weight: 600;
+			margin-top: 2px;
+		}
+		&__button {
+			margin-top: 10px;
+		}
+	}
+}

@@ -10,12 +10,13 @@ import {
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, first, map, take } from 'rxjs/operators';
 import { CategoryListingService } from '../../client-marketplace/pages/category-listing/category-listing.service';
 import { Category } from '../../client-marketplace/shared/models/category.model';
 import { AuthService } from '../../../../auth/services/auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { PlatformService } from '../../../services/platform/platform.service';
 
 @Component({
 	selector: 'b2b-client-market-promo',
@@ -41,7 +42,9 @@ export class ClientMarketPromoComponent implements OnInit {
 		private readonly categoriesListingService: CategoryListingService,
 		private readonly authService: AuthService,
 		private readonly translateService: TranslateService,
-		private readonly activatedRoute: ActivatedRoute
+		private readonly activatedRoute: ActivatedRoute,
+		private readonly platformService: PlatformService,
+		private readonly router: Router
 	) {}
 
 	public ngOnInit() {
@@ -73,6 +76,9 @@ export class ClientMarketPromoComponent implements OnInit {
 
 	@HostListener('document:scroll', ['$event'])
 	public onViewportScroll() {
+		if (this.platformService.isServer) {
+			return;
+		}
 		const windowHeight = window.innerHeight;
 		const boundingRectFive = this.circle?.nativeElement.getBoundingClientRect();
 
@@ -85,6 +91,17 @@ export class ClientMarketPromoComponent implements OnInit {
 				this.changeDetectorRef.detectChanges();
 			}, 100);
 		}
+	}
+
+	public applyAsSupplier(route: string): void {
+		this.isAuth$.pipe(take(1)).subscribe((isAuth) => {
+			if (isAuth) {
+				this.router.navigate([route]);
+			} else {
+				localStorage.setItem('blocked-route', this.router.url);
+				this.router.navigate(['/auth/register-credentials']);
+			}
+		});
 	}
 
 	public getDaysToEndDate(): number {

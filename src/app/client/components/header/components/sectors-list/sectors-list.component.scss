@@ -1,0 +1,86 @@
+:host {
+	.sectors {
+		max-width: 1170px;
+		margin: auto;
+		&__list {
+			display: flex;
+			flex-direction: column;
+			flex-wrap: wrap;
+			gap: 32px;
+			row-gap: 0;
+			max-height: 325px;
+		}
+		&__item {
+			width: 253px;
+			height: 33px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 8px 9px 8px;
+			cursor: pointer;
+			transition: 0.3s all;
+			border-radius: 12px;
+
+			&-icon {
+				svg {
+					width: 18px;
+					height: 18px;
+				}
+			}
+
+			span {
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 18px;
+			}
+
+			&:hover {
+				//background: #407bff;
+				color: #005dff;
+				svg {
+					path {
+						stroke: #005dff;
+					}
+					rect {
+						stroke: #005dff;
+					}
+				}
+				.agricultural,
+				.chemicals,
+				.gifts-crafts,
+				.machinery,
+				.security-protection,
+				.sports-entertainment,
+				.textile-leather-products,
+				.toys-hobbies,
+				.construction,
+				.energy,
+				.lights-lighting,
+				.minerals-metallurgy,
+				.reduction-recycling-products,
+				.vehicles-accessories,
+				.home-garden,
+				.luggage-bags-cases,
+				.rubber-plastics,
+				.watches-jewerly {
+					svg {
+						path {
+							fill: #005dff;
+							stroke: none;
+						}
+					}
+				}
+				.consumer-electronics {
+					path {
+						fill: none;
+					}
+					g {
+						path {
+							fill: #005dff;
+						}
+					}
+				}
+			}
+		}
+	}
+}

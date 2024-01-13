@@ -1,6 +1,6 @@
 <div class="market-profile">
 	<div class="title">B2B market</div>
-	<mat-tab-group mat-align-tabs="start">
+	<mat-tab-group mat-align-tabs="start" [(selectedIndex)]="selectedIndex">
 		<mat-tab *ngIf="!isBuyerAccount" label="My products">
 			<b2b-client-profile-marketplace-products [products$]="manageProducts$">
 			</b2b-client-profile-marketplace-products>

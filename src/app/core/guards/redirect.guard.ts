@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class RedirectGuard implements CanActivate {
+export class RedirectGuard {
 	constructor(private readonly _router: Router) {}
 	canActivate() {
 		if (window.location.href.includes('discount.')) {

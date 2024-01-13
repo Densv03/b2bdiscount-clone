@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { B2bNgxIconModule } from "@b2b/ngx-icon";
 import { NgxIntlTelInputModule } from "ngx-intl-tel-input";
-import {NgxMaskModule} from "ngx-mask";
+import { provideEnvironmentNgxMask } from "ngx-mask";
 
 @NgModule({
 	imports: [
@@ -16,9 +16,11 @@ import {NgxMaskModule} from "ngx-mask";
 		B2bNgxIconModule,
 		NgSelectModule,
 		NgxIntlTelInputModule,
-    NgxMaskModule.forRoot()
 	],
 	declarations: [B2bNgxTelComponent],
 	exports: [B2bNgxTelComponent],
+	providers: [
+		provideEnvironmentNgxMask(),
+	]
 })
 export class B2bNgxTelModule {}

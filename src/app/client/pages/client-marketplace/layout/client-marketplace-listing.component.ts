@@ -16,23 +16,20 @@ import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { ActivatedRoute, QueryParamsHandling, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable, of, tap } from 'rxjs';
-import { PaginationParamsModel } from '../../../../core/models/pagination-params.model';
-import { map, switchMap, filter, first, debounceTime } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, tap } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { InitialCategoryState } from '../shared/models/initial-category-state.model';
 import { SlideInOutAnimation } from '../shared/animations/slide-in-out.animation';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SortType } from '../../../../core/models/sort-type.model';
 import { User } from '../../../../core/models/user/user.model';
-import { getName, overwrite } from 'country-list';
+import { getName } from 'country-list';
 import { ChipsService } from '../components/filter-chips/chips.service';
 import { WindowScrollingService } from '../../../../core/services/window-scrolling/window-scrolling.service';
-import { Meta, Title } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { SeoService } from '../../../../core/services/seo/seo.service';
-import { MatDialog } from '@angular/material/dialog';
-import { SupplierContactSuccessDialogComponent } from '../components/supplier-contact-success-dialog/supplier-contact-success-dialog.component';
-import { Category } from '../shared/models/category.model';
+import { HeaderService } from '../../../components/header/header.service';
 
 function generateQueryString(obj: any, initialValue: string = '?') {
 	const filteredState = obj;
@@ -51,6 +48,15 @@ function generateQueryString(obj: any, initialValue: string = '?') {
 				  )}`
 				: `${queryString}${key}=${value}&`;
 		}, initialValue);
+}
+
+interface NavigationOption {
+	routerLink: string[];
+	queryParams?: {
+		[key: string]: string;
+	};
+	queryParamsHandling?: QueryParamsHandling;
+	relativeTo?: ActivatedRoute;
 }
 
 @UntilDestroy()
@@ -72,8 +78,6 @@ export class ClientMarketplaceListingComponent
 		this.clientMarketplaceService.marketFilters$.asObservable();
 	public totalMarketplaceProductsLength$: Observable<number> =
 		this.clientMarketplaceService.marketplaceProductsLength$;
-	public offersListTheme: 'list' | 'grid' = 'grid';
-	public sortTypes: SortType[] = this.getSortTypes();
 	public marketplaceProductView$ =
 		this.clientMarketplaceService.marketplaceProductView$;
 
@@ -81,11 +85,6 @@ export class ClientMarketplaceListingComponent
 	public readonly user$: Observable<User>;
 
 	public readonly formGroup: FormGroup = this.getFormGroup();
-	public readonly desktopFilters: FormGroup = new FormGroup<{
-		filters: FormControl;
-	}>({
-		filters: new FormControl(null),
-	});
 
 	public readonly mobileFilters: FormGroup = new FormGroup<{
 		filters: FormControl;
@@ -105,7 +104,6 @@ export class ClientMarketplaceListingComponent
 
 	@ViewChild('backdrop', { static: true }) backdrop?: ElementRef;
 
-	private listingState: { [key: string]: any };
 	private state: BehaviorSubject<any> = new BehaviorSubject<any>({
 		'categories[]': [],
 	});
@@ -125,9 +123,8 @@ export class ClientMarketplaceListingComponent
 		private router: Router,
 		private windowScrollingService: WindowScrollingService,
 		private readonly title: Title,
-		private readonly meta: Meta,
 		private readonly seoService: SeoService,
-		private readonly dialog: MatDialog
+		private readonly headerService: HeaderService
 	) {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -135,24 +132,18 @@ export class ClientMarketplaceListingComponent
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 
 		this.user$ = this.authService.getUser();
-		this.listingState = {
-			q: '',
-			'categories[]': undefined,
-			country: null,
-			type: null,
-			relevance: false,
-		};
 	}
 
 	public ngOnInit(): void {
-		this.initQueryParams();
 		this.initPagination();
+		this.initQueryParams();
 		this.state.pipe().subscribe((data) => {
 			this.clientMarketplaceService.updateMarketplaceProducts(
 				generateQueryString(data),
 				(Number(this.currentPageSource.getValue()) - 1) * this.PRODUCTS_LIMIT
 			);
 		});
+		this.initSeoParams();
 		this.seoService.marketListingMetaTags$.subscribe((data) => {
 			data ? this.addSeoTags(data) : this.removeSeoTags();
 		});
@@ -237,19 +228,24 @@ export class ClientMarketplaceListingComponent
 	}
 
 	private addSeoTags(category: any): void {
-		this.title.setTitle(`${category.name.trim()} Wholesale & Bulk suppliers`);
-		this.meta.updateTag({
-			name: 'description',
-			content: `Bulk ${category.name.trim()} - Global Wholesale Suppliers, Retailers & Manufacturers only on B2B Discount website`,
-		});
+		const { name, rootCategoryId } = category;
+		if (rootCategoryId) {
+			this.seoService.setTitle(`Search ${name} to Buy Wholesale Goods Online`);
+		} else {
+			this.seoService.setTitle(`Explore ${name} to Buy Products Wholesale`);
+		}
+		this.seoService.setDescription(
+			`Navigate to ${name} for wholesale purchases. Ensure the best prices by sourcing from direct suppliers on our trade portal`
+		);
 	}
 
 	private removeSeoTags(): void {
-		this.title.setTitle('B2B Discount');
-		this.meta.updateTag({
-			name: 'description',
-			content: ``,
-		});
+		this.seoService.setTitle(
+			'B2B Platform For Suppliers and Buyers Worldwide, Wholesale Marketplace | Globy'
+		);
+		this.seoService.setDescription(
+			'B2B Marketplace for sourcing and connecting with trusted manufacturers and wholesalers. Unclaimed cargo directory. News and the industry’s insights.'
+		);
 	}
 
 	public chooseFilter(
@@ -257,7 +253,8 @@ export class ClientMarketplaceListingComponent
 		filterIndex: number,
 		hiddenLabel: string,
 		deleteMode: boolean
-	) {
+	): void {
+		console.log(option, hiddenLabel, deleteMode);
 		const queryParams = { ...this.route.snapshot.queryParams };
 		if (!deleteMode) {
 			switch (hiddenLabel) {
@@ -268,18 +265,16 @@ export class ClientMarketplaceListingComponent
 						filterName: 'categories[]',
 						rootCategoryId: null,
 					});
-					// this.title.setTitle(option.name);
 					this.seoService.updateMarketListingMeta(option);
 					this.chipsService.updateSelectedMarketCategorySource(option.id);
 					this.router.navigate(['/b2bmarket/listing', option.path], {
 						skipLocationChange: true,
+						queryParams: {
+							q: this.headerService.formControlValue
+								? this.headerService.formControlValue
+								: undefined,
+						},
 					});
-					this.routerNavigate(
-						['/b2bmarket/listing', option.path],
-						null,
-						{},
-						null
-					);
 					break;
 				case 'categories':
 					this.chipsService.updateFilterChips({
@@ -300,12 +295,6 @@ export class ClientMarketplaceListingComponent
 						label: this.getCountryName(option.name),
 						filterName: 'country[]',
 					});
-					this.routerNavigate(
-						[],
-						'merge',
-						{ 'country[]': option.name },
-						this.route
-					);
 					break;
 				case 'type':
 					this.chipsService.updateFilterChips({
@@ -313,7 +302,6 @@ export class ClientMarketplaceListingComponent
 						label: option.name,
 						filterName: 'type',
 					});
-					this.routerNavigate([], 'merge', { type: option.name }, this.route);
 					break;
 			}
 		} else {
@@ -362,6 +350,44 @@ export class ClientMarketplaceListingComponent
 		}
 	}
 
+	public getNavigationByOption(
+		option: any,
+		hiddenLabel: string
+	): NavigationOption {
+		switch (hiddenLabel) {
+			case 'rootCategory':
+				return {
+					routerLink: ['/b2bmarket/listing', option.path],
+				};
+			case 'categories':
+				return {
+					routerLink: [option.path],
+					queryParamsHandling: 'merge',
+					relativeTo: this.route,
+				};
+			case 'country[]':
+				return {
+					routerLink: [],
+					queryParams: { 'country[]': option.name },
+					relativeTo: this.route,
+				};
+			case 'type':
+				return {
+					routerLink: [],
+					queryParams: { type: option.name },
+					queryParamsHandling: 'merge',
+					relativeTo: this.route,
+				};
+			default:
+				return {
+					routerLink: [],
+					queryParams: {},
+					queryParamsHandling: null,
+					relativeTo: null,
+				};
+		}
+	}
+
 	public isOptionSelected(
 		option: any,
 		filterIndex: number,
@@ -383,9 +409,19 @@ export class ClientMarketplaceListingComponent
 		);
 	}
 
-	public clearFilterStore(): void {
-		this.router.navigate(['/b2bmarket/listing']);
+	public clearFilterStore(clearSearch?: boolean): void {
+		this.router.navigate(['/b2bmarket/listing'], {
+			queryParams: {
+				q: this.headerService.formControlValue
+					? this.headerService.formControlValue
+					: undefined,
+			},
+		});
 		this.chipsService.resetChips();
+		if (clearSearch) {
+			this.headerService.formControlValue = '';
+			this.state.next({ ...this.state.getValue(), q: '' });
+		}
 	}
 
 	public removeFilter($event: any): void {
@@ -414,55 +450,14 @@ export class ClientMarketplaceListingComponent
 		}
 	}
 
-	private getSortTypes(): SortType[] {
-		return [
-			{
-				value: 'createdAt',
-				label: 'Recent',
-			},
-			{
-				value: 'DESC',
-				label: 'Relevance',
-			},
-		];
-	}
-
 	private getFormGroup(): FormGroup {
 		return new FormGroup<any>({
 			transportType: new FormControl(null),
 			'categories[]': new FormControl(null),
 			sort: new FormControl(null),
-			q: new FormControl(null),
 			offset: new FormControl(0),
 			limit: new FormControl(12),
 		});
-	}
-
-	private initQueryParams(): void {
-		if (this.queryParams.q) {
-			this.listingState['q'] = this.queryParams.q;
-			this.formGroup.patchValue({ q: this.queryParams.q });
-		}
-
-		this.formGroup
-			.get('q')
-			.valueChanges.pipe(
-				untilDestroyed(this),
-				debounceTime(300),
-				tap((res) => (this.listingState['q'] = res))
-			)
-			.subscribe((res) => {
-				if (res.trim()) {
-					this.router.navigate([], {
-						queryParams: { q: res },
-						queryParamsHandling: 'merge',
-					});
-				} else {
-					const queryParams = { ...this.route.snapshot.queryParams };
-					delete queryParams['q'];
-					this.router.navigate([], { queryParams });
-				}
-			});
 	}
 
 	private getObservableForCategories(): Observable<InitialCategoryState> {
@@ -490,11 +485,9 @@ export class ClientMarketplaceListingComponent
 
 	private initPagination(): void {
 		const page = this.route.snapshot.queryParams['page'];
-		const state = this.state.getValue();
 
 		if (page) {
 			this.currentPageSource.next(page);
-			// this.togglePage(page, state);
 		}
 
 		combineLatest([this.route.params, this.route.queryParams])
@@ -502,7 +495,7 @@ export class ClientMarketplaceListingComponent
 			.subscribe(([params, queryParams]) => {
 				const temp: { [key: string]: string } = {};
 				if (params) {
-					temp['categories[]'] = params['childCategory'] ?? params['id'];
+					temp['categories[]'] = params['childCategory'] ?? params['category'];
 				}
 				if (queryParams) {
 					for (const key in queryParams) {
@@ -541,8 +534,21 @@ export class ClientMarketplaceListingComponent
 					});
 				});
 
-				this.state.next(temp);
+				const q = this.headerService.formControlValue || '';
+
+				this.state.next({ ...temp, q });
 			});
+	}
+
+	private initQueryParams(): void {
+		if (this.headerService.formControlValue) {
+			this.router.navigate([], {
+				queryParams: {
+					q: this.headerService.formControlValue,
+				},
+				relativeTo: this.route,
+			});
+		}
 	}
 
 	private routerNavigate(
@@ -561,6 +567,24 @@ export class ClientMarketplaceListingComponent
 	}
 
 	ngOnDestroy() {
-		this.title.setTitle('B2B Discount');
+		this.title.setTitle('Globy');
+	}
+
+	private initSeoParams() {
+		if (this.route.snapshot.params['childCategory']) {
+			this.seoService.setTitle(
+				`Search ${this.route.snapshot.params['childCategory']} to Buy Wholesale Goods Online`
+			);
+			this.seoService.setDescription(
+				`Navigate to ${this.route.snapshot.params['childCategory']} for wholesale purchases. Ensure the best prices by sourcing from direct suppliers on our trade portal`
+			);
+		} else if (this.route.snapshot.params['category']) {
+			this.seoService.setTitle(
+				`Search ${this.route.snapshot.params['category']} to Buy Wholesale`
+			);
+			this.seoService.setDescription(
+				`Navigate to ${this.route.snapshot.params['category']} for wholesale purchases. Ensure the best prices by sourcing from direct suppliers on our trade portal`
+			);
+		}
 	}
 }

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../../services/user/user.service';
 import { ClientMarketplaceService } from '../../../../../shared/services/client-marketplace-service/client-marketplace.service';
+import { User } from '../../../../../../core/models/user/user.model';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace',
@@ -18,10 +20,11 @@ export class ClientProfileMarketplaceComponent implements OnInit {
 		this.clientMarketplaceService.manageProductsLength$;
 
 	public PRODUCTS_LIMIT: number = this.clientMarketplaceService.PRODUCTS_LIMIT;
-
+	public selectedIndex: number = 0;
 	public manageProducts$: Observable<any[]>;
 	public archievedProducts$: Observable<any[]>;
 	public chats$: Observable<any[]>;
+	public user$: Observable<User> = this.userService.getUser$();
 
 	public isBuyerAccount =
 		this.userService.getUser().rootRole?.displayName === 'Buyer';
@@ -45,7 +48,8 @@ export class ClientProfileMarketplaceComponent implements OnInit {
 		private hotToastService: HotToastService,
 		private dialog: MatDialog,
 		private hotToast: HotToastService,
-		private userService: UserService
+		private userService: UserService,
+		private readonly activatedRoute: ActivatedRoute
 	) {
 		this.manageProducts$ = this.clientMarketplaceService.manageProducts$;
 		this.chats$ = this.clientMarketplaceService.chats$;
@@ -80,6 +84,10 @@ export class ClientProfileMarketplaceComponent implements OnInit {
 	private initTabs(): void {
 		if (!this.isBuyerAccount) {
 			this.clientMarketplaceService.updateManageProducts();
+			if (this.activatedRoute.snapshot.queryParams?.['tab'] === 'Chats') {
+				this.selectedIndex = 1;
+				this.router.navigate([], { queryParams: null });
+			}
 		}
 		this.clientMarketplaceService.updateChats();
 	}

@@ -1,0 +1,62 @@
+<div class="dialog-wrapper">
+	<h2 class="dialog-title" mat-dialog-title>
+		{{ dialogData ? 'Edit ' + dialogData.name : 'Add profile' }}
+		<button class="close-button" mat-dialog-close mat-icon-button>
+			<mat-icon class="close-icon">close</mat-icon>
+		</button>
+	</h2>
+
+	<section [formGroup]="profileForm">
+		<input
+			type="text"
+			placeholder="Enter company name"
+			label="Company name"
+			formControlName="name"
+			class="b2b-ngx-input background background-gray" />
+
+		<div class="two-in-row mt-16">
+			<div>
+				<b2b-ngx-country-select
+					formControlName="country"
+					placeholder="Select Country"></b2b-ngx-country-select>
+			</div>
+
+			<div>
+				<label for="email" class="b2b-ngx-input-label">
+					{{ 'LABELS.EMAIL' | translate }}
+				</label>
+
+				<input
+					id="email"
+					autocomplete="new-email"
+					class="b2b-ngx-input background background-gray"
+					formControlName="email"
+					[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate" />
+			</div>
+		</div>
+
+		<div class="mt-16">
+			<b2b-ngx-tel
+				[errors]="profileForm.controls['phone']?.errors"
+				formControlName="phone">
+				{{ 'LABELS.PHONE' | translate }}
+			</b2b-ngx-tel>
+		</div>
+
+		<div class="two-in-row mt-16">
+			<div *ngFor="let type of transportTypes">
+				<b2b-ngx-checkbox
+					[checked]="type.checked"
+					(checkboxChange)="setTransportType($event, type.value)">
+					{{ type.label }}
+				</b2b-ngx-checkbox>
+			</div>
+		</div>
+	</section>
+
+	<div class="button-wrapper mt-16">
+		<button class="b2b-ngx-button background background-black" (click)="save()">
+			Save
+		</button>
+	</div>
+</div>

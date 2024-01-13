@@ -1,0 +1,80 @@
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  '@kolkov/angular-editor':
+    specifier: ^3.0.0-beta.0
+    version: 3.0.0-beta.0(@angular/common@17.0.7)(@angular/core@17.0.7)
+
+packages:
+  /@angular/common@17.0.7(@angular/core@17.0.7)(rxjs@7.8.1):
+    resolution:
+      {
+        integrity: sha512-bPPL6x0KOAOTxKSE2j4EWmEUOnqZYzOYiHzroa5b9UEyA9NvGkd9bm3zIxw8xcndRj1Ehcmvpi6KBLcYBBbWfg==,
+      }
+    engines: { node: ^18.13.0 || >=20.9.0 }
+    peerDependencies:
+      '@angular/core': 17.0.7
+      rxjs: ^6.5.3 || ^7.4.0
+    dependencies:
+      '@angular/core': 17.0.7(rxjs@7.8.1)(zone.js@0.14.2)
+      rxjs: 7.8.1
+      tslib: 2.6.2
+    dev: false
+
+  /@angular/core@17.0.7(rxjs@7.8.1)(zone.js@0.14.2):
+    resolution:
+      {
+        integrity: sha512-mEkelXkzEi6+A9GjdKOSGGzQAfo1iAjVTn6YsplNUeGE5JgDZYZ7sXGQqs0Lin7dzJxnPAgGjCOl7SpWLXIPSQ==,
+      }
+    engines: { node: ^18.13.0 || >=20.9.0 }
+    peerDependencies:
+      rxjs: ^6.5.3 || ^7.4.0
+      zone.js: ~0.14.0
+    dependencies:
+      rxjs: 7.8.1
+      tslib: 2.6.2
+      zone.js: 0.14.2
+    dev: false
+
+  /@kolkov/angular-editor@3.0.0-beta.0(@angular/common@17.0.7)(@angular/core@17.0.7):
+    resolution:
+      {
+        integrity: sha512-uUa8FW9lFskfL8rans7YRtUQIVK1Qj8bBT9q1MwPXFZ1t+/KfPk62FL5IuMfcnu28UfKl0J2AnGYwbQe4h+Etw==,
+      }
+    peerDependencies:
+      '@angular/common': '>=13'
+      '@angular/core': '>=13'
+    dependencies:
+      '@angular/common': 17.0.7(@angular/core@17.0.7)(rxjs@7.8.1)
+      '@angular/core': 17.0.7(rxjs@7.8.1)(zone.js@0.14.2)
+      tslib: 2.6.2
+    dev: false
+
+  /rxjs@7.8.1:
+    resolution:
+      {
+        integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==,
+      }
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
+  /tslib@2.6.2:
+    resolution:
+      {
+        integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==,
+      }
+    dev: false
+
+  /zone.js@0.14.2:
+    resolution:
+      {
+        integrity: sha512-X4U7J1isDhoOmHmFWiLhloWc2lzMkdnumtfQ1LXzf/IOZp5NQYuMUTaviVzG/q1ugMBIXzin2AqeVJUoSEkNyQ==,
+      }
+    dependencies:
+      tslib: 2.6.2
+    dev: false

@@ -1,12 +1,52 @@
-.example-header {
+.custom-header {
   display: flex;
-  align-items: center;
-  padding: 0.5em;
+  justify-content: center;
+	width: 100%;
+  padding: 16px 0;
+	position: relative;
+
+	&-label {
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 19px;
+		letter-spacing: 0.06em;
+		text-align: left;
+		color: #005DFF;
+		text-decoration: underline;
+		cursor: pointer;
+
+		&.year {
+			font-size: 20px;
+			font-weight: 500;
+			line-height: 27px;
+			letter-spacing: 0.06em;
+			text-align: left;
+			color: #000000;
+			text-decoration: none;
+		}
+	}
+
+	.left-icon {
+		left: 0;
+	}
+
+	.right-icon {
+		right: 0;
+	}
+
+	.left-icon, .right-icon {
+		position: absolute;
+		top: 98px;
+
+		mat-icon {
+			color: #9FA4BB;
+			line-height: 16px;
+			height: 16px;
+
+			&:active, &:focus, &::selection {
+				color: #005DFF;
+			}
+		}
+	}
 }
 
-.example-header-label {
-  flex: 1;
-  height: 1em;
-  font-weight: 500;
-  text-align: center;
-}

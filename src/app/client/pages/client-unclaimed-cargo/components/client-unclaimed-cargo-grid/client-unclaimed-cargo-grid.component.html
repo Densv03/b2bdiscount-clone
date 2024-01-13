@@ -1,0 +1,39 @@
+<ul class="ngx-latest-offers-grid">
+	<ng-container *ngIf="(isMobileView$ | async) === true; else desktopView">
+		<ng-container *ngFor="let item of mobileMarketplaceProducts">
+			<ng-container *ngIf="item === 'divider'; else product">
+				<b2b-client-marketplace-banner
+					[siteSection]="siteSections.UNCLAIMED_CARGO"
+					class="divider"></b2b-client-marketplace-banner>
+				<!--					<b2b-client-unclaimed-cargo-grid-banner class="divider"></b2b-client-unclaimed-cargo-grid-banner>-->
+			</ng-container>
+			<ng-template #product>
+				<b2b-client-unclaimed-cargo-grid-item
+					class="ngx-latest-offers-grid-item"
+					[option]="item"
+					(onStarClick)="
+						emitStarClick($event)
+					"></b2b-client-unclaimed-cargo-grid-item>
+			</ng-template>
+		</ng-container>
+	</ng-container>
+	<ng-template #desktopView>
+		<ng-container *ngFor="let item of desktopMarketplaceProducts">
+			<ng-container *ngIf="item === 'divider'; else product">
+				<b2b-client-marketplace-banner
+					[siteSection]="siteSections.UNCLAIMED_CARGO"
+					class="divider"></b2b-client-marketplace-banner>
+				<!--					<b2b-client-unclaimed-cargo-grid-banner class="divider"></b2b-client-unclaimed-cargo-grid-banner>-->
+			</ng-container>
+			<ng-template #product>
+				<!--					<b2b-client-marketplace-banner [siteSection]="siteSections.B2B_MARKET" class="divider"></b2b-client-marketplace-banner>-->
+				<b2b-client-unclaimed-cargo-grid-item
+					class="ngx-latest-offers-grid-item"
+					[option]="item"
+					(onStarClick)="
+						emitStarClick($event)
+					"></b2b-client-unclaimed-cargo-grid-item>
+			</ng-template>
+		</ng-container>
+	</ng-template>
+</ul>

@@ -2,10 +2,10 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
-	ElementRef,
+	ElementRef, EventEmitter,
 	forwardRef, HostListener,
 	Input,
-	OnInit,
+	OnInit, Output,
 	ViewChild
 } from "@angular/core";
 import {CategoriesService} from "../../../../../src/app/client/services/categories/categories.service";
@@ -31,6 +31,8 @@ export class NgxCategoryDropdownsComponent implements OnInit, ControlValueAccess
 	@ViewChild('panelBlock') panelBlock!: ElementRef;
 	@ViewChild('subcategory') subcategory!: ElementRef;
 
+	@Output() private emitNames = new EventEmitter<string[]>();
+
 	@Input() parentCategoryLabel: string = "Choose your company's product range";
 	@Input() parentCategoryPlaceholder: string = "Select product range";
 	@Input() childCategoryLabel: string = "Select subcategory";
@@ -43,7 +45,7 @@ export class NgxCategoryDropdownsComponent implements OnInit, ControlValueAccess
 		decoupleChildFromParent: false,
 		maxHeight: 400,
 	});
-	public selectedSubcategories: string[] = [];
+	public selectedSubcategoriesNames: string[] = [];
 	public form: FormGroup = this.fb.group({
 		categoryLevel1: [null],
 		categoryLevel2: [null],
@@ -133,7 +135,6 @@ export class NgxCategoryDropdownsComponent implements OnInit, ControlValueAccess
 
 		foundCategory.children = foundCategory.children.map((childCategory: any) => {
 			if (childCategory._id === childCategoryId) {
-
 				return {...childCategory, checked: newValue || !childCategory.checked};
 			}
 
@@ -142,8 +143,8 @@ export class NgxCategoryDropdownsComponent implements OnInit, ControlValueAccess
 
 		foundCategory.selectAll = foundCategory.children.every((childCategory: any) => childCategory.checked);
 		this.categoriesLevel2Source.next([...arrCopy]);
-
 		this.updateFormControlValue();
+
 	}
 
 	public toggleDropdown(): void {
@@ -223,9 +224,10 @@ export class NgxCategoryDropdownsComponent implements OnInit, ControlValueAccess
 			});
 		});
 
-		const result = [...this.categoriesLevel2Source.value.map(el => el._id), ...resultArray.map(el => el.id)];
-		this.selectedSubcategories = resultArray.map(el => el.name);
-		this.onChange(result);
+		const subcategoriesNames = resultArray.map((subcategory) => subcategory.name);
+		this.selectedSubcategoriesNames = subcategoriesNames;
+		this.emitNames.emit(subcategoriesNames);
+		this.onChange(resultArray.map((subcategory) => subcategory.id));
 	}
 
 	private addCheckedFieldToObject(obj: any): any {

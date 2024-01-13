@@ -29,7 +29,7 @@ import { CategoriesService } from '../../../../../services/categories/categories
 import { ClientProfileDeleteAccountComponent } from '../../../components/client-profile-delete-account/client-profile-delete-account.component';
 import { UserService } from '../../../services/user/user.service';
 import { User } from '../../../../../../core/models/user/user.model';
-import { TradebidService } from '../../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../../client-sourcing-request/sourcing-request.service';
 import { ADMIN_ID } from '../../../../../../core/helpers/constant/role-ids';
 import { fullName } from '../../../../../../core/helpers/validator/full-name';
 import { onlyLatin } from '../../../../../../core/helpers/validator/only-latin';
@@ -95,7 +95,7 @@ export class ClientProfileSettingsComponent implements OnInit {
 		private readonly authService: AuthService,
 		private readonly dialog: MatDialog,
 		private readonly renderer2: Renderer2,
-		private readonly tradebidService: TradebidService
+		private readonly sourcingRequestService: SourcingRequestService
 	) {
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -112,7 +112,7 @@ export class ClientProfileSettingsComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.isDefaultRole) {
-			this.tradebidService.getCompanyData().subscribe((companyData) => {
+			this.sourcingRequestService.getCompanyData().subscribe((companyData) => {
 				if (companyData.businessType) {
 					this.roles$.subscribe((roles) => {
 						const roleId = roles.find(
@@ -218,9 +218,12 @@ export class ClientProfileSettingsComponent implements OnInit {
 		const userInfo = {
 			...formGroup.value,
 			phone: undefined,
-			phoneNumber: formGroup.value.phone.number,
+			phoneNumber: formGroup.value.phone.number.replace(/^0+/, ''),
 			phoneInternationalNumber: formGroup.value.phone.internationalNumber,
-			phoneNationalNumber: formGroup.value.phone.nationalNumber,
+			phoneNationalNumber: formGroup.value.phone.nationalNumber.replace(
+				/^0+/,
+				''
+			),
 			phoneCountryCode: formGroup.value.phone.countryCode,
 			phoneDialCode: formGroup.value.phone.dialCode,
 			phoneE164Number: formGroup.value.phone.e164Number,
@@ -354,7 +357,7 @@ export class ClientProfileSettingsComponent implements OnInit {
 			.subscribe((userInfo: any) => {
 				this.activeUser = userInfo ?? this.userService.getUser();
 
-				this.isDefaultRole = userInfo.role.name === 'default';
+				this.isDefaultRole = userInfo.role?.name === 'default';
 				this.baseFormGroup.patchValue({
 					...userInfo,
 					roleId: userInfo.role.name !== 'default' ? userInfo.role._id : null,

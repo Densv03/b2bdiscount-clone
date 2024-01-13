@@ -1,0 +1,411 @@
+@import 'projects/shared/src/styles';
+
+.header__search-option,
+.header__main-option {
+	color: #0f0f11;
+	line-height: 18px;
+	letter-spacing: 0.14px;
+	cursor: pointer;
+	transition: 0.3s all;
+	user-select: none;
+	&:hover,
+	&.active {
+		color: #005dff;
+	}
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
+	&__wrapper {
+		max-width: 1270px;
+
+		margin: auto;
+		@include breakpoint('4') {
+			max-width: 976px;
+		}
+		@include breakpoint('3') {
+			max-width: 768px;
+		}
+	}
+	&__search {
+		height: 56px;
+		transition: height 0.3s ease;
+		background: #e7eefc;
+		box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15);
+		@include breakpoint('1') {
+			display: none;
+		}
+		&.hidden {
+			opacity: 0;
+			height: 0;
+		}
+
+		.header__wrapper {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			height: 100%;
+		}
+		&-item {
+			width: 65%;
+			display: flex;
+			align-items: center;
+			gap: 125px;
+			@include breakpoint('4') {
+				width: 100%;
+				gap: 0;
+			}
+			@include breakpoint('2') {
+				justify-content: space-around;
+			}
+		}
+		&-options {
+			display: flex;
+			gap: 24px;
+			margin-left: auto;
+			position: relative;
+			@include breakpoint('2') {
+				margin-left: 0;
+			}
+		}
+		&-option {
+			font-size: 14px;
+			font-weight: 400;
+		}
+	}
+	&__main {
+		padding-top: 10px;
+		background: #fbfcfe;
+		transition: padding 0.3s ease;
+		border-bottom: 1px solid #cfdeff;
+		.header__wrapper {
+			padding-bottom: 9px;
+		}
+		&-link:hover {
+			color: #1c5bfe;
+		}
+		&-list {
+			display: flex;
+			align-items: center;
+			@include breakpoint('2') {
+				justify-content: flex-start;
+			}
+		}
+		&-burger {
+			height: 48px;
+			svg {
+				path {
+					fill: black;
+				}
+			}
+			&.active {
+				svg {
+					path {
+						stroke: #005dff;
+					}
+				}
+			}
+			@include breakpoint('1') {
+				display: block;
+			}
+		}
+		&-logo {
+			width: 104px;
+			height: 48px;
+			&.auth-page-logo {
+				margin-left: 10px;
+			}
+			img {
+				width: 100%;
+				height: 100%;
+				cursor: pointer;
+			}
+			@include breakpoint('1') {
+				width: 93px;
+				height: 32px;
+			}
+		}
+		&-sectors-button {
+			height: 36px;
+			padding: 5px 10px;
+			//background: #000;
+			border-radius: 8px;
+			color: white;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			cursor: pointer;
+			transition: 0.3s all;
+			@include breakpoint('3') {
+				display: none;
+			}
+			.text {
+				user-select: none;
+			}
+			.arrow {
+				transition: 0.3s all;
+			}
+			&.active {
+				color: #0f0f11;
+				.arrow {
+					transform: rotate(180deg);
+					fill: #0f0f11;
+				}
+			}
+		}
+		&-options {
+			display: flex;
+			align-items: center;
+			gap: 48px;
+			height: 48px;
+			margin-left: 30px;
+			@include breakpoint('3') {
+				width: 320px;
+				justify-content: flex-end;
+				margin-left: 0;
+			}
+			@include breakpoint('2') {
+				display: none;
+			}
+		}
+		&-option {
+			font-size: 16px;
+			display: flex;
+			gap: 4px;
+			.arrow {
+				transition: 0.3s all;
+			}
+			&.active {
+				.arrow {
+					transform: rotate(180deg);
+					svg {
+						path {
+							stroke: #1c5bfe;
+						}
+					}
+				}
+			}
+		}
+		.search-wrapper {
+			position: relative;
+			border-radius: 8px;
+			flex-grow: 1;
+			margin-left: 80px;
+			@include breakpoint('4') {
+				margin-left: 20px;
+			}
+			@include breakpoint('3') {
+				margin-left: 0;
+			}
+			@include breakpoint('2') {
+				margin-top: 0;
+				width: 250px;
+			}
+			@include breakpoint('1') {
+				display: none;
+			}
+
+			.subheader-search {
+				display: block;
+				border-radius: 8px;
+				height: 32px;
+				outline: none;
+				border: 1px solid #d9d9d9;
+				z-index: 1;
+				cursor: pointer;
+
+				@include breakpoint('3') {
+					//width: 100%;
+					//height: 48px;
+				}
+			}
+
+			img {
+				position: absolute;
+				right: 15px;
+				top: 8px;
+				@include breakpoint('3') {
+					top: 9px;
+				}
+			}
+		}
+
+		&-auth {
+			width: 216px;
+			margin-left: auto;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 10px;
+			position: relative;
+			.login-btn {
+				color: #0f0f11;
+				transition: 0.3s all;
+				@include breakpoint('2') {
+					display: none;
+				}
+				&:hover {
+					border: 1px solid;
+				}
+			}
+			@include breakpoint('2') {
+				margin-left: auto;
+			}
+			@include breakpoint('1') {
+				align-items: center;
+				margin-left: auto;
+			}
+			.buttons {
+				display: flex;
+				gap: 32px;
+				position: relative;
+				.auth-button {
+					display: block;
+					cursor: pointer;
+					position: relative;
+					border-radius: 4px;
+					padding: 4px;
+					width: 32px;
+					height: 32px;
+					@include breakpoint('1') {
+						&:last-child {
+							margin-right: 10px;
+						}
+					}
+					.active-icon {
+						fill: transparent;
+						path {
+							stroke: #005dff;
+						}
+					}
+
+					&.active {
+						//background: rgba(64, 123, 255, 0.2);
+					}
+
+					.unread-messages {
+						position: absolute;
+						right: -11px;
+						top: 11px;
+						background: red;
+						border-radius: 50%;
+						width: 18px;
+						height: 18px;
+						color: #fff;
+						font-size: 10px;
+						display: grid;
+						place-items: center;
+						animation: fadeIn 0.5s ease-in-out;
+
+						@keyframes fadeIn {
+							from {
+								opacity: 0;
+							}
+							to {
+								opacity: 1;
+							}
+						}
+					}
+				}
+			}
+			button,
+			.auth-btn {
+				text-align: center;
+				padding: 6px 2px;
+				border-radius: 8px;
+				min-width: 90px;
+				transition: 0.3s all;
+				position: relative;
+				@include breakpoint('1') {
+					&:last-child {
+						margin-right: 10px;
+						font-size: 14px;
+					}
+				}
+			}
+			.message-icon {
+				&:hover {
+					path {
+						stroke: #1c5bfe;
+					}
+				}
+			}
+			.message-button {
+				@include breakpoint('1') {
+					display: none !important;
+				}
+			}
+		}
+	}
+}
+
+.transparent {
+	background: transparent;
+	.login-btn {
+		color: #ffffff;
+	}
+	.header__main {
+		background: transparent;
+		border: none;
+	}
+	.header__main-option {
+		color: white;
+	}
+	.header__main-auth {
+		button:first-child {
+			border: none;
+			color: white;
+			&:hover {
+				background: none;
+			}
+		}
+	}
+	.header__main-sectors-button {
+		background: none;
+	}
+}
+
+.active-header-link {
+	border-bottom: 2px solid;
+	padding-bottom: 2px;
+	transform: translateY(2px);
+	&:hover {
+		border-bottom-color: #1c5bfe;
+		color: #1c5bfe !important;
+	}
+}
+.background-white {
+	.header__main {
+		background: #ffffff !important;
+		border-bottom: 1px solid #cfdeff;
+	}
+	.header__main-option {
+		color: #0f0f11;
+		font-weight: 400;
+		svg {
+			path {
+				//fill: #0f0f11;
+			}
+		}
+		&.active {
+			color: #1c5bfe;
+		}
+	}
+	.header__main-auth {
+		button:first-child {
+			color: #0f0f11;
+		}
+	}
+}
+
+.fill-white {
+	fill: white !important;
+}
+.stroke-white {
+	stroke: white;
+}

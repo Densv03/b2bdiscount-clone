@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { TradebidService } from '../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../client-sourcing-request/sourcing-request.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-// @ts-ignore
+import { BehaviorSubject, combineLatest, Observable, tap } from 'rxjs';
 import { getName } from 'country-list';
 import { PublicCompanyInfoModel } from '../../../../../core/models/public-company-info.model';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
@@ -16,6 +15,8 @@ import { websiteProtocolRegex } from '../../../../../core/helpers/validator/site
 import { AuthService } from '../../../../../auth/services/auth/auth.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
+import { SeoService } from '../../../../../core/services/seo/seo.service';
+import { PlatformService } from '../../../../services/platform/platform.service';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +28,7 @@ import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-lo
 export class ClientMarketCompanyPageComponent implements OnInit {
 	public companyInfo$: Observable<PublicCompanyInfoModel>;
 	public user: User;
-	public userIsAuth: boolean;
+	public userIsAuth: boolean = false;
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum =
 		B2bNgxButtonThemeEnum;
 
@@ -41,30 +42,65 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 		this.businessTypeSource.asObservable();
 
 	constructor(
-		private readonly tradebidService: TradebidService,
+		public readonly platformService: PlatformService,
+		private readonly sourcingRequestService: SourcingRequestService,
 		private readonly userService: UserService,
 		private readonly route: ActivatedRoute,
 		private dialog: MatDialog,
 		private readonly router: Router,
-		private readonly authService: AuthService
+		private readonly authService: AuthService,
+		private readonly seoService: SeoService
 	) {
-		this.user = this.userService.getUser();
-		this.userIsAuth = this.userService.isAuth();
-		this.companyInfo$ = this.tradebidService.getCompanyInfoById(
-			this.route.snapshot.params['id']
-		);
+		this.initDefault();
 	}
 
 	public ngOnInit() {
+		this.initUserSubscription();
+		this.updateBusinessType();
+	}
+
+	initDefault() {
+		this.getUser();
+		this.setSeo();
+	}
+
+	private getUser() {
+		if (this.platformService.isServer) {
+			return;
+		}
+		this.user = this.userService.getUser();
+		this.userIsAuth = this.userService.isAuth();
+	}
+
+	private setSeo() {
+		this.companyInfo$ = this.sourcingRequestService
+			.getCompanyInfoById(this.route.snapshot.params['companyId'])
+			.pipe(
+				tap(({ companyName }) => {
+					this.seoService.setTitle(
+						`Buy Products from ${companyName} Wholesale`
+					);
+					this.seoService.setDescription(
+						`Get an exclusive wholesale deal from ${companyName}. Reach out to the supplier to buy the original products.`
+					);
+				})
+			);
+	}
+
+	initUserSubscription() {
+		if (this.platformService.isServer) {
+			return;
+		}
 		this.userService
 			.getToken$()
 			.pipe(untilDestroyed(this))
 			.subscribe((token) => {
+				if (!token) {
+					return;
+				}
 				this.token = token;
 				this.openConnection(this.token);
 			});
-
-		this.updateBusinessType();
 	}
 
 	public checkCompanySiteForValid(site: string): string {
@@ -117,6 +153,7 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 		event.stopPropagation();
 
 		if (!this.userIsAuth) {
+			localStorage.setItem('blocked-route', this.router.url);
 			this.router.navigate(['/auth/log-in']);
 		} else {
 			this.openConnection(this.token);
@@ -145,6 +182,9 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 	}
 
 	private updateBusinessType(): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		combineLatest([this.companyInfo$, this.authService.getRoles()])
 			.pipe(untilDestroyed(this))
 			.subscribe(([companyInfo, roles]) => {

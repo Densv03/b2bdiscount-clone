@@ -1,5 +1,5 @@
 @import '../../../../../../projects/shared/src/styles/colors';
-@import '/projects/shared/src/styles/breakpoints';
+@import 'projects/shared/src/styles/breakpoints';
 
 :host {
 	.banner {
@@ -20,12 +20,12 @@
 		}
 		&__title {
 			color: $color-black-900;
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: 700;
 			letter-spacing: 0.18px;
 		}
 		&__subtitle {
-			font-size: 14px;
+			font-size: 13.6px;
 			font-weight: 400;
 			letter-spacing: 0.14px;
 			margin-left: 8px;

@@ -1,6 +1,6 @@
 export enum SectionInfoEnum {
-	market = 'market',
-	tradebid = 'tradebid',
-	cargo = 'cargo',
-	none = 'none',
+	MARKET = 'MARKET',
+	SOURCING_REQUEST = 'SOURCING_REQUEST',
+	UNCLAIMED_CARGO = 'UNCLAIMED_CARGO',
+	NONE = 'NONE',
 }
