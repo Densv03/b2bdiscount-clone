@@ -1,3 +1,5 @@
+@import 'projects/shared/src/styles';
+
 :host {
 	.search {
 		border-radius: 14px;
@@ -6,18 +8,34 @@
 		width: 100%;
 		display: flex;
 		align-items: flex-end;
+		@include breakpoint('4') {
+			flex-wrap: wrap;
+		}
+		&__subinfo {
+			display: flex;
+			@include breakpoint('4') {
+				width: 100%;
+				margin-top: 15px;
+			}
+		}
 
 		&__title {
 			color: #000;
-			font-family: Helvetica Neue;
 			font-size: 12px;
 			letter-spacing: 0.12px;
 			text-transform: uppercase;
 			margin-bottom: 7px;
 			margin-right: 10px;
+			width: max-content;
+			@include breakpoint('2') {
+				display: none;
+			}
 		}
 
 		&__transportation {
+			@include breakpoint('2') {
+				width: 100%;
+			}
 			&-body {
 				background: #ffffff;
 				border-radius: 14px;
@@ -27,6 +45,9 @@
 				display: flex;
 				align-items: center;
 				position: relative;
+				@include breakpoint('2') {
+					width: 100%;
+				}
 			}
 
 			.inner {
@@ -37,12 +58,15 @@
 				top: 4px;
 				border-radius: 14px;
 				transition: 0.3s all;
+				@include breakpoint('2') {
+					width: 49%;
+				}
 
-				&.Sea {
+				&.sea {
 					background: #407bff;
 				}
 
-				&.Air {
+				&.air {
 					background: #fdd216;
 				}
 			}
@@ -52,6 +76,10 @@
 				text-align: center;
 				z-index: 1;
 				cursor: pointer;
+				@include breakpoint('2') {
+					width: auto;
+					flex-grow: 1;
+				}
 			}
 
 			&-type {
@@ -72,16 +100,51 @@
 			display: flex;
 			align-items: center;
 			gap: 8px;
+			@include breakpoint('4') {
+				flex-grow: 1;
+			}
+			@include breakpoint('2') {
+				margin-top: 15px;
+			}
+			@include breakpoint('1') {
+				flex-direction: column;
+				align-items: flex-start;
+			}
 			.swap-icon {
 				position: absolute;
 				left: 50%;
 				cursor: pointer;
 				transform: translate(-50%, -50%);
 				top: 65%;
+				z-index: 2;
+				@include breakpoint('1') {
+					left: 99%;
+					transform: translate(-100%, -50%);
+					top: 50%;
+				}
 			}
 
 			&-item {
 				width: 286px;
+				position: relative;
+				@include breakpoint('4') {
+					width: auto;
+					flex-grow: 1;
+					//width: 236px;
+				}
+				@include breakpoint('3') {
+					width: auto;
+					flex-grow: 1;
+					//width: 196px;
+				}
+				@include breakpoint('1') {
+					width: 100%;
+				}
+				.btn-group {
+					width: 100%;
+					position: absolute;
+					//height: 64px;
+				}
 
 				input {
 					width: 100%;
@@ -99,6 +162,10 @@
 
 		&__datepicker {
 			margin-left: 8px;
+			@include breakpoint('4') {
+				flex-grow: 1;
+				margin-left: 0;
+			}
 
 			::ng-deep {
 				input.datepicker {
@@ -106,6 +173,7 @@
 					border: none;
 					border-radius: 14px;
 					padding: 0 16px;
+					width: 100%;
 
 					&::placeholder {
 						padding-left: 20px;
@@ -117,12 +185,29 @@
 		&__shipment {
 			width: 147px;
 			margin-left: 8px;
+			@include breakpoint('4') {
+				width: 50%;
+				//flex-grow: 1;
+				//width: 107px;
+			}
 
 			&-text {
 				height: 64px;
 				padding: 22px 16px 20px 16px;
 				background: #ffffff;
 				border-radius: 14px;
+
+				span {
+					display: flex;
+					align-items: center;
+					gap: 9.3px;
+
+					mat-icon {
+						height: 16px;
+						width: 21.3px;
+						line-height: 16px;
+					}
+				}
 			}
 		}
 
@@ -135,8 +220,13 @@
 			place-items: center;
 			transition: 0.3s all;
 			cursor: pointer;
+			@include breakpoint('4') {
+				width: 100%;
+				margin-left: 0;
+				margin-top: 15px;
+			}
 
-			&.Sea {
+			&.sea {
 				background: #407bff;
 
 				&:hover {
@@ -144,11 +234,61 @@
 				}
 			}
 
-			&.Air {
+			&.air {
 				background: #fdd216;
 
 				&:hover {
 					background: rgba(253, 210, 22, 0.85);
+				}
+			}
+		}
+
+		&__filter-mobile {
+			display: none;
+			@include breakpoint('3') {
+				display: block;
+			}
+			width: 100%;
+			.btn-group {
+				width: 100%;
+			}
+			.dropdown-toggle {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				background: white;
+				margin-top: 15px;
+				height: 64px;
+				border-radius: 14px;
+				color: #6c7077;
+				.dropdown-toggle::after {
+					color: #6c7077;
+				}
+			}
+			.dropdown-menu {
+				width: 100%;
+				height: auto;
+				padding: 20px;
+			}
+			.filter__name {
+				font-size: 16px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 18px;
+				letter-spacing: 0.32px;
+			}
+			.filter__list {
+				margin-top: 18px;
+			}
+			.filter__item {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+				margin-top: 8px;
+				&:first-child {
+					margin-top: 0;
 				}
 			}
 		}
@@ -167,13 +307,17 @@
 	}
 
 	.dropdown-menu {
-		width: 286px;
-		height: 100px;
+		width: 100%;
+		height: auto;
 		border-radius: 14px;
 		margin-top: 5px;
 		max-height: 300px;
 		box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
 		border: none;
+		overflow: auto;
+		@include breakpoint('1') {
+			width: 100%;
+		}
 
 		strong {
 			font-weight: bolder;
@@ -182,6 +326,11 @@
 
 	.dropdown-item {
 		height: 56px;
+		display: flex;
+		align-items: center;
+		padding-left: 20px;
+		gap: 15px;
+		cursor: pointer;
 		&.active {
 			background: #eff4fa;
 			color: #0f0f11;
@@ -190,6 +339,18 @@
 		&:hover {
 			background: #eff4fa;
 			color: #0f0f11;
+		}
+		.item-info {
+			display: flex;
+			flex-direction: column;
+			gap: 3px;
+		}
+		.item-title {
+			font-weight: 600;
+			font-size: 15px;
+		}
+		.item-subtitle {
+			color: #979797;
 		}
 	}
 }
@@ -202,7 +363,6 @@
 	.labels {
 		.subtitle {
 			color: #979797;
-			font-family: Helvetica Neue;
 			letter-spacing: 0.14px;
 			font-size: 14px;
 		}
@@ -211,4 +371,74 @@
 
 strong {
 	font-weight: bolder;
+}
+
+.shipment {
+	&__item {
+		&-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+		&-info {
+			display: flex;
+			align-items: center;
+			border-radius: 14px;
+			background: #f3f6f8;
+			padding: 2px;
+			width: 112px;
+			input {
+				width: 50%;
+				border: none;
+				border-radius: 14px 0 0 14px;
+				text-align: center;
+				outline: none;
+				font-size: 12px;
+				&::-webkit-outer-spin-button,
+				&::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+			}
+			input[type='number'] {
+				-moz-appearance: textfield;
+			}
+		}
+		&-measure {
+			width: 50%;
+			text-align: center;
+		}
+	}
+}
+
+:host::ng-deep {
+	.mat-slider-horizontal {
+		width: 100%;
+	}
+	.mat-slider-thumb-container {
+		.cdk-mouse-focused {
+			.mat-slider-thumb {
+				transform: scale(0) !important;
+			}
+		}
+		.mat-slider-thumb-label {
+			height: 5px;
+			//background: rgba(0, 93, 255, 1) !important;
+		}
+		.mat-slider.mat-accent {
+			background: rgba(0, 93, 255, 1) !important;
+		}
+	}
+	.mat-slider-thumb {
+		//width: 100%;
+		background: #fff !important;
+		border: 3px solid rgba(0, 93, 255, 1);
+	}
+	.mat-slider.mat-accent .mat-slider-thumb-label {
+		//background: rgba(0, 93, 255, 1) !important;
+	}
+
+	.mat-slider-focus-ring {
+		display: none;
+	}
 }

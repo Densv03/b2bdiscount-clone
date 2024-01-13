@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import {
 	ActivatedRouteSnapshot,
-	CanActivate,
 	Router,
 	RouterStateSnapshot,
 	UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { TradebidService } from '../../../client/pages/client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../client/pages/client-sourcing-request/sourcing-request.service';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class CompanyInformationGuard implements CanActivate {
+export class CompanyInformationGuard {
 	private queryParams: string[];
 
 	constructor(
-		private tradebidService: TradebidService,
+		private sourcingRequestService: SourcingRequestService,
 		private router: Router
 	) {
 		this.queryParams = ['add-rfq', 'quotation', 'offer', 'b2bmarket'];
@@ -31,7 +30,7 @@ export class CompanyInformationGuard implements CanActivate {
 		| Promise<boolean | UrlTree>
 		| boolean
 		| UrlTree {
-		const link: string = '/tradebid/company-information';
+		const link: string = '/sourcing-request/company-information';
 
 		const splitURL = state.url.split('/');
 		let blockedURL = '';
@@ -41,10 +40,12 @@ export class CompanyInformationGuard implements CanActivate {
 			}
 		});
 
-		return this.tradebidService.getCompanyData().pipe(
+		return this.sourcingRequestService.getCompanyData().pipe(
 			catchError(() => {
-				this.tradebidService.updateCompanyInfo({ companyName: '' }).subscribe();
-				return this.tradebidService.getCompanyData();
+				this.sourcingRequestService
+					.updateCompanyInfo({ companyName: '' })
+					.subscribe();
+				return this.sourcingRequestService.getCompanyData();
 			}),
 			map((companyData: any) => {
 				const requiredFields: string[] = [

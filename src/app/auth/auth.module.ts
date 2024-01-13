@@ -9,6 +9,7 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { AuthGuardComponent } from './components/auth-guard/auth-guard.component';
 import { B2bNgxDividerModule } from '@b2b/ngx-divider';
 import { TranslateModule } from '@ngx-translate/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @NgModule({
 	declarations: [AuthComponent, AuthGuardComponent],
@@ -20,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		B2bNgxIconModule,
 		TranslateModule,
 		B2bNgxDividerModule,
+		AngularSvgIconModule,
 	],
 	exports: [AuthGuardComponent],
 })

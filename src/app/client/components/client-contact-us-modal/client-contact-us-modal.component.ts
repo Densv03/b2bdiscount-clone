@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { B2bNgxTelModule } from '@b2b/ngx-tel';
 import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +31,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 		B2bNgxTextareaModule,
 		B2bNgxButtonModule,
 		TranslateModule,
+		AngularSvgIconModule,
+		MatDialogModule,
 	],
 })
 export class ClientContactUsModalComponent {

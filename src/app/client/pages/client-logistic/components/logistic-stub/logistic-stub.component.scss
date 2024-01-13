@@ -1,7 +1,8 @@
 .stub {
-	height: 218px;
+	min-height: 218px;
 	background: #ffffff;
 	border-radius: 14px;
+	padding-bottom: 15px;
 	&__wrapper {
 		width: 80%;
 		margin: auto;

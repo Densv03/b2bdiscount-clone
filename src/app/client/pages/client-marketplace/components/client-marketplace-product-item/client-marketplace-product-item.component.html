@@ -28,15 +28,12 @@
 	<!--	</div>-->
 	<a
 		[routerLink]="[
-			isListing ? 'products' : '/b2bmarket/listing/products',
-			product?.path ? product.path : product._id
-		]">
+			'/b2bmarket/listing/products/',
+			product?.path || product._id
+		]"
+		[queryParams]="params">
 		<div>
-			<img
-				b2bNgxImage
-				[name]="product?.photos[0]?.lg"
-				alt=""
-				class="product-header" />
+			<img b2bNgxImage [name]="productPhoto[0]" alt="" class="product-header" />
 			<div
 				*ngIf="product.hidden"
 				class="ngx-latest-offers-grid-item-image-container-overlay">

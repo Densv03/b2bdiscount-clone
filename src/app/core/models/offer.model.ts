@@ -33,7 +33,7 @@ export interface Offer {
 	seaLine: string;
 	location: Location;
 	reasonForDeletion?:
-		| 'I sold a cargo at B2B Discount'
+		| 'I sold a cargo at Globy'
 		| 'I sold a cargo elsewhere'
 		| "I don't sell cargo anymore"
 		| 'Deleted by admin';

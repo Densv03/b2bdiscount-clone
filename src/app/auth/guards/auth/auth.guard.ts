@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-	CanActivate,
 	ActivatedRouteSnapshot,
 	RouterStateSnapshot,
 	Router,
@@ -13,15 +12,16 @@ import { AuthGuardComponent } from '../../components/auth-guard/auth-guard.compo
 import { B2bNgxLinkService } from '@b2b/ngx-link';
 import { AuthService } from '../../services/auth/auth.service';
 
-const messages: any = {
+const messages: { [key: string]: string } = {
 	'legal-help': 'GUARDS.LEGAL_HELP',
 	offer: 'GUARDS.ADD_OFFER',
 	offers: 'GUARDS.VIEW_OFFERS',
 	'latest-offers': 'GUARDS.VIEW_OFFERS',
 	'annual-payment': 'GUARDS.ADD_PAYMENT_DETAILS',
+	product: 'GUARDS.ADD_PRODUCT',
 };
 
-const queryParams: any = {
+const queryParams: { [key: string]: string } = {
 	'annual-payment': 'pricing',
 	'latest-offers': 'latest-offers',
 	'legal-help': 'legal-help',
@@ -30,7 +30,7 @@ const queryParams: any = {
 @Injectable({
 	providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
 	constructor(
 		private readonly _authService: AuthService,
 		private readonly _router: Router,
@@ -45,29 +45,21 @@ export class AuthGuard implements CanActivate {
 			filter((user) => user !== undefined),
 			tap((user) => {
 				if (!user) {
-					this._hotToastrService.show(AuthGuardComponent, {
-						data: {
-							type: messages[route.url[0].path],
-						},
+					this._hotToastrService.info(`Please log in before using this page`, {
 						style: {
 							border: '2px solid #005dff',
 							padding: '20px 15px',
 						},
-						autoClose: false,
+						autoClose: true,
 						dismissible: true,
 					});
-					localStorage.removeItem('blocked-route');
 					localStorage.setItem('blocked-route', state.url);
 
-					this._router.navigate(
-						[this.b2bNgxLinkService.getStaticLink('/auth/log-in')],
-						{
-							queryParams: { from: queryParams[route.url[0].path] || 'offer' },
-						}
-					);
+					this._router.navigate([
+						this.b2bNgxLinkService.getStaticLink('/auth/log-in'),
+					]);
 				}
 			}),
-
 			map((user) => {
 				return !!user;
 			})

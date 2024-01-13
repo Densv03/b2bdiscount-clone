@@ -94,19 +94,4 @@ export class CountdownComponent {
 		this.initPercentageCounterObserve();
 		// }
 	}
-
-	private isInViewport(element: HTMLElement): any {
-		if (!element && this.platformService.isServer) {
-			return;
-		}
-
-		const rect = element.getBoundingClientRect();
-		return (
-			rect.top >= 0 &&
-			rect.left >= 0 &&
-			rect.bottom <=
-				(window.innerHeight || document.documentElement.clientHeight) &&
-			rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-		);
-	}
 }

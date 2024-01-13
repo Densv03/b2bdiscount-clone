@@ -107,7 +107,7 @@ export class ClientProfileComponent implements OnInit, OnDestroy {
 			},
 			{
 				label: 'Sourcing Request',
-				link: '/profile/your-workspace/tradebid',
+				link: '/profile/your-workspace/sourcing-request',
 				icon: 'sidenav-line',
 			},
 			{

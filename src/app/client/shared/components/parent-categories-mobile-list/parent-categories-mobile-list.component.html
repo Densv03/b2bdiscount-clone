@@ -1,0 +1,47 @@
+<div class="categories-wrapper">
+	<div class="categories-header">
+		<mat-icon
+			*ngIf="platformService.isBrowser"
+			class="close-icon"
+			mat-dialog-close
+			>close</mat-icon
+		>
+	</div>
+
+	<div class="search-wrapper">
+		<input
+			b2bNgxInput
+			(keydown.enter)="setSearch()"
+			[formControl]="search"
+			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+			class="subheader-search"
+			placeholder="Search products" />
+
+		<a
+			[routerLink]="['/b2bmarket/listing']"
+			[queryParams]="{ q: search.value }"
+			mat-ripple
+			mat-dialog-close
+			class="icon-block">
+			<mat-icon
+				*ngIf="platformService.isBrowser"
+				[svgIcon]="'second-search'"></mat-icon>
+		</a>
+	</div>
+
+	<div class="sectors-block">
+		<h3>Product sector</h3>
+		<div class="sectors-list">
+			<a
+				[routerLink]="['./b2bmarket', category.path]"
+				*ngFor="let category of categories$ | async; let i = index"
+				mat-dialog-close>
+				<span>{{ category.name }}</span>
+
+				<mat-icon
+					*ngIf="platformService.isBrowser"
+					[svgIcon]="'arrow-r-2'"></mat-icon>
+			</a>
+		</div>
+	</div>
+</div>

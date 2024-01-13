@@ -9,6 +9,7 @@ import { PaginationParamsModel } from '../../../../core/models/pagination-params
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
+import { SeoService } from '../../../../core/services/seo/seo.service';
 
 function generateQueryString(obj: any, initialValue: string = '?') {
 	return Object.entries(obj)
@@ -68,7 +69,8 @@ export class ClientBlogComponent implements OnInit {
 	constructor(
 		private readonly _blogService: BlogService,
 		private readonly _route: ActivatedRoute,
-		private readonly _router: Router
+		private readonly _router: Router,
+		private readonly _seoService: SeoService
 	) {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -91,6 +93,7 @@ export class ClientBlogComponent implements OnInit {
 
 	ngOnInit() {
 		this.blogPageInit();
+		this.addMetaTags();
 	}
 
 	public get currentPage$(): Observable<number> {
@@ -114,7 +117,7 @@ export class ClientBlogComponent implements OnInit {
 		this._router.navigate([], {
 			relativeTo: this._route,
 			queryParams: {
-				page,
+				page: page === 1 ? undefined : page,
 			},
 			queryParamsHandling: 'merge',
 		});
@@ -246,18 +249,16 @@ export class ClientBlogComponent implements OnInit {
 	}
 
 	private blogPageInit(): void {
-		let page = this._route.snapshot.queryParams['page'];
-		if (!page) {
-			this._router.navigate([], {
-				relativeTo: this._route,
-				queryParams: {
-					page: 1,
-				},
-				queryParamsHandling: 'merge',
-			});
-			page = 1;
-		}
-
+		let page = this._route.snapshot.queryParams['page'] || 1;
 		this.togglePageBlogList(+page);
+	}
+
+	private addMetaTags(): void {
+		this._seoService.setTitle(
+			'Wholesale Trade & Logistics News | Trends and Tips | Globy Blog'
+		);
+		this._seoService.setDescription(
+			'An all-in-one resource to discover wholesale trade trends, industry tips and tricks, logistics news, and valuable advice for managing e-commerce'
+		);
 	}
 }

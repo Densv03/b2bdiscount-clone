@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-// import { io } from "socket.io-client";
 import { UserService } from '../../pages/client-profile/services/user/user.service';
-import { environment } from '../../../../environments/environment';
 import { combineLatest, filter } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
 import { Router } from '@angular/router';
+import { PlatformService } from '../platform/platform.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -40,8 +39,12 @@ export class SocketService {
 	constructor(
 		private readonly _usersService: UserService,
 		private readonly _apiService: ApiService,
-		private readonly _router: Router
+		private readonly _router: Router,
+		private readonly _platformService: PlatformService
 	) {
+		if (this._platformService.isServer) {
+			return;
+		}
 		this.openConnection();
 		this.getUnreadMessagesCount();
 		this.getUnreadOfferMessagesCount();
@@ -58,7 +61,6 @@ export class SocketService {
 					const { unreadMessagesCount } = await this._apiService
 						.get<any>('my/unreadMessagesCount')
 						.toPromise();
-
 					this._unreadMessagesCountBehaviourSubject.next(unreadMessagesCount);
 				} catch {}
 			});
@@ -162,13 +164,12 @@ export class SocketService {
 
 			const unreadMessagesCount =
 				this._unreadMessagesCountBehaviourSubject.getValue();
-
 			this._unreadMessagesCountBehaviourSubject.next(unreadMessagesCount + 1);
 		});
 	}
 
 	public get unreadMessagesCount$() {
-		return this._unreadMessagesCount$;
+		return this._unreadMessagesCountBehaviourSubject.asObservable();
 	}
 
 	public get unreadOfferMessagesCount$() {

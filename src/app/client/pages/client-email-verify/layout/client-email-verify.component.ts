@@ -51,7 +51,7 @@ export class ClientEmailVerifyComponent implements AfterViewInit {
 			value: null,
 			disabled: true,
 		});
-		if (!!this._router.getCurrentNavigation().extras.state?.['email']) {
+		if (!!this._router.getCurrentNavigation()?.extras.state?.['email']) {
 			this.email = this._router.getCurrentNavigation().extras.state['email'];
 			this.formControl.setValue(
 				this._router.getCurrentNavigation().extras.state['email']

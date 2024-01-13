@@ -1,0 +1,79 @@
+:host {
+	.popup {
+		padding: 16px 18px;
+		&__close {
+			text-align: right;
+			svg {
+				path {
+					fill: #0f0f11;
+				}
+			}
+		}
+		&__main {
+			display: flex;
+			flex-direction: column;
+			gap: 26px;
+		}
+		&__option {
+			img {
+				width: 22px;
+				height: 22px;
+			}
+			&-title {
+				color: #556274;
+				font-size: 12px;
+				font-weight: 500;
+				line-height: 18px;
+				letter-spacing: 0.24px;
+			}
+			&-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 35px;
+				row-gap: 15px;
+				margin-top: 20px;
+			}
+			&-item {
+				width: 150px;
+				display: flex;
+				gap: 8px;
+				align-items: center;
+
+				&-text {
+					font-size: 14px;
+					font-weight: 400;
+					line-height: 18px;
+				}
+			}
+		}
+		&__auth {
+			border-top: 1px solid #e5f2fd;
+			padding-top: 24px;
+			margin-top: 27px;
+			button {
+				height: 40px;
+				display: grid;
+				width: 100%;
+				place-items: center;
+				border-radius: 8px;
+				border: 2px solid #292d32;
+				color: #292d32;
+				font-weight: 500;
+			}
+		}
+	}
+
+	.submit-rfq-btn {
+		border-radius: 4px;
+		border: 1px solid black;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 3px 8px;
+		span {
+			display: flex;
+			align-items: center;
+			color: #0f0f11;
+		}
+	}
+}

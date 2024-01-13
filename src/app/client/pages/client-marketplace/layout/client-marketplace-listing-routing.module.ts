@@ -20,8 +20,15 @@ const routes: Routes = [
 			],
 		},
 	},
+	{
+		path: ':category',
+		component: ClientMarketplaceListingComponent,
+	},
+	{
+		path: ':category/:childCategory',
+		component: ClientMarketplaceListingComponent,
+	},
 ];
-
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],

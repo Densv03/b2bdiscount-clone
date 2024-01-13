@@ -1,10 +1,6 @@
 @import 'projects/shared/src/styles';
 
 :host {
-	* {
-		font-family: 'Helvetica Neue', sans-serif;
-	}
-
 	.join-us-block {
 		gap: 54px;
 		padding: 39px 114px 34px 156px;
@@ -423,7 +419,7 @@
 				@include breakpoint('3') {
 					padding-top: 18px;
 					display: flex;
-					justify-content: end;
+					justify-content: flex-end;
 					text-decoration: underline;
 				}
 			}

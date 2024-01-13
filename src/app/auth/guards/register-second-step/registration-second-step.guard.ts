@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
 	ActivatedRouteSnapshot,
-	CanActivate,
 	Router,
 	RouterStateSnapshot,
 	UrlTree,
@@ -13,7 +12,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
 	providedIn: 'root',
 })
-export class RegistrationSecondStepGuard implements CanActivate {
+export class RegistrationSecondStepGuard {
 	constructor(
 		private userService: UserService,
 		private router: Router

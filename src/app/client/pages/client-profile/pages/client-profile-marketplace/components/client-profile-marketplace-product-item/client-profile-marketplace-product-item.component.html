@@ -6,10 +6,7 @@
 	<div
 		[ngStyle]="{ opacity: product.hidden ? '0.5' : '1' }"
 		class="product-item__info">
-		<img
-			b2bNgxImage
-			class="product-item__image"
-			[name]="product?.photos[0]?.sm" />
+		<img b2bNgxImage class="product-item__image" [name]="productPhoto[0]" />
 		<div class="product-item__info__left">
 			<div class="product-item__name">{{ product?.title }}</div>
 			<div class="product-item__bottom">

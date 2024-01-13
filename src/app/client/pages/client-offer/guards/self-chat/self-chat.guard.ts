@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-	CanActivate,
 	ActivatedRouteSnapshot,
 	RouterStateSnapshot,
 	Router,
@@ -14,7 +13,7 @@ import { AuthService } from 'src/app/auth/services/auth/auth.service';
 @Injectable({
 	providedIn: 'root',
 })
-export class SelfChatGuard implements CanActivate {
+export class SelfChatGuard {
 	constructor(
 		private readonly _authService: AuthService,
 		private readonly _offersService: OffersService,

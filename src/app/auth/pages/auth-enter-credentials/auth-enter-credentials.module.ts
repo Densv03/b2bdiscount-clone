@@ -13,6 +13,7 @@ import { B2bNgxInputModule } from '@b2b/ngx-input';
 import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
 import { NgxPasswordModule } from '@b2b/ngx-password';
 import { B2bNgxDividerModule } from '@b2b/ngx-divider';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 const routes: Routes = [{ path: '', component: AuthEnterCredentialsComponent }];
 
@@ -33,6 +34,7 @@ const routes: Routes = [{ path: '', component: AuthEnterCredentialsComponent }];
 		B2bNgxCheckboxModule,
 		NgxPasswordModule,
 		B2bNgxDividerModule,
+		AngularSvgIconModule,
 		// NgxPasswordModule
 	],
 })

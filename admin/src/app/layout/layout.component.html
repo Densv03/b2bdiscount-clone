@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="layout">
+	<b2b-empty *ngSwitchCase="Layout.EMPTY"></b2b-empty>
+	<b2b-side-nav *ngSwitchCase="Layout.SIDE_NAV"></b2b-side-nav>
+	<b2b-login *ngSwitchCase="Layout.LOGIN"></b2b-login>
+</ng-container>

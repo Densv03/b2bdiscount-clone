@@ -1,13 +1,13 @@
 import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  forwardRef,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	forwardRef,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	SimpleChanges,
 } from "@angular/core";
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from "@angular/forms";
 // TODO: uncomment code below when libs will be inserted in b2b
@@ -49,11 +49,17 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 	@Input() public multiple: boolean = false;
 	@Input() public touched: boolean = false;
 
+	@Input()
+	public set customOptions(value: any[]) {
+		if (value && value?.length > 0) {
+			this.options = value;
+		}
+	};
+
 	@Output() openSelect: EventEmitter<void> = new EventEmitter<void>();
 	@Output() closeSelect: EventEmitter<void> = new EventEmitter<void>();
 	public readonly formControl: FormControl<string | null>;
 	public options: any[] = [];
-
 	private onChange: (value: string | null) => void;
 	private onTouched: () => void;
 
@@ -101,8 +107,11 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 	}
 
 	public ngOnInit(): void {
+		if (this.options.length === 0) {
+			this.options = this.getOptions();
+		}
+
 		this.subscribeOnValueChanges();
-		this.options = this.getOptions();
 	}
 
 	public ngOnChanges(changes: SimpleChanges): void {

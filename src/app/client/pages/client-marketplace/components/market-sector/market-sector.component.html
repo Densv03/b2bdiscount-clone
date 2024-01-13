@@ -1,0 +1,157 @@
+<div class="market-wrapper">
+	<div class="breadcrumbs">
+		<b2b-breadcrumbs></b2b-breadcrumbs>
+	</div>
+
+	<div
+		class="category-sector-title"
+		*ngIf="category$ | async as category"
+		[style.background-image]="categoryImage">
+		<h1>{{ category.name }}</h1>
+	</div>
+
+	<div class="mobile" *ngIf="category$ | async as category">
+		<h1 class="mobile-sector-title">{{ category.name }}</h1>
+
+		<div class="mobile-categories-block">
+			<div class="children-categories-name">
+				<a
+					*ngFor="let childCategory of category.children"
+					[routerLink]="[
+						'/b2bmarket/listing',
+						category.path,
+						childCategory.path
+					]">
+					{{ childCategory.name }}
+				</a>
+			</div>
+
+			<mat-icon
+				*ngIf="platformService.isBrowser"
+				(click)="openCategoriesPopUp(category)"
+				[svgIcon]="'arrow-right'"></mat-icon>
+		</div>
+
+		<div class="search-wrapper">
+			<input
+				b2bNgxInput
+				[formControl]="search"
+				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+				class="subheader-search"
+				placeholder="Search product" />
+
+			<img b2bNgxIcon name="search" />
+		</div>
+	</div>
+
+	<b2b-categories-carousel
+		class="categories"
+		[showArrows]="(category$ | async)?.children?.length > 9"
+		[category]="category$ | async"></b2b-categories-carousel>
+
+	<b2b-categories-carousel
+		*ngIf="(popularProducts$ | async)?.length > 0"
+		[showArrows]="(popularProducts$ | async)?.length > 5"
+		[title]="'Popular products'"
+		[products]="popularProducts$ | async"></b2b-categories-carousel>
+
+	<b2b-categories-carousel
+		*ngIf="(newProducts$ | async)?.length > 0"
+		[showArrows]="(newProducts$ | async)?.length > 5"
+		[title]="'New products'"
+		[products]="newProducts$ | async"></b2b-categories-carousel>
+
+	<div class="container">
+		<div class="new-suppliers">
+			<h2 class="section-title">New suppliers</h2>
+
+			<div class="suppliers-block">
+				<div
+					class="supplier-item"
+					*ngFor="let supplier of suppliersSource$ | async"
+					[routerLink]="[
+						'/b2bmarket/company',
+						supplier?.path || supplier?._id
+					]">
+					<div class="item-header">
+						<div class="name-and-role">
+							<h3 class="supplier-name">{{ supplier.companyName }}</h3>
+
+							<div class="supplier-role">
+								<img
+									*ngIf="supplier?.country"
+									class="flag"
+									b2bNgxIcon
+									group="flags/"
+									[name]="supplier?.country" />
+
+								<span>{{ supplier?.user.role?.displayName }}</span>
+							</div>
+						</div>
+
+						<img
+							class="logo"
+							b2bNgxImage
+							[name]="
+								supplier.logo?.path ? supplier?.logo.path : 'no-company-logo'
+							" />
+					</div>
+
+					<h4 class="supplier-categories">
+						Product categories:
+						{{ cutString(supplier?.categories, this.categoriesCount) }}
+					</h4>
+
+					<p class="supplier-description">
+						{{ cutString(supplier?.companyDescription, 99) }}
+					</p>
+
+					<div class="supplier-item-buttons">
+						<button
+							mat-button
+							(click)="$event.preventDefault()"
+							[routerLink]="[
+								'/b2bmarket/supplier-listing',
+								supplier?.user?._id
+							]">
+							All products
+						</button>
+
+						<button
+							mat-button
+							(click)="$event.stopImmediatePropagation(); openChat(supplier)">
+							<mat-icon
+								*ngIf="platformService.isBrowser"
+								[svgIcon]="'open-chat'"></mat-icon>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="banner">
+			<div class="text">
+				<h3>
+					Advertise your company and promote your products among thousands of
+					buyers around the globe
+				</h3>
+
+				<button
+					b2bNgxButton
+					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_WHITE"
+					(click)="openContactUsModal()">
+					Contact us
+				</button>
+			</div>
+
+			<img b2bNgxImage [name]="'sector-banner'" />
+		</div>
+
+		<div class="products-listing">
+			<b2b-market-product-item
+				[product]="product"
+				*ngFor="let product of marketplaceProducts$ | async">
+			</b2b-market-product-item>
+		</div>
+	</div>
+</div>

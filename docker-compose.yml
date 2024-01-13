@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+  front:
+    container_name: front
+    image: front
+    build:
+      context: .
+      target: production
+      dockerfile: Dockerfile
+    networks:
+      - backend
+    ports:
+      - 4000:4000
+    restart: unless-stopped
+
+networks:
+  backend:
+    external: true

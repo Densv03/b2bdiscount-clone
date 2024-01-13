@@ -1,0 +1,80 @@
+<div class="advertise-wrapper">
+	<div class="text-block">
+		<h2 class="ads-title">Streamline your sourcing process:</h2>
+
+		<div class="menu-list" *ngIf="isNotMobileWidth | async">
+			<div
+				class="menu-item"
+				*ngFor="let item of sourcingProcess; let i = index"
+				[class.active]="(activeItem | async) === i"
+				(mouseenter)="selectItem(i)">
+				<div class="icon-block">
+					<mat-icon
+						*ngIf="platformService.isBrowser"
+						[svgIcon]="item.icon"></mat-icon>
+				</div>
+
+				<div class="text">
+					<h3>{{ item.title }}</h3>
+
+					<p class="item-description" *ngIf="(activeItem | async) === i">
+						<ng-container
+							[ngTemplateOutlet]="descriptionBlock"
+							[ngTemplateOutletContext]="{ item: i }"></ng-container>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="images" #scrollBox>
+		<div
+			class="current-ad"
+			*ngFor="let img of images; let i = index"
+			[class.none]="img === images[activeItem | async]">
+			<div class="ad-text" *ngIf="!(isNotMobileWidth | async)">
+				<h3>{{ sourcingProcess[activeItem | async].title }}</h3>
+
+				<p class="item-description">
+					<ng-container
+						[ngTemplateOutlet]="descriptionBlock"
+						[ngTemplateOutletContext]="{ item: i }"></ng-container>
+				</p>
+			</div>
+
+			<img
+				b2bNgxImage
+				[name]="
+					!(isNotMobileWidth | async) ? img : images[activeItem | async]
+				" />
+		</div>
+	</div>
+
+	<div class="dots-container" *ngIf="!(isNotMobileWidth | async)">
+		<span
+			*ngFor="let dot of images; let i = index"
+			class="dot"
+			[class.active-dot]="(activeItem | async) === i"
+			(click)="selectItem(i)">
+		</span>
+	</div>
+</div>
+
+<ng-template #descriptionBlock let-item="item">
+	<ng-container [ngSwitch]="item">
+		<ng-container *ngSwitchCase="0">
+			Use the <a class="adv-link" (click)="scrollTo(true)"> search bar</a> or
+			<a class="adv-link" (click)="scrollTo()">navigation in catalog.</a>
+		</ng-container>
+
+		<ng-container *ngSwitchCase="1">
+			Create a <a class="adv-link" (click)="createRfq()">Sourcing Request</a>.
+			Specify what you’re looking for, and suppliers will provide their offers.
+		</ng-container>
+
+		<ng-container *ngSwitchCase="2">
+			To get more information, send your inquiry to the Supplier. Use online
+			chat on the platform to maintain communication and negotiate details.
+		</ng-container>
+	</ng-container>
+</ng-template>

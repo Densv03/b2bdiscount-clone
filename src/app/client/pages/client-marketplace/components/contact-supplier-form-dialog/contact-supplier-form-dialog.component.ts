@@ -9,7 +9,7 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { CommonModule, UpperCasePipe } from '@angular/common';
 import { getName } from 'country-list';
 import { B2bNgxSelectModule, B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
-import { BehaviorSubject, Observable, of, map } from 'rxjs';
+import { BehaviorSubject, Observable, of, map, tap } from 'rxjs';
 import {
 	FormControl,
 	FormGroup,
@@ -27,7 +27,7 @@ import { PaginationParamsModel } from '../../../../../core/models/pagination-par
 import { values } from 'lodash';
 import { UnitsService } from '../../../../services/units/units.service';
 import { SelectItem } from '../../../client-profile/pages/client-company-information/layout/client-company-information.component';
-import { TradebidService } from '../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../client-sourcing-request/sourcing-request.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { HotToastService } from '@ngneat/hot-toast';
 import { CategoriesService } from '../../../../services/categories/categories.service';
@@ -63,7 +63,10 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 		baseForm: this.getBaseForm(),
 	});
 
-	public isFormValid$: Observable<boolean>;
+	private isFormValidSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
+	public isFormValid$: Observable<boolean> =
+		this.isFormValidSource.asObservable();
 	public products$: Observable<any[]> = this.suppliersProducts();
 	public tradeTerms$: Observable<any[]> = this.getTradeTerms();
 	public units$: Observable<any> = this.setUnitsValue();
@@ -79,7 +82,7 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 		private dialogRef: MatDialogRef<ContactSupplierFormDialogComponent>,
 		private readonly marketplaceService: ClientMarketplaceService,
 		private readonly unitsService: UnitsService,
-		private readonly tradeBidService: TradebidService,
+		private readonly sourcingRequestService: SourcingRequestService,
 		private readonly hotToastService: HotToastService,
 		private readonly categoriesService: CategoriesService,
 		private readonly mixpanelService: MixpanelService,
@@ -97,9 +100,9 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 			)
 			.subscribe((categories) => (this.sectorCategories = categories));
 
-		this.isFormValid$ = this.supplierForm.statusChanges.pipe(
-			map((status) => status === 'VALID')
-		);
+		this.supplierForm.statusChanges
+			.pipe()
+			.subscribe((status) => this.isFormValidSource.next(status === 'VALID'));
 		this.marketplaceService.updateSupplierProducts(
 			this.data.product.user,
 			this.filteredQueryObj
@@ -117,12 +120,11 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 	public toggleExpandForm(): void {
 		this.isFormExpandedSource.next(!this.isFormExpandedSource.getValue());
 		if (this.getIsFormExpanded()) {
-			this.dialogRef.updateSize('729px', '711px');
 			this.supplierForm.addControl('expandedForm', this.getExpandedForm());
+			this.supplierForm.updateValueAndValidity();
 		} else {
-			this.dialogRef.updateSize('729px', '523px');
 			this.supplierForm.removeControl('expandedForm');
-			this.isFormValid$ = of(this.supplierForm.status === 'VALID');
+			this.supplierForm.updateValueAndValidity();
 		}
 	}
 
@@ -131,17 +133,17 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 
 		if (this.supplierForm.value?.expandedForm) {
 			formValue = { ...formValue, ...this.supplierForm.value?.expandedForm };
-			this.tradeBidService
+			this.sourcingRequestService
 				.createRFQ(formValue)
 				.pipe(untilDestroyed(this))
 				.subscribe((el) => {
 					const selectedSector = this.sectorCategories.find(
 						(category: Category) =>
-							category.children.find(
+							category?.children.find(
 								(childCategory: Category) =>
 									childCategory._id === this.data?.product?.category?._id
 							)
-					).name;
+					)?.name;
 					this.mixpanelService.track('New RFQ posted', {
 						'Product Sector': selectedSector,
 						Destination: getName(el.destination.to),
@@ -175,7 +177,7 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 	}
 
 	private getTradeTerms(): Observable<SelectItem[]> {
-		return this.tradeBidService.getObservableForSelect([
+		return this.sourcingRequestService.getObservableForSelect([
 			'FCA',
 			'EXW',
 			'CPT',

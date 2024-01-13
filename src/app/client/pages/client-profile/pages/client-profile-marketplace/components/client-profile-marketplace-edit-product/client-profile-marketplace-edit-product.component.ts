@@ -12,6 +12,7 @@ import {
 	filter,
 	Observable,
 	of,
+	pairwise,
 	switchMap,
 } from 'rxjs';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
@@ -19,11 +20,11 @@ import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { UnitsService } from '../../../../../../services/units/units.service';
 import { UserService } from '../../../../services/user/user.service';
-import { TradebidService } from '../../../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../../../client-sourcing-request/sourcing-request.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { HotToastService } from '@ngneat/hot-toast';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import {
 	AbstractControl,
 	FormArray,
@@ -46,6 +47,9 @@ import { onlyLatinAndNumber } from '../../../../../../../core/helpers/validator/
 import { MarketProductModel } from '../../../../../client-marketplace/models/market-product.model';
 import { environment } from '../../../../../../../../environments/environment';
 import { Category } from '../../../../../../../core/models/category.model';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { checkSerialNumber } from '../../../../../../../core/helpers/function/check-serial-number';
+import { PublicCompanyInfoModel } from '../../../../../../../core/models/public-company-info.model';
 
 export enum EditMode {
 	ARCHIVE = 'archive',
@@ -90,7 +94,7 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		() => 'assets/icons/no-image-icon.svg'
 	);
 
-	public unit$: Observable<any> = this.getUnit();
+	public unit$: Observable<any>;
 	private isRedirectFromAdminPanel =
 		!!this.activatedRoute.snapshot.queryParams?.['admin'];
 
@@ -114,6 +118,7 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 	private selectedPaymentMethods: string[] = [];
 	private selectedTradingAreas: string[] = [];
 	private selectedShippingMethods: string[] = [];
+	private company: PublicCompanyInfoModel;
 	private files: any[] = Array.from({ length: 5 }, () => null);
 
 	constructor(
@@ -123,7 +128,7 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		private translateService: TranslateService,
 		private formBuilder: FormBuilder,
 		private clientMarketplaceService: ClientMarketplaceService,
-		private tradebidService: TradebidService,
+		private sourcingRequestService: SourcingRequestService,
 		private activatedRoute: ActivatedRoute,
 		public dialog: MatDialog,
 		private hotToastService: HotToastService,
@@ -196,8 +201,18 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 
 	public updateProduct(): void {
 		this.formGroup.markAllAsTouched();
+		if (
+			this.files.every((el: any) => !el) ||
+			this.images.every(
+				(el: string) => el === 'assets/icons/no-image-icon.svg'
+			) ||
+			this.formGroup.value.photos.every((el: any) => !el)
+		) {
+			this.formGroup.controls['photos'].reset();
+			this.formGroup.controls['photos'].markAllAsTouched();
+		}
+
 		if (this.formGroup.invalid) {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
 			return;
 		}
 
@@ -221,6 +236,9 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 	}
 
 	public updateAndRestore(): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		if (!this.formGroup.valid) {
 			this.formGroup.markAllAsTouched();
 			window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -230,7 +248,9 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		combineLatest([
 			this.clientMarketplaceService.updateProduct(
 				this.productId,
-				this.getFormData(this.getBodyForRequest(this.formGroup.value))
+				this.getFormData(
+					this.getBodyForRequest(this.formGroup.value, this.company)
+				)
 			),
 			this.clientMarketplaceService.restoreProduct(this.productId),
 		])
@@ -319,36 +339,54 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		}
 
 		const newImages = Array.from(files);
+		const format = ['svg', 'jpg', 'png', 'webp', 'jpeg', 'bmp'];
 
 		newImages.forEach((file, index) => {
-			const fileReader = new FileReader();
-			fileReader.readAsDataURL(file);
-			fileReader.onload = (): void => {
-				if (typeof fileReader.result === 'string') {
-					const index = this.images.findIndex(
-						(item) => item === 'assets/icons/no-image-icon.svg'
+			if (
+				format.includes(
+					file.name?.split('.')[file.name?.split('.').length - 1]
+				) ||
+				format.includes(file?.type)
+			) {
+				const fileReader = new FileReader();
+				fileReader.readAsDataURL(file);
+				if (
+					this.files.some(
+						(el) => el?.imageName === file.name || el?.name === file.name
+					)
+				) {
+					this.hotToastService.error(
+						`Image with name ${file.name} is already exist`
 					);
-					if (index !== -1) {
-						this.images[index] = fileReader.result;
-						this.files[index] = file;
-						this.changeDetectorRef.detectChanges();
-					} else {
-						this.images.pop();
-						this.images.unshift(fileReader.result);
+				} else {
+					fileReader.onload = (): void => {
+						if (typeof fileReader.result === 'string') {
+							const index = this.images.findIndex(
+								(item) => item === 'assets/icons/no-image-icon.svg'
+							);
+							if (index !== -1) {
+								this.images[index] = fileReader.result;
+								this.files[index] = file;
+								this.changeDetectorRef.detectChanges();
+							} else {
+								this.images.pop();
+								this.images.unshift(fileReader.result);
 
-						this.files.pop();
-						this.files.unshift(file);
-						this.changeDetectorRef.detectChanges();
-					}
+								this.files.pop();
+								this.files.unshift(file);
+								this.changeDetectorRef.detectChanges();
+							}
 
-					this.formGroup.patchValue({
-						photos: this.files,
-					});
+							this.formGroup.patchValue({
+								photos: this.files,
+							});
+						}
+					};
+
+					this.changeDetectorRef.detectChanges();
+					this.formGroup.markAsDirty();
 				}
-
-				this.changeDetectorRef.detectChanges();
-				this.formGroup.markAsDirty();
-			};
+			} else this.hotToastService.error('Wrong file format');
 		});
 		input.value = null;
 	}
@@ -361,13 +399,15 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		}
 		this.files.splice(index, 1);
 		this.files.push(null);
+		if (this.files.every((file) => file === null)) {
+			this.files = [];
+		}
 		this.formGroup.patchValue({ photos: this.files });
 	}
 
 	public drop(event: CdkDragDrop<string[]>): void {
 		moveItemInArray(this.images, event.previousIndex, event.currentIndex);
-		this.files[event.currentIndex].serialNumber = event.currentIndex;
-		this.files[event.previousIndex].serialNumber = event.previousIndex;
+		moveItemInArray(this.files, event.previousIndex, event.currentIndex);
 
 		this.formGroup.patchValue({
 			photos: this.files,
@@ -442,7 +482,7 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		}, []);
 	}
 
-	private getBodyForRequest(data: any): any {
+	private getBodyForRequest(data: any, company: any): any {
 		const portsArray = data.ports?.reduce(
 			(acc: string | any[], current: { portName: any }) =>
 				acc.concat(current.portName),
@@ -461,12 +501,22 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 					: userInfo.role.displayName,
 			contactPersonName: userInfo.fullName,
 			contactCompanyName: userInfo.company,
-			contactPhoneNumber: userInfo.phone.number,
-			contactPhoneInternationalNumber: userInfo.phone.internationalNumber,
-			contactPhoneNationalNumber: userInfo.phone.nationalNumber,
-			contactPhoneE164Number: userInfo.phone.e164Number,
-			contactPhoneCountryCode: userInfo.phone.countryCode,
-			contactPhoneDialCode: userInfo.phone.dialCode,
+			contactPhoneNumber: userInfo.phone?.number,
+			contactPhoneInternationalNumber: !this.isRedirectFromAdminPanel
+				? userInfo.phone?.internationalNumber
+				: company.phone.dialCode + company.phone.number,
+			contactPhoneNationalNumber: !this.isRedirectFromAdminPanel
+				? userInfo.phone?.nationalNumber
+				: company.phone.number,
+			contactPhoneE164Number: !this.isRedirectFromAdminPanel
+				? userInfo.phone?.e164Number
+				: company.phone.dialCode + company.phone.number,
+			contactPhoneCountryCode: !this.isRedirectFromAdminPanel
+				? userInfo.phone.countryCode
+				: company.phone.countryCode,
+			contactPhoneDialCode: !this.isRedirectFromAdminPanel
+				? userInfo.phone.dialCode
+				: company.phone.dialCode,
 			contactEmail: userInfo.email,
 			country: this.formGroup.value.productOrigin,
 			ports: Array.from(new Set(portsArray)),
@@ -491,14 +541,18 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 
 	private createFormGroup(): void {
 		this.formGroup = this.formBuilder.group({
-			title: [null, [Validators.required, onlyLatinAndNumber()]],
+			title: [null, [Validators.required, onlyLatinAndNumberAndSymbols()]],
 			specifications: [
 				null,
-				[Validators.required, Validators.minLength(60), onlyLatinAndNumber()],
+				[
+					Validators.required,
+					Validators.minLength(60),
+					onlyLatinAndNumberAndSymbols(),
+				],
 			],
 			amount: [null, onlyNumber()],
 			unit: [null],
-			brandName: [null, onlyLatinAndNumber()],
+			brandName: [null, onlyLatinAndNumberAndSymbols()],
 			productSector: [null, Validators.required],
 			category: [null, Validators.required],
 			photos: [null, Validators.required],
@@ -510,8 +564,8 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 			productOrigin: [null, Validators.required],
 			specificationList: this.formBuilder.array([
 				this.formBuilder.group({
-					specification: ['', onlyLatinAndNumber()],
-					item: ['', onlyLatinAndNumber()],
+					specification: ['', onlyLatinAndNumberAndSymbols()],
+					item: ['', onlyLatinAndNumberAndSymbols()],
 				}),
 			]),
 			ports: this.formBuilder.array([
@@ -526,21 +580,30 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 
 		this.formGroup.controls['productSector'].valueChanges
 			.pipe(
-				switchMap((id) => {
+				startWith(null),
+				pairwise(),
+				switchMap(([prevId, curId]) => {
+					if (prevId) {
+						this.formGroup.get('category').reset();
+						this.formGroup.updateValueAndValidity();
+					}
+
 					return this.categoriesService
 						.getCategories$()
 						.pipe(
 							map(
 								({ categories }) =>
 									categories.find(
-										(foundCategory: any) => foundCategory._id === id
+										(foundCategory: any) => foundCategory._id === curId
 									)?.children
 							)
 						);
 				}),
 				untilDestroyed(this)
 			)
-			.subscribe((categories) => (this.level2Categories = categories));
+			.subscribe((categories) => {
+				this.level2Categories = categories;
+			});
 
 		this.formGroup.controls['photos'].valueChanges
 			.pipe(untilDestroyed(this))
@@ -567,6 +630,24 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 						break;
 				}
 			});
+
+		this.unit$ = this.formGroup.controls['amount'].valueChanges.pipe(
+			switchMap((amount) => {
+				if (amount) {
+					this.formGroup.get('unit').setValidators([Validators.required]);
+					this.formGroup.get('unit').updateValueAndValidity();
+					this.formGroup.get('unit').markAsTouched();
+
+					return this.getUnit(amount);
+				} else {
+					this.formGroup.get('unit').setValue(null);
+					this.formGroup.get('unit').clearValidators();
+					this.formGroup.get('unit').updateValueAndValidity();
+
+					return of([]);
+				}
+			})
+		);
 	}
 
 	private getArrayForSelect(
@@ -600,107 +681,134 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 	}
 
 	private patchForm(): void {
-		combineLatest([
-			this.tradebidService.getCompanyData(),
-			this.clientMarketplaceService.getProductById(this.productId),
-		]).subscribe(([{ country }, { product }]: Array<any>) => {
-			this.suppliersCountry = country;
+		this.clientMarketplaceService
+			.getProductById(this.productId)
+			.subscribe(({ company, product }) => {
+				this.company = company;
+				this.suppliersCountry = company.country;
 
-			const sector = this.level1Categories.find((el) =>
-				el.children.find((child) => child._id === product.category._id)
-			);
+				const sector = this.level1Categories.find((el) =>
+					el.children.find(
+						(child) => child._id === (product.category as Category)._id
+					)
+				);
 
-			this.formGroup.patchValue({
-				...product,
-				productOrigin: product.productOrigin || product.country,
-				productSector: sector._id,
-				category: product.category._id,
-			});
+				this.formGroup.patchValue(
+					{
+						...product,
+						productOrigin: product.productOrigin || product.country,
+						productSector: sector._id,
+						category: (product.category as Category)._id,
+					},
+					{ emitEvent: false }
+				);
 
-			if (product.photos.length > 0) {
-				product.photos
-					.reduce((acc: any[], val: any) => {
-						acc[val.serialNumber] = val;
-						return acc;
-					}, [])
-					.forEach((photo: { lg: string }, index: any) => {
+				if (product.photos.length > 0) {
+					if (
+						product.photos.every((photo) => 'serialNumber' in photo) &&
+						checkSerialNumber(product.photos)
+					) {
+						product.photos = product.photos.reduce((acc: any[], val: any) => {
+							acc[val?.serialNumber] = val;
+							return acc;
+						}, []);
+						this.formGroup.patchValue({
+							serialNumbers: product.photos.forEach((photo) => ({
+								imageName: photo.imageName,
+								serialNumber: photo.serialNumber,
+							})),
+						});
+					}
+
+					product.photos.forEach((photo, index: any) => {
 						if (photo.lg) {
 							const fileUrl = environment.apiUrl + photo.lg;
 							this.images.splice(index, 1, fileUrl);
-							this.files.pop();
-							this.files.unshift(photo);
+							this.files.splice(index, 1, photo);
 						}
 					});
-				this.formGroup.patchValue({ photos: this.files });
-			}
+					this.formGroup.patchValue({
+						photos: this.files,
+						serialNumbers: this.getPhotosOrder(this.files),
+					});
+				}
 
-			if (product.amount) {
-				this.formGroup.patchValue({
-					amount: product.amount.count,
-					unit: product.amount.unit?._id || product.amount.unit,
-				});
-			}
+				if (product.amount) {
+					this.formGroup.patchValue({
+						amount: product.amount.count,
+						unit: product.amount.unit?._id || product.amount.unit,
+					});
+				}
 
-			if (product.ports[0] !== null && product.ports.length > 0) {
-				const productPorts = this.getPorts(product);
+				if (product.ports[0] !== null && product.ports.length > 0) {
+					const productPorts = this.getPorts(product);
 
-				productPorts.forEach((value, index) => {
-					index === 0 ? null : this.addPortsField();
-					this.getPortsByCountry(value.country, index);
-				});
+					productPorts.forEach((value, index) => {
+						index === 0 ? null : this.addPortsField();
+						this.getPortsByCountry(value.country, index);
+					});
 
-				this.ports.setValue(productPorts);
-			}
+					this.ports.setValue(productPorts);
+				}
 
-			if (
-				product.specificationList.length > 0 &&
-				!!product.specificationList[0].specification &&
-				!!product.specificationList[0].item
-			) {
-				product.specificationList.forEach((value: any, index: number) =>
-					index === 0 ? null : this.addField()
-				);
-				const list = product.specificationList.map(
-					(el: { specification: any; item: any }) => ({
-						specification: el.specification,
-						item: el.item,
-					})
-				);
-				this.specificationList.setValue(list);
-			}
+				if (
+					product.specificationList.length > 0 &&
+					!!product.specificationList[0].specification &&
+					!!product.specificationList[0].item
+				) {
+					product.specificationList.forEach((value: any, index: number) =>
+						index === 0 ? null : this.addField()
+					);
+					const list = product.specificationList.map(
+						(el: { specification: any; item: any }) => ({
+							specification: el.specification,
+							item: el.item,
+						})
+					);
+					this.specificationList.setValue(list);
+				}
 
-			if (product.paymentMethods.length > 0) {
-				this.paymentMethods.forEach((method) => {
-					method.checked = product.paymentMethods.includes(method.value);
-				});
-				this.selectedPaymentMethods = [...this.formGroup.value.paymentMethods];
-			}
+				if (product.paymentMethods.length > 0) {
+					this.paymentMethods.forEach((method) => {
+						method.checked = product.paymentMethods.includes(method.value);
+					});
+					this.selectedPaymentMethods = [
+						...this.formGroup.value.paymentMethods,
+					];
+				}
 
-			if (product.shipping.length > 0 && product.shipping[0] !== null) {
-				this.shippingMethods.forEach((method) => {
-					method.checked = product.shipping.includes(method.value);
-				});
-				this.selectedShippingMethods = [...this.formGroup.value.shipping];
-			}
+				if (product.shipping.length > 0 && product.shipping[0] !== null) {
+					this.shippingMethods.forEach((method) => {
+						method.checked = product.shipping.includes(method.value);
+					});
+					this.selectedShippingMethods = [...this.formGroup.value.shipping];
+				}
 
-			if (product.tradingAreas.length > 0 && product.tradingAreas[0] !== null) {
-				this.tradingAreas.forEach((area) => {
-					area.checked = product.tradingAreas.includes(area.value);
-				});
-				this.selectedTradingAreas = [...this.formGroup.value.tradingAreas];
-			}
-		});
+				if (
+					product.tradingAreas.length > 0 &&
+					product.tradingAreas[0] !== null
+				) {
+					this.tradingAreas.forEach((area) => {
+						area.checked = product.tradingAreas.includes(area.value);
+					});
+					this.selectedTradingAreas = [...this.formGroup.value.tradingAreas];
+				}
+			});
 	}
 
-	private getUnit(): Observable<any> {
+	private getUnit(amount: number): Observable<any> {
 		return this.unitsService.getUnits().pipe(
 			map((units) =>
-				units.map((unit: { name: string }) => ({
-					...unit,
-					displayName: this.translateService.instant(
-						`UNITS.${unit.name.toUpperCase()}`
-					),
-				}))
+				units.map(
+					(unit: {
+						name: string;
+						pluralDisplayName: string;
+						displayName: string;
+					}) => ({
+						...unit,
+						displayName: amount > 1 ? unit.pluralDisplayName : unit.displayName,
+					})
+				)
 			)
 		);
 	}
@@ -754,7 +862,9 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		this.clientMarketplaceService
 			.updateProduct(
 				this.productId,
-				this.getFormData(this.getBodyForRequest(this.formGroup.value))
+				this.getFormData(
+					this.getBodyForRequest(this.formGroup.value, this.company)
+				)
 			)
 			.pipe(
 				this.hotToastService.observe({
@@ -780,7 +890,9 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		this.clientMarketplaceService
 			.updateProductByAdmin(
 				this.productId,
-				this.getFormData(this.getBodyForRequest(this.formGroup.value))
+				this.getFormData(
+					this.getBodyForRequest(this.formGroup.value, this.company)
+				)
 			)
 			.pipe(
 				this.hotToastService.observe({

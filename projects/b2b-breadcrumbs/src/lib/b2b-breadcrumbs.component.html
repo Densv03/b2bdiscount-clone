@@ -1,7 +1,7 @@
 <ul class="breadcrumb">
 	<li *ngFor="let breadcrumb of breadcrumbs; let i = index"
 			class="breadcrumb-item">
-		<a [routerLink]="breadcrumb.url" b2bNgxLink [class.active]="i === breadcrumbs.length - 1">
+		<a [routerLink]="breadcrumb.url" [queryParams]="breadcrumb.params" b2bNgxLink [class.active]="i === breadcrumbs.length - 1">
 			{{ breadcrumb.label }}
 		</a>
 	</li>

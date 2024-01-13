@@ -1,14 +1,66 @@
-<div class="supplier-info">
-	<div class="header">
-		<div class="title">Contact Supplier</div>
-		<div class="supplier-name">{{ supplierInfo?.companyName }}</div>
+<div class="company-info">
+	<div class="company-text d-flex align-items-center">
+		<div class="d-flex">
+			<img
+				[src]="
+					supplierInfo?.companyLogo?.path
+						? apiAddress + supplierInfo?.companyLogo?.path
+						: 'assets/images/no-company-logo.png'
+				"
+				width="72"
+				height="72" />
+
+			<a
+				b2bNgxLink
+				[routerLink]="'/b2bmarket/company/' + supplierInfo?.companyId"
+				[theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
+				class="company-title"
+				>{{ supplierInfo?.companyName }}
+			</a>
+		</div>
+
+		<div>
+			<div class="d-flex align-items-center">
+				<mat-icon>business_center</mat-icon>
+
+				<p class="section-text">
+					{{ supplierInfo?.suppliersType }}
+				</p>
+			</div>
+
+			<div class="d-flex align-items-center address">
+				<mat-icon>home</mat-icon>
+
+				<p class="section-text">{{ supplierInfo?.address }}</p>
+			</div>
+		</div>
 	</div>
-	<div class="divider"></div>
-	<button
-		[id]="userIsAuth ? 'contact-supplier' : 'register-from-supplier-listing'"
-		(click)="openChat($event)"
-		b2bNgxButton
-		[theme]="b2bNgxButtonTheme.BACKGROUND_BLACK">
-		Contact Supplier
-	</button>
+
+	<div class="buttons">
+		<button
+			b2bNgxButton
+			(click)="openChat($event)"
+			[id]="userIsAuth ? 'contact-supplier' : 'register-from-supplier-listing'"
+			[theme]="b2bNgxButtonTheme.BACKGROUND_BLUE"
+			class="btn-100">
+			<img b2bNgxIcon name="messages-2" />
+			Contact
+		</button>
+
+		<div class="btn-row">
+			<a
+				(click)="openPhoneModal()"
+				[class.w-100]="!supplierInfo?.website"
+				[class.text-center]="!supplierInfo?.website">
+				Phone
+			</a>
+
+			<a
+				*ngIf="supplierInfo?.website"
+				[href]="supplierInfo?.website"
+				target="_blank">
+				Website
+			</a>
+		</div>
+	</div>
 </div>

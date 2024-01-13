@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
 	ActivatedRouteSnapshot,
-	CanActivate,
-	CanActivateChild,
 	Router,
 	RouterStateSnapshot,
 } from '@angular/router';
@@ -11,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
 	providedIn: 'root',
 })
-export class LanguageGuard implements CanActivateChild {
+export class LanguageGuard {
 	constructor(
 		private router: Router,
 		private translateService: TranslateService

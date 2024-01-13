@@ -18,9 +18,9 @@
 
 			<ngx-datatable
 				class="material section-table"
-				*ngIf="option.rows"
-				[rows]="option.rows"
-				[columns]="option.columns"
+				*ngIf="option?.rows && isPlatformBrowser"
+				[rows]="option?.rows"
+				[columns]="option?.columns"
 				columnMode="force"
 				rowHeight="auto"
 				[headerHeight]="50"></ngx-datatable>

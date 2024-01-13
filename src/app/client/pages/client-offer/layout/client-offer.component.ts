@@ -250,10 +250,10 @@ export class ClientOfferComponent implements OnInit {
 	}
 
 	private addSeoTags(product: any): void {
-		this.title.setTitle(`Buy ${product.title.trim()} with B2B Discount`);
+		this.title.setTitle(`Buy ${product.title.trim()} with Globy`);
 		this.meta.updateTag({
 			name: 'description',
-			content: `${product.title.trim()} Wholesale with B2B Discount at the best prices! Discover more great deals on the B2B Discount website`,
+			content: `${product.title.trim()} Wholesale with Globy at the best prices! Discover more great deals on the Globy website`,
 		});
 	}
 }

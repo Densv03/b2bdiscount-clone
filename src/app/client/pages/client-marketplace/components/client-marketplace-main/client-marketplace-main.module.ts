@@ -12,12 +12,25 @@ import { B2bNgxInputModule } from '@b2b/ngx-input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { B2bBreadcrumbsModule } from '@b2b/breadcrumbs';
 import { SharedModule } from '../../../../shared/components/shared.module';
+import { B2bNgxIconModule } from '@b2b/ngx-icon';
+import { B2bNgxLinkModule } from '@b2b/ngx-link';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { B2bNgxImageModule } from '@b2b/ngx-image';
+import { MarketAdvertisingMaterialsComponent } from './components/market-advertising-materials/market-advertising-materials.component';
+import { B2bNgxLogoModule } from '@b2b/ngx-logo';
+import { MatRippleModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
 	{ path: '', component: ClientMarketplaceMainComponent },
 ];
 @NgModule({
-	declarations: [ClientMarketplaceMainComponent, CompaniesCounterComponent],
+	declarations: [
+		ClientMarketplaceMainComponent,
+		CompaniesCounterComponent,
+		MarketAdvertisingMaterialsComponent,
+	],
 	imports: [
 		CommonModule,
 		RouterModule.forChild(routes),
@@ -30,6 +43,14 @@ const routes: Routes = [
 		ReactiveFormsModule,
 		B2bBreadcrumbsModule,
 		SharedModule,
+		B2bNgxIconModule,
+		B2bNgxLinkModule,
+		MatDialogModule,
+		MatIconModule,
+		B2bNgxImageModule,
+		B2bNgxLogoModule,
+		MatRippleModule,
+		MatInputModule,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	exports: [CompaniesCounterComponent],

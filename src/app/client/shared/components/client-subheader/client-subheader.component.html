@@ -1,16 +1,21 @@
-<div class="subheader-wrapper">
-	<b2b-claim-buttons
-		[buttonClass]="claimButtonClasses.SUBHEADER_BUTTON"
-		[buttonTheme]="b2bNgxButtonTheme.BACKGROUND_BLUE"></b2b-claim-buttons>
+<div class="content">
+	<div class="subheader-wrapper">
+		<b2b-claim-buttons
+			[buttonClass]="claimButtonClasses.SUBHEADER_BUTTON"
+			[buttonTheme]="b2bNgxButtonTheme.BACKGROUND_BLUE"></b2b-claim-buttons>
 
-	<div class="search-wrapper">
-		<input
-			b2bNgxInput
-			(keydown.enter)="searchOnClick.emit(search.value)"
-			[formControl]="search"
-			[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-			class="subheader-search"
-			placeholder="Search" />
-		<img (click)="searchOnClick.emit(search.value)" b2bNgxIcon name="search" />
+		<div class="search-wrapper">
+			<input
+				b2bNgxInput
+				(keydown.enter)="searchOnClick.emit(search.value)"
+				[formControl]="search"
+				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+				class="subheader-search"
+				placeholder="Search" />
+			<img
+				(click)="searchOnClick.emit(search.value)"
+				b2bNgxIcon
+				name="search" />
+		</div>
 	</div>
 </div>

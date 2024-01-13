@@ -15,6 +15,7 @@ interface CategoryChildren {
 	sort: number;
 	path: string;
 	_id: string;
+	image: string;
 	children: CategoryChildren[];
 	productsCount: number;
 	description?: string;

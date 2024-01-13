@@ -24,11 +24,7 @@
 
 				<div class="promotion__header__wrapper__info__buttons">
 					<button
-						[routerLink]="
-							(user$ | async)
-								? '/profile/your-workspace/b2bmarket'
-								: '/auth/register-credentials'
-						"
+						(click)="joinUs()"
 						b2bNgxButton
 						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE">
 						{{ 'MARKET_PROMOTION.JOIN_US' | translate }}
@@ -84,9 +80,7 @@
 				{{ 'MARKET_PROMOTION.AUTOMATICALLY_BECOME' | translate }}
 			</div>
 			<button
-				[routerLink]="
-					(user$ | async) ? '/b2bmarket/product' : '/auth/register-credentials'
-				"
+				(click)="applyAsSupplier()"
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
 				class="promotion__steps__wrapper__button">

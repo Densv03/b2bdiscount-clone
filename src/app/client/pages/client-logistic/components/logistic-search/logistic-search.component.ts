@@ -1,18 +1,45 @@
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
+	EventEmitter,
 	OnInit,
-	Renderer2,
+	Output,
 	ViewChild,
 } from '@angular/core';
 import {
 	deliveryType,
 	DeliveryTypeModel,
 } from '../../models/delivery-type.model';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { LogisticSearchItemModel } from '../../models/logistic-search-item.model';
-import { LogisticService } from '../../logistic.service';
+import { BehaviorSubject, filter, fromEvent, Observable } from 'rxjs';
+import { LogisticSearchItemModel } from 'src/app/client/pages/client-logistic/models/logistic-search/logistic-search-item.model';
+import { ClientLogisticService } from 'src/app/client/pages/client-logistic/services/client-logistic.service';
+import {
+	FormBuilder,
+	FormControl,
+	FormGroup,
+	Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { MatSliderChange } from '@angular/material/slider';
+import { ShipmentItem } from 'src/app/client/pages/client-logistic/components/listing-filter/models/shipment-item.model';
+import { LogisticSearchForm } from 'src/app/client/pages/client-logistic/models/logistic-search/logistic-search-form.model';
+import {
+	debounceTime,
+	distinctUntilChanged,
+	first,
+	map,
+	switchMap,
+	tap,
+} from 'rxjs/operators';
+import * as events from 'events';
+import { getCode } from 'country-list';
+import { drop } from 'lodash';
+import { ContainerItem } from '../listing-filter/listing-filter.component';
+import { ContainerType } from '../../models/container.type';
 
 @Component({
 	selector: 'b2b-logistic-search',
@@ -20,56 +47,311 @@ import { LogisticService } from '../../logistic.service';
 	styleUrls: ['./logistic-search.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LogisticSearchComponent implements OnInit {
+export class LogisticSearchComponent implements OnInit, AfterViewInit {
 	@ViewChild('deliveryTypesInner') deliveryTypesInner: ElementRef;
+	@ViewChild('countryFromInput') countryFromInput: ElementRef;
+	@ViewChild('countryToInput') countryToInput: ElementRef;
+	@ViewChild('origin') originDropdown: BsDropdownDirective;
+	@ViewChild('countryTo') countryToDropdown: BsDropdownDirective;
+	@ViewChild('dropdown') dropdown: BsDropdownDirective;
+	@Output() logisticSearch: EventEmitter<LogisticSearchForm> =
+		new EventEmitter<LogisticSearchForm>();
 	public origin?: string;
 	public destination: string;
-	searchOptions$: Observable<LogisticSearchItemModel[]> =
-		this.logisticService.getSearchOptions$();
-	public deliveryType$: Observable<deliveryType> =
-		this.logisticService.getActiveDeliveryType();
 
+	public deliveryType$: Observable<deliveryType> =
+		this.clientLogisticsService.getActiveDeliveryType$();
+
+	public containerTypes: ContainerItem[] = this.getContainerTypes();
+	public ship: number = 1100;
+
+	public shipmentTypes: any[] = this.getShipments();
 	private innerTranslateSource: BehaviorSubject<number> =
 		new BehaviorSubject<number>(0);
+	private mobileFilterValue: BehaviorSubject<string> =
+		new BehaviorSubject<string>('');
+	private originSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
-	constructor(private readonly logisticService: LogisticService) {}
+	public form: FormGroup = new FormGroup({
+		countryFrom: new FormControl<null | string>(null, Validators.required),
+		countryTo: new FormControl<null | string>(null, Validators.required),
+		date: new FormControl<null | Date>(null, Validators.required),
+		transportType: new FormControl<deliveryType>(null),
+	});
+
+	constructor(
+		private readonly clientLogisticsService: ClientLogisticService,
+		private readonly router: Router,
+		private readonly fb: FormBuilder,
+		private readonly cdr: ChangeDetectorRef
+	) {}
+
+	get originSource$(): Observable<any[]> {
+		return this.originSource.asObservable();
+	}
 
 	get innerTranslate$(): Observable<number> {
 		return this.innerTranslateSource.asObservable();
 	}
-	ngOnInit(): void {}
 
-	getDeliveryTypes(): DeliveryTypeModel[] {
+	ngAfterViewInit() {
+		this.searchOnTyping(
+			this.countryFromInput,
+			this.originDropdown,
+			this.originSource
+		);
+		this.searchOnTyping(
+			this.countryToInput,
+			this.countryToDropdown,
+			this.originSource
+		);
+	}
+
+	private searchOnTyping(
+		input: ElementRef,
+		dropdown: BsDropdownDirective,
+		source: BehaviorSubject<any[]>
+	): void {
+		const inputChanges$ = fromEvent<Event>(input.nativeElement, 'input')
+			.pipe(
+				debounceTime(300),
+				map((event: Event) => (event.target as HTMLInputElement).value),
+				tap((data) => (data.length <= 2 ? dropdown.hide() : null)),
+				filter((data: string) => data.length && data.length > 2),
+				switchMap((term: string) => {
+					return this.clientLogisticsService.getDirections({ q: term });
+				})
+			)
+			.subscribe(({ data }) => {
+				if (data.length) {
+					let temp = [];
+					if (data[0].type === 'country') {
+						temp = data[0].cities.map((item: any) => ({
+							...item,
+							country: {
+								name: data[0].name,
+								id: data[0]._id,
+							},
+							countryIcon: getCode(data[0].name),
+						}));
+					} else if (data[0].type === 'city') {
+						temp = data.map((item: any) => ({
+							...item,
+							countryIcon: getCode(item.country.name),
+						}));
+					}
+
+					source.next(temp);
+					dropdown.show();
+					this.cdr.detectChanges();
+				} else {
+					source.next([{ type: 'notFound', text: 'Not found' }]);
+					dropdown.show();
+					this.cdr.detectChanges();
+				}
+			});
+	}
+
+	chooseFirstLevelItem(item: any): void {
+		this.clientLogisticsService
+			.getActiveDeliveryType$()
+			.pipe(first())
+			.subscribe((type) => {
+				const { ports, airports } = item;
+				let items = type === 'sea' ? [...ports] : [...airports];
+				items = items.map((el) => ({
+					...el,
+					country: item.country,
+					cityId: item._id,
+				}));
+
+				if (!items.length) {
+					items.push({
+						type: 'notFound',
+						text: `No ${type === 'sea' ? 'Ports' : 'Airports'} was found`,
+					});
+				}
+				this.originSource.next(items);
+			});
+	}
+
+	chooseTargetPoint(item: any, controlName: 'countryFrom' | 'countryTo'): void {
+		this.deliveryType$.pipe(first()).subscribe((type: deliveryType) => {
+			this.form.get(controlName).setValue(item.name);
+			if (type === 'sea') {
+				const portDirection: 'portTo' | 'portFrom' =
+					controlName === 'countryFrom' ? 'portFrom' : 'portTo';
+				this.clientLogisticsService.updateSeaState({
+					...this.clientLogisticsService.getSeaState(),
+					[controlName]: item.country.id ?? item.country._id,
+					[portDirection]: item._id,
+				});
+			} else {
+				const portDirection: 'cityTo' | 'cityFrom' =
+					controlName === 'countryFrom' ? 'cityFrom' : 'cityTo';
+				this.clientLogisticsService.updateAirState({
+					...this.clientLogisticsService.getAirState(),
+					[controlName]: item.country.id ?? item.country._id,
+					[portDirection]: item.cityId,
+				});
+			}
+		});
+	}
+
+	ngOnInit(): void {
+		this.resetSearchOnDeliveryTypeChange();
+	}
+
+	public getDeliveryTypes(): DeliveryTypeModel[] {
 		return [
 			{
-				name: 'Sea',
+				name: 'sea',
 				icon: '/sea-delivery.svg',
 				activeIcon: '/sea-delivery-active.svg',
 			},
 			{
-				name: 'Air',
+				name: 'air',
 				icon: '/air-delivery.svg',
 				activeIcon: '/air-delivery-active.svg',
 			},
 		];
 	}
 
-	switchDeliveryType(typesWrapperWidth: number, type: DeliveryTypeModel) {
+	public getMobileFilterValue$(): Observable<string> {
+		return this.mobileFilterValue.asObservable();
+	}
+
+	public searchResults(form: FormGroup): void {
+		if (form.invalid) {
+			this.form.markAllAsTouched();
+			return;
+		}
+		this.logisticSearch.emit(form.value);
+	}
+
+	public switchDeliveryType(
+		typesWrapperWidth: number,
+		type: DeliveryTypeModel
+	): void {
 		const deliveryTypeIndex = this.getDeliveryTypes().findIndex(
 			({ name }: DeliveryTypeModel) => name === type.name
 		);
-		const innerTranslate = 56 * deliveryTypeIndex;
+		const itemWidth = (
+			document.querySelector('.search__transportation-item') as HTMLElement
+		).clientWidth;
+		const innerTranslate = itemWidth * deliveryTypeIndex;
 		this.deliveryTypesInner.nativeElement.style.transform = `translateX(${innerTranslate}px)`;
-		this.logisticService.updateDeliveryType(type.name);
+		this.clientLogisticsService.updateDeliveryType(type.name);
+		this.form.get('transportType').setValue(type.name);
+		this.clientLogisticsService.updateListingState('isFirstDisplay');
 	}
 
-	public openDatepicker($event: MouseEvent) {
-		$event.preventDefault();
+	public swapItems(): void {
+		const firstValue = this.form.get('countryFrom').value;
+		this.form.get('countryFrom').setValue(this.form.get('countryTo').value);
+		this.form.get('countryTo').setValue(firstValue);
+		this.clientLogisticsService.swapStateItems();
 	}
 
-	swapItems() {
-		const temp = this.origin;
-		this.origin = this.destination;
-		this.destination = temp;
+	public chooseContainerType(
+		containerType: ContainerType,
+		dropdown: BsDropdownDirective
+	): void {
+		dropdown.hide();
+		this.clientLogisticsService
+			.getOrders$()
+			.pipe(first())
+			.subscribe((orders: any) => {
+				if (orders.length && orders[0][containerType]) {
+					this.clientLogisticsService.updateListingState('isLoaded');
+				}
+			});
+		this.clientLogisticsService.updateContainerType(containerType);
+
+		this.mobileFilterValue.next(containerType);
+	}
+
+	private resetSearchOnDeliveryTypeChange(): void {
+		this.clientLogisticsService.getActiveDeliveryType$().subscribe(() => {
+			this.form.reset();
+			this.mobileFilterValue.next('');
+		});
+	}
+
+	private getShipments(): ShipmentItem[] {
+		return [
+			{
+				name: 'Weight',
+				min: 1,
+				max: 11000,
+				defaultValue: 1,
+				step: 10,
+				measure: 'KG',
+			},
+		];
+	}
+
+	private getContainerTypes(): ContainerItem[] {
+		return [
+			{
+				name: '20 standard',
+				code: '20ST',
+				checked: false,
+			},
+			{
+				name: '40 standard',
+				code: '40ST',
+				checked: true,
+			},
+			{
+				name: '40 High Cube',
+				code: '40HC',
+				checked: false,
+			},
+			{
+				name: '45 High Cube',
+				code: '45HC',
+				checked: false,
+			},
+			{
+				name: '20 Refrigerated',
+				code: '20REF',
+				checked: false,
+			},
+			{
+				name: '40 Refrigerated',
+				code: '40REF',
+				checked: false,
+			},
+		];
+	}
+
+	onOpenChange($event: boolean, shipInputValue: number) {
+		this.mobileFilterValue.next($event ? 'Hide filter' : null);
+		this.clientLogisticsService
+			.getActiveDeliveryType$()
+			.pipe(
+				first(),
+				filter((type) => type === 'air')
+			)
+			.subscribe(() => {
+				this.mobileFilterValue.next(
+					$event ? 'Hide filter' : shipInputValue + 'kg'
+				);
+				this.clientLogisticsService.updateWeight(shipInputValue);
+				this.clientLogisticsService
+					.getListingStates$()
+					.pipe(
+						filter((type) => type === 'isLoaded' && !$event),
+						first()
+					)
+					.subscribe(() => {
+						this.logisticSearch.emit(this.form.value);
+					});
+			});
+	}
+
+	setInput($event: any) {
+		this.ship = $event.value;
 	}
 }

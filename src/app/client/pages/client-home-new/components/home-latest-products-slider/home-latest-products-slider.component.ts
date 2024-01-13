@@ -56,7 +56,7 @@ export class HomeLatestProductsSliderComponent implements AfterViewInit {
 	@Input() items: any;
 	@ViewChild('swiperRef', { static: true }) _swiperRef: ElementRef;
 
-	constructor(private platformService: PlatformService) {}
+	constructor(public platformService: PlatformService) {}
 
 	ngAfterViewInit() {
 		const { nextId, prevId } = this.navigationButtonsIds;

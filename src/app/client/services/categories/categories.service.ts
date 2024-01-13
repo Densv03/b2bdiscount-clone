@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, takeWhile } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, take } from 'rxjs/operators';
 
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoriesQuery } from '../../state/categories/categories.query';
@@ -25,11 +25,14 @@ export class CategoriesService {
 	public getCategories$(): Observable<any> {
 		const { categories } = this._categoriesQuery.getValue();
 		if (!categories?.categories?.length || !categories?.totalCount) {
-			this._apiService.get(this.endpoint).subscribe((categories: any) => {
-				this._categoriesStore.update({
-					categories,
+			this._apiService
+				.get(this.endpoint)
+				.pipe(take(1))
+				.subscribe((categories: any) => {
+					this._categoriesStore.update({
+						categories,
+					});
 				});
-			});
 		}
 
 		return this._categoriesQuery.selectCategories$;

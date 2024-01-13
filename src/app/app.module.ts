@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
-import {
-	BrowserModule,
-	BrowserTransferStateModule,
-	TransferState,
-} from '@angular/platform-browser';
+import { BrowserModule, TransferState } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTreeModule } from '@angular/material/tree';
@@ -18,9 +13,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { translateBrowserLoaderFactory } from './core/loaders/translate-browser.loader';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
-	declarations: [],
 	imports: [
 		BrowserModule.withServerTransition({ appId: 'serverApp' }),
 		CoreModule,
@@ -34,7 +30,6 @@ import { translateBrowserLoaderFactory } from './core/loaders/translate-browser.
 		NgxPasswordModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
-		BrowserTransferStateModule,
 		TranslateModule.forRoot({
 			defaultLanguage: 'en',
 			loader: {
@@ -43,6 +38,7 @@ import { translateBrowserLoaderFactory } from './core/loaders/translate-browser.
 				deps: [HttpClient, TransferState],
 			},
 		}),
+		environment.production ? [] : AkitaNgDevtools.forRoot(),
 	],
 	exports: [TranslateModule],
 	bootstrap: [AppComponent],

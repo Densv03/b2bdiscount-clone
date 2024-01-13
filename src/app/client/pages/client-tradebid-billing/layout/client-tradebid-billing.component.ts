@@ -18,7 +18,7 @@ import { FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-	selector: 'b2b-client-tradebid-billing',
+	selector: 'b2b-client-sourcing-request-billing',
 	templateUrl: './client-tradebid-billing.component.html',
 	styleUrls: ['./client-tradebid-billing.component.scss'],
 	animations: [

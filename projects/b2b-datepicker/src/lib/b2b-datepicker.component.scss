@@ -1,6 +1,113 @@
+@import "../../../shared/src/styles";
+
 .input-wrapper {
 	position: relative;
+
+	input {
+		cursor: default;
+
+		&.has-value {
+			padding: 0 0 0 35px;
+			max-width: 191px;
+			@include breakpoint('4') {
+				max-width: 100%;
+			}
+		}
+	}
+
 	img {
 		position: absolute;
+	}
+}
+
+::ng-deep {
+	.mat-datepicker-content {
+		width: 308px;
+		border-radius: 14px !important;
+		padding: 0;
+
+		.mat-calendar {
+			width: 100% !important;
+
+			.mat-calendar-content {
+				padding: 0 41px;
+
+				.mat-calendar-table-header {
+					tr > th {
+						font-size: 14px;
+						font-weight: 500;
+						line-height: 19px;
+						padding: 0;
+						color: #000000;
+					}
+				}
+
+				.mat-calendar-body-cell {
+					border-radius: 2px;
+
+					&::before, &::after {
+						display: none;
+					}
+
+					&:hover {
+						background-color: transparent;
+					}
+
+
+					.mat-calendar-body-today {
+						background-color: transparent;
+
+						&:hover {
+							background-color: #005DFF;
+						}
+					}
+
+					.mat-calendar-body-selected {
+						background-color: #005DFF;
+					}
+
+					.mat-calendar-body-cell-preview {
+						display: none;
+					}
+
+					.mat-calendar-body-cell-content.mat-focus-indicator {
+						border: none;
+
+						&:hover {
+							background-color: #005DFF;
+							color: white;
+						}
+					}
+				}
+
+				.mat-calendar-table-header-divider {
+					display: none;
+				}
+
+				.mat-calendar-body-label {
+					opacity: 0;
+					height: 0;
+					padding-top: 0 !important;
+					padding-bottom: 0!important;
+				}
+			}
+		}
+
+		.mat-datepicker-actions {
+			padding: 0 41px 16px;
+		}
+	}
+
+
+	@media all and (orientation: portrait), (orientation: landscape) {
+		.mat-datepicker-content-touch {
+			.mat-datepicker-content-container {
+				height: auto !important;
+			}
+			.mat-datepicker-content-container-with-actions {
+				height: auto !important;
+				width: auto !important;
+			}
+		}
 	}
 }

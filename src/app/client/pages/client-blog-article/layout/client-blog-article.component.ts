@@ -24,6 +24,7 @@ import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { Request } from 'express';
 import { Meta, Title } from '@angular/platform-browser';
+import { PlatformService } from '../../../services/platform/platform.service';
 
 @Component({
 	selector: 'b2b-client-blog-article',
@@ -45,6 +46,7 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 	public comments$: Observable<any>;
 
 	public getNewComments: Subject<any>;
+	private window: Window;
 
 	constructor(
 		private readonly _activatedRoute: ActivatedRoute,
@@ -58,8 +60,7 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 		@Optional() @Inject(REQUEST) private request: Request,
 		private renderer2: Renderer2,
 		private readonly seoService: SeoService,
-		private readonly title: Title,
-		private readonly meta: Meta
+		private readonly title: Title
 	) {
 		this.getNewComments = new Subject();
 		this.socialMedias = this.getSocialMedias();
@@ -72,6 +73,7 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 		this.formGroup = new FormGroup<{ text: FormControl<string> }>({
 			text: new FormControl<string>(''),
 		});
+		this.window = this._document.defaultView;
 	}
 
 	ngAfterViewInit() {
@@ -108,7 +110,7 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 					description = description.replace(/<[^>]*>/g, '');
 					this.seoService.addBlogMicroMarkup(
 						this._document,
-						window.location.href,
+						this.window.location.href,
 						title,
 						new Date(createdAt),
 						new Date(updatedAt),
@@ -191,11 +193,11 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 	}
 
 	private addSeoTags(product: any): void {
-		this.title.setTitle(`${product.title.trim()} | B2B Discount`);
-		this.meta.updateTag({
-			name: 'description',
-			content: `Read about ${product.title.trim()} on B2B Discount Blog`,
-		});
+		const { title } = product;
+		this.seoService.setTitle(`${title} | Globy B2B Marketplace`);
+		this.seoService.setDescription(
+			`Read our featured post, ${title}, to elevate your wholesale trade experience`
+		);
 	}
 
 	public processShareBtn(shareName: string): void {
@@ -216,7 +218,7 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		this.title.setTitle('B2B Discount');
+		this.title.setTitle('Globy');
 		this._document.querySelector('[data-chats-widget-id]') &&
 			this._document.querySelector('[data-chats-widget-id]').remove();
 		this._document.querySelector("[id='micro-markup']") &&

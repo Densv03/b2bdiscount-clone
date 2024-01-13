@@ -12,6 +12,10 @@
 			order: 1;
 			height: 100vh;
 			overflow: auto;
+			padding-top: 23px;
+			@include breakpoint('2') {
+				padding-top: 0;
+			}
 		}
 
 		@include breakpoint('2') {

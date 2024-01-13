@@ -1,0 +1,29 @@
+.dialog-title {
+	display: flex;
+	justify-content: space-between;
+}
+
+section {
+	.two-in-row {
+		display: flex;
+		align-items: end;
+		gap: 16px;
+
+		> div {
+			flex: 1 1 50%;
+		}
+	}
+}
+
+.mt-16 {
+	margin-top: 16px;
+}
+
+.button-wrapper {
+	display: flex;
+	justify-content: center;
+
+	button {
+		padding: 7.5px 15px;
+	}
+}

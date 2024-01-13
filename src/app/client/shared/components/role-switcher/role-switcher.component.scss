@@ -1,0 +1,44 @@
+.user {
+	&__role {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		&-switcher {
+			display: flex;
+			align-items: flex-end;
+			gap: 5px;
+		}
+		&-switch-block {
+			width: 72px;
+			height: 32px;
+			border-radius: 8px;
+			background: #005dff;
+			display: grid;
+			place-items: center;
+			cursor: pointer;
+			svg {
+				fill: white;
+			}
+		}
+		&-label {
+			color: #979797;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.12px;
+			padding-bottom: 5px;
+		}
+	}
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.rotate-icon {
+	animation: rotate 2s linear infinite;
+}

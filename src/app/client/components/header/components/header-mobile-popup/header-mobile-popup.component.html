@@ -1,0 +1,67 @@
+<div class="popup">
+	<div (click)="closePopup()" class="popup__close">
+		<svg-icon src="/assets/icons/close.svg"></svg-icon>
+	</div>
+	<div class="popup__main">
+		<ng-container *ngIf="isMarketPage">
+			<ng-container *ngTemplateOutlet="marketSection"></ng-container>
+		</ng-container>
+
+		<ng-container *ngIf="isSourcingRequestPage">
+			<ng-container *ngTemplateOutlet="rfqSection"></ng-container>
+		</ng-container>
+
+		<div *ngFor="let option of mobilePopupItems" class="popup__option">
+			<div class="popup__option-title">{{ option.title }}</div>
+			<div class="popup__option-list">
+				<div
+					*ngFor="let item of option.items"
+					(click)="processItemClick(item)"
+					class="popup__option-item">
+					<svg-icon [src]="'assets/icons/header/' + item.icon"></svg-icon>
+					<span class="popup__option-item-text">{{ item.name }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="!(user$ | async)" class="popup__auth">
+		<button (click)="processItemClick({ link: '/auth/log-in' })">Log In</button>
+	</div>
+</div>
+<ng-template #rfqSection>
+	<div class="popup__option">
+		<div class="popup__option-title">B2B MARKET</div>
+		<div class="popup__option-list">
+			<div
+				(click)="closePopup()"
+				routerLink="/b2bmarket"
+				class="popup__option-item">
+				<img b2bNgxIcon name="sourcing-request" group="mobile-popup/" />
+				<span class="popup__option-item-text">B2B Market</span>
+			</div>
+			<ng-container *ngTemplateOutlet="submitRfqBtn"></ng-container>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #marketSection>
+	<div class="popup__option">
+		<div class="popup__option-title">B2B MARKET</div>
+		<div class="popup__option-list">
+			<div
+				(click)="closePopup()"
+				routerLink="/sourcing-request/listing"
+				class="popup__option-item">
+				<img b2bNgxIcon name="market" group="main-page/" />
+				<span class="popup__option-item-text">Sourcing Request</span>
+			</div>
+			<ng-container *ngTemplateOutlet="submitRfqBtn"></ng-container>
+		</div>
+	</div>
+</ng-template>
+<ng-template #submitRfqBtn>
+	<button (click)="createRfq()" class="submit-rfq-btn">
+		<img b2bNgxIcon name="submit-rfq" group="mobile-popup/" />
+		<span class="popup__option-item-text">Submit RFQ</span>
+	</button>
+</ng-template>

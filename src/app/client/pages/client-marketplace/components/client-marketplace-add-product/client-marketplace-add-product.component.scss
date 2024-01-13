@@ -252,13 +252,9 @@
 
 					.area-count {
 						position: absolute;
-						bottom: 14px;
+						top: 135px;
 						right: 14px;
 						color: #979797;
-
-						&.error {
-							bottom: 27px;
-						}
 					}
 				}
 
@@ -318,7 +314,7 @@
 			.checkbox-row {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 16px;
+				gap: 14px;
 
 				@include breakpoint('3') {
 					flex-direction: column;
@@ -460,6 +456,9 @@ input[type='text']::placeholder {
 		border: 2px solid #005dff;
 		border-radius: 8px !important;
 		color: #222224 !important;
+		font-size: 12px;
+		font-weight: 400;
+		line-height: 16px;
 	}
 
 	.cdk-drag-preview {
@@ -504,11 +503,13 @@ input[type='text']::placeholder {
 input[type='text']::-webkit-input-placeholder,
 input[type='number']::placeholder {
 	color: #9fa4bb;
+	opacity: 1;
 }
 
 ::ng-deep {
-	.b2b-ngx-input::placeholder,
 	.ng-select .ng-select-container .ng-value-container .ng-placeholder {
 		color: #9fa4bb;
 	}
 }
+
+//.b2b-ngx-input::placeholder,

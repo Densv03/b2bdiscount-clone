@@ -1,1 +1,178 @@
-<p>create-inqury works!</p>
+<div class="create-inquiry">
+	<div class="create-inquiry-container">
+		<h3 class="create-inquiry-explanation">
+			Currently, no rates were found. Kindly submit your inquiry to get a
+			personal quotation.
+		</h3>
+		<form [formGroup]="createInquiryForm">
+			<div class="create-inquiry-form-row">
+				<div class="create-inquiry-form-item">
+					<div class="create-inquiry-form-item__label">
+						Product name with HS code <span class="required">*</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+							placeholder="Product name (HS 00000000)"
+							formControlName="productNameWithCode" />
+						<p
+							*ngIf="
+								formState.productNameWithCode.hasError('cyrillic') &&
+								formState.productNameWithCode.touched
+							"
+							class="error-message"
+							[@fadeInOut]>
+							Product name should be in English
+						</p>
+						<p
+							*ngIf="
+								formState.productNameWithCode.hasError('required') &&
+								!formState.productNameWithCode.hasError('cyrillic') &&
+								formState.productNameWithCode.touched
+							"
+							class="error-message"
+							[@fadeInOut]>
+							This field is required
+						</p>
+					</div>
+				</div>
+				<div class="create-inquiry-form-item">
+					<div class="create-inquiry-form-item__label">
+						Weight, MT <span class="required">*</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+							placeholder="2000 kg / 2 MT"
+							formControlName="weight" />
+						<p
+							*ngIf="
+								formState.weight.touched &&
+								formState.weight.hasError('required')
+							"
+							class="error-message"
+							[@fadeInOut]>
+							This field is required
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="create-inquiry-form-row">
+				<div class="create-inquiry-form-item">
+					<div class="create-inquiry-form-item__label">
+						Full name <span class="required">*</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+							placeholder="Type name"
+							formControlName="fullName" />
+						<p
+							*ngIf="
+								formState.fullName.touched &&
+								formState.fullName.hasError('latin')
+							"
+							class="error-message"
+							[@fadeInOut]>
+							Name should be in English
+						</p>
+					</div>
+				</div>
+				<div class="create-inquiry-form-item">
+					<div class="create-inquiry-form-item__label">
+						Country <span class="required">*</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<b2b-ngx-country-select
+							[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+							formControlName="country"
+							placeholder="Select country"></b2b-ngx-country-select>
+						<p
+							*ngIf="
+								formState.country.touched &&
+								formState.country.hasError('required')
+							"
+							class="error-message"
+							[@fadeInOut]>
+							This field is required
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="create-inquiry-form-row">
+				<div class="create-inquiry-form-item">
+					<div class="create-inquiry-form-item__label">
+						Phone number <span class="required">*</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<b2b-ngx-tel
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							formControlName="phone"
+							inputClass="create-inquiry-form-tel-input"></b2b-ngx-tel>
+					</div>
+				</div>
+				<div class="create-inquiry-form-item">
+					<div class="create-inquiry-form-item__label">
+						Email <span class="required">*</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<input
+							type="text"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+							formControlName="email"
+							placeholder="Type email" />
+						<p
+							*ngIf="
+								formState.email.touched && formState.email.hasError('email')
+							"
+							[@fadeInOut]
+							class="error-message">
+							Email is not valid
+						</p>
+						<p
+							*ngIf="
+								formState.email.touched &&
+								formState.email.hasError('required') &&
+								!formState.email.hasError('email')
+							"
+							class="error-message"
+							[@fadeInOut]>
+							This field is required
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="create-inquiry-form-row">
+				<div class="create-inquiry-form-item single">
+					<div class="create-inquiry-form-item__label">
+						Description <span class="optional">(optional)</span>
+					</div>
+					<div class="create-inquiry-form-item__control">
+						<textarea
+							class="create-inquiry-form-item__control__textarea"
+							b2bNgxTextarea
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+							placeholder="Type description"
+							formControlName="description"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="btn-container">
+				<button
+					b2bNgxButton
+					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+					[disabled]="!(isFormValid$ | async)"
+					(click)="sendForm()">
+					Send
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

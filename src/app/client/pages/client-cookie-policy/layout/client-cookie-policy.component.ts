@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import { SeoService } from '../../../../core/services/seo/seo.service';
+import { PlatformService } from '../../../services/platform/platform.service';
 
 const COOKIES_POLICY = [
 	{
@@ -11,7 +13,7 @@ const COOKIES_POLICY = [
 		title: 'Definitions',
 		description: `The following terms have the meanings as mentioned below:
 
-“B2B Discount” - refers to “B2B Discount Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of the State of Washington of the United States of America (hereinafter – “Company”, “B2B”, “Website”, “We” or “Our”).
+“Globy” - refers to “Globy Inc.”, and its affiliates, parents, and subsidiaries, EIN: 86-3844749, registered under the address: 6400 NE HIGHWAY 99 STE G PMB 579 VANCOUVER, WA 98665, incorporated under the laws of the State of Washington of the United States of America (hereinafter – “Company”, “B2B”, “Website”, “We” or “Our”).
 
 “User”, “You” — the natural person that once visited and hence used Our Website.
 
@@ -182,7 +184,7 @@ To clear Cookies in Safari browser go to “Settings” - “Safari” - “Adva
 	},
 	{
 		title: `Access to the Cookies information`,
-		description: `“B2B Discount” as a Cookies provider has access to the information collected by Cookies. As We use services of Third parties, they have access to Cookies information. There are: hotjar.com, google.com, digitalocean.com
+		description: `“Globy” as a Cookies provider has access to the information collected by Cookies. As We use services of Third parties, they have access to Cookies information. There are: hotjar.com, google.com, digitalocean.com
 
 How Cookies are stored?
 
@@ -208,6 +210,25 @@ If there any problems or questions about this Cookie Policy occurred, please, dr
 	styleUrls: ['./client-cookie-policy.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientCookiePolicyComponent {
+export class ClientCookiePolicyComponent implements OnInit {
 	public readonly options = COOKIES_POLICY;
+
+	constructor(
+		private seoService: SeoService,
+		private platformService: PlatformService
+	) {}
+
+	public get isPlatformBrowser(): boolean {
+		return this.platformService.isBrowser;
+	}
+	ngOnInit() {
+		this.addSeoTags();
+	}
+
+	private addSeoTags() {
+		this.seoService.setTitle('Cookie Policy | Globy B2B Marketplace');
+		this.seoService.setDescription(
+			'Familiarize yourself with the Globy’s cookie policy. Learn how we use cookies to improve your experience with our wholesale platform.'
+		);
+	}
 }

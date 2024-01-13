@@ -88,14 +88,7 @@
 		}
 
 		.supplier-info__more-bids__wrapper {
-			display: flex;
-			align-items: center;
 			padding-top: 12px;
-
-			@include breakpoint('2') {
-				display: flex;
-				flex-wrap: wrap;
-			}
 		}
 
 		.supplier-info__more-bids {
@@ -164,8 +157,15 @@
 					margin: 0;
 				}
 
-				&__text {
+				&__text,
+				.amount-label {
 					color: #0f0f11;
+				}
+
+				.amount-label {
+					font-size: 14px;
+					line-height: 20px;
+					margin-bottom: 6px;
 				}
 			}
 
@@ -192,12 +192,13 @@
 		height: 16px !important;
 		border-width: 1px !important;
 		border-radius: 4px !important;
-		top: 4px !important;
+		top: 2px !important;
 	}
 
 	textarea.supplier-info__requirements__textarea.b2b-ngx-textarea.background.background-gray {
 		color: #000;
 	}
+
 	input.supplier-info__terms-of-delivery-2__text.b2b-ngx-input {
 		color: #000;
 	}

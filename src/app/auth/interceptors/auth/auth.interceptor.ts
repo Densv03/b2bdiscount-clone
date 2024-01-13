@@ -9,26 +9,29 @@ import { ActivatedRoute } from '@angular/router';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { PlatformService } from '../../../client/services/platform/platform.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 	constructor(
 		private readonly authService: AuthService,
-		private readonly _activatedRoute: ActivatedRoute,
-		private hotToastService: HotToastService
+		private readonly platformService: PlatformService
 	) {}
 
 	intercept(
 		request: HttpRequest<unknown>,
 		next: HttpHandler
 	): Observable<HttpEvent<unknown>> {
+		if (this.platformService.isServer) {
+			return next.handle(request);
+		}
 		const excludedUrls: string[] = [
 			'/auth/login',
 			'/auth/register-credentials',
 			'/auth/forgotPassword',
 			'/create-customer-profile',
 			'/create-payment-by-profile',
-			'/tradebid',
+			'/sourcing-request',
 		];
 		const token = localStorage.getItem('token');
 		const clonedRequest = request.clone({
@@ -58,7 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
 						// });
 					}
 				}
-				const url = error.url.toLowerCase();
+				const url = error.url?.toLowerCase();
 				if (excludedUrls.some((excludedUrl) => url.includes(excludedUrl))) {
 					return throwError(error);
 				}

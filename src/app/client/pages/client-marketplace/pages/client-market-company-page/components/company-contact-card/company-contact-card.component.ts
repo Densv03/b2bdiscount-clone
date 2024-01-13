@@ -56,6 +56,8 @@ export class CompanyContactCardComponent implements OnInit {
 		event.stopPropagation();
 
 		if (!this.userIsAuth) {
+			localStorage.setItem('blocked-route', this.router.url);
+
 			this.router.navigate(['/auth/log-in']);
 		} else {
 			this.openConnection(this.token);

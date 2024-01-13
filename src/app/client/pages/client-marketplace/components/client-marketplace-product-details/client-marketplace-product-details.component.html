@@ -1,9 +1,14 @@
+<!--<ng-container *ngIf="">-->
 <div class="product-detail-wrapper">
-	<b2b-breadcrumbs
-		*ngIf="!product"
-		[breadcrumbLabel]="productSource.value?.title"></b2b-breadcrumbs>
+	<ng-container
+		*ngIf="
+			!(isLoading$ | async) && (productSource | async) as product;
+			else loading
+		">
+		<b2b-breadcrumbs
+			*ngIf="!productView"
+			[breadcrumbLabel]="product.title"></b2b-breadcrumbs>
 
-	<ng-container *ngIf="productSource | async as product">
 		<div class="product-detail">
 			<h1 class="product-name mb-4">{{ product.title }}</h1>
 
@@ -164,7 +169,9 @@
 						<div class="text">
 							<a
 								b2bNgxLink
-								[routerLink]="'/b2bmarket/company/' + companyInfo._id"
+								[routerLink]="
+									'/b2bmarket/company/' + (companyInfo?.path || companyInfo._id)
+								"
 								[theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
 								class="company-title">
 								{{ companyInfo.companyName }}</a
@@ -195,7 +202,7 @@
 						</div>
 
 						<img
-							[ngSrc]="
+							[src]="
 								companyInfo?.logo?.path
 									? apiAddress + companyInfo.logo?.path
 									: 'assets/images/no-company-logo.png'
@@ -222,7 +229,8 @@
 							<a
 								*ngIf="companyInfo.website"
 								[href]="companyInfo.website"
-								target="_blank">
+								target="_blank"
+								rel="nofollow">
 								Website
 							</a>
 						</div>
@@ -230,6 +238,7 @@
 						<button
 							b2bNgxButton
 							(click)="openChat($event)"
+							*ngIf="isCurrentUser"
 							[id]="
 								(isAuth$ | async) === true
 									? 'marketplace-product-details-authorized'
@@ -295,3 +304,8 @@
 		</div>
 	</ng-container>
 </div>
+<!--</ng-container>-->
+
+<ng-template #loading>
+	<b2b-page-loader class="page-loader" style="z-index: 10000"></b2b-page-loader>
+</ng-template>

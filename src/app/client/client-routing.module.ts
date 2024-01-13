@@ -23,17 +23,9 @@ const routes: Routes = [
 				path: '',
 				canActivate: [DefaultRoleGuard],
 				loadChildren: () =>
-					import('../client/pages/client-home-new/client-home.module').then(
-						(m) => m.ClientHomeModule
+					import('../client/pages/client-main/client-main.module').then(
+						(m) => m.ClientMainModule
 					),
-				data: {
-					meta: {
-						title:
-							'Find new buyers or suppliers on the global platform. Resell or purchase an unclaimed cargo.',
-						description:
-							'Find new buyers or suppliers on the global platform. Resell or purchase an unclaimed cargo.',
-					},
-				},
 			},
 			// {
 			// 	path: "",
@@ -41,8 +33,8 @@ const routes: Routes = [
 			// 	loadChildren: () => import("./pages/client-home/client-home-old.module").then((m) => m.ClientHomeOldModule),
 			// 	data: {
 			// 		meta: {
-			// 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// 			description: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
+			// 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// 			description: "Globy - Buy and Sell B2B Cargo with Discount!",
 			// 		},
 			// 	},
 			// },
@@ -79,8 +71,8 @@ const routes: Routes = [
 			// 	loadChildren: () => import("./pages/client-quiz/client-quiz.module").then((m) => m.ClientQuizModule),
 			// 	data: {
 			// 		meta: {
-			// 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// 			description: "B2B Discount - Quiz!",
+			// 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// 			description: "Globy - Quiz!",
 			// 		},
 			// 	},
 			// },
@@ -89,8 +81,8 @@ const routes: Routes = [
 			// 	loadChildren: () => import("./pages/client-quiz/client-quiz.module").then((m) => m.ClientQuizModule),
 			// 	data: {
 			// 		meta: {
-			// 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// 			description: "B2B Discount - Quiz!",
+			// 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// 			description: "Globy - Quiz!",
 			// 		},
 			// 	},
 			// },
@@ -102,8 +94,8 @@ const routes: Routes = [
 					).then((m) => m.ClientEmailConfirmationModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Email Confirmation',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Email Confirmation',
 					},
 				},
 			},
@@ -116,8 +108,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - How it works',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - How it works',
 					},
 				},
 			},
@@ -129,8 +121,8 @@ const routes: Routes = [
 					).then((m) => m.ClientHowItWorks2Module),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Rus',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Rus',
 					},
 				},
 			},
@@ -142,8 +134,8 @@ const routes: Routes = [
 					).then((m) => m.ClientHowItWorks3Module),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Ukr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Ukr',
 					},
 				},
 			},
@@ -155,8 +147,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Eng',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Eng',
 					},
 				},
 			},
@@ -168,8 +160,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -181,8 +173,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -194,8 +186,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -207,8 +199,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -220,8 +212,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -233,8 +225,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -246,8 +238,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Promo Tr',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Promo Tr',
 					},
 				},
 			},
@@ -259,8 +251,8 @@ const routes: Routes = [
 					).then((m) => m.ClientPrivacyPolicyModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Privacy Policy',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Privacy Policy',
 					},
 				},
 			},
@@ -272,8 +264,8 @@ const routes: Routes = [
 					).then((m) => m.ClientTermsAndConditionsModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Terms And Conditions',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Terms And Conditions',
 					},
 				},
 			},
@@ -287,7 +279,7 @@ const routes: Routes = [
 				data: {
 					meta: {
 						title: 'B2B Contact - contact us to know more information',
-						description: 'B2B Discount - Contact Us',
+						description: 'Globy - Contact Us',
 					},
 				},
 			},
@@ -299,8 +291,8 @@ const routes: Routes = [
 					).then((m) => m.ClientCookiePolicyModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Cookie Policy',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Cookie Policy',
 					},
 				},
 			},
@@ -313,8 +305,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Legal Help',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Legal Help',
 					},
 				},
 			},
@@ -327,24 +319,18 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Chat',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Chat',
 					},
 				},
 			},
 			{
-				path: 'latest-offers',
+				path: 'unclaimed-cargo',
 				canActivate: [AuthGuard],
 				loadChildren: () =>
 					import(
-						'./pages/client-latest-offers/client-latest-offers.module'
-					).then((m) => m.ClientLatestOffersModule),
-				data: {
-					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Latest Offers',
-					},
-				},
+						'./pages/client-unclaimed-cargo/client-unclaimed-cargo.module'
+					).then((m) => m.ClientUnclaimedCargoModule),
 			},
 			{
 				path: 'offers/:id',
@@ -364,8 +350,8 @@ const routes: Routes = [
 					).then((m) => m.ClientAnnualPaymentModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Payment Details',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Payment Details',
 					},
 				},
 			},
@@ -384,8 +370,8 @@ const routes: Routes = [
 			// // 		import("./pages/client-annual-payment/client-annual-payment.module").then((m) => m.ClientAnnualPaymentModule),
 			// // 	data: {
 			// // 		meta: {
-			// // 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// // 			description: "B2B Discount - Payment Details",
+			// // 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// // 			description: "Globy - Payment Details",
 			// // 		},
 			// // 	},
 			// // },
@@ -394,8 +380,8 @@ const routes: Routes = [
 			// // 	loadChildren: () => import("./pages/client-pricing/client-pricing.module").then((m) => m.ClientPricingModule),
 			// // 	data: {
 			// // 		meta: {
-			// // 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// // 			description: "B2B Discount - Pricing",
+			// // 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// // 			description: "Globy - Pricing",
 			// // 		},
 			// // 	},
 			// // },
@@ -406,8 +392,8 @@ const routes: Routes = [
 			// // 		import("./pages/client-trading-wiki/client-trading-wiki.module").then((m) => m.ClientTradingWikiModule),
 			// // 	data: {
 			// // 		meta: {
-			// // 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// // 			description: "B2B Discount - Trade Wiki",
+			// // 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// // 			description: "Globy - Trade Wiki",
 			// // 		},
 			// // 	},
 			// // },
@@ -420,8 +406,8 @@ const routes: Routes = [
 			// // 		),
 			// // 	data: {
 			// // 		meta: {
-			// // 			title: "B2B Discount - Buy and Sell B2B Cargo with Discount!",
-			// // 			description: "B2B Discount - Trading Wiki",
+			// // 			title: "Globy - Buy and Sell B2B Cargo with Discount!",
+			// // 			description: "Globy - Trading Wiki",
 			// // 		},
 			// // 	},
 			// // },
@@ -434,8 +420,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Trading Wiki',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Trading Wiki',
 					},
 				},
 			},
@@ -448,8 +434,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Trading Wiki',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Trading Wiki',
 					},
 				},
 			},
@@ -462,8 +448,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Profile',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Profile',
 					},
 				},
 			},
@@ -476,8 +462,8 @@ const routes: Routes = [
 					).then((m) => m.ClientProfileAddOfferModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Add Offer',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Add Offer',
 					},
 				},
 			},
@@ -490,8 +476,8 @@ const routes: Routes = [
 					).then((m) => m.ClientResetPasswordModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Reset Password',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Reset Password',
 					},
 				},
 			},
@@ -503,8 +489,8 @@ const routes: Routes = [
 					).then((m) => m.ClientGoogleCompleteModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Reset Password',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Reset Password',
 					},
 				},
 			},
@@ -516,8 +502,8 @@ const routes: Routes = [
 					).then((m) => m.ClientGoogleCompleteModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Reset Password',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Reset Password',
 					},
 				},
 			},
@@ -529,8 +515,8 @@ const routes: Routes = [
 					).then((m) => m.ClientRegistrationCompleteModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Reset Password',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Reset Password',
 					},
 				},
 			},
@@ -542,8 +528,8 @@ const routes: Routes = [
 					).then((m) => m.ClientAccountNotRegistereModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Reset Password',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Reset Password',
 					},
 				},
 			},
@@ -555,8 +541,8 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Reset Password',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Reset Password',
 					},
 				},
 			},
@@ -568,8 +554,8 @@ const routes: Routes = [
 					).then((m) => m.ClientAnnualSucceededModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Annual Succeeded',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Annual Succeeded',
 					},
 				},
 			},
@@ -581,21 +567,21 @@ const routes: Routes = [
 					).then((m) => m.ClientAnnualFailedModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Payment Failed',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Payment Failed',
 					},
 				},
 			},
 			{
-				path: 'tradebid',
+				path: 'sourcing-request',
 				loadChildren: () =>
-					import('./pages/client-tradebid/client-tradebid.module').then(
-						(m) => m.ClientTradebidModule
-					),
+					import(
+						'./pages/client-sourcing-request/client-sourcing-request.module'
+					).then((m) => m.ClientSourcingRequestModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Sourcing Request',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Sourcing Request',
 					},
 				},
 			},
@@ -607,17 +593,14 @@ const routes: Routes = [
 					),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Marketplace',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Marketplace',
 					},
-					breadcrumbs: [
-						{ label: 'Home', url: '/' },
-						{ label: 'B2BMARKET', url: '/b2bmarket' },
-					],
+					breadcrumbs: [{ label: 'Home', url: '/' }],
 				},
 			},
 			{
-				path: 'logistic',
+				path: 'quick-logistics',
 				loadChildren: () =>
 					import('./pages/client-logistic/client-logistic.module').then(
 						(m) => m.ClientLogisticModule
@@ -638,8 +621,8 @@ const routes: Routes = [
 					).then((m) => m.ClientNotFoundModule),
 				data: {
 					meta: {
-						title: 'B2B Discount - Buy and Sell B2B Cargo with Discount!',
-						description: 'B2B Discount - Not Found',
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Not Found',
 					},
 				},
 			},

@@ -6,9 +6,10 @@
 			(ngSubmit)="sendMessage(formGroup.get('message').value)"
 			class="client-profile-chat-container">
 			<p class="client-profile-chat-breadcrumbs">
-				<a [routerLink]="b2bNgxLinkService.getLink('/latest-offers') | async">{{
-					'PAGES.LATEST_OFFERS' | translate
-				}}</a>
+				<a
+					[routerLink]="b2bNgxLinkService.getLink('/unclaimed-cargo') | async"
+					>{{ 'PAGES.LATEST_OFFERS' | translate }}</a
+				>
 				<a
 					[routerLink]="
 						b2bNgxLinkService.getLink('/offers/' + chatInfo.offer._id) | async

@@ -84,8 +84,8 @@ const routes: Routes = [
 			// {
 			// 	path: 'tradebid',
 			// 	canActivate: [DefaultRoleGuard],
-			// 	loadChildren: () => import('./pages/client-profile-tradebid/client-profile-tradebid.module').then(
-			// 		m => m.ClientProfileTradebidModule)
+			// 	loadChildren: () => import('./pages/client-profile-sourcing-request/client-profile-sourcing-request.module').then(
+			// 		m => m.ClientProfileSourcingRequestModule)
 			// }
 		],
 	},

@@ -1,4 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+	Component,
+	ElementRef,
+	HostListener,
+	OnInit,
+	QueryList,
+	ViewChild,
+	ViewChildren,
+} from '@angular/core';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
@@ -11,9 +19,16 @@ import {
 	Validators,
 } from '@angular/forms';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
-import { TradebidService } from '../../../client-tradebid/tradebid.service';
+import { SourcingRequestService } from '../../../client-sourcing-request/sourcing-request.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, exhaustMap, filter, Observable } from 'rxjs';
+import {
+	BehaviorSubject,
+	exhaustMap,
+	filter,
+	finalize,
+	Observable,
+	of,
+} from 'rxjs';
 import { first, map, switchMap, take, tap } from 'rxjs/operators';
 import { UnitsService } from '../../../../services/units/units.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,6 +51,7 @@ import { PublicCompanyInfoModel } from '../../../../../core/models/public-compan
 import { MarketProductModel } from '../../models/market-product.model';
 import { PortsQuery } from '../../../../state/ports/ports.query';
 import { onlyNumber } from '../../../../../core/helpers/validator/only-number';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only -latin-numbers-symbols';
 
 @UntilDestroy()
 @Component({
@@ -57,6 +73,8 @@ import { onlyNumber } from '../../../../../core/helpers/validator/only-number';
 	],
 })
 export class ClientMarketplaceAddProductComponent implements OnInit {
+	// @ViewChildren('productInformation', 'photos', 'additionalInfo') sectionList: QueryList<ElementRef>;
+
 	public formGroup: FormGroup;
 	public formState: { [key: string]: AbstractControl };
 	public selectedCategoriesFromModal: BehaviorSubject<string[]> =
@@ -104,8 +122,10 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	public isBadgeInvalid$: Observable<boolean> =
 		this.isBadgeInvalidSource.asObservable();
 	public currentClear: number = 0;
+	public isRequestPending: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 
-	private files: File[] = [];
+	private files: File[] = Array.from({ length: 5 }, () => null);
 	private hideLabelSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
 	private productId?: string = this.activatedRoute.snapshot.params['id'];
@@ -117,10 +137,9 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	constructor(
 		private unitsService: UnitsService,
 		private userService: UserService,
-		private translateService: TranslateService,
 		private formBuilder: FormBuilder,
 		private clientMarketplaceService: ClientMarketplaceService,
-		private tradebidService: TradebidService,
+		private sourcingRequestService: SourcingRequestService,
 		private activatedRoute: ActivatedRoute,
 		private dialog: MatDialog,
 		private hotToastService: HotToastService,
@@ -166,18 +185,20 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	}
 
 	public moveRowUp(index: number): void {
-		if (this.specificationList.length - 1 === index) {
+		if (index === 0) {
 			return;
 		}
+
 		const currentGroup = this.specificationList.at(index);
 		this.specificationList.removeAt(index);
 		this.specificationList.insert(index - 1, currentGroup);
 	}
 
 	public moveRowDown(index: number): void {
-		if (index === 0) {
+		if (this.specificationList.length - 1 === index) {
 			return;
 		}
+
 		const currentGroup = this.specificationList.at(index);
 		this.specificationList.removeAt(index);
 		this.specificationList.insert(index + 1, currentGroup);
@@ -234,40 +255,58 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		}
 
 		const newImages = Array.from(files);
+		const format = ['svg', 'jpg', 'png', 'webp', 'jpeg', 'bmp'];
 
 		newImages.forEach((file, index) => {
-			const fileReader = new FileReader();
-			fileReader.readAsDataURL(file);
-			fileReader.onload = (): void => {
-				if (typeof fileReader.result === 'string') {
-					const index = this.images.findIndex(
-						(item) => item === 'assets/icons/no-image-icon.svg'
+			if (
+				format.includes(
+					file.name?.split('.')[file.name?.split('.').length - 1]
+				) ||
+				format.includes(file?.type)
+			) {
+				const fileReader = new FileReader();
+				fileReader.readAsDataURL(file);
+				if (this.files.some((el) => el?.name === file.name)) {
+					this.hotToastService.error(
+						`Image with name ${file.name} is already exist`
 					);
-					if (index !== -1) {
-						this.images[index] = fileReader.result;
-						this.files[index] = file;
-					} else {
-						this.images.pop();
-						this.images.unshift(fileReader.result);
+				} else {
+					fileReader.onload = (): void => {
+						if (typeof fileReader.result === 'string') {
+							const index = this.images.findIndex(
+								(item) => item === 'assets/icons/no-image-icon.svg'
+							);
+							if (index !== -1) {
+								this.images[index] = fileReader.result;
+								this.files[index] = file;
+							} else {
+								this.images.pop();
+								this.images.unshift(fileReader.result);
 
-						this.files.pop();
-						this.files.unshift(file);
-					}
+								this.files.pop();
+								this.files.unshift(file);
+							}
+						}
+						this.formGroup.patchValue({
+							photos: this.files,
+						});
+						this.formGroup.markAsDirty();
+					};
 				}
-				this.formGroup.patchValue({
-					photos: this.files,
-				});
-				this.formGroup.markAsDirty();
-			};
+			} else this.hotToastService.error('Wrong file format');
 		});
 		input.value = null;
 	}
 
 	public deleteImage(index: number): void {
 		this.images.splice(index, 1);
+
 		this.files.splice(index, 1);
 		this.images.push('assets/icons/no-image-icon.svg');
 		this.files.push(null);
+		if (this.files.every((file) => file === null)) {
+			this.files = [];
+		}
 		this.formGroup.patchValue({ photos: this.files });
 	}
 
@@ -354,12 +393,17 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	}
 
 	public submitForm(): void {
+		if (this.isRequestPending.value) {
+			return;
+		}
+
 		if (this.formGroup.invalid) {
 			this.formGroup.markAllAsTouched();
 			this.isBadgeInvalidSource.next(true);
-			window.scrollTo({ top: 0, behavior: 'smooth' });
 			return;
 		}
+
+		this.isRequestPending.next(true);
 
 		this.clientMarketplaceService
 			.createProduct(
@@ -371,7 +415,8 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					loading: 'Product is creating...',
 					success: 'Product created successfully',
 					error: 'Product creation failed',
-				})
+				}),
+				finalize(() => this.isRequestPending.next(false))
 			)
 			.subscribe((result) => {
 				this.mixpanelService.track('New Product posted', {
@@ -441,7 +486,6 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		if (this.formGroup.invalid) {
 			this.formGroup.markAllAsTouched();
 			this.isBadgeInvalidSource.next(true);
-			this.smoothScrollToTop();
 			return;
 		}
 
@@ -518,7 +562,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					: userInfo.role.displayName.trim(),
 			contactPersonName: userInfo.fullName,
 			contactCompanyName: userInfo.company,
-			contactPhoneNumber: userInfo.phone.number || company.phone.number,
+			contactPhoneNumber: userInfo.phone?.number || company.phone.number,
 			contactPhoneInternationalNumber:
 				userInfo.phone.internationalNumber || company.phone.internationalNumber,
 			contactPhoneNationalNumber:
@@ -540,14 +584,18 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 	private createFormGroup(): void {
 		this.formGroup = this.formBuilder.group({
-			title: [null, [Validators.required, onlyLatinAndNumber()]],
+			title: [null, [Validators.required, onlyLatinAndNumberAndSymbols()]],
 			specifications: [
 				null,
-				[Validators.required, Validators.minLength(60), onlyLatinAndNumber()],
+				[
+					Validators.required,
+					Validators.minLength(60),
+					onlyLatinAndNumberAndSymbols(),
+				],
 			],
 			amount: [null, onlyNumber()],
 			unit: [null],
-			brandName: [null, onlyLatinAndNumber()],
+			brandName: [null, onlyLatinAndNumberAndSymbols()],
 			productSector: [null, Validators.required],
 			category: [{ value: null, disabled: true }, Validators.required],
 			photos: [null, Validators.required],
@@ -558,8 +606,8 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			productOrigin: [null, Validators.required],
 			specificationList: this.formBuilder.array([
 				this.formBuilder.group({
-					specification: ['', onlyLatinAndNumber()],
-					item: ['', onlyLatinAndNumber()],
+					specification: ['', onlyLatinAndNumberAndSymbols()],
+					item: ['', onlyLatinAndNumberAndSymbols()],
 				}),
 			]),
 			ports: this.formBuilder.array([
@@ -597,7 +645,21 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			});
 
 		this.unit$ = this.formGroup.controls['amount'].valueChanges.pipe(
-			switchMap((amount) => this.getUnit(amount))
+			switchMap((amount) => {
+				if (amount) {
+					this.formGroup.get('unit').setValidators([Validators.required]);
+					this.formGroup.get('unit').updateValueAndValidity();
+					this.formGroup.get('unit').markAsTouched();
+
+					return this.getUnit(amount);
+				} else {
+					this.formGroup.get('unit').setValue(null);
+					this.formGroup.get('unit').clearValidators();
+					this.formGroup.get('unit').updateValueAndValidity();
+
+					return of([]);
+				}
+			})
 		);
 
 		this.formGroup.controls['productSector'].valueChanges
@@ -706,7 +768,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	}
 
 	private getCompany(): void {
-		this.tradebidService
+		this.sourcingRequestService
 			.getCompanyData()
 			.pipe(first(), untilDestroyed(this))
 			.subscribe((company) => (this.company = company));

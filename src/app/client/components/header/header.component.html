@@ -1,0 +1,269 @@
+<header
+	#header
+	class="header transparent"
+	(mouseleave)="closeHeader()"
+	[class.transparent]="isTransparent$ | async"
+	[class.background-white]="!(isMainPage$ | async)"
+	[class.d-none]="isHeaderHidden$ | async">
+	<!--	<div-->
+	<!--		(mouseover)="closeHeader()"-->
+	<!--		[class.d-none]="(isMarketPage$ | async) || (isAuthPage$ | async)"-->
+	<!--		class="header__search">-->
+	<!--		<div class="header__wrapper">-->
+	<!--			<div class="header__search-item">-->
+	<!--				<div class="search-wrapper">-->
+	<!--					<input-->
+	<!--						b2bNgxInput-->
+	<!--						[formControl]="control"-->
+	<!--						(keydown.enter)="setSearchControlValue()"-->
+	<!--						[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"-->
+	<!--						class="subheader-search"-->
+	<!--						placeholder="Search" />-->
+	<!--					<img (click)="setSearchControlValue()" b2bNgxIcon name="search" />-->
+	<!--				</div>-->
+	<!--				<div class="header__search-options">-->
+	<!--					<div-->
+	<!--						*ngFor="let option of headerSearchOptions"-->
+	<!--						b2bTooltip-->
+	<!--						[tooltipType]="option.type"-->
+	<!--						[class.active]="(activeToolTip$ | async) === option.type"-->
+	<!--						class="header__search-option">-->
+	<!--						{{ option.name }}-->
+	<!--					</div>-->
+	<!--					<div (click)="openSupportModal()" class="header__search-option">-->
+	<!--						Support-->
+	<!--					</div>-->
+	<!--					<ng-container #searchOptionsToolTip></ng-container>-->
+	<!--				</div>-->
+	<!--			</div>-->
+	<!--		</div>-->
+	<!--	</div>-->
+	<div class="header__main">
+		<div class="header__wrapper">
+			<div
+				#mainPanel
+				(mouseover)="handleEnterOnMainPanel($event, mainPanel)"
+				class="header__main-list">
+				<button
+					*ngIf="showBurger || isMobile"
+					(click)="openBurgerPopup(popupTypeEnum.MOBILE)"
+					[class.d-none]="isAuthPage$ | async"
+					[class.active]="
+						isMainOptionActive(headerPopupState$ | async, popupTypeEnum.MOBILE)
+					"
+					b2bNgxButton
+					class="header__main-burger">
+					<svg
+						width="32"
+						height="32"
+						viewBox="0 0 32 32"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							[class.fill-white]="isTransparent$ | async"
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M25 10.375L7 10.375L7 8.125L25 8.125L25 10.375Z" />
+						<path
+							[class.fill-white]="isTransparent$ | async"
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M25 17.125L7 17.125L7 14.875L25 14.875L25 17.125Z"
+							fill="#0F0F11" />
+						<path
+							[class.fill-white]="isTransparent$ | async"
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M25 23.875L7 23.875L7 21.625L25 21.625L25 23.875Z"
+							fill="#0F0F11" />
+					</svg>
+				</button>
+				<div (click)="closeNav()" class="header__main-logo">
+					<a
+						routerLink=""
+						class="header__main-logo"
+						[class.auth-page-logo]="isAuthPage$ | async">
+						<img
+							*ngIf="!(isTransparent$ | async); else whiteLogo"
+							b2bNgxIcon
+							name="logo-blue" />
+						<ng-template #whiteLogo
+							><img b2bNgxIcon name="logo-white"
+						/></ng-template>
+					</a>
+				</div>
+
+				<div class="header__main-options">
+					<div
+						[class.d-none]="isAuthPage$ | async"
+						(mouseenter)="handleMouseEnter($event, popupTypeEnum.SECTORS)"
+						[class.active]="
+							isMainOptionActive(
+								headerPopupState$ | async,
+								popupTypeEnum.SECTORS
+							)
+						"
+						class="header__main-option">
+						<div class="text">All sectors</div>
+						<div class="arrow">
+							<svg
+								width="16"
+								height="16"
+								viewBox="0 0 16 16"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									[class.stroke-white]="isTransparent$ | async"
+									d="M4 6L8 10L12 6"
+									stroke="black"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round" />
+							</svg>
+						</div>
+					</div>
+					<div
+						*ngFor="let mainOption of headerMainOptions"
+						(mouseenter)="handleMouseEnter($event, mainOption.type)"
+						[class.d-none]="(isAuthPage$ | async) || (isMarketPage$ | async)"
+						[class.active]="
+							isMainOptionActive(headerPopupState$ | async, mainOption.type)
+						"
+						class="header__main-option">
+						{{ mainOption.name }}
+						<div class="arrow">
+							<svg
+								width="16"
+								height="16"
+								viewBox="0 0 16 16"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									[class.stroke-white]="isTransparent$ | async"
+									d="M4 6L8 10L12 6"
+									stroke="black"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round" />
+							</svg>
+						</div>
+					</div>
+
+					<ng-container *ngIf="isMarketPage$ | async">
+						<a
+							routerLink="/b2bmarket"
+							[class.active-header-link]="checkLinkIsActive('/b2bmarket')"
+							[class.d-none]="isAuthPage$ | async"
+							class="header__main-link"
+							>B2B Market</a
+						>
+						<a
+							routerLink="/sourcing-request/listing"
+							[class.active-header-link]="
+								checkLinkIsActive('/sourcing-request/listing')
+							"
+							[class.d-none]="isAuthPage$ | async"
+							b2bTooltip
+							[tooltipType]="tooltipTypeEnum.SOURCING_REQUEST"
+							class="header__main-link"
+							>Sourcing Request</a
+						>
+					</ng-container>
+				</div>
+				<div *ngIf="showSearch" class="search-wrapper">
+					<input
+						b2bNgxInput
+						[formControl]="control"
+						(keydown.enter)="setSearchControlValue()"
+						[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+						class="subheader-search"
+						placeholder="Search products" />
+					<img (click)="setSearchControlValue()" b2bNgxIcon name="search" />
+				</div>
+
+				<div [class.d-none]="isAuthPage$ | async" class="header__main-auth">
+					<mat-icon
+						[style.color]="(isTransparent$ | async) ? '#fff' : '#000'"
+						(click)="openMobileCategoriesPopup()"
+						*ngIf="platformService.isBrowser && isMobile"
+						[svgIcon]="'second-search'"></mat-icon>
+
+					<ng-container *ngIf="user$ | async; else withoutUser">
+						<div class="buttons">
+							<a
+								routerLink="/profile/your-workspace/b2bmarket"
+								(click)="closeNav(); closeHeader()"
+								[queryParams]="queryParams"
+								class="auth-button message-button">
+								<svg
+									class="message-icon"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg">
+									<path
+										[class.stroke-white]="isTransparent$ | async"
+										d="M22 11V10.5V10C22 7.19974 22 5.79961 21.455 4.73005C20.9757 3.78924 20.2108 3.02433 19.27 2.54497C18.2004 2 16.8003 2 14 2H10C7.19974 2 5.79961 2 4.73005 2.54497C3.78924 3.02433 3.02433 3.78924 2.54497 4.73005C2 5.79961 2 7.19974 2 10V12C2 14.8003 2 16.2004 2.54497 17.27C3.02433 18.2108 3.78924 18.9757 4.73005 19.455C5.79961 20 7.19974 20 10 20H14.9983C15.6103 20 15.9163 20 16.2154 20.0362C16.7122 20.0962 17.1972 20.2306 17.6542 20.4347C17.9293 20.5576 18.1917 20.715 18.7165 21.0299V21.0299C19.5964 21.5578 20.0363 21.8218 20.3947 21.847C20.996 21.8893 21.5642 21.5676 21.8373 21.0302C22 20.71 22 20.1969 22 19.1708V16M7 8H15M7 12H11"
+										stroke="black"
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round" />
+								</svg>
+
+								<div
+									*ngIf="userUnreadMessages$ | async as unreadMessagesCount"
+									class="unread-messages">
+									{{ unreadMessagesCount }}
+								</div>
+							</a>
+							<div
+								(click)="isMobile ? openProfileMobilePopup() : null"
+								b2bTooltip
+								[tooltipType]="tooltipTypeEnum.PROFILE"
+								[isMobile]="isMobile"
+								[class.active]="
+									(activeToolTip$ | async) === tooltipTypeEnum.PROFILE
+								"
+								class="auth-button">
+								<svg
+									[class.active-icon]="
+										(activeToolTip$ | async) === tooltipTypeEnum.PROFILE
+									"
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none">
+									<path
+										[class.stroke-white]="isTransparent$ | async"
+										d="M14.5 22H16.8C18.5673 22 20 20.5673 20 18.8V18.8C20 16.149 17.851 14 15.2 14H8.8C6.14903 14 4 16.149 4 18.8V18.8C4 20.5673 5.43269 22 7.2 22H9.5M16 6C16 8.20914 14.2091 10 12 10C9.79086 10 8 8.20914 8 6C8 3.79086 9.79086 2 12 2C14.2091 2 16 3.79086 16 6Z"
+										stroke="black"
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round" />
+								</svg>
+							</div>
+						</div>
+					</ng-container>
+					<ng-container #profileToolTip></ng-container>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ng-container #dynamicHostContainer></ng-container>
+</header>
+
+<ng-template #withoutUser>
+	<a class="login-btn auth-btn" routerLink="/auth/log-in" b2bNgxButton>
+		Sign In
+	</a>
+	<a
+		routerLink="/auth/register-credentials"
+		b2bNgxButton
+		class="auth-btn"
+		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE">
+		Sign Up
+	</a>
+</ng-template>

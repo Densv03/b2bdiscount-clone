@@ -1,0 +1,21 @@
+<div *ngIf="user$ | async as user" class="user">
+	<div class="user__name bold-title">{{ user.fullName }}</div>
+	<div class="user__company">{{ user.company }}</div>
+
+	<div class="divider"></div>
+
+	<b2b-role-switcher [user]="user$ | async"></b2b-role-switcher>
+
+	<div class="divider"></div>
+
+	<div class="user__profile-options">
+		<a
+			*ngFor="let option of profileOptions"
+			[routerLink]="option.link"
+			(click)="hideTooltip(option.name)"
+			class="user__profile-option">
+			<svg-icon [src]="option.icon"></svg-icon>
+			<div class="text">{{ option.name }}</div>
+		</a>
+	</div>
+</div>

@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	OnInit,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
-import { OffersService } from '../../../services/offers/offers.service';
 import { UserService } from '../../client-profile/services/user/user.service';
 import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { BlogService } from '../../../services/blog/blog.service';
 import { map } from 'rxjs/operators';
-import { TradebidService } from '../../client-tradebid/tradebid.service';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 
 import { SectionInfoEnum } from '../../client-about-us/section-info.enum';
@@ -22,6 +25,7 @@ import SwiperCore from 'swiper';
 import Scrollbar from 'swiper';
 import { HotToastService } from '@ngneat/hot-toast';
 import { TreeviewConfig } from '@b2b/ngx-treeview';
+import { SeoService } from '../../../../core/services/seo/seo.service';
 
 SwiperCore.use([Scrollbar]);
 @UntilDestroy()
@@ -58,17 +62,17 @@ export class ClientHomeComponent implements OnInit {
 		SectionInfoEnum;
 
 	constructor(
-		private readonly _offersService: OffersService,
 		private readonly _usersService: UserService,
 		private readonly categoriesService: CategoriesService,
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
 		private readonly _authService: AuthService,
 		private readonly router: Router,
 		private readonly homePageService: HomepageService,
-		private readonly tradebidService: TradebidService,
 		private readonly blogService: BlogService,
 		private readonly hotToastService: HotToastService,
-		private readonly userService: UserService
+		private readonly userService: UserService,
+		private readonly cdr: ChangeDetectorRef,
+		private readonly seoService: SeoService
 	) {
 		// this.offers$ = this.getOffers();
 		this.user$ = this._usersService.getUser$();
@@ -81,6 +85,7 @@ export class ClientHomeComponent implements OnInit {
 	ngOnInit() {
 		this.getCategories();
 		this.solutionsLink = this.getSolutionsLink();
+		this.addMetaTags();
 	}
 	navigateToMarketProfile(): void {
 		if (
@@ -191,7 +196,9 @@ export class ClientHomeComponent implements OnInit {
 
 	public navigateOnAboutUs(): void {
 		this.router.navigate(['/about-us'], {
-			queryParams: { sectionType: this.aboutUsVisibleSectionType.cargo },
+			queryParams: {
+				sectionType: this.aboutUsVisibleSectionType.UNCLAIMED_CARGO,
+			},
 		});
 	}
 
@@ -224,6 +231,16 @@ export class ClientHomeComponent implements OnInit {
 					//
 					// });
 				}
+				this.cdr.detectChanges();
 			});
+	}
+
+	private addMetaTags(): void {
+		this.seoService.setTitle(
+			'B2B Platform For Suppliers and Buyers Worldwide, Wholesale Marketplace | Globy'
+		);
+		this.seoService.setDescription(
+			'B2B Marketplace for sourcing and connecting with trusted manufacturers and wholesalers. Unclaimed cargo directory. News and the industry’s insights.'
+		);
 	}
 }

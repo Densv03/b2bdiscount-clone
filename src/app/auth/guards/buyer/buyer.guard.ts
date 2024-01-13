@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-	ActivatedRouteSnapshot,
-	CanActivate,
-	RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -12,7 +8,7 @@ import { filter } from 'rxjs/operators';
 @Injectable({
 	providedIn: 'root',
 })
-export class BuyerGuard implements CanActivate {
+export class BuyerGuard {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly hotToastrService: HotToastService

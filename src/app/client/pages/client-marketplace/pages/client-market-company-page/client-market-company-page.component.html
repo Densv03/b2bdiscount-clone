@@ -1,5 +1,5 @@
 <ng-container *ngIf="companyInfo$ | async as companyInfo; else skeleton">
-	<div class="company">
+	<div class="company" *ngIf="platformService?.isBrowser">
 		<div class="main">
 			<div class="header">
 				<div class="logo">

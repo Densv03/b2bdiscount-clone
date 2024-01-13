@@ -1,0 +1,139 @@
+@import 'projects/shared/src/styles';
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 1264px;
+	max-width: 1264px;
+
+	@include breakpoint('3') {
+		max-width: 100vw;
+		padding: 0 18px 72px 17px;
+	}
+
+	.title {
+		width: 100%;
+
+		h2 {
+			padding: 0 50px;
+			font-size: 24px;
+			font-weight: 700;
+			line-height: 32px;
+			letter-spacing: 0.01em;
+			margin-bottom: 24px;
+
+			@include breakpoint('3') {
+				padding: 0;
+				font-size: 18px;
+				font-weight: 600;
+				line-height: 24px;
+				margin-bottom: 16px;
+			}
+		}
+	}
+
+	.categories-carousel-wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		position: relative;
+
+		&.hide-border {
+			justify-content: center;
+
+			.categories-wrapper {
+				justify-content: center;
+			}
+		}
+
+		.categories-wrapper {
+			display: flex;
+			gap: 24px;
+			width: 100%;
+			max-width: 1166px;
+			overflow-x: auto;
+			scroll-behavior: smooth;
+			margin-bottom: 80px;
+
+			@include breakpoint('3') {
+				padding: 0;
+				margin-bottom: 0;
+			}
+
+			&.is-for-category {
+				border: 1px solid lightgray;
+				border-radius: 8px;
+				margin-bottom: 48px;
+				padding: 16px;
+
+				a {
+					max-width: 100px;
+				}
+
+				.category:hover {
+					p {
+						color: #005dff;
+					}
+				}
+			}
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+
+			img {
+				width: 100px;
+				height: 100px;
+				border-radius: 8px;
+			}
+
+			p {
+				word-break: break-word;
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 18px;
+				letter-spacing: 0.01em;
+				text-align: center;
+			}
+		}
+
+		.dots-container {
+			display: none;
+
+			@include breakpoint('3') {
+				position: absolute;
+				top: 150px;
+				left: 50%;
+				display: flex;
+				align-items: center;
+				transform: translateX(-50%);
+
+				.dot {
+					cursor: pointer;
+					width: 4px;
+					height: 4px;
+					border-radius: 4px;
+					background-color: #d9d9d9;
+					margin: 0 5px;
+
+					&.active-dot {
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						background-color: #005dff;
+					}
+				}
+			}
+		}
+
+		.custom-carousel-arrow {
+			margin-bottom: 15px;
+
+			&.product-arrow {
+				margin-bottom: 100px;
+			}
+		}
+	}
+}

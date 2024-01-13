@@ -1,0 +1,50 @@
+:host {
+	.solutions {
+		max-width: 1065px;
+		margin: auto;
+		display: flex;
+		gap: 40px;
+		&__item {
+			width: 33.3%;
+			display: flex;
+			gap: 16px;
+			cursor: pointer;
+			border-right: 1px solid #d9d9d9;
+			&:last-child {
+				border: none;
+			}
+			&:hover {
+				.solutions__item-name {
+					color: #005dff;
+				}
+				.solutions__item-icon {
+					path {
+						fill: #005dff;
+					}
+				}
+			}
+
+			&-icon {
+				width: 48px;
+				height: 48px;
+				path {
+					transition: 0.3s all;
+				}
+			}
+			&-name {
+				font-weight: 500;
+				line-height: 18px;
+				transition: 0.3s all;
+			}
+			&-description {
+				color: #979797;
+				font-size: 12px;
+				letter-spacing: 0.12px;
+				margin-top: 4px;
+			}
+		}
+		&__text {
+			max-width: 227px;
+		}
+	}
+}

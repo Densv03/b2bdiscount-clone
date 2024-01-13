@@ -12,6 +12,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ClaimButtonsComponent } from './claim-buttons/claim-buttons.component';
 import { CustomCarouselComponent } from './custom-carousel/custom-carousel.component';
 import { MatIconModule } from '@angular/material/icon';
+import { CategoriesMobileListComponent } from './categories-mobile-list/categories-mobile-list.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ParentCategoriesMobileListComponent } from './parent-categories-mobile-list/parent-categories-mobile-list.component';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
 	declarations: [
@@ -20,6 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
 		ClientSubheaderComponent,
 		ClaimButtonsComponent,
 		CustomCarouselComponent,
+		CategoriesMobileListComponent,
+		ParentCategoriesMobileListComponent,
 	],
 	imports: [
 		CommonModule,
@@ -31,6 +37,8 @@ import { MatIconModule } from '@angular/material/icon';
 		B2bNgxInputModule,
 		ReactiveFormsModule,
 		MatIconModule,
+		MatDialogModule,
+		MatRippleModule,
 	],
 	exports: [
 		BlogGridListComponent,

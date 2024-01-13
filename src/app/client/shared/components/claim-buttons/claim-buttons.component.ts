@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { CreateRfqDialogComponent } from '../../../pages/client-tradebid/components/create-rfq-dialog/create-rfq-dialog.component';
+import { CreateRfqDialogComponent } from '../../../pages/client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserService } from '../../../pages/client-profile/services/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -48,10 +48,10 @@ export class ClaimButtonsComponent implements OnInit {
 		this.router.events
 			.pipe(filter((event) => event instanceof NavigationStart))
 			.subscribe((el: any) => {
-				el.url.includes('offers')
+				el.url.includes('offers') || el.url.includes('unclaimed-cargo')
 					? this.addOfferUrl.next(true)
 					: this.addOfferUrl.next(false);
-				el.url.includes('tradebid/listing')
+				el.url.includes('sourcing-request/listing')
 					? this.makeRfqUrl.next(true)
 					: this.makeRfqUrl.next(false);
 				el.url.includes('b2bmarket')
@@ -59,10 +59,11 @@ export class ClaimButtonsComponent implements OnInit {
 					: this.addProductUrl.next(false);
 			});
 
-		this.router.url.includes('offers')
+		this.router.url.includes('offers') ||
+		this.router.url.includes('unclaimed-cargo')
 			? this.addOfferUrl.next(true)
 			: this.addOfferUrl.next(false);
-		this.router.url.includes('tradebid/listing')
+		this.router.url.includes('sourcing-request/listing')
 			? this.makeRfqUrl.next(true)
 			: this.makeRfqUrl.next(false);
 		this.router.url.includes('b2bmarket')
@@ -73,12 +74,11 @@ export class ClaimButtonsComponent implements OnInit {
 	public openCreateRfqDialog(): void {
 		if (this.userService.getUser()) {
 			this.dialog.open(CreateRfqDialogComponent, {
-				maxHeight: '705px',
-				maxWidth: '950px',
-				panelClass: 'add-rfq-popup',
+				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
 			});
 			this.track();
 		} else {
+			localStorage.setItem('blocked-route', this.router.url);
 			this.router.navigate(['/auth/register-credentials']);
 		}
 	}
@@ -97,7 +97,7 @@ export class ClaimButtonsComponent implements OnInit {
 			.subscribe((user) => {
 				this.isAuth$ = of(!!user);
 				this.supplierOrAdmin$ = of(
-					user?.rootRole?.name === 'supplier' || user.role.name === 'admin'
+					user?.rootRole?.name === 'supplier' || user?.role?.name === 'admin'
 				);
 				this.accountType = user?.rootRole?.name;
 				this.isBuyer$ = of(user?.rootRole?.name === 'buyer');

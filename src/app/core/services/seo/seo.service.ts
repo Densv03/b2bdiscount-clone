@@ -11,6 +11,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,7 +27,9 @@ export class SeoService {
 		@Inject(DOCUMENT) private doc: Document,
 		private locationService: Location,
 		private router: Router,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private title: Title,
+		private meta: Meta
 	) {
 		this.renderer2 = this.rendererFactory.createRenderer(null, null);
 	}
@@ -106,6 +109,17 @@ export class SeoService {
 				})
 			)
 			.subscribe();
+	}
+
+	public setTitle(title: string): void {
+		this.title.setTitle(title);
+	}
+
+	public setDescription(content: string): void {
+		this.meta.updateTag({
+			name: 'description',
+			content,
+		});
 	}
 
 	private initCanonicalRef(): void {

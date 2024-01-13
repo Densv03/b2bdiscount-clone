@@ -1,0 +1,141 @@
+.logistic-wrapper {
+	padding: 30px;
+
+	.point-actions {
+		padding-bottom: 24px;
+		margin-bottom: 24px;
+		border-bottom: 1px solid lightgray;
+
+		.logistic-header-wrapper {
+			align-items: center;
+		}
+	}
+
+	.logistic-header-wrapper {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 24px;
+
+		.b2b-ngx-button {
+			padding: 7.5px 15px;
+		}
+
+		.search-wrapper {
+			width: 48%;
+		}
+
+		.country-wrapper {
+			position: relative;
+
+			mat-icon {
+				display: none;
+
+				&.show {
+					display: initial;
+					position: absolute;
+					top: 16px;
+					left: -19px;
+					color: grey;
+					font-size: 15px;
+					width: 12px;
+					height: 12px;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	table {
+		.mat-mdc-header-row {
+			height: max-content;
+		}
+
+		.mat-row {
+			height: max-content;
+
+			.mat-cell {
+				padding: 12px 0;
+
+				&:first-of-type {
+					padding-left: 24px;
+				}
+
+				&:last-of-type {
+					padding-right: 24px;
+				}
+			}
+		}
+
+		.mat-mdc-header-cell {
+			font-size: 16px;
+			padding: 12px 0;
+
+			&:first-of-type {
+				padding-left: 24px;
+			}
+		}
+
+		.mat-mdc-cell {
+			padding: 0;
+		}
+
+		.mat-row:hover {
+			cursor: pointer;
+			background-color: lightblue;
+		}
+
+		.mat-column-name {
+			padding-left: 24px;
+		}
+
+		.mat-column-actions {
+			text-align: end;
+			padding-right: 24px;
+
+			.actions-block {
+				display: flex;
+				justify-content: end;
+				gap: 8px;
+				padding: 5px 0;
+
+				button {
+					width: 30px;
+					height: 30px;
+					background: lightblue;
+					border-radius: 5px;
+
+					mat-icon {
+						font-size: 12px;
+						line-height: 13px;
+						color: white;
+					}
+				}
+			}
+		}
+
+		&.no-background .mat-row:hover {
+			cursor: initial;
+			background: transparent;
+		}
+	}
+
+	input[type='file'] {
+		display: none;
+	}
+}
+
+::ng-deep {
+	input.datepicker {
+		height: 64px;
+		border: none;
+		border-radius: 14px;
+		padding: 0 16px;
+		width: 100%;
+		max-width: 191px;
+
+		&::placeholder {
+			padding-left: 20px;
+		}
+	}
+}

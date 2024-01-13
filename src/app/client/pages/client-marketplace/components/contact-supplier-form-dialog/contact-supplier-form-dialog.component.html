@@ -37,7 +37,7 @@
 					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 					formControlName="moreInformation"
 					class="supplier-info__requirements__textarea"
-					placeholder="Describe your requirements in detail to recieve a better response
+					placeholder="Describe your requirements in detail to receive a better response
  - Name of the product/service sought
  - Quantity/ weight
  - Size/volume
@@ -50,21 +50,11 @@
 				customIconClass="supplier-info__more-bids__checkbox"
 				(change)="toggleExpandForm()"
 				[checked]="isFormExpanded$ | async">
-				<p class="supplier-info__more-bids">
+				<div class="supplier-info__more-bids">
 					I would like to get more bids from other suppliers on this product.
-				</p>
+				</div>
 			</b2b-ngx-checkbox>
 		</div>
-		<button
-			*ngIf="!(isFormExpanded$ | async)"
-			b2bNgxButton
-			class="supplier-info__btn"
-			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-			[disabled]="!(isFormValid$ | async)"
-			(click)="send()">
-			Send
-		</button>
-
 		<div
 			*ngIf="isFormExpanded$ | async"
 			class="supplier-info__expanded-form"
@@ -91,12 +81,14 @@
 			</div>
 
 			<div class="supplier-info__terms-of-delivery">
+				<label for="amount" class="amount-label">Required amount</label>
+
 				<input
 					type="number"
 					b2bNgxInput
 					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 					placeholder="Required amount"
-					label="Required amount"
+					id="amount"
 					class="supplier-info__terms-of-delivery-2__text"
 					formControlName="amount" />
 			</div>
@@ -112,14 +104,14 @@
 					<p class="supplier-info__terms-of-delivery__text">Unit</p>
 				</b2b-ngx-select>
 			</div>
-			<button
-				b2bNgxButton
-				class="supplier-info__btn"
-				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-				[disabled]="!(isFormValid$ | async)"
-				(click)="send()">
-				Send
-			</button>
 		</div>
+		<button
+			b2bNgxButton
+			class="supplier-info__btn"
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+			[disabled]="!(isFormValid$ | async)"
+			(click)="send()">
+			Send
+		</button>
 	</form>
 </div>

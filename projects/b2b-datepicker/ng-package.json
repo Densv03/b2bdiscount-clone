@@ -3,5 +3,5 @@
   "dest": "../../dist/b2b-datepicker",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
 }

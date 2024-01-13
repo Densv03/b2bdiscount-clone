@@ -1,0 +1,68 @@
+:host {
+	.info {
+		max-width: 1170px;
+		margin: auto;
+		&__list {
+			display: flex;
+			gap: 104px;
+		}
+		&__main {
+			max-width: 256px;
+			padding-top: 20px;
+		}
+		&__title {
+			color: #000;
+			font-size: 24px;
+			font-weight: 500;
+			line-height: 18px;
+			letter-spacing: 0.24px;
+		}
+		&__description {
+			color: #556274;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 18px;
+			letter-spacing: 0.14px;
+			margin-top: 16px;
+		}
+		&__items {
+			display: flex;
+			gap: 63px;
+			row-gap: 5px;
+			flex-wrap: wrap;
+		}
+		&__item {
+			max-width: 263px;
+			&-wrapper {
+				display: block;
+				padding: 8px;
+				border-radius: 12px;
+				cursor: pointer;
+				transition: 0.3s all;
+				&:hover {
+					background: #407bff;
+					.info__item-title,
+					.info__item-description {
+						color: #ffffff;
+					}
+				}
+			}
+
+			&-title {
+				color: #000;
+				font-size: 16px;
+				font-weight: 500;
+				line-height: 18px;
+				letter-spacing: 0.16px;
+			}
+
+			&-description {
+				color: #979797;
+				font-size: 12px;
+				font-weight: 400;
+				letter-spacing: 0.12px;
+				margin-top: 2px;
+			}
+		}
+	}
+}

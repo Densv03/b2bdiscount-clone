@@ -10,7 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 // import { B2bNgxPaginationModule } from "@b2b/ngx-pagination";
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
 import { ClientProfileMarketplaceEditProductComponent } from './components/client-profile-marketplace-edit-product/client-profile-marketplace-edit-product.component';
-import { ClientProfileTradebidRfqModule } from '../client-profile-tradebid/client-profile-tradebid-rfq/client-profile-tradebid-rfq.module';
+import { ClientProfileSourcingRequestRfqModule } from '../client-profile-sourcing-request/client-profile-sourcing-request-rfq/client-profile-sourcing-request-rfq.module';
 import { ClientProfileMarketplaceProductItemComponent } from './components/client-profile-marketplace-product-item/client-profile-marketplace-product-item.component';
 import { B2bNgxImageModule } from '@b2b/ngx-image';
 import { B2bNgxIconModule } from '@b2b/ngx-icon';
@@ -19,7 +19,7 @@ import { DeleteProductModalComponent } from './components/delete-product-modal/d
 // import { B2bNgxRadioModule } from "@b2b/ngx-radio";
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ChatsItemModule } from '../client-profile-tradebid/shared/chats-item/chats-item.module';
+import { ChatsItemModule } from '../client-profile-sourcing-request/shared/chats-item/chats-item.module';
 // import { B2bNgxSkeletonModule } from "@b2b/ngx-skeleton";
 import { ClientProfileMarketplaceEditProductModule } from './components/client-profile-marketplace-edit-product/client-profile-marketplace-edit-product.module';
 import { B2bNgxSelectModule } from '@b2b/ngx-select';
@@ -43,7 +43,7 @@ import { B2bNgxDropdownModule } from '@b2b/ngx-dropdown';
 		MatTabsModule,
 		// B2bNgxPaginationModule,
 		B2bNgxButtonModule,
-		ClientProfileTradebidRfqModule,
+		ClientProfileSourcingRequestRfqModule,
 		B2bNgxImageModule,
 		B2bNgxIconModule,
 		// B2bNgxDropdownModule,

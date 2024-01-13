@@ -1,0 +1,39 @@
+<div
+	class="tool {{ tooltipType }}"
+	[style.left]="left + getAdditionalLeftPadding() + 'px'"
+	[style.top]="top + 'px'">
+	<div class="wrapper">
+		<svg
+			class="polygon"
+			xmlns="http://www.w3.org/2000/svg"
+			width="26"
+			height="22"
+			viewBox="0 0 26 22"
+			fill="none">
+			<path
+				d="M11.268 0.999999C12.0378 -0.333335 13.9622 -0.333333 14.7321 1L25.1244 19C25.8942 20.3333 24.9319 22 23.3923 22H2.60769C1.06809 22 0.105844 20.3333 0.875645 19L11.268 0.999999Z"
+				fill="white" />
+		</svg>
+		<ng-container [ngSwitch]="tooltipType">
+			<ng-container *ngSwitchCase="tooltipTypeEnum.FOR_BUYER">
+				<b2b-header-become-user-instructions
+					[listType]="tooltipTypeEnum.FOR_BUYER">
+				</b2b-header-become-user-instructions>
+			</ng-container>
+
+			<ng-container *ngSwitchCase="tooltipTypeEnum.BECOME_SUPPLIER">
+				<b2b-header-become-user-instructions
+					[listType]="tooltipTypeEnum.BECOME_SUPPLIER">
+				</b2b-header-become-user-instructions>
+			</ng-container>
+
+			<ng-container *ngSwitchCase="tooltipTypeEnum.PROFILE">
+				<b2b-header-user-profile></b2b-header-user-profile>
+			</ng-container>
+
+			<ng-container *ngSwitchCase="tooltipTypeEnum.SOURCING_REQUEST">
+				<b2b-header-sourcing-request></b2b-header-sourcing-request>
+			</ng-container>
+		</ng-container>
+	</div>
+</div>

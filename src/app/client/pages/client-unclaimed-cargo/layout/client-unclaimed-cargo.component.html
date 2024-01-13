@@ -1,0 +1,106 @@
+<!--<b2b-client-subheader-->
+<!--	[searchControl]="formGroup.controls?.['q'].value"-->
+<!--	(searchValue)="setSearch($event)"></b2b-client-subheader>-->
+
+<div class="explanation-banner">
+	<b2b-explanation-banner
+		title="What is it Unclaimed cargo?"
+		subtitle="Unclaimed cargo is regular cargo rejected by the recipient for a variety of possible reasons. "
+		[explanationModal]="explanationModal"></b2b-explanation-banner>
+</div>
+
+<form [formGroup]="formGroup" class="latest-offers">
+	<div class="latest-offers-header">
+		<h3 class="latest-offers-header-title">
+			<span class="latest-offers-header-title-text">{{
+				'OFFERS.ALL_OFFERS' | translate
+			}}</span>
+			<span class="latest-offers-header-icon"></span>
+		</h3>
+	</div>
+
+	<div class="latest-offers-main">
+		<div class="latest-offers-main-filters">
+			<b2b-ngx-select
+				formControlName="transportType"
+				[options]="transportTypes$ | async"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				bindValue="_id"
+				bindLabel="displayName"
+				class="latest-offers-main-filter"
+				[placeholder]="
+					'PLACEHOLDERS.TRANSPORT_TYPE' | translate
+				"></b2b-ngx-select>
+			<b2b-ngx-treeview
+				formControlName="categories[]"
+				[items]="categories$ | async"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				class="latest-offers-main-filter"
+				[buttonName]="'SIDENAV.SAVE' | translate"
+				position="right"></b2b-ngx-treeview>
+			<b2b-ngx-country-select
+				formControlName="destinationFrom"
+				class="latest-offers-main-filter"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				[placeholder]="
+					'PLACEHOLDERS.FROM' | translate
+				"></b2b-ngx-country-select>
+			<b2b-ngx-country-select
+				formControlName="destinationTo"
+				class="latest-offers-main-filter"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+				[placeholder]="'PLACEHOLDERS.TO' | translate"></b2b-ngx-country-select>
+			<button
+				(click)="clearFilters()"
+				b2bNgxButton
+				[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"
+				class="latest-offers-main-clear-filters">
+				{{ 'OFFERS.CLEAR_ALL' | translate }}
+			</button>
+		</div>
+		<div class="latest-offers-main-list">
+			<ng-container *ngIf="offers$ | async as offers; else offersSleleton">
+				<ng-container *ngIf="offers.length; else offersSleleton">
+					<b2b-client-unclaimed-cargo-list
+						*ngIf="offersListTheme === 'list'"
+						[user]="user$ | async"
+						[options]="offers"
+						(starClicked)="
+							toggleFavoriteOffers($event)
+						"></b2b-client-unclaimed-cargo-list>
+					<b2b-client-unclaimed-cargo-grid
+						*ngIf="offersListTheme === 'grid'"
+						[user]="user$ | async"
+						[options]="offers"
+						(starClicked)="
+							toggleFavoriteOffers($event)
+						"></b2b-client-unclaimed-cargo-grid>
+					<!--					<b2b-pagination-->
+					<!--						*ngIf="user$ | async; else upgradeToSeeMore"-->
+					<!--						[length]="offersCount$ | async"-->
+					<!--						[perPage]="12"-->
+					<!--						(togglePageNumber)="getPageOffers($event)"-->
+					<!--						[currentPage]="currentPage$ | async"></b2b-pagination>-->
+				</ng-container>
+			</ng-container>
+
+			<ng-template #offersSleleton>
+				<ng-container *ngIf="loading; else noOffers">
+					<!--					<b2b-ngx-skeleton [options]="offersSkeletonOptions"></b2b-ngx-skeleton>-->
+				</ng-container>
+			</ng-template>
+
+			<ng-template #noOffers>
+				<div class="latest-offers-no-offers">
+					<button
+						class="view-all-offers"
+						b2bNgxButton
+						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+						(click)="clearFilters()">
+						{{ 'OFFERS.VIEW_ALL_OFFERS' | translate }}
+					</button>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+</form>

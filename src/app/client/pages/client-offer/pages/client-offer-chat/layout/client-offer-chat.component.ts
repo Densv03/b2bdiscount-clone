@@ -228,7 +228,7 @@ export class ClientOfferChatComponent implements OnInit, OnDestroy {
 				user?._id !== chatInfo.buyer?._id
 			) {
 				this._router.navigateByUrl(
-					this.b2bNgxLinkService.getStaticLink('/latest-offers')
+					this.b2bNgxLinkService.getStaticLink('/unclaimed-cargo')
 				);
 			}
 		});

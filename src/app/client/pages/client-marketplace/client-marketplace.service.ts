@@ -5,7 +5,6 @@ import { first, map } from 'rxjs/operators';
 import { PaginationParamsModel } from '../../../core/models/pagination-params.model';
 import { ProductDetailsModel } from './models/product-details.model';
 import { MarketProductModel } from './models/market-product.model';
-import { HttpParams } from '@angular/common/http';
 import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
 import { environment } from '../../../../environments/environment';
 
@@ -110,11 +109,12 @@ export class ClientMarketplaceService {
 
 	public getMarketplaceProducts(
 		filters?: any,
-		offset: number = 0
+		offset: number = 0,
+		limit: number = this.PRODUCTS_LIMIT
 	): Observable<any> {
 		this.startLoading();
 		return this.apiService.get(
-			`products${filters}limit=${this.PRODUCTS_LIMIT}&offset=${offset}`
+			`products${filters}&limit=${limit}&offset=${offset}`
 			// 	{
 			// 	params: { hideSold: true, limit: this.PRODUCTS_LIMIT, offset, ...filters },
 			// }
@@ -136,8 +136,12 @@ export class ClientMarketplaceService {
 		);
 	}
 
-	public updateMarketplaceProducts(filters?: any, offset: number = 0): void {
-		this.getMarketplaceProducts(filters, offset)
+	public updateMarketplaceProducts(
+		filters?: any,
+		offset: number = 0,
+		limit: number = this.PRODUCTS_LIMIT
+	): void {
+		this.getMarketplaceProducts(filters, offset, limit)
 			.pipe(
 				filter((data) => !!data),
 				first()

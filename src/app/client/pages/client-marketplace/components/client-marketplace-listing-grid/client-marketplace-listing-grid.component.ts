@@ -31,6 +31,7 @@ export class ClientMarketplaceListingGridComponent
 	@Output() public readonly starClicked: EventEmitter<string> =
 		new EventEmitter<string>();
 
+	@Input() classGridBetween: boolean = false;
 	@Input() marketplaceProducts: any[] = [];
 	@Input() public user: User;
 	@Input() showBanner: boolean = true;

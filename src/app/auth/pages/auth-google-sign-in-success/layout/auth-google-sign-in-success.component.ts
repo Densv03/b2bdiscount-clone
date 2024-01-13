@@ -49,14 +49,6 @@ export class AuthGoogleSignInSuccessComponent implements OnInit {
 		// 				// 	.subscribe();
 		// 			}
 		//
-		// 			const mixpanel = {
-		// 				'User_id': user?._id,
-		// 				'Account type': user?.rootRole?.displayName,
-		// 				'Company Name': user?.company,
-		// 				'Login Method': user?.socialAuthType
-		// 			};
-		//       this.mixpanelService.logIn(mixpanel);
-		// 			this.mixpanelService.track('Login completed', {'Login Method': 'Email'})
 		// 			this._authService.updateToken(updatedToken);
 		// 			this._authService.updateRole(user?.role);
 		// 			this._router.navigateByUrl("/");
@@ -95,12 +87,9 @@ export class AuthGoogleSignInSuccessComponent implements OnInit {
 							User_id: user?._id,
 							'Account type': user?.rootRole?.displayName,
 							'Company Name': user?.company,
-							'Login Method': user?.socialAuthType,
+							'Auth Method': user?.socialAuthType,
 						};
-						this.mixpanelService.logIn(mixpanel);
-						this.mixpanelService.track('Login completed', {
-							'Login Method': 'Email',
-						});
+						this.mixpanelService.logIn(mixpanel, 'Login completed');
 						this._authService.updateToken(updatedToken);
 						this._authService.updateRole(user?.role);
 

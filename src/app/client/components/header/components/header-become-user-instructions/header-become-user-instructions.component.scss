@@ -1,0 +1,46 @@
+:host {
+	.content {
+		.list {
+			display: flex;
+			gap: 48px;
+			margin: auto;
+			padding: 30px;
+			&__item {
+				width: 251px;
+				height: 122px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				border-radius: 12px;
+				background: #fff;
+				box-shadow: 0px 0px 8px 0px rgba(207, 222, 255, 0.7);
+				cursor: pointer;
+				&:first-child {
+					padding: 0 30px;
+				}
+				img {
+					width: 32px;
+					height: 32px;
+				}
+				&-title {
+					color: #000;
+					text-align: center;
+					font-size: 16px;
+					font-weight: 500;
+					line-height: 21px;
+					letter-spacing: 0.16px;
+					margin-top: 8px;
+				}
+				&-description {
+					color: #979797;
+					text-align: center;
+					font-size: 12px;
+					font-weight: 400;
+					letter-spacing: 0.12px;
+					line-height: 18px;
+				}
+			}
+		}
+	}
+}

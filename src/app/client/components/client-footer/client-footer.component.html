@@ -1,108 +1,62 @@
 <footer class="footer">
-	<div class="footer__left">
-		<a b2bNgxLink [routerLink]="b2bNgxLinkService.getLink('/') | async">
-			<img b2bNgxImage class="footer__logo" name="logo_white" />
-		</a>
-		<p class="footer__left-title">
-			<br />480 382 5365 <br />610 N. Gilbert Rd. Suite 201 <br />Gilbert, AZ
-			85234
-		</p>
-		<p class="footer__left-description">
-			{{ currentYear }} ©B2B Discount. All rights reserved.
-		</p>
-	</div>
-	<div class="footer__profile">
-		<ng-container *ngIf="user; else wihtoutUser">
-			<ul class="footer__center-list">
-				<li class="footer__center-list-item-user">
-					<div>
-						<p class="footer__center-list-item-user-name">
-							{{ user.fullName }}
-						</p>
-						<p class="footer__center-list-item-user-email">{{ user.email }}</p>
-					</div>
-					<div>
-						<img b2bNgxIcon name="log-out" />
-					</div>
-				</li>
-				<li
-					*ngFor="let sidenavOption of sidenavOptions"
-					class="footer__center-list-item">
+	<div class="footer__body">
+		<div class="footer__body-wrapper">
+			<div class="footer__logo"><img b2bNgxIcon name="logo-blue" /></div>
+			<div class="footer__social-list">
+				<div *ngFor="let item of socialMedias" class="footer__social-item">
 					<a
 						b2bNgxLink
-						class="footer__center-list-item-link"
-						[routerLink]="
-							b2bNgxLinkService.getLink(sidenavOption.link) | async
-						">
-						<img b2bNgxIcon [name]="sidenavOption.icon" />
-						<span class="footer__center-list-item-link-label">{{
-							sidenavOption.label | translate
-						}}</span>
+						class="footer__icons-list-item-link"
+						target="_blank"
+						[href]="item.href">
+						<ng-container *ngIf="platformService.isBrowser">
+							<svg-icon
+								class="social-icon {{ item.icon }}"
+								[src]="'/assets/icons/footer/' + item.icon + '.svg'"></svg-icon>
+						</ng-container>
 					</a>
-				</li>
-			</ul>
-		</ng-container>
-		<ng-template #wihtoutUser>
-			<div class="footer__center-list-item-without-user">
-				<a
-					b2bNgxLink
-					[routerLink]="b2bNgxLinkService.getLink('/auth/log-in') | async"
-					[theme]="b2bNgxLinkThemeEnum.OUTLINE_WHITE"
-					class="footer__center-list-item-without-user-link"
-					>{{ 'AUTH.LOG_IN' | translate }}</a
-				>
-				<a
-					b2bNgxLink
-					[routerLink]="
-						b2bNgxLinkService.getLink('/auth/register-credentials') | async
-					"
-					[theme]="b2bNgxLinkThemeEnum.BACKGROUND_WHITE"
-					class="footer__center-list-item-without-user-link"
-					>{{ 'AUTH.SIGN_UP' | translate }}</a
-				>
+				</div>
 			</div>
-		</ng-template>
-	</div>
+		</div>
 
-	<div class="footer__wrapper">
-		<ul class="footer__list">
-			<li *ngFor="let option of options" class="footer__list-item">
-				<a
-					b2bNgxLink
-					[routerLink]="b2bNgxLinkService.getLink(option.link) | async"
-					[routerLinkActiveOptions]="{ exact: true }"
-					routerLinkActive="active"
-					class="footer__list-item-link"
-					>{{ option.label | translate }}</a
-				>
-			</li>
-		</ul>
-		<ul class="sub-list">
-			<li *ngFor="let subOption of subOptions" class="sub-item">
-				<a
-					b2bNgxLink
-					class="sub-list-link"
-					[routerLink]="b2bNgxLinkService.getLink(subOption.link) | async"
-					routerLinkActive="active">
-					{{ subOption.label | translate }}</a
-				>
-			</li>
-		</ul>
-	</div>
+		<div class="footer__list">
+			<div *ngFor="let item of footerOptions" class="footer__column">
+				<div class="footer__column-name">{{ item.name }}</div>
+				<div *ngFor="let option of item.options">
+					<ng-container *ngIf="option.link; else callbackOption">
+						<a [routerLink]="option.link" class="footer__item">{{
+							option.label
+						}}</a>
+					</ng-container>
+					<ng-template #callbackOption>
+						<div (click)="option.callback()" class="footer__item">
+							{{ option.label }}
+						</div>
+					</ng-template>
+				</div>
+			</div>
 
-	<div class="footer__icons">
-		<ul class="footer__icons-list">
-			<li
-				class="footer__icons-list-item"
-				*ngFor="let socialMedia of socialMedias">
-				<a
-					b2bNgxLink
-					class="footer__icons-list-item-link"
-					target="_blank"
-					[href]="socialMedia.href">
-					<img b2bNgxIcon [name]="socialMedia.icon" />
-				</a>
-			</li>
-		</ul>
+			<div *ngFor="let item of footerOptions" class="footer__dropdown">
+				<b2b-client-dropdown [title]="item.name">
+					<div
+						*ngFor="let option of item.options"
+						(click)="processItemClick(option)"
+						class="footer__dropdown-item">
+						{{ option.label }}
+					</div>
+				</b2b-client-dropdown>
+			</div>
+		</div>
+	</div>
+	<div class="footer__bottom">
+		<div class="footer__mark">&#169; {{ currentYear }} Globy</div>
+		<div class="footer__privacy">
+			<a
+				*ngFor="let privacy of privacyOptions"
+				[routerLink]="privacy.link"
+				class="footer__privacy-item"
+				>{{ privacy.label }}</a
+			>
+		</div>
 	</div>
 </footer>

@@ -1,0 +1,29 @@
+<div class="categories">
+	<div class="categories-header">
+		<h1 class="title">{{ category?.name }}</h1>
+
+		<mat-icon class="close-icon" mat-dialog-close>close</mat-icon>
+	</div>
+
+	<div class="categories-list-block">
+		<a
+			b2bNgxLink
+			[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
+			*ngIf="showAllCategoriesButton"
+			class="all-categories"
+			[routerLink]="['/b2bmarket', category.path]"
+			mat-dialog-close>
+			View all categories
+			<mat-icon [svgIcon]="'arrow-r-blue'"></mat-icon>
+		</a>
+
+		<a
+			class="child-categories"
+			[routerLink]="['/b2bmarket/listing', category.path, childCategory.path]"
+			b2bNgxLink
+			mat-dialog-close
+			*ngFor="let childCategory of category.children">
+			{{ childCategory.name }}
+		</a>
+	</div>
+</div>

@@ -1,25 +1,74 @@
+@import 'projects/shared/src/styles';
+
+.loader {
+	margin-top: 80px;
+}
+
+.not-found {
+	.title {
+		font-weight: 600;
+		font-size: 18px;
+	}
+}
+
 .logistic {
 	max-width: 1170px;
 	margin: auto;
-	padding-top: 48px;
+	padding-top: 78px;
+	min-height: calc(100vh - 78px);
+
+	@include breakpoint('4') {
+		max-width: 95%;
+	}
+
 	&__wrapper {
 	}
+
 	&__search {
 		width: 100%;
 	}
+
 	&__body {
 		display: flex;
 		gap: 27px;
 		margin-top: 32px;
 		min-height: 350px;
 	}
+
 	&__filter {
 		min-width: 274px;
+		@include breakpoint('3') {
+			display: none;
+		}
 	}
+
 	&__listing {
 		flex-grow: 1;
 		gap: 16px;
 		display: flex;
 		flex-direction: column;
+		padding-bottom: 50px;
+
+		&__badge {
+			display: flex;
+			align-items: center;
+			background: #eff7ff;
+			border: 1px solid #005dff;
+			box-sizing: border-box;
+			border-radius: 4px;
+			padding: 12px 16px;
+			font-size: 12px;
+			color: #222224;
+			margin-bottom: 16px;
+
+			.img {
+				margin-right: 15px;
+			}
+
+			.label {
+				text-align: left;
+				white-space: pre-line;
+			}
+		}
 	}
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RfqButtonTypeEnum } from '../../../client-profile-tradebid/client-profile-tradebid-rfq/shared/enums/RfqButtonType.enum';
+import { RfqButtonTypeEnum } from '../../../client-profile-sourcing-request/client-profile-sourcing-request-rfq/shared/enums/RfqButtonType.enum';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace-archive',

@@ -1,4 +1,4 @@
-@import '/projects/shared/src/styles/breakpoints';
+@import 'projects/shared/src/styles/breakpoints';
 :host {
 	button {
 		border-radius: 14px;
@@ -12,16 +12,24 @@
 			padding: 9px 38px;
 		}
 	}
+
+	.no-products-button {
+		padding: 8px 38px;
+	}
 	.subheader-button {
 		border-radius: 8px;
-		position: absolute;
-		left: 100px;
-		top: 16px;
 		font-size: 18px;
 		line-height: 25px;
 		padding: 5.5px 31px;
-		@include breakpoint('3') {
-			display: none;
+		@include breakpoint('2') {
+			font-size: 14px;
+			line-height: 21px;
+			padding: 5.5px 15px;
+		}
+		@include breakpoint('1') {
+			font-size: 13px;
+			line-height: 18px;
+			padding: 5.5px 3px;
 		}
 	}
 }

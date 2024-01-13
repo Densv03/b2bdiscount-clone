@@ -5,7 +5,7 @@
 				[routerLink]="['/b2bmarket/listing/products/', item?.path || item?._id]"
 				class="slide">
 				<div class="slide__header">
-					<img b2bNgxImage [name]="item.photos[0].lg" />
+					<img b2bNgxImage [name]="item.photos[0]?.lg" />
 				</div>
 				<div class="slide__body">
 					<div class="slide__body-title">{{ cutString(item.title, 4) }}</div>

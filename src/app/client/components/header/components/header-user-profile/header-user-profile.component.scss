@@ -1,0 +1,55 @@
+:host {
+	.user {
+		z-index: 1;
+		position: relative;
+		padding: 20px 32px 30px 32px;
+		width: 380px;
+		.bold-title {
+			color: #000;
+			font-size: 16px;
+			font-weight: 500;
+			line-height: 136%;
+			letter-spacing: 0.16px;
+		}
+		&__company {
+			color: #9fa4bb;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 136%;
+			letter-spacing: 0.14px;
+			margin-top: 3px;
+		}
+		.divider {
+			height: 1px;
+			background: #e5f2fd;
+			margin: 16px 0;
+		}
+
+		&__profile-options {
+			display: flex;
+			flex-direction: column;
+			row-gap: 3px;
+		}
+		&__profile-option {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			width: 157px;
+			padding: 4px 8px;
+			transition: 0.4s all;
+			cursor: pointer;
+			border-radius: 8px;
+			&:hover {
+				background: #407bff;
+				.text {
+					color: #ffffff;
+				}
+				svg {
+					path {
+						fill: white;
+					}
+				}
+			}
+		}
+	}
+}

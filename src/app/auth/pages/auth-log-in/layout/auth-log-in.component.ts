@@ -155,14 +155,16 @@ export class AuthLogInComponent {
 						User_id: val._id,
 						'Account type': val.rootRole?.displayName,
 						'Company Name': val.company,
-						'Login Method': 'Email',
+						'Auth Method': 'Email',
 					};
-					this.mixpanelService.logIn(mixpanel);
-					this.mixpanelService.track('Login completed', {
-						'Login Method': 'Email',
-					});
+					this.mixpanelService.logIn(mixpanel, 'Login completed');
 					isRecovered && this.showDialog();
-					this.router.navigate(['/']);
+					if (localStorage.getItem('blocked-route')) {
+						this.router.navigate([localStorage.getItem('blocked-route')]);
+						localStorage.removeItem('blocked-route');
+					} else {
+						this.router.navigate(['/']);
+					}
 				});
 		} catch (err) {
 			this.changeDetectorRef.detectChanges();

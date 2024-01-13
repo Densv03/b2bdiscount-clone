@@ -1,19 +1,71 @@
 <div class="logistic">
 	<div class="logistic__wrapper">
 		<div class="logistic__search">
-			<b2b-logistic-search></b2b-logistic-search>
+			<b2b-logistic-search
+				(logisticSearch)="onLogisticSearch($event)"></b2b-logistic-search>
 		</div>
 		<div class="logistic__body">
 			<div class="logistic__filter">
-				<b2b-listing-filter></b2b-listing-filter>
+				<b2b-listing-filter
+					(filterIsChanged)="
+						updateListingOnFilterChange($event)
+					"></b2b-listing-filter>
 			</div>
 			<div class="logistic__listing">
-				<b2b-logistic-order
-					*ngFor="let order of logisticOrders"
-					[order]="order"
-					(sendRequest)="onSendRequest($event)"></b2b-logistic-order>
-				<b2b-logistic-stub></b2b-logistic-stub>
+				<ng-container [ngSwitch]="listingState$ | async">
+					<ng-container
+						*ngSwitchCase="'isLoading'"
+						[ngTemplateOutlet]="loading">
+					</ng-container>
+
+					<ng-container
+						*ngSwitchCase="'isFirstDisplay'"
+						[ngTemplateOutlet]="logisticStub">
+					</ng-container>
+
+					<ng-container
+						*ngSwitchCase="'Not found'"
+						[ngTemplateOutlet]="notFound">
+					</ng-container>
+
+					<ng-container *ngSwitchCase="'isLoaded'" [ngTemplateOutlet]="orders">
+					</ng-container>
+				</ng-container>
 			</div>
 		</div>
 	</div>
 </div>
+
+<ng-template #logisticStub>
+	<b2b-logistic-stub></b2b-logistic-stub>
+</ng-template>
+
+<ng-template #loading>
+	<div class="loader">
+		<b2b-page-loader
+			class="page-loader"
+			style="z-index: 10000"></b2b-page-loader>
+	</div>
+</ng-template>
+
+<ng-template #orders>
+	<p class="logistic__listing__badge">
+		<img b2bNgxIcon name="info-1" class="img" />
+
+		<span class="label">
+			Rates are approximate and not an offer. Submit your request to get a
+			precise quotation.
+		</span>
+	</p>
+	<b2b-logistic-order
+		*ngFor="let order of logisticOrders$ | async"
+		[order]="order"
+		(sendRequest)="onSendRequest($event)"></b2b-logistic-order>
+</ng-template>
+
+<ng-template #notFound>
+	<div class="not-found">
+		<b2b-create-inquiry
+			[logisticSearch]="logisticSearch$ | async"></b2b-create-inquiry>
+	</div>
+</ng-template>

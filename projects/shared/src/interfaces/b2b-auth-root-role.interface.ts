@@ -8,7 +8,7 @@ export interface B2bAuthRootRoleInterface {
 	_id: string;
 }
 
-interface B2bAuthSubRoleInterface {
+export interface B2bAuthSubRoleInterface {
 	displayName: string;
 	name: string;
 	id: string;

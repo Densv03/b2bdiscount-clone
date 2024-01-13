@@ -6,7 +6,6 @@ import { RouterOutlet } from '@angular/router';
 import { CoreRoutingModule } from './core-routing.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { ClientHeaderComponent } from '../client/components/client-header/client-header.component';
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
 import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
@@ -21,7 +20,10 @@ import {
 import { TreeviewModule } from '@b2b/ngx-treeview';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { PageLoaderComponent } from './components/page-loader/page-loader.component';
+import { PageLoaderModule } from './components/page-loader/page-loader.module';
+import { HeaderModule } from '../client/components/header/header.module';
+import { RoleSwitcherModule } from '../client/shared/components/role-switcher/role-switcher.module';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 const cookieConfig: NgcCookieConsentConfig = {
 	cookie: {
@@ -54,12 +56,7 @@ const cookieConfig: NgcCookieConsentConfig = {
 };
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		CoreComponent,
-		ClientHeaderComponent,
-		PageLoaderComponent,
-	],
+	declarations: [AppComponent, CoreComponent],
 	imports: [
 		CommonModule,
 		CoreRoutingModule,
@@ -75,6 +72,10 @@ const cookieConfig: NgcCookieConsentConfig = {
 		MatDialogModule,
 		NgcCookieConsentModule.forRoot(cookieConfig),
 		TreeviewModule.forRoot(),
+		PageLoaderModule,
+		HeaderModule,
+		RoleSwitcherModule,
+		AngularSvgIconModule,
 	],
 	exports: [AppComponent],
 	providers: [

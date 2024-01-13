@@ -8,6 +8,8 @@ import { dropdownLabels } from '@b2b/ngx-dropdown';
 import { MixpanelService } from '../../../../../../../core/services/mixpanel/mixpanel.service';
 import { getName } from 'country-list';
 import { PlatformService } from '../../../../../../services/platform/platform.service';
+import { checkSerialNumber } from '../../../../../../../core/helpers/function/check-serial-number';
+import { Photo } from '../../../../../../../core/models/photo.model';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace-product-item',
@@ -17,7 +19,9 @@ import { PlatformService } from '../../../../../../services/platform/platform.se
 export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 	@Input() product: MarketProductModel;
 	@Input() public itemsForDropdown: any[] = [];
+	@Input() public sortType?: string | null;
 
+	public productPhoto: string[];
 	public readonly isMobile = this.platformService.isServer
 		? false
 		: window.innerWidth < 576;
@@ -31,6 +35,14 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
+		this.productPhoto =
+			this.product.photos.every((photo: any) => 'serialNumber' in photo) &&
+			checkSerialNumber(this.product.photos)
+				? this.product.photos.reduce((acc: any[], val: any) => {
+						acc[val?.serialNumber] = val?.sm;
+						return acc.filter((el) => !!el);
+				  }, [])
+				: this.product.photos.filter((el) => el.sm).map((el: Photo) => el.sm);
 		this.updateItemsForDropDown();
 	}
 
@@ -69,7 +81,7 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 									'Product Category': product.category[0]?.name,
 									"Supplier's Country": getName(product.company[0].country),
 									'Product Count':
-										product.amount.count + ' ' + product.amount.unit?.name,
+										product.amount?.count + ' ' + product.amount.unit?.name,
 									'Posting Date': Date(),
 								});
 								this.clientMarketplaceService.updateManageProducts();
@@ -114,10 +126,10 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 					'Product Category': product.category[0]?.name,
 					"Supplier's Country": getName(product.company[0].country),
 					'Product Count':
-						product.amount.count + ' ' + product.amount.unit?.name,
+						product.amount?.count + ' ' + product.amount.unit?.name,
 					'Deletion Date': Date(),
 				});
-				this.clientMarketplaceService.updateManageProducts();
+				this.clientMarketplaceService.updateManageProducts(0, this.sortType);
 			});
 	}
 
@@ -153,7 +165,7 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 								'Product Category': product.category[0]?.name,
 								"Supplier's Country": getName(product.company[0].country),
 								'Product Count':
-									product.amount.count + ' ' + product.amount.unit?.name,
+									product.amount?.count + ' ' + product.amount.unit?.name,
 								'Archivation Date': Date(),
 							});
 							this.clientMarketplaceService.updateManageProducts();

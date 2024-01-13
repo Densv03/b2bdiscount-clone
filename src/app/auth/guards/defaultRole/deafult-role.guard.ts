@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
 	ActivatedRoute,
 	ActivatedRouteSnapshot,
-	CanActivate,
 	Router,
 	RouterStateSnapshot,
 } from '@angular/router';
@@ -15,7 +14,7 @@ import { tap } from 'rxjs';
 @Injectable({
 	providedIn: 'root',
 })
-export class DefaultRoleGuard implements CanActivate {
+export class DefaultRoleGuard {
 	constructor(
 		private readonly _authService: AuthService,
 		private readonly _router: Router,
@@ -27,7 +26,6 @@ export class DefaultRoleGuard implements CanActivate {
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		return this._authService.getUser().pipe(
-			tap((user) => console.log('DEFAULT GUARD USER: ', user)),
 			filter((user) => user !== undefined),
 			map((user: any) => {
 				if (state.url?.includes('auth/register')) {
