@@ -17,6 +17,10 @@ import { MixpanelService } from '../../core/services/mixpanel/mixpanel.service';
 import moment from 'moment';
 import { PlatformService } from '../services/platform/platform.service';
 import { IntercomService } from '../../core/services/intercom/intercom.service';
+import {MatDialog} from "@angular/material/dialog";
+import {
+	ProductCreationCongratsDialogComponent
+} from "../shared/components/product-creation-congrats-dialog/product-creation-congrats-dialog.component";
 
 @UntilDestroy()
 @Component({
@@ -31,6 +35,7 @@ export class ClientComponent implements OnInit {
 	private startTime: number;
 
 	constructor(
+		private d: MatDialog,
 		private route: ActivatedRoute,
 		private userService: UserService,
 		private router: Router,
@@ -82,6 +87,10 @@ export class ClientComponent implements OnInit {
 				this.intercomService.initializeIntercom(user.email);
 			});
 		}
+		this.d.open(ProductCreationCongratsDialogComponent, {
+			panelClass: 'rfq-created-pop-up',
+
+		})
 	}
 
 	public onActivate() {
