@@ -23,6 +23,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { NgxDatatableModule } from '@siemens/ngx-datatable';
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
 	declarations: [
@@ -52,6 +53,7 @@ import { NgxDatatableModule } from '@siemens/ngx-datatable';
 		NgxDaterangepickerMd.forRoot(),
 		MatPaginatorModule,
 		MatTableModule,
+		MatSortModule,
 	],
 })
 export class AdminUsersModule {}

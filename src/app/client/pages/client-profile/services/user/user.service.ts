@@ -11,6 +11,7 @@ import {
 import { ApiService } from '../../../../../core/services/api/api.service';
 import { AuthQuery } from '../../../../../auth/state/auth/auth.query';
 import { AuthStore } from '../../../../../auth/state/auth/auth.store';
+import {AdminUser} from "../../../../../../../admin/src/app/shared/models/AdminUser.model";
 
 @Injectable({
 	providedIn: 'root',
@@ -26,7 +27,7 @@ export class UserService {
 		return !!localStorage.getItem('token');
 	}
 
-	public getUsers(offset: any, limit = 10, filters: any) {
+	public getUsers(offset: any, limit = 10, filters: any): Observable<{totalCount: number, users: AdminUser[]}> {
 		const filtersUrl = filters
 			? Object.entries(filters).reduce((pre, [key, val]) => {
 					const parsedValue =
