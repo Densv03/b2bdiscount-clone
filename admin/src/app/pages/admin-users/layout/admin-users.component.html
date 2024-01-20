@@ -266,37 +266,44 @@
 
 				<ng-container matColumnDef="socialAuthType">
 					<th mat-header-cell *matHeaderCellDef>Social auth type</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
-				</ng-container>
-
-				<ng-container matColumnDef="preferredCargo">
-					<th mat-header-cell *matHeaderCellDef>Prefered cargo</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
+					<td mat-cell *matCellDef="let user">{{user.socialAuthType}}</td>
 				</ng-container>
 
 				<ng-container matColumnDef="lastActivity">
 					<th mat-header-cell *matHeaderCellDef>Last activity</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
+					<td mat-cell *matCellDef="let user">{{user.lastActivity}}</td>
 				</ng-container>
 
 				<ng-container matColumnDef="placedOffers">
 					<th mat-header-cell *matHeaderCellDef>Placed offers (offer title)</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
+					<td mat-cell *matCellDef="let user">
+						<div *ngFor="let offers of user.offers">{{ offers.title }}</div>
+					</td>
 				</ng-container>
 
 				<ng-container matColumnDef="placedOffersDate">
 					<th mat-header-cell *matHeaderCellDef>Placed offers date</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
+					<td mat-cell *matCellDef="let user">
+						<div *ngFor="let offers of user.offers">{{ offers.date }}</div>
+					</td>
 				</ng-container>
 
 				<ng-container matColumnDef="soldCargo">
 					<th mat-header-cell *matHeaderCellDef>Sold cargo</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
+					<td mat-cell *matCellDef="let user">
+						<div *ngFor="let offers of user.offers">
+							<div *ngIf="offers.deleted === true">
+								<p [matTooltip]="offers.reasonForDeletion">{{ offers.title }}</p>
+							</div>
+						</div>
+					</td>
 				</ng-container>
 
 				<ng-container matColumnDef="actions">
 					<th mat-header-cell *matHeaderCellDef>Actions</th>
-					<td mat-cell *matCellDef="let row">{{row.number}}</td>
+					<td mat-cell *matCellDef="let user">
+						<button (click)="deleteUser()">Delete</button>
+					</td>
 				</ng-container>
 
 

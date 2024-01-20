@@ -24,6 +24,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { NgxDatatableModule } from '@siemens/ngx-datatable';
 import {MatSortModule} from "@angular/material/sort";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [
@@ -54,6 +55,7 @@ import {MatSortModule} from "@angular/material/sort";
 		MatPaginatorModule,
 		MatTableModule,
 		MatSortModule,
+		MatTooltipModule,
 	],
 })
 export class AdminUsersModule {}

@@ -688,7 +688,6 @@ export class AdminUsersComponent implements AfterViewInit {
 		'countryByNumber',
 		'isEmailConfirmed',
 		'socialAuthType',
-		'preferredCargo',
 		'lastActivity',
 		'placedOffers',
 		'placedOffersDate',
@@ -711,6 +710,10 @@ export class AdminUsersComponent implements AfterViewInit {
 			this.tableDataSource.next(response.users);
 			console.log(response)
 		});
+	}
+
+	deleteUser() {
+
 	}
 }
 
