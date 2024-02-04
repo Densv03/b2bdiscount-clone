@@ -7,6 +7,7 @@
 	@include breakpoint('3') {
 		padding: 15px;
 	}
+
 	.container {
 		width: 60%;
 		margin: 0 auto;
@@ -60,12 +61,44 @@
 			color: #0f0f11;
 			margin-top: 60px;
 		}
+
 		.section-description {
 			font-size: 14px;
 			line-height: 200%;
 			letter-spacing: 0.01em;
 			color: #556274;
 			margin-top: 16px;
+		}
+
+		.section-link {
+			color: #0d6efd !important;
+			border-bottom: #0d6efd 1px solid;
+			font-size: 14px;
+		}
+
+		.section-ul {
+			li {
+				list-style-type: disc;
+				margin-left: 20px;
+			}
+		}
+
+		.section-alphabetic-list {
+			list-style-type: none;
+			counter-reset: list-counter;
+			padding-left: 0;
+
+			li {
+				position: relative;
+				padding-left: 20px;
+
+				&::before {
+					content: counter(list-counter, lower-alpha) ') ';
+					counter-increment: list-counter;
+					position: absolute;
+					left: 0;
+				}
+			}
 		}
 	}
 }

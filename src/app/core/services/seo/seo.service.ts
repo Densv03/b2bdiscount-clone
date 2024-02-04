@@ -129,7 +129,29 @@ export class SeoService {
 		// url = url.replace('http://', 'https://');
 		link.setAttribute('rel', 'canonical');
 		this.doc.head.appendChild(link);
-		link.setAttribute('href', url);
+		link.setAttribute('href', this.replaceCanonicalLink(url));
+	}
+
+	private replaceCanonicalLink(url: string): string {
+		switch (environment.apiUrl) {
+			case 'https://api.globy.com/':
+				return url.replace(
+					`http://${environment.baseUrl}/`,
+					environment.prodUrl
+				);
+			case 'https://api-dev.globy.com/':
+				return url.replace(
+					`http://${environment.baseUrl}/`,
+					environment.devUrl
+				);
+			case 'https://api-staging.globy.com/':
+				return url.replace(
+					`http://${environment.baseUrl}/`,
+					environment.stagingUrl
+				);
+			default:
+				return url;
+		}
 	}
 
 	private removeCanonicalRefs(): void {

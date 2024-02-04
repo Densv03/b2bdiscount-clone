@@ -119,7 +119,7 @@
 								<div
 									*ngIf="!filter.selectedOption.getValue(); else selectedOption"
 									class="options">
-									<div
+									<a
 										*ngFor="let option of filter.options; let idx = index"
 										(click)="
 											chooseFilter(
@@ -129,7 +129,23 @@
 												false
 											)
 										"
-										class="item">
+										class="item"
+										[routerLink]="
+											getNavigationByOption(option, filter.hiddenLabel)
+												.routerLink
+										"
+										[queryParams]="
+											getNavigationByOption(option, filter.hiddenLabel)
+												.queryParams
+										"
+										[queryParamsHandling]="
+											getNavigationByOption(option, filter.hiddenLabel)
+												.queryParamsHandling
+										"
+										[relativeTo]="
+											getNavigationByOption(option, filter.hiddenLabel)
+												.relativeTo
+										">
 										<div class="circle">
 											<div
 												class="inner-circle"
@@ -171,7 +187,7 @@
 												</ng-container>
 											</label>
 										</ng-template>
-									</div>
+									</a>
 								</div>
 							</ng-container>
 							<ng-template #selectedOption>
@@ -207,7 +223,7 @@
 											group="flags/"
 											[name]="
 												filtersState[filterIndex].selectedOption.getValue()[0]
-													.code | uppercase
+													.name | uppercase
 											" />
 										{{
 											getCountryName(

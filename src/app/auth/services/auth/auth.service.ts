@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
 import { User } from '../../../core/models/user/user.model';
@@ -39,6 +39,22 @@ export class AuthService {
 		}, 0);
 	}
 
+	public get role(): B2bAuthRoleInterface | null {
+		return this.authQuery.getValue().role;
+	}
+
+	public get user$(): Observable<User> {
+		return this.authQuery.selectUser$;
+	}
+
+	public get user(): User {
+		return this.authQuery.getValue().user;
+	}
+
+	public get company(): PublicCompanyInfoModel {
+		return this.authQuery.getValue().company;
+	}
+
 	public initUser() {
 		const token = this.getToken();
 		this.updateToken(token || '');
@@ -50,7 +66,9 @@ export class AuthService {
 				next: (user) => {
 					this.updateUser(<User>user);
 					this.isUserLoadingSource.next(false);
-					this.backToBlockedRoute();
+					if (user.rootRole?.name === 'buyer' || 'supplier') {
+						this.backToBlockedRoute();
+					}
 				},
 				error: () => {
 					this.updateUser(null);
@@ -89,6 +107,8 @@ export class AuthService {
 	public updateUser(user: User | null): void {
 		this.authStore.update({
 			user,
+			role: user?.role,
+			rootRole: user?.rootRole,
 		});
 	}
 
@@ -110,22 +130,6 @@ export class AuthService {
 		return this.authQuery.selectCompany$;
 	}
 
-	public get role(): B2bAuthRoleInterface | null {
-		return this.authQuery.getValue().role;
-	}
-
-	public get user$(): Observable<User> {
-		return this.authQuery.selectUser$;
-	}
-
-	public get user(): User {
-		return this.authQuery.getValue().user;
-	}
-
-	public get company(): PublicCompanyInfoModel {
-		return this.authQuery.getValue().company;
-	}
-
 	public getToken() {
 		const tokenFromStore = this.authQuery.getValue().token;
 
@@ -142,16 +146,17 @@ export class AuthService {
 		return '';
 	}
 
-	public logOut() {
+	public async logOut() {
+		if (this.platformService.isServer) {
+			return;
+		}
 		localStorage.removeItem('token');
 		this.mixpanelService.logout();
-		if (this.platformService.isBrowser) {
-			this.authStore.update({
-				user: null,
-				token: null,
-				company: null,
-			});
-		}
+		this.authStore.update({
+			user: null,
+			token: null,
+			company: null,
+		});
 	}
 
 	public getRoles(): Observable<B2bAuthRoleInterface[]> {

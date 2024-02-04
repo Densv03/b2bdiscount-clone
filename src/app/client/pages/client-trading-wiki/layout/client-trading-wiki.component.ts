@@ -28,7 +28,7 @@ function generateQueryString(obj: any) {
 								index + 1 === value.length ? '' : '&'
 							}`,
 						''
-				  )}`
+					)}`
 				: `${queryString}${key}=${value}&`;
 		}, '?');
 }

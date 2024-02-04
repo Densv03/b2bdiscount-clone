@@ -41,11 +41,6 @@ const routes: Routes = [
 		canActivate: [AdminGuard],
 		children: [
 			{
-				path: '',
-				pathMatch: 'full',
-				redirectTo: 'users',
-			},
-			{
 				path: 'articles',
 				loadChildren: () =>
 					import('./pages/admin-articles/admin-articles.module').then(
@@ -142,6 +137,13 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('./pages/admin-marketplace/admin-marketplace.module').then(
 						(m) => m.AdminMarketplaceModule
+					),
+			},
+			{
+				path: 'moderators',
+				loadChildren: () =>
+					import('./pages/admin-moderators/admin-moderators.module').then(
+						(m) => m.AdminModeratorsModule
 					),
 			},
 			{

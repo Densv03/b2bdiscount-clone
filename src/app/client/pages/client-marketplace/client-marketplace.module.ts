@@ -7,7 +7,6 @@ import { ClientMarketplaceAddProductComponent } from './components/client-market
 import { ClientMarketplaceSupplierListingComponent } from './components/client-marketplace-supplier-listing/client-marketplace-supplier-listing.component';
 import { ClientMarketplaceSupplierFiltersComponent } from './components/client-marketplace-supplier-filters/client-marketplace-supplier-filters.component';
 import { B2bNgxSelectModule } from '@b2b/ngx-select';
-// import { CategoriesDialogModule } from "../../../../../../../lib/shared/components/categories-dialog/categories-dialog.module";
 import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
@@ -17,15 +16,11 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { ClientMarketplaceListingListComponent } from './components/client-marketplace-listing-list/client-marketplace-listing-list.component';
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
 import { B2bNgxImageModule } from '@b2b/ngx-image';
-// import { ErrorTailorModule } from "@ngneat/error-tailor";
 import { B2bNgxToggleModule } from '@b2b/ngx-toggle';
 import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
-// import { B2bNgxFileModule } from "@b2b/ngx-file";
 import { ClientProfileAddOfferModule } from '../client-profile/pages/client-profile-add-offer/client-profile-add-offer.module';
-// import { B2bNgxTreeviewModule } from "@b2b/ngx-treeview";
 import { B2bNgxMultiselectModule } from '@b2b/ngx-multiselect';
 import { ClientMarketplaceProductDetailsComponent } from './components/client-marketplace-product-details/client-marketplace-product-details.component';
-// import { NgxTippyModule } from "ngx-tippy-wrapper";
 import { B2bNgxImagesCarouselModule } from '@b2b/ngx-images-carousel';
 import { B2bNgxSkeletonModule } from '@b2b/ngx-skeleton';
 import { LoadMorePaginatorModule } from './components/load-more-paginator/load-more-paginator.module';
@@ -58,7 +53,6 @@ import { PageLoaderModule } from '../../../core/components/page-loader/page-load
 	declarations: [
 		ClientMarketplaceFiltersComponent,
 		ClientMarketplaceAddProductComponent,
-		ClientMarketplaceSupplierListingComponent,
 		ClientMarketplaceSupplierFiltersComponent,
 		ClientMarketplaceSupplierInfoComponent,
 		ClientMarketplaceListingListComponent,
@@ -78,14 +72,11 @@ import { PageLoaderModule } from '../../../core/components/page-loader/page-load
 		B2bNgxIconModule,
 		B2bNgxLinkModule,
 		B2bNgxImageModule,
-		// ErrorTailorModule,
 		B2bNgxToggleModule,
 		B2bNgxTextareaModule,
 		B2bNgxFileModule,
 		ClientProfileAddOfferModule,
-		// B2bNgxTreeviewModule,
 		B2bNgxMultiselectModule,
-		// NgxTippyModule,
 		B2bNgxImagesCarouselModule,
 		B2bNgxPaginationModule,
 		B2bNgxSkeletonModule,
@@ -114,6 +105,7 @@ import { PageLoaderModule } from '../../../core/components/page-loader/page-load
 	exports: [
 		ClientMarketplaceFiltersMobileComponent,
 		ClientMarketplaceListingListComponent,
+		ClientMarketplaceSupplierInfoComponent,
 	],
 	providers: [Meta],
 })

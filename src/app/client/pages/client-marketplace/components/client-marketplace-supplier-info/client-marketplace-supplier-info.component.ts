@@ -57,7 +57,7 @@ export class ClientMarketplaceSupplierInfoComponent implements OnInit {
 		}
 
 		if (!this.userIsAuth) {
-			this.router.navigate(['/auth/log-in']);
+			this.router.navigate(['/profile/your-workspace/b2bmarket']);
 		} else {
 			this.openConnection(this.token);
 			this.socket.emit('start_users_chat', {

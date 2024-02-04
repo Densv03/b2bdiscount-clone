@@ -187,6 +187,7 @@
 										<div class="item-country">
 											<img
 												b2bNgxIcon
+												style="height: 32px"
 												group="flags/"
 												[name]="item.countryIcon"
 												alt="" />
@@ -364,12 +365,11 @@
 				</div>
 			</div>
 			<mat-slider
-				[(ngModel)]="ship"
 				(input)="setInput($event)"
 				[min]="shipment.min"
 				[max]="shipment.max"
 				[step]="shipment.step">
-				<input matSliderThumb />
+				<input matSliderThumb [(ngModel)]="ship" />
 			</mat-slider>
 		</div>
 	</div>

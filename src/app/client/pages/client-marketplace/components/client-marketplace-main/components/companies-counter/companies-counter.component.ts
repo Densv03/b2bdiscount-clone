@@ -87,8 +87,8 @@ export class CompaniesCounterComponent implements AfterViewInit {
 									j == parseInt(res[i])
 										? `<div class="child-span current-value">${j}</div>`
 										: j == oneLessThanPrev
-										? `<div class="child-span gray">${j}</div>`
-										: `<div class="child-span">${j}</div>`
+											? `<div class="child-span gray">${j}</div>`
+											: `<div class="child-span">${j}</div>`
 								}`
 								)
 								.join('')}
@@ -133,15 +133,12 @@ export class CompaniesCounterComponent implements AfterViewInit {
 	}
 
 	navigateToMarketProfile(): void {
-		if (
-			this.userIsLogged &&
-			this.userService.getUser().rootRole.name === 'buyer'
-		) {
+		if (this.userService.getUser().rootRole.name === 'buyer') {
 			this.router.navigate(['/profile/your-account/company-information'], {
 				queryParams: { scrollTo: 'accountType' },
 			});
-		} else if (this.userIsLogged) {
+		} else {
 			this.router.navigate(['/profile/your-workspace/b2bmarket']);
-		} else this.router.navigate(['/auth/register-credentials']);
+		}
 	}
 }

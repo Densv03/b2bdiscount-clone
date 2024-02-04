@@ -115,7 +115,7 @@ export class AdminLogisticService {
 	}
 
 	public getDirection(countryId?: string): Observable<any> {
-		let params = new HttpParams();
+		let params = new HttpParams().append('nocache', true);
 		if (countryId) {
 			params = params.append('countryId', countryId);
 		}

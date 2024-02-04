@@ -1,0 +1,29 @@
+<div class="content">
+	<div class="title">Add Moderator</div>
+	<form [formGroup]="form" class="form">
+		<b2b-ngx-select
+			formControlName="moderatorName"
+			[theme]="b2bNgxSelectTheme.BACKGROUND_GRAY"
+			[options]="roles$ | async"
+			bindValue="name"
+			bindLabel="name"
+			placeholder="Choose moderator name"
+			>Moderator name</b2b-ngx-select
+		>
+		<div class="control">
+			<input
+				b2bNgxInput
+				[theme]="b2bNgxInputTheme.BACKGROUND_GRAY"
+				formControlName="email"
+				label="Role"
+				placeholder="Enter email" />
+		</div>
+
+		<button
+			(click)="addModerator()"
+			b2bNgxButton
+			[theme]="b2bNgxButtonTheme.BACKGROUND_BLACK">
+			Send
+		</button>
+	</form>
+</div>

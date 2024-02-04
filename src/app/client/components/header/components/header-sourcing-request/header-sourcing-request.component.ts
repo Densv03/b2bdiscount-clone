@@ -4,6 +4,7 @@ import { UserService } from '../../../../pages/client-profile/services/user/user
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateRfqDialogComponent } from '../../../../pages/client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
 
 @Component({
 	selector: 'b2b-header-sourcing-request',
@@ -13,18 +14,12 @@ import { CreateRfqDialogComponent } from '../../../../pages/client-sourcing-requ
 export class HeaderSourcingRequestComponent {
 	constructor(
 		private readonly tooltipService: TooltipService,
-		private readonly router: Router,
-		private readonly userService: UserService,
-		private readonly dialog: MatDialog
+		private readonly dialogService: DialogService
 	) {}
 	public addRfq(): void {
-		if (!this.userService.getUser()) {
-			this.router.navigate(['/auth/register-credentials']);
-		} else {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-		}
+		this.dialogService.openDialog(CreateRfqDialogComponent, {
+			panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
+		});
 		this.tooltipService.hideTooltip();
 	}
 }

@@ -22,13 +22,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { B2bNgxButtonModule, B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { CommonModule } from '@angular/common';
-import { productNameWithHS } from 'src/app/core/helpers/validator/product-name-with-HS';
 import { FadeInOutAnimation } from 'src/app/client/shared/animations/fade-in-out.animation';
 import { TariffsResponse } from 'src/app/client/pages/client-logistic/models/tariffs/tariffs-response.model';
 import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
 import { onlyLatin } from 'src/app/core/helpers/validator/only-latin';
-import { fullName } from 'src/app/core/helpers/validator/full-name';
 import { UserService } from '../../../client-profile/services/user/user.service';
+import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
 
 @Component({
 	selector: 'b2b-submit-inquiry',
@@ -80,22 +79,12 @@ export class SubmitInquiryComponent implements OnInit {
 	constructor(
 		public dialogRef: MatDialogRef<SubmitInquiryComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: TariffsResponse | any,
-		private userService: UserService
+		private userService: UserService,
+		private mixpanelService: MixpanelService
 	) {}
 
 	ngOnInit(): void {
 		this.patchForm();
-	}
-	private convertCustomDateStringToDate(customDateString: string): string {
-		const dateComponents = customDateString.split('.');
-
-		const year = parseInt(dateComponents[0]);
-		const month = parseInt(dateComponents[1]);
-		const day = parseInt(dateComponents[2]);
-
-		const dateObject = new Date(year, month - 1, day); // Note: months are zero-based in JavaScript Date objects
-
-		return dateObject.toISOString().split('T')[0];
 	}
 
 	public submitForm(): void {
@@ -110,7 +99,6 @@ export class SubmitInquiryComponent implements OnInit {
 			portTo,
 			airportFrom,
 			airportTo,
-			_id,
 			readyToLoad,
 			seaLine,
 			tariffSeaId,
@@ -131,6 +119,23 @@ export class SubmitInquiryComponent implements OnInit {
 			readyToLoad: this.convertCustomDateStringToDate(readyToLoad),
 			seaLine,
 		});
+		this.mixpanelService.track('Logistic request sent', {
+			'ORIGIN OF SHIPMENT': countryFrom.name,
+			'DESTINATION OF SHIPMENT': countryTo.name,
+			'Type of form': 'Positive scenario',
+		});
+	}
+
+	private convertCustomDateStringToDate(customDateString: string): string {
+		const dateComponents = customDateString.split('.');
+
+		const year = parseInt(dateComponents[0]);
+		const month = parseInt(dateComponents[1]);
+		const day = parseInt(dateComponents[2]);
+
+		const dateObject = new Date(year, month - 1, day); // Note: months are zero-based in JavaScript Date objects
+
+		return dateObject.toISOString().split('T')[0];
 	}
 
 	private patchForm(): void {

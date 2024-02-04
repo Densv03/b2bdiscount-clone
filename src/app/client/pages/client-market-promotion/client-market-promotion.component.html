@@ -24,7 +24,7 @@
 
 				<div class="promotion__header__wrapper__info__buttons">
 					<button
-						(click)="joinUs()"
+						[routerLink]="'/profile/your-workspace/b2bmarket'"
 						b2bNgxButton
 						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE">
 						{{ 'MARKET_PROMOTION.JOIN_US' | translate }}
@@ -80,7 +80,7 @@
 				{{ 'MARKET_PROMOTION.AUTOMATICALLY_BECOME' | translate }}
 			</div>
 			<button
-				(click)="applyAsSupplier()"
+				[routerLink]="'/b2bmarket/product'"
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
 				class="promotion__steps__wrapper__button">

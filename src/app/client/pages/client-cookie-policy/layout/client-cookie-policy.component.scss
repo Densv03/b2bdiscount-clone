@@ -70,5 +70,16 @@
 		.section-table {
 			margin-top: 30px;
 		}
+		.section-link {
+			color: #0d6efd !important;
+			border-bottom: #0d6efd 1px solid;
+			font-size: 14px;
+		}
+		.section-ul {
+			li {
+				list-style-type: disc;
+				margin-left: 20px;
+			}
+		}
 	}
 }

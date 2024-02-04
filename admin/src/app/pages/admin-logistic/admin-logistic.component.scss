@@ -139,3 +139,31 @@
 		}
 	}
 }
+
+.error-list {
+	overflow-y: auto;
+	max-height: 500px;
+	padding: 16px;
+	border-radius: 8px;
+	background: #ffff;
+	max-width: 50%;
+	margin-top: 24px;
+
+	.error-field {
+		display: flex;
+		gap: 16px;
+		font-size: 15px;
+		line-height: 22px;
+		padding-bottom: 12px;
+		font-weight: 400;
+
+		&:first-of-type {
+			color: grey;
+		}
+
+		.field {
+			min-width: 50%;
+			font-weight: 600;
+		}
+	}
+}

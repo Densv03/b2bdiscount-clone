@@ -11,7 +11,12 @@ import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FadeInOutAnimation } from 'src/app/client/shared/animations/fade-in-out.animation';
-import { ClientLogisticService } from 'src/app/client/pages/client-logistic/services/client-logistic.service';
+import {
+	BaseLogisticState,
+	ClientLogisticService,
+	LogisticAirState,
+	LogisticSeaState,
+} from 'src/app/client/pages/client-logistic/services/client-logistic.service';
 import { CreateInquiryForm } from 'src/app/client/pages/client-logistic/models/create-inquiry/create-inquiry-form.model';
 import { Phone } from 'src/app/core/models/user/phone.model';
 import { LogisticSearch } from 'src/app/client/pages/client-logistic/models/logistic-search/logistic-search.model';
@@ -19,8 +24,10 @@ import { CreateInquiryRequest } from 'src/app/client/pages/client-logistic/model
 import { HotToastService } from '@ngneat/hot-toast';
 import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
 import { onlyLatin } from 'src/app/core/helpers/validator/only-latin';
-import { fullName } from 'src/app/core/helpers/validator/full-name';
 import { UserService } from '../../../client-profile/services/user/user.service';
+import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
+import _ from 'lodash';
+import { deliveryType } from '../../models/delivery-type.model';
 
 @Component({
 	selector: 'b2b-create-inquiry',
@@ -67,7 +74,8 @@ export class CreateInquiryComponent implements OnInit {
 	constructor(
 		private clientLogisticService: ClientLogisticService,
 		private hotToastService: HotToastService,
-		private userService: UserService
+		private userService: UserService,
+		private mixpanelService: MixpanelService
 	) {}
 
 	ngOnInit(): void {
@@ -79,29 +87,20 @@ export class CreateInquiryComponent implements OnInit {
 			this.createInquiryForm.markAllAsTouched();
 			return;
 		}
+		let state = this.handleDeliveryState();
+		this.createInquiry(state);
+		this.trackRequestEvent(state);
+	}
 
-		let countryFrom, countryTo, readyToLoad;
-
-		if (this.clientLogisticService.getActiveDeliveryType() === 'sea') {
-			countryFrom = this.clientLogisticService.getSeaState().countryFrom;
-			countryTo = this.clientLogisticService.getSeaState().countryTo;
-			const date = new Date(this.clientLogisticService.getSeaState().date);
-			readyToLoad = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
-		} else if (this.clientLogisticService.getActiveDeliveryType() === 'air') {
-			countryFrom = this.clientLogisticService.getAirState().countryFrom;
-			countryTo = this.clientLogisticService.getAirState().countryTo;
-			const date = new Date(this.clientLogisticService.getAirState().date);
-			readyToLoad = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
-		}
-
+	private createInquiry(pick: Partial<BaseLogisticState>) {
 		this.clientLogisticService
 			.createInquiry({
 				...this.logisticSearch,
 				...this.createInquiryForm.value,
 				transportType: this.clientLogisticService.getActiveDeliveryType(),
-				readyToLoad,
-				countryFrom,
-				countryTo,
+				countryFrom: pick.countryFrom,
+				countryTo: pick.countryTo,
+				readyToLoad: pick.readyToLoad,
 			} as CreateInquiryRequest)
 			.pipe(
 				this.hotToastService.observe({
@@ -113,6 +112,31 @@ export class CreateInquiryComponent implements OnInit {
 			.subscribe(() => {
 				this.createInquiryForm.reset();
 			});
+	}
+
+	private trackRequestEvent(state: Partial<BaseLogisticState>) {
+		this.mixpanelService.track('Logistic request sent', {
+			'ORIGIN OF SHIPMENT': state.countryFromName,
+			'DESTINATION OF SHIPMENT': state.countryToName,
+			'Type of form': 'Negative scenario',
+		});
+	}
+
+	private handleDeliveryState(): Partial<BaseLogisticState> {
+		const isAirType =
+			this.clientLogisticService.getActiveDeliveryType() === 'air';
+		const state = isAirType
+			? this.clientLogisticService.getAirState()
+			: this.clientLogisticService.getSeaState();
+		const date = new Date(state.date);
+		return {
+			countryTo: state.countryTo,
+			countryFrom: state.countryFrom,
+			countryFromName: state.countryFromName,
+			countryToName: state.countryToName,
+			readyToLoad: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
+			date,
+		} as Partial<BaseLogisticState>;
 	}
 
 	private patchForm(): void {

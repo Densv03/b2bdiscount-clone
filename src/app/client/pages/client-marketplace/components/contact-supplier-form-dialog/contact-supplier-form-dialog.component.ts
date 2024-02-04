@@ -132,7 +132,12 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 		let formValue = { ...this.supplierForm.value.baseForm };
 
 		if (this.supplierForm.value?.expandedForm) {
-			formValue = { ...formValue, ...this.supplierForm.value?.expandedForm };
+			const category = this.data.product.category;
+			formValue = {
+				...formValue,
+				...this.supplierForm.value?.expandedForm,
+				category: category instanceof Array ? category[0]._id : category._id,
+			};
 			this.sourcingRequestService
 				.createRFQ(formValue)
 				.pipe(untilDestroyed(this))
@@ -147,6 +152,7 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 					this.mixpanelService.track('New RFQ posted', {
 						'Product Sector': selectedSector,
 						Destination: getName(el.destination.to),
+						Source: 'Message Form',
 					});
 					this.hotToastService.success('Your request was successfully sent');
 					this.dialogRef.close(formValue);
@@ -207,8 +213,8 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 		return new FormGroup({
 			tradeTerms: new FormControl(null, Validators.required),
 			destination: new FormControl(null, Validators.required),
-			amount: new FormControl(null, Validators.required),
-			unit: new FormControl(null, Validators.required),
+			quantity: new FormControl(null, Validators.required),
+			unitMeasure: new FormControl(null, Validators.required),
 		});
 	}
 }

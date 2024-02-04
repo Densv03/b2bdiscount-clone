@@ -10,9 +10,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 	imports: [B2bNgxButtonModule, B2bNgxIconModule, MatDialogModule],
 	standalone: true,
 })
-export class SubmitInquirySuccessComponent implements OnInit {
+export class SubmitInquirySuccessComponent {
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-	constructor() {}
-
-	ngOnInit(): void {}
 }

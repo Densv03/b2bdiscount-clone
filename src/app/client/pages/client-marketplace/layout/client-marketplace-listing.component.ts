@@ -17,7 +17,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { ActivatedRoute, QueryParamsHandling, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, tap } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, first, map } from 'rxjs/operators';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { InitialCategoryState } from '../shared/models/initial-category-state.model';
 import { SlideInOutAnimation } from '../shared/animations/slide-in-out.animation';
@@ -45,12 +45,12 @@ function generateQueryString(obj: any, initialValue: string = '?') {
 				? `${queryString}${value.reduce(
 						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
 						''
-				  )}`
+					)}`
 				: `${queryString}${key}=${value}&`;
 		}, initialValue);
 }
 
-interface NavigationOption {
+export interface NavigationOption {
 	routerLink: string[];
 	queryParams?: {
 		[key: string]: string;
@@ -61,7 +61,7 @@ interface NavigationOption {
 
 @UntilDestroy()
 @Component({
-	selector: 'b2b-client-marketplace',
+	selector: 'b2b-client-marketplace-listing',
 	templateUrl: './client-marketplace-listing.component.html',
 	styleUrls: ['./client-marketplace-listing.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -101,6 +101,7 @@ export class ClientMarketplaceListingComponent
 	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum;
 
 	public animationState: 'in' | 'out' = 'out';
+	public listingIsLoaded = false;
 
 	@ViewChild('backdrop', { static: true }) backdrop?: ElementRef;
 
@@ -147,6 +148,21 @@ export class ClientMarketplaceListingComponent
 		this.seoService.marketListingMetaTags$.subscribe((data) => {
 			data ? this.addSeoTags(data) : this.removeSeoTags();
 		});
+		this.marketplaceProducts$.pipe(first()).subscribe(() => {
+			setTimeout(() => {
+				this.listingIsLoaded = true;
+			}, 200);
+		});
+	}
+
+	public getTitleByCategoryPath(): string {
+		const { childCategory, category } = this.route.snapshot.params;
+		if (childCategory) {
+			return this.getCategoryNameByPath(childCategory);
+		} else if (category) {
+			return this.getCategoryNameByPath(category);
+		}
+		return '';
 	}
 
 	public getCountryName(countryCode: string): string {
@@ -232,7 +248,7 @@ export class ClientMarketplaceListingComponent
 		if (rootCategoryId) {
 			this.seoService.setTitle(`Search ${name} to Buy Wholesale Goods Online`);
 		} else {
-			this.seoService.setTitle(`Explore ${name} to Buy Products Wholesale`);
+			// this.seoService.setTitle(`Explore ${name} to Buy Products Wholesale`);
 		}
 		this.seoService.setDescription(
 			`Navigate to ${name} for wholesale purchases. Ensure the best prices by sourcing from direct suppliers on our trade portal`
@@ -254,7 +270,6 @@ export class ClientMarketplaceListingComponent
 		hiddenLabel: string,
 		deleteMode: boolean
 	): void {
-		console.log(option, hiddenLabel, deleteMode);
 		const queryParams = { ...this.route.snapshot.queryParams };
 		if (!deleteMode) {
 			switch (hiddenLabel) {
@@ -369,6 +384,7 @@ export class ClientMarketplaceListingComponent
 				return {
 					routerLink: [],
 					queryParams: { 'country[]': option.name },
+					queryParamsHandling: 'merge',
 					relativeTo: this.route,
 				};
 			case 'type':
@@ -586,5 +602,13 @@ export class ClientMarketplaceListingComponent
 				`Navigate to ${this.route.snapshot.params['category']} for wholesale purchases. Ensure the best prices by sourcing from direct suppliers on our trade portal`
 			);
 		}
+	}
+
+	private getCategoryNameByPath(input: string): string {
+		let words = input.split('-');
+		let capitalizedWords = words
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+		return `${capitalizedWords} Wholesale`;
 	}
 }

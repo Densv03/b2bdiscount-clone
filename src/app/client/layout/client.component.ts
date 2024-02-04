@@ -74,13 +74,18 @@ export class ClientComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.seoService.addCanonicalRef();
 		if (this.platformService.isBrowser) {
-			this.seoService.addCanonicalRef();
 			this.mixpanelTracking();
 			this.setQueryParamForAuthorizationType();
-			this.user$.pipe(filter((user) => !!user)).subscribe((user) => {
-				this.intercomService.initializeIntercom(user.email);
-			});
+			this.user$
+				.pipe(
+					filter((user) => !!user),
+					untilDestroyed(this)
+				)
+				.subscribe((user) => {
+					this.intercomService.initializeIntercom(user.email);
+				});
 		}
 	}
 
@@ -113,25 +118,12 @@ export class ClientComponent implements OnInit {
 		});
 	}
 
-	private initIntercomSettings(): void {
-		// this.user$.subscribe((user) => {
-		// 	(window as any).Intercom("boot", {});
-		// 	if (user) {
-		// 		(window as any).Intercom("update", {
-		// 			email: user.email,
-		// 			name: user.fullName,
-		// 		});
-		// 	} else {
-		// 		(window as any).Intercom("update");
-		// 	}
-		// });
-	}
-
 	private mixpanelTracking(): void {
 		this.route.firstChild.url
 			.pipe(
 				take(1),
-				filter((el) => el?.length > 0)
+				filter((el) => el?.length > 0),
+				untilDestroyed(this)
 			)
 			.subscribe((el) => {
 				this.mixpanelService.track('Page View', {
@@ -148,7 +140,8 @@ export class ClientComponent implements OnInit {
 						event instanceof NavigationEnd ||
 						event instanceof RoutesRecognized
 				),
-				pairwise()
+				pairwise(),
+				untilDestroyed(this)
 			)
 			.subscribe((event) => {
 				if (event[0] instanceof NavigationStart) {

@@ -6,6 +6,7 @@ import { first, map, take } from 'rxjs/operators';
 import { ApiService } from '../../../core/services/api/api.service';
 import { CategoriesQuery } from '../../state/categories/categories.query';
 import { CategoriesStore } from '../../state/categories/categories.store';
+import { Category } from '../../pages/client-marketplace/shared/models/category.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -110,6 +111,25 @@ export class CategoriesService {
 					for (const childCategory of parentCategory.children) {
 						if (childCategory._id === categoryId) {
 							return childCategory.name;
+						}
+					}
+				}
+			})
+		);
+	}
+
+	public getCategoryById$(categoryId: string): Observable<Category> {
+		return this.getCategories$().pipe(
+			takeWhile(({ categories }) => !categories.length, true),
+			first(),
+			map(({ categories }) => {
+				for (const parentCategory of categories) {
+					for (const childCategory of parentCategory.children) {
+						if (childCategory._id === categoryId) {
+							return {
+								...parentCategory,
+								children: [childCategory],
+							};
 						}
 					}
 				}

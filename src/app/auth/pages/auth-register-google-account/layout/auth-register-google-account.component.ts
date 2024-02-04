@@ -205,8 +205,6 @@ export class AuthRegisterGoogleAccountComponent implements OnInit {
 			.subscribe((params) => {
 				let { token, role } = params;
 				const updatedToken = token.endsWith('/') ? token.slice(0, -1) : token;
-				console.log('TOKEN: ', token, 'UPDATED: ', updatedToken);
-				console.log('ROLE: ', role);
 				this._authService.updateToken(updatedToken);
 				this._authService.initUser();
 				this._authService
@@ -219,9 +217,9 @@ export class AuthRegisterGoogleAccountComponent implements OnInit {
 					.subscribe((user) => {
 						this.user = user;
 						this.token = updatedToken;
-						this.mixpanelService.track('Sign-Up 1st step completed', {
-							'Auth Method': user?.socialAuthType,
-						});
+						// this.mixpanelService.track('Sign-Up 1st step completed', {
+						// 	'Auth Method': user?.socialAuthType,
+						// });
 						this._authService.updateToken(updatedToken);
 						this._authService.updateRole(role);
 						this.router.navigate(['/auth/register']);

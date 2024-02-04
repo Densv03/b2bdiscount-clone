@@ -1,0 +1,109 @@
+.moderator {
+	padding: 20px;
+	.action-buttons {
+		display: flex;
+		gap: 15px;
+		button {
+			padding: 3px 15px;
+			border-radius: 8px;
+		}
+	}
+	&__buttons {
+		display: flex;
+		gap: 15px;
+		button {
+			padding: 8px 10px;
+			border-radius: 8px;
+		}
+	}
+	&__title {
+		font-size: 20px;
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+	&__roles {
+		margin-top: 20px;
+		&-table {
+			width: 50%;
+			margin-top: 20px;
+		}
+		&-list {
+			width: fit-content;
+			display: flex;
+			flex-direction: column;
+			border: 1px solid;
+			padding: 0 5px;
+			margin-top: 15px;
+		}
+		&-item {
+			display: flex;
+			height: 30px;
+		}
+		&-name {
+			border-right: 1px solid;
+			padding-right: 10px;
+			display: grid;
+			place-content: center;
+		}
+		&-types {
+			display: flex;
+			align-items: center;
+		}
+		&-type {
+			padding: 0 5px;
+			border-right: 1px solid;
+			&:first-child {
+				padding-left: 0;
+			}
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}
+	&__users {
+		margin-top: 20px;
+		&-table {
+			margin-top: 20px;
+		}
+	}
+
+	&__list {
+		width: fit-content;
+		margin-top: 20px;
+		border: 1px solid;
+		display: flex;
+		flex-direction: column;
+	}
+	&__item {
+		display: flex;
+		height: 30px;
+		border-bottom: 1px solid;
+		&:last-child {
+			border-bottom: none;
+		}
+		&-value {
+			padding: 5px;
+			border-right: 1px solid;
+			overflow: scroll;
+			&:last-child {
+				border: none;
+			}
+		}
+	}
+	.column-1,
+	.column-3 {
+		width: 200px;
+	}
+	.column-2 {
+		width: 350px;
+	}
+}
+
+:host::ng-deep {
+	th.mat-mdc-header-cell,
+	.mat-mdc-cell {
+		vertical-align: middle;
+		max-width: 300px;
+		overflow: scroll;
+	}
+}

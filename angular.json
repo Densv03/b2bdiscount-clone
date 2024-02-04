@@ -75,19 +75,19 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
-						"production": {
-							"browserTarget": "fe-b2b:build:production"
+            "production": {
+              "buildTarget": "fe-b2b:build:production"
 						},
-						"development": {
-							"browserTarget": "fe-b2b:build:development"
+            "development": {
+              "buildTarget": "fe-b2b:build:development"
 						}
 					},
 					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "fe-b2b:build"
+          "options": {
+            "buildTarget": "fe-b2b:build"
 					}
 				},
 				"test": {
@@ -127,7 +127,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve-ssr": {
-					"builder": "@nguniversal/builders:ssr-dev-server",
+					"builder": "@angular-devkit/build-angular:ssr-dev-server",
 					"configurations": {
 						"development": {
 							"browserTarget": "fe-b2b:build:development",
@@ -141,7 +141,7 @@
 					"defaultConfiguration": "development"
 				},
 				"prerender": {
-					"builder": "@nguniversal/builders:prerender",
+					"builder": "@angular-devkit/build-angular:prerender",
 					"options": {
 						"routes": [
 							"/"
@@ -187,6 +187,7 @@
 						"assets": [
 							"admin/src/globy.ico",
 							"admin/src/assets",
+							"admin/src/robots.txt",
 							{
 								"glob": "**/*",
 								"input": "./node_modules/@kolkov/angular-editor/assets/",
@@ -246,19 +247,19 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
-						"production": {
-							"browserTarget": "admin:build:production"
+            "production": {
+              "buildTarget": "admin:build:production"
 						},
-						"development": {
-							"browserTarget": "admin:build:development"
+            "development": {
+              "buildTarget": "admin:build:development"
 						}
 					},
 					"defaultConfiguration": "development"
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "admin:build"
+          "options": {
+            "buildTarget": "admin:build"
 					}
 				},
 				"test": {

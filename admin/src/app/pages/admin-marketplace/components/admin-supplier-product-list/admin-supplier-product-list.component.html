@@ -38,7 +38,7 @@
 	</li>
 </ul>
 
-<b2b-ngx-pagination
+<b2b-pagination
 	[length]="productsTotalLength$ | async"
-	[perPage]="productsLimit"
-	(togglePageNumber)="togglePage($event)"></b2b-ngx-pagination>
+	[perPage]="filteredQueryObj.limit"
+	(togglePageNumber)="togglePage($event)"></b2b-pagination>

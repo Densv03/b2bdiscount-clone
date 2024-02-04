@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../../../../client-profile/services/user/user.service';
 import { Router } from '@angular/router';
 import { PlatformService } from '../../../../../../services/platform/platform.service';
+import { DialogService } from '../../../../../../../core/services/dialog-service/dialog.service';
 
 @UntilDestroy()
 @Component({
@@ -45,10 +46,8 @@ export class MarketAdvertisingMaterialsComponent {
 	public activeItem: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
 	constructor(
-		private readonly dialog: MatDialog,
-		private readonly userService: UserService,
-		private readonly router: Router,
-		public platformService: PlatformService
+		private readonly dialogService: DialogService,
+		public readonly platformService: PlatformService
 	) {}
 
 	ngAfterViewInit(): void {
@@ -83,13 +82,9 @@ export class MarketAdvertisingMaterialsComponent {
 	}
 
 	public createRfq(): void {
-		if (this.userService.getUser()) {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-		} else {
-			this.router.navigate(['/auth/register-credentials']);
-		}
+		this.dialogService.openDialog(CreateRfqDialogComponent, {
+			panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
+		});
 	}
 
 	private handleScroll(): void {

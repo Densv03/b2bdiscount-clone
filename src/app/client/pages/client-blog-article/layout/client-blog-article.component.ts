@@ -21,7 +21,7 @@ import { SeoService } from '../../../../core/services/seo/seo.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+import { REQUEST } from '../../../../../express.tokens';
 import { Request } from 'express';
 import { Meta, Title } from '@angular/platform-browser';
 import { PlatformService } from '../../../services/platform/platform.service';
@@ -124,30 +124,6 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 
 	public getComments(id: string): Observable<any> {
 		return this._blogService.getComments(id);
-	}
-
-	public createComment(articleId: string, formGroup: any): void {
-		if (!this._authService.getToken()) {
-			this._router.navigateByUrl('auth/register-credentials');
-			return;
-		}
-
-		if (!formGroup.text) {
-			return;
-		}
-
-		this._blogService
-			.createComment(articleId, formGroup.text)
-			.pipe(
-				this._hotToastService.observe({
-					loading: 'Comment creating...',
-					success: 'Comment created successfully!',
-					error: 'You have to be authorized',
-				})
-			)
-			.subscribe(() => this.getNewComments.next(true));
-
-		this.formGroup.reset();
 	}
 
 	public getSocialMedias() {

@@ -92,4 +92,12 @@
 	<ng-template #noProfiles>
 		<h3>No companies found</h3>
 	</ng-template>
+
+	<div class="error-list" *ngIf="errorList.length > 1">
+		<div *ngFor="let err of errorList" class="error-field">
+			<p class="field">{{ err.errorField }}</p>
+
+			<p class="message">{{ err.errorMessage }}</p>
+		</div>
+	</div>
 </div>

@@ -10,6 +10,9 @@ import { getName } from 'country-list';
 import { PlatformService } from '../../../../../../services/platform/platform.service';
 import { checkSerialNumber } from '../../../../../../../core/helpers/function/check-serial-number';
 import { Photo } from '../../../../../../../core/models/photo.model';
+import { PublicCompanyInfoModel } from '../../../../../../../core/models/public-company-info.model';
+import { AuthService } from '../../../../../../../auth/services/auth/auth.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace-product-item',
@@ -20,6 +23,7 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 	@Input() product: MarketProductModel;
 	@Input() public itemsForDropdown: any[] = [];
 	@Input() public sortType?: string | null;
+	@Input() private company: PublicCompanyInfoModel;
 
 	public productPhoto: string[];
 	public readonly isMobile = this.platformService.isServer
@@ -31,7 +35,8 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 		private router: Router,
 		private hotToastService: HotToastService,
 		private readonly mixpanelService: MixpanelService,
-		private platformService: PlatformService
+		private platformService: PlatformService,
+		private authService: AuthService
 	) {}
 
 	public ngOnInit(): void {
@@ -41,7 +46,7 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 				? this.product.photos.reduce((acc: any[], val: any) => {
 						acc[val?.serialNumber] = val?.sm;
 						return acc.filter((el) => !!el);
-				  }, [])
+					}, [])
 				: this.product.photos.filter((el) => el.sm).map((el: Photo) => el.sm);
 		this.updateItemsForDropDown();
 	}
@@ -76,12 +81,14 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 									error: 'Error restoring product',
 								})
 							)
-							.subscribe(() => {
+							.subscribe(async () => {
 								this.mixpanelService.track('Archived product posted', {
 									'Product Category': product.category[0]?.name,
 									"Supplier's Country": getName(product.company[0].country),
 									'Product Count':
-										product.amount?.count + ' ' + product.amount.unit?.name,
+										(await firstValueFrom(
+											this.clientMarketplaceService.getTotalProductsCount()
+										)) || 1,
 									'Posting Date': Date(),
 								});
 								this.clientMarketplaceService.updateManageProducts();
@@ -121,13 +128,14 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 					error: 'Error deleting product',
 				})
 			)
-			.subscribe(() => {
+			.subscribe(async (res: any) => {
 				this.mixpanelService.track('Product deleted', {
 					'Product Category': product.category[0]?.name,
 					"Supplier's Country": getName(product.company[0].country),
-					'Product Count':
-						product.amount?.count + ' ' + product.amount.unit?.name,
-					'Deletion Date': Date(),
+					'Product Count': await firstValueFrom(
+						this.clientMarketplaceService.getTotalProductsCount()
+					),
+					'Deletion Date': new Date(),
 				});
 				this.clientMarketplaceService.updateManageProducts(0, this.sortType);
 			});
@@ -160,13 +168,14 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 								error: 'Error archiving product',
 							})
 						)
-						.subscribe(() => {
+						.subscribe(async () => {
 							this.mixpanelService.track('Product archived', {
 								'Product Category': product.category[0]?.name,
 								"Supplier's Country": getName(product.company[0].country),
-								'Product Count':
-									product.amount?.count + ' ' + product.amount.unit?.name,
-								'Archivation Date': Date(),
+								'Product Count': await firstValueFrom(
+									this.clientMarketplaceService.getTotalProductsCount()
+								),
+								'Archivation Date': new Date(),
 							});
 							this.clientMarketplaceService.updateManageProducts();
 						});

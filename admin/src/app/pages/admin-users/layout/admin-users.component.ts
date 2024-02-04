@@ -666,7 +666,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {UserService} from "../../../../../../src/app/client/pages/client-profile/services/user/user.service";
 import {BehaviorSubject, Observable} from "rxjs";
-import {AdminUser} from "../../../shared/models/AdminUser.model";
+import { FormBuilder, Validators } from "@angular/forms";
+import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
+import { first } from "rxjs/operators";
+import { HotToastService } from "@ngneat/hot-toast";
+// import {AdminUser} from "../../../shared/models/AdminUser.model";
 
 
 @Component({
@@ -694,20 +698,27 @@ export class AdminUsersComponent implements AfterViewInit {
 		'soldCargo',
 		'actions'
 	];
-	private tableDataSource: BehaviorSubject<AdminUser[]> = new BehaviorSubject<AdminUser[]>([]);
-	public tableData$: Observable<AdminUser[]> = this.tableDataSource.asObservable();
+	private tableDataSource: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	public tableData$: Observable<any[]> = this.tableDataSource.asObservable();
+	emailSubmissionForm = this.fb.group({
+		email: ['', [Validators.required, Validators.email]],
+	});
+
+	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatSort) sort: MatSort;
 
-	constructor(private userService: UserService) {
+	constructor(private userService: UserService,
+							private fb: FormBuilder,
+							private hotToastService: HotToastService) {
 	}
 
 
 
 	ngAfterViewInit() {
-		this.userService.getUsers(0, 0, {}).subscribe(response => {
-			this.tableDataSource.next(response.users);
+		this.userService.getUsers(0, 0, {}).subscribe((response: any) => {
+			this.tableDataSource.next(response['users']);
 			console.log(response)
 		});
 	}
@@ -715,5 +726,16 @@ export class AdminUsersComponent implements AfterViewInit {
 	deleteUser() {
 
 	}
+
+	public sendList(): void {
+		this.userService
+			.sendVerificationLink(this.emailSubmissionForm.value.email)
+			.pipe(first())
+			.subscribe(({ message }) => {
+				this.emailSubmissionForm.reset();
+				this.hotToastService.success(message);
+			});
+	}
+
 }
 

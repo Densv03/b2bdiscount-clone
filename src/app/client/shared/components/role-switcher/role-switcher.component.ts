@@ -81,6 +81,10 @@ export class RoleSwitcherComponent {
 								});
 						} else if (this.router.url.includes('/profile/your-workspace')) {
 							this.router.navigate(['profile/your-account/settings']);
+						} else if (
+							this.router.url.includes('/your-account/company-information')
+						) {
+							location.reload();
 						}
 					});
 				},

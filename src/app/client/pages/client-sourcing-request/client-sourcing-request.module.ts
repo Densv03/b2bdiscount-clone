@@ -38,6 +38,7 @@ import { FiltersDropdownModule } from '../client-marketplace/components/filters-
 import { ClientMarketplaceModule } from '../client-marketplace/client-marketplace.module';
 import { FilterChipsModule } from '../client-marketplace/components/filter-chips/filter-chips.module';
 import { ClientMarketplaceBannerComponent } from '../client-marketplace/components/client-marketplace-banner/client-marketplace-banner.component';
+import { PageLoaderModule } from '../../../core/components/page-loader/page-loader.module';
 
 @NgModule({
 	imports: [
@@ -70,6 +71,7 @@ import { ClientMarketplaceBannerComponent } from '../client-marketplace/componen
 		ClientMarketplaceModule,
 		FilterChipsModule,
 		ClientMarketplaceBannerComponent,
+		PageLoaderModule,
 		// PaginationModule,
 	],
 	exports: [],

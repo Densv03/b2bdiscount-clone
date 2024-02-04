@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../../../../src/app/auth/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { AdminSidenavData } from '../../../data/admin-sidenav.data';
 
 @Component({
 	selector: 'app-logout',
@@ -15,6 +16,7 @@ export class LogoutComponent implements OnInit {
 
 	ngOnInit() {
 		this.authService.logOut();
+		AdminSidenavData.restoreSideNavToDefaultState();
 		this.router.navigate(['/login']);
 	}
 }

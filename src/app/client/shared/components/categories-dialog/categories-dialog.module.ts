@@ -11,6 +11,7 @@ import { B2bNgxSelectModule } from '@b2b/ngx-select';
 import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
 import { B2bNgxToggleModule } from '@b2b/ngx-toggle';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { B2bNgxIconModule } from '@b2b/ngx-icon';
 
 @NgModule({
 	declarations: [
@@ -29,6 +30,7 @@ import { B2bNgxButtonModule } from '@b2b/ngx-button';
 		ReactiveFormsModule,
 		B2bNgxSelectModule,
 		B2bNgxSelectModule,
+		B2bNgxIconModule,
 	],
 })
 export class CategoriesDialogModule {}

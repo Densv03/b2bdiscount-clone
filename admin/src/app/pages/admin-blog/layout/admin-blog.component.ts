@@ -44,14 +44,12 @@ export class AdminBlogComponent {
 	}
 
 	private _getArticles$() {
-		const page$ = this.pageSubject.asObservable().pipe(startWith(0));
+		const page$ = this.pageSubject.asObservable().pipe(startWith(1));
 		const force$ = this.forceSubject.asObservable().pipe(startWith(true));
 
 		return combineLatest([page$, force$]).pipe(
-			map(([page]) => `?offset=${page * 10}`),
-			switchMap(([queryString]: any) =>
-				this._blogService.getArticles(queryString)
-			),
+			map(([page]) => `?offset=${(page - 1) * 10}`),
+			switchMap((queryString) => this._blogService.getArticles(queryString)),
 			map((data: any) => {
 				this.totalCount = data.totalCount;
 				return data.posts;

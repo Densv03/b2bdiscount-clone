@@ -1,10 +1,7 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CoreComponent } from '../core/layout/core.component';
+import { CoreComponent } from './layout/core.component';
 import { RedirectGuard } from './guards/redirect.guard';
-import { RoleGuard } from '../auth/guards/role/role.guard';
-import { AuthService } from '../auth/services/auth/auth.service';
-import { LanguagesPreload } from './providers/languages-preload/languages-preload';
 import { AuthorizedUserGuard } from '../auth/guards/authhorizedUser/authorizedUser.guard';
 
 const routes: Routes = [
@@ -22,14 +19,6 @@ const routes: Routes = [
 				path: 'auth',
 				loadChildren: () =>
 					import('../auth/auth.module').then((m) => m.AuthModule),
-			},
-			{
-				path: 'admin',
-				canActivate: [RoleGuard],
-				loadChildren: () =>
-					import('../../../admin/src/app/admin.module').then(
-						(m) => m.AdminModule
-					),
 			},
 			{
 				path: '',
@@ -53,14 +42,6 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('../auth/auth.module').then((m) => m.AuthModule),
 				canActivate: [AuthorizedUserGuard],
-			},
-			{
-				path: 'admin',
-				canActivate: [RoleGuard],
-				loadChildren: () =>
-					import('../../../admin/src/app/admin.module').then(
-						(m) => m.AdminModule
-					),
 			},
 			{
 				path: '',

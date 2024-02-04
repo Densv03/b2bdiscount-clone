@@ -11,7 +11,7 @@ import {
 	MixpanelUnset,
 } from '../../../../../ssr/models/mixpanel.model';
 import { MixpanelProvider } from '../../providers/mixpanel/mixpanel.provider';
-import { catchError } from 'rxjs/operators';
+import { PlatformService } from '../../../client/services/platform/platform.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,8 +22,9 @@ export class MixpanelRepository {
 		: environment.devUrl;
 
 	constructor(
+		private httpClient: HttpClient,
 		private mixpanelProvider: MixpanelProvider,
-		private httpClient: HttpClient
+		private platformService: PlatformService
 	) {}
 
 	private get ref() {
@@ -89,6 +90,9 @@ export class MixpanelRepository {
 	}
 
 	private basicPostAction(action: MixpanelPeopleAction, body: any) {
+		if (this.platformService.isServer) {
+			return null;
+		}
 		return this.httpClient.post(this.peopleRef + `${action}`, body).subscribe();
 	}
 }

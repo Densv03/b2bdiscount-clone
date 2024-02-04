@@ -1,4 +1,14 @@
-<div class="market-wrapper">
+<ng-template #loading>
+	<div class="overlay">
+		<b2b-page-loader
+			class="page-loader"
+			style="z-index: 10000"></b2b-page-loader>
+	</div>
+</ng-template>
+
+<ng-container *ngIf="!sectorsAreLoaded; then loading"> </ng-container>
+
+<div class="market-wrapper" [class.loading]="!sectorsAreLoaded">
 	<div class="breadcrumbs">
 		<b2b-breadcrumbs></b2b-breadcrumbs>
 	</div>
@@ -6,7 +16,7 @@
 	<div
 		class="category-sector-title"
 		*ngIf="category$ | async as category"
-		[style.background-image]="categoryImage">
+		[style.background-image]="getCategoryImage(category)">
 		<h1>{{ category.name }}</h1>
 	</div>
 
@@ -49,17 +59,21 @@
 		[showArrows]="(category$ | async)?.children?.length > 9"
 		[category]="category$ | async"></b2b-categories-carousel>
 
-	<b2b-categories-carousel
-		*ngIf="(popularProducts$ | async)?.length > 0"
-		[showArrows]="(popularProducts$ | async)?.length > 5"
-		[title]="'Popular products'"
-		[products]="popularProducts$ | async"></b2b-categories-carousel>
+	<ng-container *ngIf="popularProducts$ | async as popularProducts">
+		<b2b-categories-carousel
+			*ngIf="popularProducts?.length > 0"
+			[showArrows]="popularProducts?.length > 5"
+			title="Popular products"
+			[products]="popularProducts"></b2b-categories-carousel>
+	</ng-container>
 
-	<b2b-categories-carousel
-		*ngIf="(newProducts$ | async)?.length > 0"
-		[showArrows]="(newProducts$ | async)?.length > 5"
-		[title]="'New products'"
-		[products]="newProducts$ | async"></b2b-categories-carousel>
+	<ng-container *ngIf="newProducts$ | async as newProducts">
+		<b2b-categories-carousel
+			*ngIf="newProducts?.length > 0"
+			[showArrows]="newProducts?.length > 5"
+			title="New products"
+			[products]="newProducts"></b2b-categories-carousel>
+	</ng-container>
 
 	<div class="container">
 		<div class="new-suppliers">

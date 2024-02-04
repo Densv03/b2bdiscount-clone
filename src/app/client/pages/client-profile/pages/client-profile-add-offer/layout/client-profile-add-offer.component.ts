@@ -16,7 +16,7 @@ import {
 	Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, first, firstValueFrom, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { HotToastService } from '@ngneat/hot-toast';
@@ -342,14 +342,6 @@ export class ClientProfileAddOfferComponent
 		}
 
 		this.loading = true;
-		this.mixpanelService.track('Unclaimed cargo posted', {
-			'Product Sector': this.category,
-			Destination: [
-				getName(formGroup.value.destinationFrom),
-				getName(formGroup.value.destinationTo),
-			],
-		});
-
 		if (!this.editMode) {
 			const dialogRef = this.matDialog.open(
 				ClientProfileAddOfferDialogComponent,
@@ -422,6 +414,22 @@ export class ClientProfileAddOfferComponent
 					this.loading = false;
 				});
 		}
+		this.trackCargoPosted(formGroup);
+	}
+
+	async trackCargoPosted(formGroup: FormGroup) {
+		const category = await firstValueFrom(
+			this._categoriesService
+				.getCategoryNameById(formGroup.value.level2Category)
+				.pipe(first())
+		);
+		this.mixpanelService.track('Unclaimed cargo posted', {
+			'Product Sector': category,
+			Destination: [
+				getName(formGroup.value.destinationFrom),
+				getName(formGroup.value.destinationTo),
+			],
+		});
 	}
 
 	public openDocument(ev: any): void {

@@ -1,48 +1,126 @@
 <div class="user-info">
-	<div class="user-info__user">
-		<img b2bNgxImage [name]="getUserImage()" />
-		<div class="user-info__user__name">
+	<div class="user-info__header">Buyer`s details:</div>
+	<div class="divider"></div>
+
+	<div *ngIf="user; else loading" [@fadeInOut] class="user-info__container">
+		<div class="user-info__name">
 			<h2>{{ user?.fullName }}</h2>
 			<h3>Manager</h3>
 		</div>
-	</div>
-	<div class="user-info__general-info">
-		<div class="user-info__general-info__left">Country:</div>
-		<div class="user-info__general-info__right">
-			{{ getCountryNameByCode(user?.country) }}
-		</div>
-		<div class="user-info__general-info__left">Phone:</div>
-		<div *ngIf="showBuyerInfo; else showBlurredPhoneNumber">
-			<a [href]="getPhoneNumberLink()" class="user-info__general-info__right">
-				{{ getPhoneNumber() }}
-			</a>
-		</div>
 
-		<ng-template #showBlurredPhoneNumber>
-			<div class="user-info__general-info__right blur">
-				{{ getPhoneNumber() }}
+		<div class="user-info__general-info">
+			<div class="user-info__general-info__left">Country:</div>
+			<div class="user-info__general-info__right">
+				{{ getCountryNameByCode(user?.countryCode) }}
 			</div>
-		</ng-template>
+			<div class="user-info__general-info__left">Phone:</div>
+			<div *ngIf="showBuyerInfo || !isNotMyRfq; else showBlurredPhoneNumber">
+				<a [href]="getPhoneNumberLink()" class="user-info__general-info__right">
+					{{ getPhoneNumber() }}
+				</a>
+			</div>
 
-		<div class="user-info__general-info__left">Email:</div>
-		<div *ngIf="showBuyerInfo; else showBlurredEmail">
-			<a [href]="getEmailLink()" class="user-info__general-info__right">
-				{{ getEmail() }}
-			</a>
+			<ng-template #showBlurredPhoneNumber>
+				<div class="user-info__general-info__right blur">
+					{{ getPhoneNumber() }}
+				</div>
+			</ng-template>
+
+			<div class="user-info__general-info__left">Email:</div>
+			<div *ngIf="showBuyerInfo || !isNotMyRfq; else showBlurredEmail">
+				<a [href]="getEmailLink()" class="user-info__general-info__right">
+					{{ getEmail() }}
+				</a>
+			</div>
+
+			<ng-template #showBlurredEmail>
+				<div class="user-info__general-info__right blur">
+					{{ getEmail() }}
+				</div>
+			</ng-template>
 		</div>
 
-		<ng-template #showBlurredEmail>
-			<div class="user-info__general-info__right blur">
-				{{ getEmail() }}
-				sfvdfvfd
-			</div>
-		</ng-template>
+		<button
+			*ngIf="isNotMyRfq"
+			b2bNgxButton
+			(click)="showDetails()"
+			[disabled]="showBuyerInfo">
+			View Details
+			<ng-container *ngIf="!showBuyerInfo; else openedEye">
+				<svg
+					width="16"
+					height="16"
+					viewBox="0 0 16 16"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M9.68661 6.31328L6.31328 9.68661C5.87995 9.25328 5.61328 8.65995 5.61328 7.99995C5.61328 6.67995 6.67995 5.61328 7.99995 5.61328C8.65995 5.61328 9.25328 5.87995 9.68661 6.31328Z"
+						stroke="white"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M11.88 3.84633C10.7134 2.96633 9.38002 2.48633 8.00002 2.48633C5.64668 2.48633 3.45335 3.87299 1.92668 6.27299C1.32668 7.21299 1.32668 8.793 1.92668 9.733C2.45335 10.5597 3.06668 11.273 3.73335 11.8463"
+						stroke="white"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M5.61328 13.0204C6.37328 13.3404 7.17995 13.5138 7.99995 13.5138C10.3533 13.5138 12.5466 12.1271 14.0733 9.72711C14.6733 8.78711 14.6733 7.20711 14.0733 6.26711C13.8533 5.92044 13.6133 5.59378 13.3666 5.28711"
+						stroke="white"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M10.34 8.4668C10.1666 9.4068 9.39996 10.1735 8.45996 10.3468"
+						stroke="white"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M6.31337 9.68652L1.33337 14.6665"
+						stroke="white"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+					<path
+						d="M14.6666 1.33301L9.68665 6.31301"
+						stroke="white"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+				</svg>
+			</ng-container>
+		</button>
 	</div>
-	<button
-		*ngIf="showBtn"
-		b2bNgxButton
-		(click)="showDetails()"
-		[disabled]="showBuyerInfo">
-		View Details
-	</button>
 </div>
+
+<ng-template #openedEye>
+	<svg
+		width="16"
+		height="16"
+		viewBox="0 0 16 16"
+		fill="none"
+		xmlns="http://www.w3.org/2000/svg">
+		<path
+			d="M10.3867 7.99995C10.3867 9.31995 9.32001 10.3866 8.00001 10.3866C6.68001 10.3866 5.61334 9.31995 5.61334 7.99995C5.61334 6.67995 6.68001 5.61328 8.00001 5.61328C9.32001 5.61328 10.3867 6.67995 10.3867 7.99995Z"
+			stroke="white"
+			stroke-width="1.5"
+			stroke-linecap="round"
+			stroke-linejoin="round" />
+		<path
+			d="M7.99999 13.5138C10.3533 13.5138 12.5467 12.1271 14.0733 9.72714C14.6733 8.78714 14.6733 7.20714 14.0733 6.26714C12.5467 3.86714 10.3533 2.48047 7.99999 2.48047C5.64665 2.48047 3.45332 3.86714 1.92665 6.26714C1.32665 7.20714 1.32665 8.78714 1.92665 9.72714C3.45332 12.1271 5.64665 13.5138 7.99999 13.5138Z"
+			stroke="white"
+			stroke-width="1.5"
+			stroke-linecap="round"
+			stroke-linejoin="round" />
+	</svg>
+</ng-template>
+
+<ng-template #loading>
+	<div class="loader-container">
+		<b2b-page-loader
+			class="page-loader"
+			style="z-index: 10000"></b2b-page-loader>
+	</div>
+</ng-template>

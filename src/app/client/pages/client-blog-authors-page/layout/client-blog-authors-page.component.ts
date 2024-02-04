@@ -17,7 +17,7 @@ function generateQueryString(obj: any, initialValue: string = '?') {
 				? `${queryString}${value.reduce(
 						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
 						''
-				  )}`
+					)}`
 				: `${queryString}${key}=${value}&`;
 		}, initialValue);
 }

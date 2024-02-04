@@ -14,24 +14,26 @@ import { LogisticSearchItemModel } from 'src/app/client/pages/client-logistic/mo
 import { ContainerType } from '../models/container.type';
 import { stat } from 'ng-packagr/lib/utils/fs';
 
-//poka hz zachem, nehai bude
-export interface LogisticSeaState {
+export interface BaseLogisticState {
 	type: deliveryType;
-	containerType: ContainerType;
-	portFrom: string;
-	portTo: string;
 	countryFrom: string;
 	countryTo: string;
 	date: Date;
+	countryFromName?: string;
+	countryToName?: string;
+	readyToLoad?: string;
 }
-export interface LogisticAirState {
-	type: deliveryType;
+
+//poka hz zachem, nehai bude
+export interface LogisticSeaState extends BaseLogisticState {
+	containerType: ContainerType;
+	portFrom: string;
+	portTo: string;
+}
+export interface LogisticAirState extends BaseLogisticState {
 	containerWeight: number;
 	cityFrom: string;
 	cityTo: string;
-	countryFrom: string;
-	countryTo: string;
-	date: any;
 }
 
 export type listingState =

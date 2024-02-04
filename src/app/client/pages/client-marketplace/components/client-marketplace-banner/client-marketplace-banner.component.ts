@@ -17,6 +17,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { CreateRfqDialogComponent } from '../../../client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
 
 type userRoles = 'unauthorized' | 'buyer' | 'supplier';
 
@@ -28,7 +29,7 @@ type userRoles = 'unauthorized' | 'buyer' | 'supplier';
 	standalone: true,
 	imports: [CommonModule, B2bNgxButtonModule, SharedModule],
 })
-export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
+export class ClientMarketplaceBannerComponent implements AfterViewInit {
 	@Input() siteSection: ApplicationSectionsEnum;
 	public b2bNgxButtonTheme = B2bNgxButtonThemeEnum;
 	public claimButtonClasses = ClaimButtonsClassesEnum;
@@ -43,7 +44,8 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 					'Leave a Sourcing Request and suppliers will contact you.',
 				button: {
 					text: 'Add RFQ',
-					link: '/auth/register-credentials',
+					link: '',
+					modal: CreateRfqDialogComponent,
 				},
 			},
 			buyer: {
@@ -71,7 +73,7 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 				text: "Haven't found buyers in this section? Upload your product to B2B Market, and they will contact you.",
 				button: {
 					text: 'Add Product',
-					link: '/auth/register-credentials',
+					link: '/b2bmarket/product',
 				},
 			},
 			buyer: {
@@ -97,7 +99,8 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 					'Leave a Sourcing Request and suppliers will contact you.',
 				button: {
 					text: 'Add RFQ',
-					link: '/auth/register-credentials',
+					link: '',
+					modal: CreateRfqDialogComponent,
 				},
 			},
 			buyer: {
@@ -122,13 +125,11 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private userService: UserService,
-		private dialog: MatDialog,
 		private router: Router,
 		private cdr: ChangeDetectorRef,
-		private readonly mixpanelService: MixpanelService
+		private readonly mixpanelService: MixpanelService,
+		private readonly dialogService: DialogService
 	) {}
-
-	ngOnInit(): void {}
 
 	ngAfterViewInit() {
 		setTimeout(() => {
@@ -147,7 +148,7 @@ export class ClientMarketplaceBannerComponent implements OnInit, AfterViewInit {
 		});
 
 		if (button.modal) {
-			this.dialog.open(button.modal, {
+			this.dialogService.openDialog(button.modal, {
 				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
 			});
 		} else {

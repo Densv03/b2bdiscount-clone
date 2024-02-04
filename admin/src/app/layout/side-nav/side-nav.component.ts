@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AdminSidenavData } from '../../data/admin-sidenav.data';
+import { UserService } from '../../../../../src/app/client/pages/client-profile/services/user/user.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'b2b-side-nav',
@@ -8,9 +10,7 @@ import { AdminSidenavData } from '../../data/admin-sidenav.data';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideNavComponent {
-	public readonly sidenavOptions: any[];
+	public sidenavOptions: any[] = AdminSidenavData.sideNavData;
 
-	constructor() {
-		this.sidenavOptions = AdminSidenavData;
-	}
+	constructor() {}
 }

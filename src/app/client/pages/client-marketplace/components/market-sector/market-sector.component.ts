@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
-import { BehaviorSubject, fromEvent, Observable } from 'rxjs';
+import { BehaviorSubject, delay, fromEvent, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import { debounceTime, filter, map, startWith, take } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { PlatformService } from '../../../../services/platform/platform.service'
 import { SourcingRequestService } from '../../../client-sourcing-request/sourcing-request.service';
 import { MarketProductModel } from '../../../../../core/models/client-marketplace/market-product.model';
 import { HeaderService } from '../../../../components/header/header.service';
+import { SeoService } from '../../../../../core/services/seo/seo.service';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +33,7 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 	public category$: Observable<Category>;
 	public apiAddress = environment.apiUrl;
 	public suppliersSource$: Observable<any[]>;
+	public sectorsAreLoaded: boolean = false;
 	private marketplaceProductsSource: BehaviorSubject<MarketProductModel[]> =
 		new BehaviorSubject<MarketProductModel[]>([]);
 	public marketplaceProducts$ = this.marketplaceProductsSource.asObservable();
@@ -55,7 +57,8 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 		private readonly router: Router,
 		private readonly sourcingRequestService: SourcingRequestService,
 		public readonly platformService: PlatformService,
-		private readonly headerService: HeaderService
+		private readonly headerService: HeaderService,
+		private readonly seoService: SeoService
 	) {}
 
 	ngOnInit(): void {
@@ -64,6 +67,7 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 		this.getToken();
 		this.handleSearchChange();
 		this.getCompanies();
+		this.setSeoTags();
 	}
 
 	ngAfterViewInit(): void {
@@ -92,8 +96,7 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 
 	public openChat(supplier: any): void {
 		if (!this.userService.getUser()) {
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/log-in']);
+			this.router.navigate(['/profile/your-workspace/b2bmarket']);
 			return;
 		}
 		if (supplier.user._id === this.userService.getUser()?._id) {
@@ -115,6 +118,13 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 				'profile/your-workspace/b2bmarket/chat/' + data._id,
 			]);
 		});
+	}
+
+	public getCategoryImage(category: Category): string {
+		const categoryImage = category.image;
+		return categoryImage[0] === '/'
+			? `url('${this.apiAddress}${categoryImage.slice(1)}')`
+			: `url('${this.apiAddress}${categoryImage}')`;
 	}
 
 	private getProducts(): void {
@@ -148,7 +158,7 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 			.subscribe((param) => {
 				this.offset = 0;
 				this.marketplaceProductsSource.next([]);
-
+				this.sectorsAreLoaded = false;
 				this.categoryId.next(param['category']);
 				this.getCategoryData(param['category']);
 				this.updateProductList(param['category']);
@@ -182,11 +192,15 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 		this.category$ = this.categoriesService.getCategories$().pipe(
 			filter((categories) => categories.categories?.length > 0),
 			take(1),
+			delay(300),
 			map((categories) => {
 				const selectedCategory = categories.categories.find(
 					(category: Category) => category.path === categoryName
 				);
 				this.categoryImage = `url('${this.apiAddress}${selectedCategory?.image}')`;
+
+				this.sectorsAreLoaded = true;
+
 				return selectedCategory;
 			})
 		);
@@ -268,5 +282,22 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 					}
 				);
 			});
+	}
+
+	private setSeoTags(): void {
+		const categoryPath = this.activatedRoute.snapshot.params['category'];
+		const name = this.getCategoryNameByPath(categoryPath);
+		this.seoService.setTitle(`Explore ${name} to Buy Products Wholesale`);
+		this.seoService.setDescription(
+			`Navigate to ${name} for wholesale purchases. Ensure the best prices by sourcing from direct suppliers on our trade portal`
+		);
+	}
+
+	private getCategoryNameByPath(input: string): string {
+		let words = input.split('-');
+		let capitalizedWords = words
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+		return `${capitalizedWords}`;
 	}
 }

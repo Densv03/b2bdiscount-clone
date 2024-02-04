@@ -32,7 +32,7 @@ function generateQueryString(
 				? `${queryString}${value.reduce(
 						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
 						''
-				  )}`
+					)}`
 				: `${queryString}${key}=${value}&`;
 		}, '?');
 }
@@ -197,11 +197,6 @@ export class ClientSourcingRequestListingComponent
 	}
 
 	public onSubmit(form: FormGroup): void {
-		if (!this.userService.isAuth()) {
-			this.router.navigate(['auth/log-in']);
-			return;
-		}
-
 		const requestParams = this.getParamsToRequest(form);
 		if (requestParams && Object.values(requestParams).length) {
 			this.filteredQueryObj = { ...requestParams, limit: 10, offset: 0 };

@@ -98,7 +98,7 @@ export class AuthRegisterSupplierCompanyInfoComponent {
 	private getFoundationYear(): Observable<SelectItem[]> {
 		const yearsArr: string[] = [];
 		const currentYear: number = new Date(Date.now()).getFullYear();
-		for (let i = currentYear; i > currentYear - 50; i--)
+		for (let i = currentYear; i > currentYear - 150; i--)
 			yearsArr.push(i.toString());
 		return this.getObservableForSelect(yearsArr);
 	}

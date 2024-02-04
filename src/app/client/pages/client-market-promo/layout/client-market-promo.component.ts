@@ -17,7 +17,9 @@ import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../../services/platform/platform.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'b2b-client-market-promo',
 	templateUrl: './client-market-promo.component.html',
@@ -93,26 +95,11 @@ export class ClientMarketPromoComponent implements OnInit {
 		}
 	}
 
-	public applyAsSupplier(route: string): void {
-		this.isAuth$.pipe(take(1)).subscribe((isAuth) => {
-			if (isAuth) {
-				this.router.navigate([route]);
-			} else {
-				localStorage.setItem('blocked-route', this.router.url);
-				this.router.navigate(['/auth/register-credentials']);
-			}
-		});
-	}
-
 	public getDaysToEndDate(): number {
 		const startDate = new Date(Date.now()).getTime();
 		const endDate = new Date('12/31/2023').getTime();
 		const percent = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 		return percent;
-	}
-
-	public getStrokeOffset(): number {
-		return (1 - this.value) * this.circleLength;
 	}
 
 	get categoriesNamesSource$(): Observable<string[]> {
@@ -125,6 +112,16 @@ export class ClientMarketPromoComponent implements OnInit {
 			behavior: 'smooth',
 			block: 'start',
 			inline: 'nearest',
+		});
+	}
+
+	public goTo(path: string): void {
+		this.authService.user$.pipe(untilDestroyed(this)).subscribe((user) => {
+			if (user) {
+				this.router.navigate([path]);
+			} else {
+				this.router.navigate(['/auth']);
+			}
 		});
 	}
 

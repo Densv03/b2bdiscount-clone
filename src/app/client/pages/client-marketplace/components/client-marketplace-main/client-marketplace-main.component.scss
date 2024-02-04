@@ -190,7 +190,7 @@
 							font-size: 19.5px;
 							line-height: 11.5px;
 							height: 15px;
-							width: fit-content;
+							width: 15px;
 						}
 
 						&:hover {
@@ -208,6 +208,12 @@
 						.child-category {
 							max-width: 100px;
 
+							&:hover {
+								p {
+									color: #005dff;
+								}
+							}
+
 							img {
 								width: 100px;
 								height: 100px;
@@ -221,10 +227,6 @@
 								word-break: break-word;
 								letter-spacing: 0.01em;
 								text-align: center;
-
-								&:hover {
-									color: #005dff;
-								}
 							}
 						}
 					}

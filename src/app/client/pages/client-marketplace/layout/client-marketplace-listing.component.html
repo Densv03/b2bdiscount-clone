@@ -3,204 +3,228 @@
 <!--	(searchValue)="setSearch($event)">-->
 <!--</b2b-client-subheader>-->
 
+<h1 class="d-none">{{ getTitleByCategoryPath() }}</h1>
+
+<ng-template #loading>
+	<div class="overlay">
+		<b2b-page-loader
+			class="page-loader"
+			style="z-index: 10000"></b2b-page-loader>
+	</div>
+</ng-template>
+
+<ng-container *ngIf="!listingIsLoaded; then loading"> </ng-container>
+
 <b2b-breadcrumbs></b2b-breadcrumbs>
 
-<form [formGroup]="mobileFilters">
-	<b2b-client-marketplace-filters-mobile
-		[filtersState]="filtersArr$ | async"
-		[animationState]="animationState$ | async"
-		(closePopUp)="closePopUp()"
-		(filterEvent)="extractFilterOptions($event)"
-		[initialCategoryState]="categoriesInitialState$ | async"
-		formControlName="filters"
-		class="mobile-filters-pop-up"></b2b-client-marketplace-filters-mobile>
-</form>
+<div class="listing-wrapper" [class.listingIsLoaded]="listingIsLoaded">
+	<form [formGroup]="mobileFilters">
+		<b2b-client-marketplace-filters-mobile
+			[filtersState]="filtersArr$ | async"
+			[animationState]="animationState$ | async"
+			(closePopUp)="closePopUp()"
+			(filterEvent)="extractFilterOptions($event)"
+			[initialCategoryState]="categoriesInitialState$ | async"
+			formControlName="filters"
+			class="mobile-filters-pop-up"></b2b-client-marketplace-filters-mobile>
+	</form>
 
-<form [formGroup]="formGroup">
-	<div class="latest-offers-header">
-		<h3 class="latest-offers-header-title">
-			<span class="latest-offers-header-title-text">All offers</span>
-			<span class="latest-offers-header-icon"></span>
-		</h3>
-		<div class="latest-offers-header-filters"></div>
-	</div>
-</form>
-
-<div class="main-content">
-	<div class="filters">
-		<div *ngIf="chipsService.getChipsLength()" class="selection-title">
-			{{
-				chipsService.getChipsLength() > 1 ? 'Your Selections' : 'Your Selection'
-			}}
+	<form [formGroup]="formGroup">
+		<div class="latest-offers-header">
+			<h3 class="latest-offers-header-title">
+				<span class="latest-offers-header-title-text">All offers</span>
+				<span class="latest-offers-header-icon"></span>
+			</h3>
+			<div class="latest-offers-header-filters"></div>
 		</div>
-		<ng-container
-			*ngFor="
-				let filter of filtersArr$ | async as filtersArr;
-				let filterIndex = index
-			">
-			<b2b-filters-dropdown
-				(changeOption)="
-					chooseFilter($event, filterIndex, filter.hiddenLabel, true)
-				"
-				[menuIsOpen]="filter.isOpen"
-				[openIsRestricted]="restrictOpen(filter, filtersArr)"
-				[selectedOption]="filter.selectedOption.getValue()"
-				[title]="filter.name">
-				<ng-container>
-					<div
-						*ngIf="!filter.selectedOption.getValue(); else selectedOption"
-						class="options">
-						<a
-							*ngFor="let option of filter.options"
-							(click)="
-								chooseFilter(option, filterIndex, filter.hiddenLabel, false)
-							"
-							[routerLink]="
-								getNavigationByOption(option, filter.hiddenLabel).routerLink
-							"
-							[queryParams]="
-								getNavigationByOption(option, filter.hiddenLabel).queryParams
-							"
-							[queryParamsHandling]="
-								getNavigationByOption(option, filter.hiddenLabel)
-									.queryParamsHandling
-							"
-							[relativeTo]="
-								getNavigationByOption(option, filter.hiddenLabel).relativeTo
-							"
-							class="item">
-							<div class="circle-wrapper">
-								<div class="circle">
-									<div
-										class="inner-circle"
-										[class.selected]="
-											isOptionSelected(option, filterIndex, filtersArr)
-										"></div>
+	</form>
+
+	<div class="main-content">
+		<div class="filters">
+			<div *ngIf="chipsService.getChipsLength()" class="selection-title">
+				{{
+					chipsService.getChipsLength() > 1
+						? 'Your Selections'
+						: 'Your Selection'
+				}}
+			</div>
+			<ng-container
+				*ngFor="
+					let filter of filtersArr$ | async as filtersArr;
+					let filterIndex = index
+				">
+				<b2b-filters-dropdown
+					(changeOption)="
+						chooseFilter($event, filterIndex, filter.hiddenLabel, true)
+					"
+					[menuIsOpen]="filter.isOpen"
+					[openIsRestricted]="restrictOpen(filter, filtersArr)"
+					[selectedOption]="filter.selectedOption.getValue()"
+					[title]="filter.name">
+					<ng-container>
+						<div
+							*ngIf="!filter.selectedOption.getValue(); else selectedOption"
+							class="options">
+							<a
+								*ngFor="let option of filter.options"
+								(click)="
+									chooseFilter(option, filterIndex, filter.hiddenLabel, false)
+								"
+								[routerLink]="
+									getNavigationByOption(option, filter.hiddenLabel).routerLink
+								"
+								[queryParams]="
+									getNavigationByOption(option, filter.hiddenLabel).queryParams
+								"
+								[queryParamsHandling]="
+									getNavigationByOption(option, filter.hiddenLabel)
+										.queryParamsHandling
+								"
+								[relativeTo]="
+									getNavigationByOption(option, filter.hiddenLabel).relativeTo
+								"
+								class="item">
+								<div class="circle-wrapper">
+									<div class="circle">
+										<div
+											class="inner-circle"
+											[class.selected]="
+												isOptionSelected(option, filterIndex, filtersArr)
+											"></div>
+									</div>
 								</div>
-							</div>
 
-							<div
-								*ngIf="filter.hiddenLabel !== 'country[]'; else countryLabel"
-								class="label">
-								{{ option.name }}
-								<ng-container *ngIf="option.count">
-									({{ option.count }})
-								</ng-container>
-							</div>
-							<ng-template #countryLabel>
-								<label>
-									<img
-										b2bNgxIcon
-										group="flags/"
-										[name]="option.name | uppercase" />
-									{{ getCountryName(option.name) }}
-									({{ option.count }})
-								</label>
-							</ng-template>
-						</a>
-					</div>
-				</ng-container>
-				<!--        <ng-template #multiSelectFilter>-->
-				<!--          <div class="options multi-options">-->
-				<!--            <div *ngFor="let item of filter.options" class="item">-->
-				<!--              <b2b-ngx-checkbox-->
-				<!--                [checked]="item?.checked"-->
-				<!--								customIconClass="filters-checkbox"-->
-				<!--                (checkboxChange)="chooseFilter(item, filterIndex, filter.hiddenLabel, $event.target)">-->
-				<!--                <div class="label">{{item.name}} ({{item.count}})</div>-->
-				<!--              </b2b-ngx-checkbox>-->
-
-				<!--            </div>-->
-				<!--          </div>-->
-				<!--        </ng-template>-->
-				<ng-template #selectedOption>
-					<div class="item">
-						<div class="circle">
-							<div class="inner-circle selected"></div>
+								<div
+									*ngIf="filter.hiddenLabel !== 'country[]'; else countryLabel"
+									class="label">
+									{{ option.name }}
+									<ng-container *ngIf="option.count">
+										({{ option.count }})
+									</ng-container>
+								</div>
+								<ng-template #countryLabel>
+									<label>
+										<img
+											b2bNgxIcon
+											group="flags/"
+											[name]="option.name | uppercase" />
+										{{ getCountryName(option.name) }}
+										({{ option.count }})
+									</label>
+								</ng-template>
+							</a>
 						</div>
-						<ng-container
-							*ngIf="
-								filtersArr[filterIndex].name !== 'Country';
-								else selectedCountryFilter
-							">
-							<div class="label">
-								{{ filtersArr[filterIndex].selectedOption.getValue()[0].name }}
+					</ng-container>
+					<!--        <ng-template #multiSelectFilter>-->
+					<!--          <div class="options multi-options">-->
+					<!--            <div *ngFor="let item of filter.options" class="item">-->
+					<!--              <b2b-ngx-checkbox-->
+					<!--                [checked]="item?.checked"-->
+					<!--								customIconClass="filters-checkbox"-->
+					<!--                (checkboxChange)="chooseFilter(item, filterIndex, filter.hiddenLabel, $event.target)">-->
+					<!--                <div class="label">{{item.name}} ({{item.count}})</div>-->
+					<!--              </b2b-ngx-checkbox>-->
+
+					<!--            </div>-->
+					<!--          </div>-->
+					<!--        </ng-template>-->
+					<ng-template #selectedOption>
+						<div class="item">
+							<div class="circle">
+								<div class="inner-circle selected"></div>
 							</div>
-							({{ filtersArr[filterIndex].selectedOption.getValue()[0].count }})
-						</ng-container>
+							<ng-container
+								*ngIf="
+									filtersArr[filterIndex].name !== 'Country';
+									else selectedCountryFilter
+								">
+								<div class="label">
+									{{
+										filtersArr[filterIndex].selectedOption.getValue()[0].name
+									}}
+								</div>
+								({{
+									filtersArr[filterIndex].selectedOption.getValue()[0].count
+								}})
+							</ng-container>
 
-						<ng-template #selectedCountryFilter>
-							<img
-								b2bNgxIcon
-								group="flags/"
-								[name]="
-									filtersArr[filterIndex].selectedOption.getValue()[0].name
-										| uppercase
-								" />
-							{{
-								getCountryName(
-									filtersArr[filterIndex].selectedOption.getValue()[0].name
-								)
-							}}
-							({{ filtersArr[filterIndex].selectedOption.getValue()[0].count }})
-						</ng-template>
-					</div>
-				</ng-template>
-			</b2b-filters-dropdown>
-		</ng-container>
-		<!--		<ng-template #multiSelectFilter>-->
-		<!--			<div *ngIf="filters[0].selectedOption.getValue()" class="options">-->
-		<!--				<div *ngFor="let item of filters[0].selectedOption.getValue().children" class="item">-->
-		<!--					<b2b-ngx-checkbox>-->
-		<!--						<div class="label">{{item.name}}</div>-->
-		<!--					</b2b-ngx-checkbox>-->
-		<!--				</div>-->
-		<!--			</div>-->
-		<!--		</ng-template>-->
+							<ng-template #selectedCountryFilter>
+								<img
+									b2bNgxIcon
+									group="flags/"
+									[name]="
+										filtersArr[filterIndex].selectedOption.getValue()[0].name
+											| uppercase
+									" />
+								{{
+									getCountryName(
+										filtersArr[filterIndex].selectedOption.getValue()[0].name
+									)
+								}}
+								({{
+									filtersArr[filterIndex].selectedOption.getValue()[0].count
+								}})
+							</ng-template>
+						</div>
+					</ng-template>
+				</b2b-filters-dropdown>
+			</ng-container>
+			<!--		<ng-template #multiSelectFilter>-->
+			<!--			<div *ngIf="filters[0].selectedOption.getValue()" class="options">-->
+			<!--				<div *ngFor="let item of filters[0].selectedOption.getValue().children" class="item">-->
+			<!--					<b2b-ngx-checkbox>-->
+			<!--						<div class="label">{{item.name}}</div>-->
+			<!--					</b2b-ngx-checkbox>-->
+			<!--				</div>-->
+			<!--			</div>-->
+			<!--		</ng-template>-->
 
-		<button
-			(click)="clearFilterStore(true)"
-			b2bNgxButton
-			[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"
-			class="clear-button">
-			Clear all
-		</button>
-	</div>
-	<div class="listing">
-		<div
-			class="chips-wrapper"
-			[style.padding-bottom]="chipsService.getChipsLength() ? '32px' : '0'">
-			<app-filter-chips
-				(removeFilter)="removeFilter($event)"></app-filter-chips>
+			<button
+				(click)="clearFilterStore(true)"
+				b2bNgxButton
+				[theme]="b2bNgxButtonThemeEnum.OUTLINE_GRAY"
+				class="clear-button">
+				Clear all
+			</button>
 		</div>
+		<div class="listing">
+			<div
+				class="chips-wrapper"
+				[style.padding-bottom]="chipsService.getChipsLength() ? '32px' : '0'">
+				<app-filter-chips
+					(removeFilter)="removeFilter($event)"></app-filter-chips>
+			</div>
 
-		<b2b-client-marketplace-listing-grid
-			*ngIf="(marketplaceProductView$ | async) === 'grid'"
-			[marketplaceProducts]="marketplaceProducts$ | async"
-			[user]="user$ | async"></b2b-client-marketplace-listing-grid>
+			<b2b-client-marketplace-listing-grid
+				*ngIf="(marketplaceProductView$ | async) === 'grid'"
+				[marketplaceProducts]="marketplaceProducts$ | async"
+				[user]="user$ | async"></b2b-client-marketplace-listing-grid>
 
-		<!--		<b2b-client-marketplace-listing-list-->
-		<!--			*ngIf="(marketplaceProductView$ | async) === 'list'"-->
-		<!--			[marketplaceProducts]="marketplaceProducts$ | async"-->
-		<!--			[user]="user$ | async"></b2b-client-marketplace-listing-list>-->
+			<!--		<b2b-client-marketplace-listing-list-->
+			<!--			*ngIf="(marketplaceProductView$ | async) === 'list'"-->
+			<!--			[marketplaceProducts]="marketplaceProducts$ | async"-->
+			<!--			[user]="user$ | async"></b2b-client-marketplace-listing-list>-->
 
-		<b2b-pagination
-			(togglePageNumber)="togglePage($event)"
-			[length]="totalMarketplaceProductsLength$ | async"
-			[perPage]="PRODUCTS_LIMIT"
-			[currentPage]="currentPage$ | async"></b2b-pagination>
+			<b2b-pagination
+				(togglePageNumber)="togglePage($event)"
+				[length]="totalMarketplaceProductsLength$ | async"
+				[perPage]="PRODUCTS_LIMIT"
+				[currentPage]="currentPage$ | async"></b2b-pagination>
+		</div>
 	</div>
-</div>
-<div
-	*ngIf="chipsService.selectedMarketCategory$ | async as category"
-	class="category-description-wrapper">
-	<div class="category-description">
-		<h2 class="category-description__title">{{ category.descriptionTitle }}</h2>
-		<div class="category-description__text">{{ category.description }}</div>
+	<div
+		*ngIf="chipsService.selectedMarketCategory$ | async as category"
+		class="category-description-wrapper">
+		<div class="category-description">
+			<h2 class="category-description__title">
+				{{ category.descriptionTitle }}
+			</h2>
+			<div class="category-description__text">{{ category.description }}</div>
+		</div>
 	</div>
-</div>
 
-<button (click)="openPopUp()" class="mobile-filters-button">
-	<img b2bNgxIcon name="filter-icon" />
-	<span class="filter-label">Filter</span>
-</button>
+	<button (click)="openPopUp()" class="mobile-filters-button">
+		<img b2bNgxIcon name="filter-icon" />
+		<span class="filter-label">Filter</span>
+	</button>
+</div>

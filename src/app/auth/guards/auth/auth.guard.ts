@@ -3,14 +3,13 @@ import {
 	ActivatedRouteSnapshot,
 	RouterStateSnapshot,
 	Router,
-	ActivatedRoute,
 } from '@angular/router';
 
 import { filter, map, tap } from 'rxjs/operators';
 import { HotToastService } from '@ngneat/hot-toast';
-import { AuthGuardComponent } from '../../components/auth-guard/auth-guard.component';
 import { B2bNgxLinkService } from '@b2b/ngx-link';
 import { AuthService } from '../../services/auth/auth.service';
+import { PlatformService } from '../../../client/services/platform/platform.service';
 
 const messages: { [key: string]: string } = {
 	'legal-help': 'GUARDS.LEGAL_HELP',
@@ -32,12 +31,11 @@ const queryParams: { [key: string]: string } = {
 })
 export class AuthGuard {
 	constructor(
+		private readonly _platformService: PlatformService,
 		private readonly _authService: AuthService,
 		private readonly _router: Router,
 		private readonly _hotToastrService: HotToastService,
-		private readonly _activatedRoute: ActivatedRoute,
-		public readonly b2bNgxLinkService: B2bNgxLinkService,
-		public readonly _hotToastService: HotToastService
+		public readonly b2bNgxLinkService: B2bNgxLinkService
 	) {}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -45,6 +43,10 @@ export class AuthGuard {
 			filter((user) => user !== undefined),
 			tap((user) => {
 				if (!user) {
+					if (this._platformService.isServer) {
+						this.navigate();
+						return;
+					}
 					this._hotToastrService.info(`Please log in before using this page`, {
 						style: {
 							border: '2px solid #005dff',
@@ -55,14 +57,18 @@ export class AuthGuard {
 					});
 					localStorage.setItem('blocked-route', state.url);
 
-					this._router.navigate([
-						this.b2bNgxLinkService.getStaticLink('/auth/log-in'),
-					]);
+					this.navigate();
 				}
 			}),
 			map((user) => {
 				return !!user;
 			})
 		);
+	}
+
+	navigate() {
+		this._router.navigate([
+			this.b2bNgxLinkService.getStaticLink('/auth/log-in'),
+		]);
 	}
 }

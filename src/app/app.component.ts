@@ -41,9 +41,6 @@ export class AppComponent implements OnInit {
 				'624d710bd5a00e47604996e4',
 				'624d7131d5a00e4760499705',
 			]);
-		this.form
-			.get('categories')
-			?.valueChanges.subscribe((data) => console.log('value changes', data));
 
 		if (
 			this.platformService.isBrowser &&

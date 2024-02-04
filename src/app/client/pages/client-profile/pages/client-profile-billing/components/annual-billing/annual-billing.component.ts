@@ -125,7 +125,7 @@ export class AnnualBillingComponent implements OnInit {
 					cardNumber: this.paymentData.hasOwnProperty('cardNum')
 						? this.paymentData?.cardNum.substring(
 								this.paymentData.cardNum.length - 4
-						  )
+							)
 						: '',
 					type: 'mastercard',
 				};

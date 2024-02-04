@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientMarketplaceListingComponent } from './layout/client-marketplace-listing.component';
 import { ClientMarketplaceAddProductComponent } from './components/client-marketplace-add-product/client-marketplace-add-product.component';
 import { ClientMarketplaceSupplierListingComponent } from './components/client-marketplace-supplier-listing/client-marketplace-supplier-listing.component';
-import { ClientMarketplaceProductDetailsComponent } from './components/client-marketplace-product-details/client-marketplace-product-details.component';
 import { CompanyInformationGuard } from '../../../auth/guards/companyInformation/company-information.guard';
 import { AuthGuard } from '../../../auth/guards/auth/auth.guard';
 import { ClientMarketCompanyPageComponent } from './pages/client-market-company-page/client-market-company-page.component';
@@ -53,7 +51,10 @@ const routes: Routes = [
 	},
 	{
 		path: 'supplier/:id',
-		component: ClientMarketplaceSupplierListingComponent,
+		loadChildren: () =>
+			import(
+				'./components/client-marketplace-supplier-listing/client-marketplace-supplier-listing.module'
+			).then((m) => m.ClientMarketplaceSupplierListingModule),
 	},
 	{
 		path: 'category-listing',
@@ -64,7 +65,10 @@ const routes: Routes = [
 	},
 	{
 		path: 'company/:companyId',
-		component: ClientMarketCompanyPageComponent,
+		loadChildren: () =>
+			import(
+				'./pages/client-market-company-page/client-market-company-page.module'
+			).then((m) => m.ClientMarketCompanyPageModule),
 	},
 	{
 		path: 'product-posting-complete',

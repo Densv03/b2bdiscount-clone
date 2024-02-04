@@ -1,7 +1,9 @@
 <div *ngIf="rfqItem" class="item" [routerLink]="rfqItem.path">
 	<div class="item__column">
 		<div class="item__name">Product: {{ rfqItem.productName }}</div>
-		<div class="item__quantity item__subinfo">
+		<div
+			*ngIf="rfqItem.amount.count !== 'NaN'"
+			class="item__quantity item__subinfo">
 			<span>Quantity:</span>
 			<span class="value">{{ rfqItem.amount.count + ' ' + measureName }}</span>
 		</div>

@@ -12,18 +12,22 @@ export class MixpanelService {
         try {
             const body = req?.body;
             if (!body) {
-                return res.status(400).send({message:   'Empty body',
-                                                status: 400,
+                return res.status(400).send({
+                                                message: 'Empty body',
+                                                status:  400,
                                             });
             }
             body.properties.ip = getIp(req);
+            console.log(JSON.stringify(body));
             this.mixpanelRepository.track(body);
-            return res.status(200).send({message:   'Success',
-                                            status: 200,
+            return res.status(200).send({
+                                            message: 'Success',
+                                            status:  200,
                                         });
         } catch (e) {
-            return res.status(400).send({message:   'Something went wrong. Try again',
-                                            status: 400,
+            return res.status(400).send({
+                                            message: 'Something went wrong. Try again',
+                                            status:  400,
                                         });
         }
     }
@@ -34,19 +38,24 @@ export class MixpanelService {
         const action         = req.params['action'] as MixpanelPeopleAction;
         const isActionActive = Object.values(MixpanelPeopleAction).includes(action);
         if (!isActionActive) {
-            return res.status(404).send({message:   'Action does not exist',
-                                            status: 404,
+            return res.status(404).send({
+                                            message: 'Action does not exist',
+                                            status:  404,
                                         });
         }
         try {
+            console.log(JSON.stringify(req.body));
             this.mixpanelRepository.handleAction(action,
-                                         req.body);
-            return res.status(200).send({message:   'Success',
-                                            status: 200,
+                                                 req.body);
+            return res.status(200).send({
+                                            message: 'Success',
+                                            status:  200,
                                         });
         } catch (e) {
-            return res.status(501).send({message:   'Something went wrong.',
-                                            status: 501,
+            console.error(e);
+            return res.status(501).send({
+                                            message: 'Something went wrong.',
+                                            status:  501,
                                         });
         }
     }

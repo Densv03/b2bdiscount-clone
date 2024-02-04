@@ -16,6 +16,7 @@ import { ClientMarketplaceListingGridModule } from '../components/client-marketp
 import { PaginationModule } from '../../../shared/components/pagination/pagination.module';
 import { SharedModule } from '../../../shared/components/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PageLoaderModule } from '../../../../core/components/page-loader/page-loader.module';
 
 @NgModule({
 	declarations: [ClientMarketplaceListingComponent],
@@ -35,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 		PaginationModule,
 		SharedModule,
 		MatDialogModule,
+		PageLoaderModule,
 	],
 })
 export class ClientMarketplaceListingModule {}

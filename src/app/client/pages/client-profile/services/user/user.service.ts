@@ -11,7 +11,6 @@ import {
 import { ApiService } from '../../../../../core/services/api/api.service';
 import { AuthQuery } from '../../../../../auth/state/auth/auth.query';
 import { AuthStore } from '../../../../../auth/state/auth/auth.store';
-import {AdminUser} from "../../../../../../../admin/src/app/shared/models/AdminUser.model";
 
 @Injectable({
 	providedIn: 'root',
@@ -27,13 +26,13 @@ export class UserService {
 		return !!localStorage.getItem('token');
 	}
 
-	public getUsers(offset: any, limit = 10, filters: any): Observable<{totalCount: number, users: AdminUser[]}> {
+	public getUsers(offset: any, limit = 10, filters: any) {
 		const filtersUrl = filters
 			? Object.entries(filters).reduce((pre, [key, val]) => {
 					const parsedValue =
 						val && !Array.isArray(val) ? (val as any).replace('&', '%26') : val;
 					return pre + (val ? `&${key}=${parsedValue}` : '');
-			  }, '')
+				}, '')
 			: '';
 
 		return this._apiService.get(
@@ -49,7 +48,7 @@ export class UserService {
 		const filtersUrl = filters
 			? Object.entries(filters).reduce((pre, [key, val]) => {
 					return pre + (val ? `&${key}=${val}` : '');
-			  }, '')
+				}, '')
 			: '';
 
 		// return this._apiService.get(`users-csv?offset=${offset * limit}&limit=${limit}${filtersUrl}`, httpOptions);
@@ -96,6 +95,10 @@ export class UserService {
 	public updateUserEmail(settings: { emailOld: string; emailNew: string }) {
 		const url = 'auth/changeRegisterMail';
 		return this._apiService.post(url, settings);
+	}
+
+	public sendVerificationLink(email: string): Observable<any> {
+		return this._apiService.post('auth/sendRegisterMail', { email });
 	}
 
 	public updatePassword(password: any) {

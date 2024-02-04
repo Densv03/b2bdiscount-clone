@@ -41,6 +41,13 @@ export class SeaProfileComponent implements OnInit {
 	public currentPage: number = 1;
 	public dataSource: SeaTariffInterface[];
 	public date = new FormControl('');
+	public errorList = [
+		{
+			errorField: 'Error field',
+			errorData: 'Error data',
+			errorMessage: 'Error message',
+		},
+	];
 
 	private seaRequest: SeaRequestInterface = {
 		limit: this.productsLimit,
@@ -91,7 +98,11 @@ export class SeaProfileComponent implements OnInit {
 				.subscribe((el: TariffUploadResponseInterface) => {
 					if (el.resultUpdate.count.error) {
 						el.resultUpdate.count.error.errorList.forEach((err) => {
-							this.hotToastService.error(err.errorMessage);
+							this.errorList.push({
+								errorField: err.errorField,
+								errorData: JSON.parse(err.errorData),
+								errorMessage: err.errorMessage,
+							});
 						});
 					}
 

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
-import { getName } from 'country-list';
+import { getCode, getName } from 'country-list';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AdminLogisticService } from '../../admin-logistic.service';
 import { CreateDirectionInterface } from '../../interface/create-direction.interface';
@@ -75,7 +75,7 @@ export class CreateDirectionDialogComponent implements OnInit {
 		}
 
 		if (type === 'port' || type === 'airport') {
-			model.cityId = city;
+			model.cityId = country;
 		}
 
 		this.dialogRef.close(model);
@@ -122,6 +122,13 @@ export class CreateDirectionDialogComponent implements OnInit {
 				} else {
 					this.countryOptions = null;
 					this.showNameInput = false;
+
+					countryControl.setValidators(
+						uniqLogisticCity(
+							this.directions.map((contry) => getCode(contry.name)),
+							true
+						)
+					);
 				}
 
 				this.directionForm.updateValueAndValidity();

@@ -1,12 +1,4 @@
-import {
-	Component,
-	ElementRef,
-	HostListener,
-	OnInit,
-	QueryList,
-	ViewChild,
-	ViewChildren,
-} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
@@ -23,9 +15,8 @@ import { SourcingRequestService } from '../../../client-sourcing-request/sourcin
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	BehaviorSubject,
-	exhaustMap,
-	filter,
 	finalize,
+	firstValueFrom,
 	Observable,
 	of,
 } from 'rxjs';
@@ -39,14 +30,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
-import { getCode, getName } from 'country-list';
+import { getName } from 'country-list';
 import { AuthService } from 'src/app/auth/services/auth/auth.service';
-import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../../../services/platform/platform.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PortsService } from '../../../../services/ports/ports.service';
 import { TreeviewConfig } from '@b2b/ngx-treeview';
-import { onlyLatinAndNumber } from '../../../../../core/helpers/validator/only-latin-and-number';
 import { PublicCompanyInfoModel } from '../../../../../core/models/public-company-info.model';
 import { MarketProductModel } from '../../models/market-product.model';
 import { PortsQuery } from '../../../../state/ports/ports.query';
@@ -128,7 +117,6 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	private files: File[] = Array.from({ length: 5 }, () => null);
 	private hideLabelSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
-	private productId?: string = this.activatedRoute.snapshot.params['id'];
 	private selectedPaymentMethods: string[] = [];
 	private selectedTradingAreas: string[] = [];
 	private selectedShippingMethods: string[] = [];
@@ -140,16 +128,13 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private clientMarketplaceService: ClientMarketplaceService,
 		private sourcingRequestService: SourcingRequestService,
-		private activatedRoute: ActivatedRoute,
-		private dialog: MatDialog,
 		private hotToastService: HotToastService,
 		private router: Router,
 		private categoriesService: CategoriesService,
 		private readonly mixpanelService: MixpanelService,
 		private authService: AuthService,
 		private platformService: PlatformService,
-		private readonly portsService: PortsService,
-		private readonly portsQuery: PortsQuery
+		private readonly portsService: PortsService
 	) {}
 
 	@HostListener('window:resize', ['$event'])
@@ -210,8 +195,8 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 	public addField(): void {
 		const specificationList = this.formBuilder.group({
-			specification: ['', onlyLatinAndNumber()],
-			item: ['', onlyLatinAndNumber()],
+			specification: ['', onlyLatinAndNumberAndSymbols()],
+			item: ['', onlyLatinAndNumberAndSymbols()],
 		});
 		this.specificationList.push(specificationList);
 	}
@@ -418,16 +403,8 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 				}),
 				finalize(() => this.isRequestPending.next(false))
 			)
-			.subscribe((result) => {
-				this.mixpanelService.track('New Product posted', {
-					'Product Category': this.getCategoryName(
-						this.formGroup.value.category[0]
-					),
-					"Supplier's Country": getName(result.company[0].country),
-					'Product Count': this.formGroup.value.amount,
-					'Posting Date': Date(),
-				});
-
+			.subscribe(async (result: any) => {
+				await this.trackCreation(result);
 				if (!this.userService.getUser()?.statistics?.products?.created) {
 					this.router.navigate(['/b2bmarket/product-posting-complete'], {
 						queryParams: { 'first-product': true },
@@ -482,6 +459,20 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			});
 	}
 
+	private async trackCreation(result: any) {
+		this.mixpanelService.track('New Product posted', {
+			'Product Category':
+				(await this.getCategoryName(this.formGroup.value.category)) ??
+				'undefined',
+			"Supplier's Country": getName(result.company[0].country),
+			'Product Count':
+				(await firstValueFrom(
+					this.clientMarketplaceService.getTotalProductsCount()
+				)) || 1,
+			'Posting Date': new Date(),
+		});
+	}
+
 	public preview(): void {
 		if (this.formGroup.invalid) {
 			this.formGroup.markAllAsTouched();
@@ -490,9 +481,8 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		}
 
 		const selectedPorts = this.portsItems.map((el: any, index: number) => {
-			return el.ports.filter(
-				(ports: { _id: any }) =>
-					this.formGroup.value.ports[index]?.portName.includes(ports._id)
+			return el.ports.filter((ports: { _id: any }) =>
+				this.formGroup.value.ports[index]?.portName.includes(ports._id)
 			);
 		});
 
@@ -539,13 +529,10 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 	public trackByImageFn = (_: number, value: string): string => value;
 
-	private getCategoryName(id: string): string {
-		let name: string;
-		this.categoriesService
-			.getCategoryNameById(id)
-			.pipe(take(1))
-			.subscribe((el) => (name = el));
-		return name;
+	private async getCategoryName(id: string): Promise<string> {
+		return await firstValueFrom(
+			this.categoriesService.getCategoryNameById(id).pipe(take(1), first())
+		);
 	}
 
 	private getBodyForRequest(data: FormGroup, company: any): any {

@@ -10,6 +10,7 @@ import { filter, map, tap } from 'rxjs/operators';
 import { HotToastService } from '@ngneat/hot-toast';
 import { B2bNgxLinkService } from '@b2b/ngx-link';
 import { AuthService } from '../../../../../src/app/auth/services/auth/auth.service';
+import { AdminSidenavData } from '../../data/admin-sidenav.data';
 
 @Injectable({
 	providedIn: 'root',
@@ -27,7 +28,7 @@ export class AdminGuard {
 		return this._authService.getUser().pipe(
 			filter((user) => user !== undefined),
 			tap((user) => {
-				if (user?.role?.name !== 'admin') {
+				if (user?.role?.name !== 'admin' && !user.moderatorRole) {
 					this._hotToastrService.info(
 						`You don't have access to this page. Login first`,
 						{
@@ -43,6 +44,8 @@ export class AdminGuard {
 					this._router.navigate([
 						this.b2bNgxLinkService.getStaticLink('/login'),
 					]);
+				} else if (user.moderatorRole) {
+					AdminSidenavData.updateModeratorSidenavData(user);
 				}
 			}),
 			map((user) => {

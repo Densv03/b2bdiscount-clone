@@ -76,11 +76,11 @@ export class TradebidPurchaseComponent implements OnInit {
 			? (this.paymentObj = {
 					modal: ClientProfileAddPaymentDialogComponent,
 					method: this.paymentService.updateCustomerProfile,
-			  })
+				})
 			: (this.paymentObj = {
 					modal: ClientProfileBillingDialogComponent,
 					method: this.paymentService.createCustomerProfile,
-			  });
+				});
 
 		this.authService
 			.getUser()

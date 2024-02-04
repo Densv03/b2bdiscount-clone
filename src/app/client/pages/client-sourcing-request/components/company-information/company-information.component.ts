@@ -196,7 +196,7 @@ export class CompanyInformationComponent implements OnInit {
 										(role) =>
 											role.name?.toLowerCase() ===
 											this.form.value.businessType?.toLowerCase()
-								  )?.id;
+									)?.id;
 						const phone = data.phone;
 						this.userService
 							.updateUserSettings({
@@ -275,7 +275,7 @@ export class CompanyInformationComponent implements OnInit {
 	private getFoundationYear(): Observable<SelectItem[]> {
 		const yearsArr: string[] = [];
 		const currentYear: number = new Date(Date.now()).getFullYear();
-		for (let i = currentYear; i > currentYear - 50; i--)
+		for (let i = currentYear; i > currentYear - 150; i--)
 			yearsArr.push(i.toString());
 		return this.getObservableForSelect(yearsArr);
 	}

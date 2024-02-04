@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { isPlatformServer } from '@angular/common';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+import { REQUEST } from '../../../../../express.tokens';
 import { Request } from 'express';
 
 @Component({

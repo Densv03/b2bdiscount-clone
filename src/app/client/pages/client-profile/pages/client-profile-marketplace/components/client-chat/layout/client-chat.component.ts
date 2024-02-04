@@ -23,7 +23,6 @@ import { ChatsService } from '../../../../../../../services/chats/chats.service'
 import { HotToastService } from '@ngneat/hot-toast';
 import { B2bNgxLinkService } from '@b2b/ngx-link';
 import { getName } from 'country-list';
-import mixpanel from 'mixpanel-browser';
 import { MixpanelService } from '../../../../../../../../core/services/mixpanel/mixpanel.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -67,16 +66,13 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 	constructor(
 		private readonly _activatedRoute: ActivatedRoute,
 		private readonly _chatService: ChatService,
-		private readonly _chatsService: ChatsService,
 		private readonly _usersService: UserService,
 		private readonly _formBuilder: FormBuilder,
 		private readonly _authService: AuthService,
 		private readonly _socketService: SocketService,
-		private readonly _hotToastService: HotToastService,
 		public changeDetectorRef: ChangeDetectorRef,
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
-		private readonly translateService: TranslateService,
-		private readonly mixpanelService: MixpanelService
+		private readonly translateService: TranslateService
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.formGroup = this._formBuilder.group({
@@ -123,8 +119,9 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 						const author =
 							displayInfo?.fullName ||
 							displayInfo?.personName ||
-							`${this.translateService.instant('CHAT.SUPPLIER')} of ${chatInfo
-								.offer?.title}`;
+							`${this.translateService.instant('CHAT.SUPPLIER')} of ${
+								chatInfo.offer?.title
+							}`;
 
 						return {
 							...chatInfo,

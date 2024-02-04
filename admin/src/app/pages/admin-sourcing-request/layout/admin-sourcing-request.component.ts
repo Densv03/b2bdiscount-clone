@@ -203,9 +203,9 @@ export class AdminSourcingRequestComponent implements OnInit {
 										this.forceSubject.next(true);
 										this._hotToastrService.success('declined');
 										this.mixpanelService.track('Product declined', {
-											'Product Category': offer.category.name,
-											"Supplier's Country": getName(offer.destination.to),
-											'Product Count': offer.amount.count,
+											'Product Category': offer?.category?.name,
+											"Supplier's Country": getName(offer?.destination?.to),
+											'Product Count': offer?.amount?.count,
 											'Deletion Date': Date(),
 										});
 									});

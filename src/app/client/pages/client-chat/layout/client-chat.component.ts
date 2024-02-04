@@ -117,8 +117,9 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 						const author =
 							displayInfo?.fullName ||
 							displayInfo?.personName ||
-							`${this.translateService.instant('CHAT.SELLER')} of ${chatInfo
-								.offer?.title}`;
+							`${this.translateService.instant('CHAT.SELLER')} of ${
+								chatInfo.offer?.title
+							}`;
 
 						return {
 							...chatInfo,
@@ -164,8 +165,9 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 							const author =
 								displayInfo?.fullName ||
 								displayInfo?.personName ||
-								`${this.translateService.instant('CHAT.SELLER')} of ${chat.offer
-									?.title}`;
+								`${this.translateService.instant('CHAT.SELLER')} of ${
+									chat.offer?.title
+								}`;
 
 							return {
 								...message,

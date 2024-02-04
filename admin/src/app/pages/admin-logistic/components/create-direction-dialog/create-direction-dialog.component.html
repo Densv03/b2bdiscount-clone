@@ -30,6 +30,13 @@
 				class="admin-article__country"
 				placeholder="Select Country"></b2b-ngx-country-select>
 
+			<p
+				[@fadeInOut]
+				class="error"
+				*ngIf="directionForm.get('country').errors?.['cityExists']">
+				This {{ directionForm.controls['type'].value }} already exist
+			</p>
+
 			<ng-template #isCity>
 				<b2b-ngx-country-select
 					[customOptions]="cityOptions | async"
@@ -48,10 +55,7 @@
 			<p
 				[@fadeInOut]
 				class="error"
-				*ngIf="
-					directionForm.get('name').touched &&
-					directionForm.get('name').errors?.['cityExists']
-				">
+				*ngIf="directionForm.get('name').errors?.['cityExists']">
 				This {{ directionForm.controls['type'].value }} already exist
 			</p>
 		</div>

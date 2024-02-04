@@ -6,6 +6,7 @@ import { CreateRfqDialogComponent } from '../../../../pages/client-sourcing-requ
 import { MatDialog } from '@angular/material/dialog';
 import { HeaderService } from '../../header.service';
 import { TooltipService } from '../../tooltip.service';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
 
 @Component({
 	selector: 'b2b-header-become-user-instructions',
@@ -23,7 +24,8 @@ export class HeaderBecomeUserInstructionsComponent implements OnInit {
 		private readonly userService: UserService,
 		private readonly dialog: MatDialog,
 		private readonly tooltipService: TooltipService,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly dialogService: DialogService
 	) {}
 
 	ngOnInit() {
@@ -32,15 +34,13 @@ export class HeaderBecomeUserInstructionsComponent implements OnInit {
 
 	public hideTooltip(url: string): void {
 		this.tooltipService.hideTooltip();
-		if (!url.length) {
-			if (this.userService.getUser()) {
-				this.userService.getUser().rootRole.name === 'buyer'
-					? this.openCreateRfqDialog()
-					: this.router.navigate(['/b2bmarket/product']);
-			} else {
-				this.router.navigate(['/auth/register-credentials']);
-			}
-		}
+		this.dialogService.handleCustomDialogAndRole(
+			url,
+			'buyer',
+			'/b2bmarket/product',
+			CreateRfqDialogComponent,
+			{ panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'] }
+		);
 	}
 	private removeItemIfUserIsRegistered(): void {
 		if (this.listType === 'becomeSupplier' && this.userService.getUser()) {
@@ -50,15 +50,6 @@ export class HeaderBecomeUserInstructionsComponent implements OnInit {
 					items: this.getInstructions().becomeSupplier.items.splice(0, 1),
 				},
 			};
-		}
-	}
-	private openCreateRfqDialog(): void {
-		if (this.userService.getUser()) {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-		} else {
-			this.router.navigate(['/auth/register-credentials']);
 		}
 	}
 

@@ -56,9 +56,7 @@ export class CompanyContactCardComponent implements OnInit {
 		event.stopPropagation();
 
 		if (!this.userIsAuth) {
-			localStorage.setItem('blocked-route', this.router.url);
-
-			this.router.navigate(['/auth/log-in']);
+			this.router.navigate(['profile/your-workspace/b2bmarket']);
 		} else {
 			this.openConnection(this.token);
 			this.socket.emit('start_users_chat', {

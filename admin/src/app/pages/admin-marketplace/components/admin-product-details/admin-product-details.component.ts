@@ -180,7 +180,10 @@ export class AdminProductDetailsComponent {
 						(category) => category._id === this.formGroup.value.category
 					).name,
 					"Supplier's Country": getName(this.suppliersCountry),
-					'Product Count': this.formGroup.value.amount,
+					'Product Count': this.company.countActiveUserProducts
+						? this.company.countActiveUserProducts
+						: 'undefined',
+					// this.formGroup.value.amount,
 					'Archivation Date': Date(),
 				});
 				// this.clientMarketplaceService.updateMarketplaceProducts(this.filteredQueryObj);
@@ -833,7 +836,7 @@ export class AdminProductDetailsComponent {
 				? this.clientMarketplaceService.deletePhotosFromProduct(
 						this.productId,
 						this.removedFilesId
-				  )
+					)
 				: of(null);
 
 		this.clientMarketplaceService

@@ -208,6 +208,20 @@
 
 	<div class="example-container mat-elevation-z8">
 
+		<form
+			[formGroup]="emailSubmissionForm"
+			(ngSubmit)="sendList()"
+			class="email-submission-form">
+			<input b2bNgxInput placeholder="Enter email" formControlName="email" />
+			<button
+				b2bNgxButton
+				[disabled]="emailSubmissionForm.invalid"
+				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+				class="admin-offers__button">
+				Send list
+			</button>
+		</form>
+
 		<div class="example-table-container">
 
 			<table mat-table [dataSource]="tableData$ | async" class="example-table"

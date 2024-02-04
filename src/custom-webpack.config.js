@@ -3,9 +3,9 @@ const BrotliPlugin = require('brotli-webpack-plugin');
 
 module.exports = {
 	plugins: [
-		new CompressionPlugin({
-			algorithm: 'gzip',
-		}),
+		// new CompressionPlugin({
+		// 	algorithm: 'gzip',
+		// }),
 		new BrotliPlugin(),
 	],
 };

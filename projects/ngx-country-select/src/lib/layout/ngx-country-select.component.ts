@@ -1,5 +1,5 @@
 import {
-	ChangeDetectionStrategy,
+	ChangeDetectionStrategy, ChangeDetectorRef,
 	Component,
 	EventEmitter,
 	forwardRef,
@@ -18,6 +18,7 @@ import {getName} from 'country-list'
 import {COUNTRIES} from "../data";
 import {B2bNgxSelectThemeEnum} from "@b2b/ngx-select";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {PortsService} from "../../../../../src/app/client/services/ports/ports.service";
 
 @UntilDestroy()
 @Component({
@@ -43,6 +44,7 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 
 	@Input() public invalid: boolean = false;
 	@Input() showInTransit?: boolean;
+	@Input() hideCountriesWithoutPorts: boolean;
 	@Input() public theme: B2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum.BACKGROUND_GRAY;
 	@Input() public className: string = '';
 	@Input() public placeholder: string;
@@ -63,7 +65,8 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 	private onChange: (value: string | null) => void;
 	private onTouched: () => void;
 
-	constructor() {
+	constructor(private readonly portsService: PortsService,
+							private readonly cdr: ChangeDetectorRef) {
 		this.placeholder = "";
 
 		this.onChange = () => null;
@@ -78,12 +81,18 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 		return `${defaultClassName} ${this.theme} ${this.className}`;
 	}
 
-	public getOptions() {
-		const countriesArr = COUNTRIES.map((country) => ({
+	public async getOptions() {
+		let countriesArr = COUNTRIES.map((country) => ({
 			label: getName(country),
 			icon: country,
 			code: country.toLowerCase(),
 		})).sort((a, b): number => a.label.localeCompare(b.label));
+
+		if (this.hideCountriesWithoutPorts) {
+			const countriesWithPorts = await this.portsService.getCountriesWithPorts();
+
+			countriesArr = countriesArr.filter(item => countriesWithPorts.includes(item.code));
+		}
 
 		if (this.showInTransit) {
 			countriesArr.unshift({
@@ -106,9 +115,10 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 		return this.errors[firstErrorKey] as string;
 	}
 
-	public ngOnInit(): void {
+	public async ngOnInit() {
 		if (this.options.length === 0) {
-			this.options = this.getOptions();
+			this.options = await this.getOptions();
+			this.cdr.detectChanges();
 		}
 
 		this.subscribeOnValueChanges();

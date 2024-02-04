@@ -16,8 +16,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SupplierContactSuccessDialogComponent } from '../supplier-contact-success-dialog/supplier-contact-success-dialog.component';
 import { checkSerialNumber } from '../../../../../core/helpers/function/check-serial-number';
 import { Photo } from '../../../../../core/models/photo.model';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
 
-const URLS_WITHOUT_CHATS = ['supplier-listing', 'products'];
+const URLS_WITHOUT_CHATS = ['supplier-listing', '/products'];
 
 @UntilDestroy()
 @Component({
@@ -45,7 +46,8 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		private readonly router: Router,
 		private readonly authService: AuthService,
 		private readonly dialog: MatDialog,
-		private readonly activatedRoute: ActivatedRoute
+		private readonly activatedRoute: ActivatedRoute,
+		private readonly dialogService: DialogService
 	) {}
 
 	public ngOnInit(): void {
@@ -55,7 +57,7 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 				? this.product.photos.reduce((acc: any[], val: any) => {
 						acc[val?.serialNumber] = val?.lg;
 						return acc.filter((el) => !!el);
-				  }, [])
+					}, [])
 				: this.product.photos
 						.filter((el: Photo) => el.lg)
 						.map((el: Photo) => el.lg);
@@ -149,12 +151,7 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
-		if (!this.userService.getUser()) {
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/log-in']);
-			return;
-		}
-		console.log(this.product.user, this.userService.getUser()?._id);
+
 		if (this.product.user === this.userService.getUser()?._id) {
 			this.goTo(
 				'/b2bmarket/listing/products/' + this.product.path || this.product._id
@@ -162,57 +159,58 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 			return;
 		}
 
-		if (this.product.chatStarted.includes(this.userService.getUser()._id)) {
-			console.log(
-				'if',
-				this.product.chatStarted,
-				this.userService.getUser()._id
-			);
+		if (this.product.chatStarted.includes(this.userService.getUser()?._id)) {
 			this.chatStart(true);
 		} else {
-			const dialog = this.dialog.open(ContactSupplierFormDialogComponent, {
-				data: {
-					product: this.product,
-				},
-				panelClass: 'contact-supplier-form-dialog',
-			});
+			const dialog = this.dialogService.openDialog(
+				ContactSupplierFormDialogComponent,
+				{
+					data: {
+						product: this.product,
+					},
+					panelClass: 'contact-supplier-form-dialog',
+				}
+			);
 
-			let successDialogRef: MatDialogRef<SupplierContactSuccessDialogComponent> =
-				null;
-			let contactSupplierResult: { [key: string]: any } | null = null;
-			dialog
-				.afterClosed()
-				.pipe(
-					filter((result) => !!result),
-					untilDestroyed(this),
-					tap((result) => (contactSupplierResult = result)),
-					tap(
-						() =>
-							(successDialogRef = this.dialog.open(
-								SupplierContactSuccessDialogComponent,
-								{ panelClass: 'rfq-created-pop-up' }
-							))
-					),
-					mergeMap(() => {
-						return successDialogRef.afterClosed();
-					})
-				)
-				.subscribe(({ openChat }) => {
-					this.chatStart(openChat);
-					this._socket.emit('message', {
-						type: 'text',
-						body: contactSupplierResult['moreInformation'],
-						userId: this.product.user,
-						productId: this.product._id,
-						typeRoom: 'product',
+			if (dialog) {
+				let successDialogRef: MatDialogRef<SupplierContactSuccessDialogComponent> =
+					null;
+				let contactSupplierResult: { [key: string]: any } | null = null;
+				dialog
+					.afterClosed()
+					.pipe(
+						filter((result) => !!result),
+						untilDestroyed(this),
+						tap((result) => (contactSupplierResult = result)),
+						tap(
+							() =>
+								(successDialogRef = this.dialog.open(
+									SupplierContactSuccessDialogComponent,
+									{ panelClass: 'rfq-created-pop-up' }
+								))
+						),
+						mergeMap(() => {
+							return successDialogRef.afterClosed();
+						})
+					)
+					.subscribe(({ openChat }) => {
+						this.chatStart(openChat);
+						this._socket.emit('message', {
+							type: 'text',
+							body: contactSupplierResult['moreInformation'],
+							userId: this.product.user,
+							productId: this.product._id,
+							typeRoom: 'product',
+						});
 					});
-				});
+			}
 		}
 	}
 
 	private checkCardForOpenChatPossibility(): void {
 		URLS_WITHOUT_CHATS.forEach((url) => {
 			if (this.router.url.includes(url)) {
+				console.log(this.router.url, url);
 				this.chatPossibilityIsHidden = true;
 			}
 		});

@@ -139,11 +139,6 @@ export class B2bNgxFileComponent implements ControlValueAccessor, OnInit, OnChan
 		fileReader.readAsDataURL(file);
 	}
 
-
-	private openExistingDocument(file: DocumentModel): void {
-
-	}
-
 	public get inputClassName(): string {
 		return `${this.className}`;
 	}

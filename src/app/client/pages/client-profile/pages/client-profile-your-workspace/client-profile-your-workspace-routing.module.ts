@@ -12,7 +12,7 @@ const routes: Routes = [
 			{
 				path: '',
 				pathMatch: 'full',
-				redirectTo: 'sourcing-request',
+				redirectTo: 'b2bmarket',
 			},
 			{
 				path: 'sourcing-request',

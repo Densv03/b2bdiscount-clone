@@ -170,7 +170,7 @@ export class AdminProductListComponent implements OnInit {
 				onClick: (offer: {
 					_id: string;
 					category: { name: any }[];
-					company: { country: any }[];
+					company: { country: any; countActiveUserProducts: number }[];
 					amount: { count: string; unit: { name: string } };
 					updatedAt: any;
 				}) => {
@@ -179,11 +179,11 @@ export class AdminProductListComponent implements OnInit {
 						.pipe(untilDestroyed(this))
 						.subscribe(() => {
 							this.mixpanelService.track('Product declined', {
-								'Product Category': offer.category[0]?.name,
-								"Supplier's Country": getName(offer.company[0]?.country),
+								'Product Category': offer?.category[0]?.name,
+								"Supplier's Country": getName(offer?.company[0]?.country),
 								'Product Count':
-									offer.amount.count + ' ' + offer.amount.unit.name,
-								'Product declined': offer.updatedAt,
+									offer?.company[0]?.countActiveUserProducts || 0,
+								'Product declined': offer?.updatedAt,
 							});
 							this.hotToastService.success('declined');
 							this.marketService.updateProductsByAdmin(this.filteredQueryObj);

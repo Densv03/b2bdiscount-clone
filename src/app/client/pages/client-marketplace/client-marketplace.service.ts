@@ -318,6 +318,15 @@ export class ClientMarketplaceService {
 			});
 	}
 
+	getTotalProductsCount() {
+		let url = `products/my?limit=${1}&offset=${0}`;
+		return this.apiService.get(url).pipe(
+			filter((data) => !!data),
+			map((data: any) => data.totalCount),
+			first()
+		);
+	}
+
 	// public updateArchivedProducts(offset: number = 0): void {
 	// 	this.startLoading();
 	// 	this.apiService
@@ -387,6 +396,7 @@ export class ClientMarketplaceService {
 	): Observable<any> {
 		return this.apiService.get('products/get-products-admin', {
 			params: {
+				hideSold: true,
 				offset: queryObj.offset,
 				limit: queryObj.limit,
 				...otherParams,

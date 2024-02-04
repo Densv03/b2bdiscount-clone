@@ -6,7 +6,7 @@ import { ChatsState, ChatsStore } from './chats.store';
 @Injectable({ providedIn: 'root' })
 export class ChatsQuery extends Query<ChatsState> {
 	public readonly selectChats: Observable<any>;
-	constructor(protected store: ChatsStore) {
+	constructor(protected override store: ChatsStore) {
 		super(store);
 
 		this.selectChats = this.select('chats');

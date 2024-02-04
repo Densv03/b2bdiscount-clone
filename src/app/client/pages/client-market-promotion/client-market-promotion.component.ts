@@ -60,28 +60,6 @@ export class ClientMarketPromotionComponent implements OnInit {
 		el.scrollIntoView({ behavior: 'smooth' });
 	}
 
-	public joinUs(): void {
-		this.user$.pipe(take(1)).subscribe((user) => {
-			if (user) {
-				this.router.navigate(['/profile/your-workspace/b2bmarket']);
-			} else {
-				this.router.navigate(['/auth/register-credentials']);
-				localStorage.setItem('blocked-route', this.router.url);
-			}
-		});
-	}
-
-	public applyAsSupplier(): void {
-		this.user$.pipe(take(1)).subscribe((user) => {
-			if (user) {
-				this.router.navigate(['/b2bmarket/product']);
-			} else {
-				localStorage.setItem('blocked-route', this.router.url);
-				this.router.navigate(['/auth/register-credentials']);
-			}
-		});
-	}
-
 	public sendMessage(formGroup: FormGroup) {
 		if (formGroup.invalid) {
 			return;

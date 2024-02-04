@@ -1,4 +1,6 @@
-export const AdminSidenavData = [
+import { User } from '../../../../src/app/core/models/user/user.model';
+
+const defaultSideNavData = [
 	{
 		label: 'USERS',
 		path: 'users',
@@ -22,6 +24,10 @@ export const AdminSidenavData = [
 	{
 		label: 'MARKET',
 		path: 'b2bmarket',
+	},
+	{
+		label: 'MODERATORS',
+		path: 'moderators',
 	},
 	{
 		label: 'HOMEPAGE',
@@ -48,3 +54,19 @@ export const AdminSidenavData = [
 		path: 'logout',
 	},
 ];
+
+export class AdminSidenavData {
+	static sideNavData = defaultSideNavData;
+	static updateModeratorSidenavData(moderator: User): void {
+		const availableModeratorApi = moderator.moderatorRole.apiTypes.map(
+			(type) => type.name
+		);
+		AdminSidenavData.sideNavData = AdminSidenavData.sideNavData.filter(
+			(item) =>
+				availableModeratorApi.includes(item.label) || item.path === 'logout'
+		);
+	}
+	static restoreSideNavToDefaultState(): void {
+		AdminSidenavData.sideNavData = defaultSideNavData;
+	}
+}

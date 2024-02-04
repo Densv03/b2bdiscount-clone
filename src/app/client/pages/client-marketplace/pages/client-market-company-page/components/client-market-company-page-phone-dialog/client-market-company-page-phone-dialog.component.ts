@@ -43,7 +43,6 @@ export class ClientMarketCompanyPagePhoneDialogComponent {
 	}
 
 	public navigateToLogin(): void {
-		localStorage.setItem('blocked-route', this.router.url);
 		this.router.navigate(['/auth/log-in']);
 	}
 

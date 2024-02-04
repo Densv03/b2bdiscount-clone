@@ -11,7 +11,7 @@
 					class="supplier-btn"
 					b2bNgxButton
 					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-					(click)="applyAsSupplier('/profile/your-workspace/b2bmarket')">
+					(click)="goTo('/profile/your-workspace/b2bmarket')">
 					{{ 'MARKET_PROMO.APPLY_AS_SUPPLIER' | translate }}
 				</button>
 				<button
@@ -150,7 +150,7 @@
 			<button
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-				(click)="applyAsSupplier('/b2bmarket/product')">
+				(click)="goTo('/b2bmarket/product')">
 				{{ 'MARKET_PROMO.ADD_PRODUCT' | translate }}
 			</button>
 		</div>

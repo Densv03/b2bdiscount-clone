@@ -15,29 +15,45 @@ export class MixpanelRepository {
         return this.mixpanel.people;
     }
 
-    handleAction(action: MixpanelPeopleAction, body: any) {
+    handleAction(
+        action: MixpanelPeopleAction,
+        body: any) {
         try {
             switch (action) {
-                case MixpanelPeopleAction.APPEND: return this.append(body);
-                case MixpanelPeopleAction.CLEAR_CHANGES: return this.clearCharges(body);
-                case MixpanelPeopleAction.DELETE_USER: return this.deleteUser(body);
-                case MixpanelPeopleAction.INCREMENT: return this.increment(body);
-                case MixpanelPeopleAction.TRACK_CHARGE: return this.trackCharge(body);
-                case MixpanelPeopleAction.SET: return this.set(body);
-                case MixpanelPeopleAction.UNION: return this.union(body);
-                case MixpanelPeopleAction.SET_ONCE: return this.setOnce(body);
-                case MixpanelPeopleAction.REMOVE: return this.remove(body);
-                case MixpanelPeopleAction.UNSET: return this.unset(body);
+                case MixpanelPeopleAction.APPEND:
+                    return this.append(body);
+                case MixpanelPeopleAction.CLEAR_CHANGES:
+                    return this.clearCharges(body);
+                case MixpanelPeopleAction.DELETE_USER:
+                    return this.deleteUser(body);
+                case MixpanelPeopleAction.INCREMENT:
+                    return this.increment(body);
+                case MixpanelPeopleAction.TRACK_CHARGE:
+                    return this.trackCharge(body);
+                case MixpanelPeopleAction.SET:
+                    return this.set(body);
+                case MixpanelPeopleAction.UNION:
+                    return this.union(body);
+                case MixpanelPeopleAction.SET_ONCE:
+                    return this.setOnce(body);
+                case MixpanelPeopleAction.REMOVE:
+                    return this.remove(body);
+                case MixpanelPeopleAction.UNSET:
+                    return this.unset(body);
             }
         } catch (e) {
+            console.error(e);
             throw e;
         }
     }
 
     public track(body: MixpanelEvent) {
         try {
-            this.mixpanel.track(body.eventName, body.properties);
+            this.mixpanel.track(body.eventName,
+                                body.properties,
+                                this.handleError);
         } catch (e) {
+            console.error(e);
             throw e;
         }
     }

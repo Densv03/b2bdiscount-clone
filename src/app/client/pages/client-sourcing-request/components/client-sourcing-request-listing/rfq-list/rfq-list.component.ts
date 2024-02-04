@@ -53,18 +53,4 @@ export class RfqListComponent implements OnInit {
 		}
 		return '+ Add product';
 	}
-
-	public makeAction(): void {
-		if (this.userService.getUser()?.rootRole.displayName === 'Supplier') {
-			this.router.navigate(['/b2bmarket/product']);
-		} else if (this.userService.getUser()?.rootRole?.displayName === 'Buyer') {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-		} else if (!this.userService.isAuth()) {
-			this.router.navigate(['/auth/register-credentials']);
-		} else {
-			this.router.navigate(['/']);
-		}
-	}
 }

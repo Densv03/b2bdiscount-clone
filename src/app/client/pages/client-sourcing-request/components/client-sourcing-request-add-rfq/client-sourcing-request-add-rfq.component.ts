@@ -305,6 +305,7 @@ export class ClientSourcingRequestAddRfqComponent implements OnInit, OnDestroy {
 						this.mixpanelService.track('New RFQ posted', {
 							'Product Sector': this.selectedCategory,
 							Destination: getName(form.value.paymentShipping.destination),
+							Source: 'Message Form',
 						});
 						this.router.navigate(['/sourcing-request/listing']);
 					},

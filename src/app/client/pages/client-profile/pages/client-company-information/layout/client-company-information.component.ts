@@ -3,52 +3,43 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
-	ElementRef,
 	OnInit,
 	Renderer2,
-	ViewChild,
 } from '@angular/core';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
-import { B2bNgxInputModule, B2bNgxInputThemeEnum } from '@b2b/ngx-input';
-import { B2bNgxSelectModule, B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
+import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
+import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { BehaviorSubject, combineLatest, Observable, of, tap } from 'rxjs';
 import { SourcingRequestService } from '../../../../client-sourcing-request/sourcing-request.service';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, first, map, take } from 'rxjs/operators';
 import {
 	AbstractControl,
 	FormBuilder,
 	FormGroup,
-	ReactiveFormsModule,
 	Validators,
 } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AuthService } from '../../../../../../auth/services/auth/auth.service';
 import { UserService } from '../../../services/user/user.service';
-import { ApiService } from '../../../../../../core/services/api/api.service';
 import { SocialMediaEnum } from '../social-media.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriesService } from '../../../../../services/categories/categories.service';
 import { getFormData } from '../../../../../../core/helpers/function/get-form-data';
-import { PublicCompanyInfoModel } from '../../../../../../core/models/public-company-info.model';
+import {
+	PublicCompanyInfoModel,
+	SocialMedia,
+} from '../../../../../../core/models/public-company-info.model';
 import { socialLink } from '../../../../../../core/helpers/validator/social-link';
 import { siteLink } from '../../../../../../core/helpers/validator/site-link';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { b2bNgxTel } from '../../../../../../core/helpers/validator/b2b-ngx-tel';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { B2bAuthRootRoleInterface } from '../../../../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { B2bNgxButtonModule, B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
-import { CommonModule } from '@angular/common';
-import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
-import { B2bNgxTelModule } from '@b2b/ngx-tel';
-import { B2bNgxRadioModule } from '@b2b/ngx-radio';
-import { B2bNgxLogoModule } from '@b2b/ngx-logo';
-import { B2bNgxFileModule } from '@b2b/ngx-file';
-import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
+import { ActivatedRoute, Router } from '@angular/router';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { MixpanelService } from '../../../../../../core/services/mixpanel/mixpanel.service';
-import { B2bNgxIconModule } from '@b2b/ngx-icon';
-import { TranslateService } from '@ngx-translate/core';
 import { CategoriesPopupComponent } from '../../../../../shared/components/categories-dialog/categories-popup-component/categories-popup.component';
+import { DocumentModel } from 'src/app/core/models/document.model';
+import _ from 'lodash';
 
 export interface SelectItem {
 	id: string;
@@ -119,6 +110,8 @@ export class ClientCompanyInformationComponent
 		this.userService.getUser()?.rootRole?.displayName === 'Buyer' ||
 		this.isAdmin;
 
+	private documents: DocumentModel[] = [];
+	private deletedDocuments: string[] = [];
 	private employeesNumberArr: string[] = [
 		'1-5',
 		'5-10',
@@ -138,23 +131,22 @@ export class ClientCompanyInformationComponent
 	private availableRolesSource: BehaviorSubject<any[]> = new BehaviorSubject<
 		any[]
 	>([]);
+	private removedSocial: SocialMediaEnum[] = [];
 
 	constructor(
 		private readonly fb: FormBuilder,
 		private readonly authService: AuthService,
 		private readonly hotToastService: HotToastService,
-		private readonly translateService: TranslateService,
 		private readonly sourcingRequestService: SourcingRequestService,
 		private readonly userService: UserService,
-		private readonly apiService: ApiService,
 		private readonly dialog: MatDialog,
 		private readonly categoriesService: CategoriesService,
 		private readonly changeDetectorRef: ChangeDetectorRef,
 		private readonly renderer2: Renderer2,
-		private readonly router: Router,
 		private readonly route: ActivatedRoute,
 		private readonly hotToastrService: HotToastService,
-		private readonly mixpanelService: MixpanelService
+		private readonly mixpanelService: MixpanelService,
+		private readonly router: Router
 	) {
 		if (router.getCurrentNavigation()?.extras.state?.['showPopUp']) {
 			hotToastrService.info(
@@ -205,16 +197,33 @@ export class ClientCompanyInformationComponent
 			},
 		];
 		this.socialButtons = [
-			{ type: SocialMediaEnum.fb, icon: 'facebook' },
-			{ type: SocialMediaEnum.linkedin, icon: 'linkedin-blue-big' },
-			{ type: SocialMediaEnum.instagram, icon: 'instagram-colorful' },
-			{ type: SocialMediaEnum.twitter, icon: 'twitter' },
+			{
+				type: SocialMediaEnum.fb,
+				icon: 'facebook',
+			},
+			{
+				type: SocialMediaEnum.linkedin,
+				icon: 'linkedin-blue-big',
+			},
+			{
+				type: SocialMediaEnum.instagram,
+				icon: 'instagram-colorful',
+			},
+			{
+				type: SocialMediaEnum.twitter,
+				icon: 'twitter',
+			},
 		];
+	}
+
+	public get availableRoles$(): Observable<any[]> {
+		return this.availableRolesSource.asObservable() as any;
 	}
 
 	ngOnInit(): void {
 		this.patchContactsToForm();
-		this.updateAvailableRoles();
+		this.getRolesValue();
+		this.checkRoleChanges();
 		this.saveAllRoles();
 	}
 
@@ -240,10 +249,6 @@ export class ClientCompanyInformationComponent
 			});
 	}
 
-	public get availableRoles$(): Observable<any[]> {
-		return this.availableRolesSource.asObservable() as any;
-	}
-
 	public openDocument(document: any) {
 		// this.dialogService.open(ClientOfferDocumentComponent, {
 		// 	data: document,
@@ -262,6 +267,22 @@ export class ClientCompanyInformationComponent
 			this.scrollToTop();
 			return;
 		}
+		const removedSocialNetworks = this.removedSocial.filter(
+			(social) => !form.value.hasOwnProperty(social)
+		);
+		let removedSocialObject = {};
+		if (removedSocialNetworks.length > 0) {
+			removedSocialObject = removedSocialNetworks.reduce(
+				(accumulator, value) => {
+					return {
+						...accumulator,
+						[value]: ' ',
+					};
+				},
+				{}
+			);
+		}
+
 		const documents = form.value.documents?.filter(
 			(document: any) => document instanceof File
 		);
@@ -282,6 +303,7 @@ export class ClientCompanyInformationComponent
 			rootRole: this.rootRoles.find(
 				(rootRole) => rootRole._id === form.value.rootRole
 			),
+			...removedSocialObject,
 		});
 
 		this.sourcingRequestService
@@ -294,7 +316,8 @@ export class ClientCompanyInformationComponent
 					error: 'Company information updating failed',
 				})
 			)
-			.subscribe();
+			.subscribe((company) => this.authService.updateCompany(company));
+
 		if (!this.isAdmin) {
 			const roleId = this.availableRolesSource
 				.getValue()
@@ -351,31 +374,20 @@ export class ClientCompanyInformationComponent
 						e164Number: phoneObj.phoneE164Number,
 					},
 				});
-				this.mixpanelService.track('Company information completed', {
-					'Account Type': this.userService.getUser().rootRole.name,
-				});
-				if (form.value.website) {
-					this.mixpanelService.track('Website Link added', {
-						Link: form.value.website,
-					});
-				}
-				if (
-					form.value.facebook ||
-					form.value.instagram ||
-					form.value.linkedin ||
-					form.value.twitter
-				) {
-					const links = [
-						form.value.facebook,
-						form.value.instagram,
-						form.value.linkedin,
-						form.value.twitter,
-					];
-					this.mixpanelService.track('Social Media Link added', {
-						'Social Media Type': links,
-					});
-				}
+				this.trackWebsiteChange(form);
+				this.trackSocialMediaLinksChange(form);
+				this.trackCompanyChange();
 			});
+
+		if (this.deletedDocuments.length > 0) {
+			this.sourcingRequestService
+				.deleteCompanyDocuments(
+					this.authService.company._id,
+					this.deletedDocuments
+				)
+				.pipe(untilDestroyed(this))
+				.subscribe();
+		}
 	}
 
 	public addSocialControl(type: SocialMediaEnum): void {
@@ -401,6 +413,7 @@ export class ClientCompanyInformationComponent
 			({ name }) => name !== type
 		);
 		this.form.removeControl(type);
+		this.removedSocial.push(type);
 	}
 
 	public addCategory(): void {
@@ -411,6 +424,7 @@ export class ClientCompanyInformationComponent
 
 		this.dialog
 			.open(CategoriesPopupComponent, {
+				panelClass: 'categories-popup',
 				data: {
 					selectedCategories,
 				},
@@ -433,6 +447,66 @@ export class ClientCompanyInformationComponent
 			?.setValue(
 				this.form.get('categories')?.value.filter((item: any) => item !== id)
 			);
+	}
+
+	public removeDocument(name: string): void {
+		if (this.documents.some((el) => el.name === name)) {
+			this.deletedDocuments = this.documents
+				.filter((doc) => doc.name === name)
+				.map((doc) => doc._id);
+		}
+	}
+
+	private trackCompanyChange() {
+		const company = this.initialCompanyData;
+		if (
+			company.companyName &&
+			company.businessType &&
+			company.country &&
+			company.yearOfFoundation &&
+			company.employeesNumber &&
+			company.annualRevenue &&
+			company.companyDescription &&
+			company.phone &&
+			company.address &&
+			company.website &&
+			company.position &&
+			company.role &&
+			company.categories
+		) {
+			setTimeout(() => {
+				this.mixpanelService.track('Company information completed', {
+					'Account Type': this.userService.getUser().rootRole.name,
+				});
+			}, 200);
+		}
+	}
+
+	private trackWebsiteChange(form: any) {
+		if (form.value?.website !== this.initialCompanyData?.website) {
+			this.initialCompanyData.website = form.value.website;
+			this.mixpanelService.track('Website Link added', {
+				Link: form.value.website,
+			});
+		}
+	}
+
+	private trackSocialMediaLinksChange(form: FormGroup) {
+		const oldSocialMediaLinks = _.omitBy(
+			this.initialCompanyData.socialMedia,
+			(v) => _.isUndefined(v) || _.isNull(v) || v === ''
+		);
+		const newSocialMediaLinks = _.pick(form.value, [
+			'facebook',
+			'instagram',
+			'linkedin',
+			'twitter',
+		]);
+		if (!_.isEqual(newSocialMediaLinks, oldSocialMediaLinks)) {
+			this.mixpanelService.track('Social Media Link added', {
+				'Social Media Type': newSocialMediaLinks,
+			});
+		}
 	}
 
 	private createCompanyInformationGroup(): FormGroup {
@@ -500,6 +574,8 @@ export class ClientCompanyInformationComponent
 			categories,
 		});
 
+		this.documents = [...documents];
+
 		if (website?.length) {
 			this.form.get('website')?.markAsTouched();
 		}
@@ -507,7 +583,7 @@ export class ClientCompanyInformationComponent
 
 	private patchSocialMediaControls(socialMedia: any): void {
 		for (const key in socialMedia) {
-			if (Boolean(socialMedia[key])) {
+			if (Boolean(socialMedia[key]) && socialMedia[key] !== ' ') {
 				this.form.addControl(
 					key,
 					this.fb.control(socialMedia[key], [socialLink(), Validators.required])
@@ -534,8 +610,9 @@ export class ClientCompanyInformationComponent
 	private getFoundationYear(): Observable<any> {
 		const yearsArr: string[] = [];
 		const currentYear: number = new Date(Date.now()).getFullYear();
-		for (let i = currentYear; i > currentYear - 50; i--)
+		for (let i = currentYear; i > currentYear - 150; i--) {
 			yearsArr.push(i.toString());
+		}
 		return this.getObservableForSelect(yearsArr);
 	}
 
@@ -580,7 +657,14 @@ export class ClientCompanyInformationComponent
 	}
 
 	private patchContactsToForm(): void {
-		this.patchValueToForm(this.authService.company);
+		if (this.userService.getUser().rootRole?.displayName === 'Buyer') {
+			this.form.removeControl('documents');
+		} else if (
+			this.userService.getUser().rootRole?.displayName === 'Supplier'
+		) {
+			this.form.addControl('documents', this.fb.control([]));
+		}
+
 		if (this.authService.company) {
 			this.patchValueToForm(this.authService.company);
 			this.initialCompanyData = this.authService.company;
@@ -588,6 +672,7 @@ export class ClientCompanyInformationComponent
 			this.authService
 				.getCompany$()
 				.pipe(
+					filter((company) => !!company),
 					first(),
 					map((company) => {
 						this.initialCompanyData = company;
@@ -601,7 +686,9 @@ export class ClientCompanyInformationComponent
 
 	private scrollToTop(): void {
 		const scrollToTop = window.pageYOffset;
-		if (scrollToTop === 0) return;
+		if (scrollToTop === 0) {
+			return;
+		}
 
 		const scrollStep = scrollToTop / 20;
 		const scrollInterval = setInterval(() => {
@@ -617,35 +704,41 @@ export class ClientCompanyInformationComponent
 		}, 15);
 	}
 
-	private updateAvailableRoles(): void {
+	private getRolesValue(): void {
 		if (this.userService.getUser().role.name === 'admin') {
 			this.availableRolesSource.next([this.userService.getUser().role]);
 			return;
 		}
-		const accountTypeSubscription = this.form.get('rootRole')?.valueChanges;
-		const rootRolesObservable = this.authService.getRootRoles();
-		combineLatest([accountTypeSubscription, rootRolesObservable])
-			.pipe(filter((data: any) => !!(data[0] && data[1]?.length)))
-			.subscribe(
-				([accountType, rootRoles]: [string, B2bAuthRootRoleInterface[]]) => {
-					const availableRoles = rootRoles.find(
-						(rootRole) => rootRole.displayName === accountType
-					)!.subRoles;
-					this.availableRolesSource.next(availableRoles);
-					if (
-						!this.availableRolesSource
-							.getValue()
-							.some((role) => this.form.value.businessType === role.id)
-					) {
-						this.form.get('businessType')?.reset();
-					}
-					if (this.form.get('documents') && accountType === 'Buyer') {
-						this.form.removeControl('documents');
-					} else if (accountType === 'Supplier') {
-						this.form.addControl('documents', this.fb.control([]));
-					}
+
+		this.authService
+			.getRootRoles()
+			.pipe(
+				filter((rootRoles) => rootRoles.length > 0),
+				take(1),
+				untilDestroyed(this)
+			)
+			.subscribe((rootRoles) => {
+				const availableRoles = rootRoles.find(
+					(rootRole: { displayName: string }) =>
+						rootRole.displayName === this.form.value.rootRole
+				)?.subRoles;
+				this.availableRolesSource.next(availableRoles);
+				if (
+					!this.availableRolesSource
+						.getValue()
+						.some((role) => this.form.value.businessType === role.id)
+				) {
+					this.form.get('businessType')?.reset();
 				}
-			);
+				if (
+					this.form.get('documents') &&
+					this.form.value.rootRole === 'Buyer'
+				) {
+					this.form.removeControl('documents');
+				} else if (this.form.value.rootRole === 'Supplier') {
+					this.form.addControl('documents', this.fb.control([]));
+				}
+			});
 	}
 
 	private saveAllRoles(): void {
@@ -653,5 +746,18 @@ export class ClientCompanyInformationComponent
 			.getRootRoles()
 			.pipe(untilDestroyed(this))
 			.subscribe((roles) => (this.rootRoles = roles));
+	}
+
+	private checkRoleChanges(): void {
+		this.form.controls['rootRole'].valueChanges
+			.pipe(untilDestroyed(this))
+			.subscribe((rootRole) => {
+				if (this.form.get('documents') && rootRole === 'Buyer') {
+					this.form.removeControl('documents');
+				} else if (rootRole === 'Supplier') {
+					this.form.addControl('documents', this.fb.control([]));
+				}
+				this.getRolesValue();
+			});
 	}
 }

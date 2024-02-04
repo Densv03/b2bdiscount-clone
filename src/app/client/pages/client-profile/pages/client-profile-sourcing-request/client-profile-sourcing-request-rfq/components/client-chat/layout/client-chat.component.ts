@@ -122,8 +122,9 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 						const author =
 							displayInfo?.fullName ||
 							displayInfo?.personName ||
-							`${this.translateService.instant('CHAT.SELLER')} of ${chatInfo
-								.offer?.title}`;
+							`${this.translateService.instant('CHAT.SELLER')} of ${
+								chatInfo.offer?.title
+							}`;
 
 						return {
 							...chatInfo,

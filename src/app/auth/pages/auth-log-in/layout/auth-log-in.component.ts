@@ -157,9 +157,12 @@ export class AuthLogInComponent {
 						'Company Name': val.company,
 						'Auth Method': 'Email',
 					};
-					this.mixpanelService.logIn(mixpanel, 'Login completed');
-					isRecovered && this.showDialog();
-					if (localStorage.getItem('blocked-route')) {
+					this.mixpanelService.logIn(mixpanel);
+					this.mixpanelService.track('Login completed', mixpanel);
+					if (
+						localStorage.getItem('blocked-route') &&
+						(val.rootRole?.name === 'buyer' || 'supplier')
+					) {
 						this.router.navigate([localStorage.getItem('blocked-route')]);
 						localStorage.removeItem('blocked-route');
 					} else {

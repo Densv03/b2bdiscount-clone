@@ -122,6 +122,16 @@ export class SourcingRequestService {
 		return this.apiService.post('tradeBid/update-company-data', body);
 	}
 
+	public deleteCompanyDocuments(
+		companyId: string,
+		documentIds: string[]
+	): Observable<ArrayBuffer> {
+		return this.apiService.delete(
+			`tradeBid/company/${companyId}/files/delete`,
+			{ body: { documents: documentIds } }
+		);
+	}
+
 	public updateCompanyDataAdmin(id: string, body: any): Observable<any> {
 		return this.apiService.put('tradeBid/update-company-data-admin', {
 			...body,

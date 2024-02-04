@@ -124,8 +124,9 @@ export class AuthRegisterIndividualAccountSecondStepComponent
 				.pipe(
 					catchError((er) => {
 						this.hotToastrService.show(
-							`This email ${formGroup.get('securityData')?.get('email')
-								?.value} is already registered.`,
+							`This email ${
+								formGroup.get('securityData')?.get('email')?.value
+							} is already registered.`,
 							{
 								dismissible: true,
 								style: {

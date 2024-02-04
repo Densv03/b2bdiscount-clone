@@ -8,6 +8,8 @@ import {
 } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateRfqDialogComponent } from '../../../../client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 
 @Component({
 	selector: 'b2b-client-profile-sourcing-request',
@@ -20,7 +22,10 @@ export class ClientProfileSourcingRequestComponent implements OnInit {
 		''
 	);
 
-	constructor(private router: Router) {
+	constructor(
+		private readonly router: Router,
+		private readonly dialog: MatDialog
+	) {
 		const arr = this.router.url.split('/');
 		this.activeBtnType.next(arr[arr.length - 1]);
 	}
@@ -33,6 +38,12 @@ export class ClientProfileSourcingRequestComponent implements OnInit {
 					? this.activeBtnType.next('my-quotation')
 					: this.activeBtnType.next('my-rfq');
 			});
+	}
+
+	public openCreateRfqDialog(): void {
+		this.dialog.open(CreateRfqDialogComponent, {
+			panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
+		});
 	}
 
 	public getActiveBtnType(): string {

@@ -4,6 +4,7 @@ import { UserService } from 'src/app/client/pages/client-profile/services/user/u
 import { MatDialog } from '@angular/material/dialog';
 import { CreateRfqDialogComponent } from '../../../client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 import { Router } from '@angular/router';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
 
 @Component({
 	selector: 'b2b-client-unclaimed-cargo-grid-banner',
@@ -14,9 +15,8 @@ export class ClientLatestOffersGridBannerComponent implements OnInit {
 	public b2bNgxButtonTheme = B2bNgxButtonThemeEnum;
 
 	constructor(
-		private userService: UserService,
-		private dialog: MatDialog,
-		private router: Router
+		private readonly userService: UserService,
+		private readonly dialogService: DialogService
 	) {}
 
 	ngOnInit(): void {}
@@ -35,18 +35,12 @@ export class ClientLatestOffersGridBannerComponent implements OnInit {
 	}
 
 	public makeAction(): void {
-		if (this.userService.getUser()?.rootRole?.displayName === 'Buyer') {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-		} else if (
-			this.userService.getUser()?.rootRole?.displayName === 'Supplier'
-		) {
-			this.router.navigate(['/offer']);
-		} else if (!this.userService.isAuth()) {
-			this.router.navigate(['/auth/register-credentials']);
-		} else {
-			this.router.navigate(['/']);
-		}
+		this.dialogService.handleCustomDialogAndRole(
+			'/offer',
+			'buyer',
+			'/offer',
+			CreateRfqDialogComponent,
+			{ panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'] }
+		);
 	}
 }

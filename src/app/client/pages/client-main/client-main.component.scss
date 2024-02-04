@@ -827,6 +827,7 @@
 					font-weight: 500;
 					line-height: 18px;
 					color: #0f0f11;
+					max-width: 200px;
 					@include breakpoint('5') {
 						max-width: 125px;
 					}

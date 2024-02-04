@@ -88,33 +88,17 @@ export class ClientHomeComponent implements OnInit {
 		this.addMetaTags();
 	}
 	navigateToMarketProfile(): void {
-		if (
-			this.userService.getUser() &&
-			this.userService.getUser().rootRole.name === 'buyer'
-		) {
+		if (this.userService.getUser().rootRole.name === 'buyer') {
 			this.router.navigate(['/profile/your-account/company-information'], {
 				queryParams: { scrollTo: 'accountType' },
 			});
-		} else if (this.userService.getUser()) {
+		} else {
 			this.router.navigate(['/profile/your-workspace/b2bmarket']);
-		} else this.router.navigate(['/auth/register-credentials']);
+		}
 	}
 
 	public getSolutionsLink(): string {
 		return this._usersService.isAuth() ? '#solutions' : '/auth/log-in';
-	}
-
-	public redirect($event: MouseEvent, link: string): void {
-		$event.stopPropagation();
-		if (this.isAuth()) {
-			this.router.navigate([link]).then(() => {
-				window.location.reload();
-			});
-		} else {
-			this.router.navigate(['/auth/register-credentials']).then(() => {
-				window.location.reload();
-			});
-		}
 	}
 
 	public subscribeOnCategories(): void {

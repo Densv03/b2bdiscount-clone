@@ -5,6 +5,7 @@ import { Offer } from '../offer.model';
 import { Logo } from './logo.model';
 import { B2bAuthRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
 import { B2bAuthRootRoleInterface } from '../../../../../projects/shared/src/interfaces/b2b-auth-root-role.interface';
+import { ModeratorRoleModel } from '../../../../../admin/src/app/pages/admin-moderators/models/moderator-role.model';
 
 export interface User {
 	rfqQuotes: number;
@@ -14,6 +15,7 @@ export interface User {
 	// TODO: make enum for countries
 	country: string;
 	deleteAccount: boolean;
+	moderatorRole?: ModeratorRoleModel;
 	email: string;
 	emailConfirmed: boolean;
 	favourites: Offer[];

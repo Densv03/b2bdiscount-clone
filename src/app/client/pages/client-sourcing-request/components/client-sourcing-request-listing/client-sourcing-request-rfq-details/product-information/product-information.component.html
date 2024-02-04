@@ -1,31 +1,56 @@
-<div class="product-information">
-	<div class="product-information__container">
-		<h2>The buyer is looking for to buy:</h2>
-		<div class="product-information__container__table">
-			<div class="product-information__container__table__left">
-				<p>product name:</p>
-				<p>product category:</p>
-				<p>purpose:</p>
-				<p>delivery terms:</p>
-				<p>quantity:</p>
-				<p>destination:</p>
-				<p>payment method:</p>
+<div *ngIf="rfqInfo" class="product-information">
+	<h2 class="product-information__title">The buyer is looking for to buy:</h2>
+	<div class="divider"></div>
+	<div class="product-information__body">
+		<h1 class="product-information__name">{{ rfqInfo.productName }}</h1>
+		<div class="product-information__list">
+			<div class="product-information__item">
+				<div class="subtitle">Product sector</div>
+				<div
+					*ngIf="
+						getCategoryNameById$(rfqInfo.category) | async as category;
+						else emptyValue
+					"
+					class="value">
+					{{ category?.name }}
+				</div>
 			</div>
-
-			<div class="product-information__container__table__right">
-				<h1 class="title">{{ rfqInfo.productName }}</h1>
-				<p>{{ getCategoryNameById(rfqInfo.category) | async }}</p>
-				<p>{{ rfqInfo.thePurposeOfSourcing }}</p>
-				<p>{{ rfqInfo.tradeTerms }}</p>
-				<p>{{ rfqInfo.quantity + ' ' + measureName }}</p>
-				<p>{{ getCountryNameByCode(rfqInfo.destination?.to) }}</p>
-				<p>{{ rfqInfo.paymentMethod }}</p>
+			<div class="product-information__item">
+				<div class="subtitle">Product category</div>
+				<div
+					*ngIf="
+						getCategoryNameById$(rfqInfo.category) | async as category;
+						else emptyValue
+					"
+					class="value">
+					{{ category.children[0]?.name }}
+				</div>
+			</div>
+			<div class="product-information__item">
+				<div class="subtitle">Terms of delivery</div>
+				<div class="value">{{ rfqInfo.tradeTerms }}</div>
+			</div>
+			<div class="product-information__item">
+				<div class="subtitle">Delivery location</div>
+				<div class="value">
+					{{ getCountryNameByCode(rfqInfo.destination.to) }}
+				</div>
+			</div>
+			<div
+				*ngIf="rfqInfo.amount.count !== 'NaN' && measureName"
+				class="product-information__item">
+				<div class="subtitle">Required amount</div>
+				<div class="value">{{ rfqInfo.amount.count }} {{ measureName }}</div>
 			</div>
 		</div>
 	</div>
-
-	<div class="product-information__message">
-		<h2>Message:</h2>
-		<p>{{ rfqInfo.moreInformation }}</p>
+	<div class="divider"></div>
+	<div class="product-information__footer">
+		<div class="subtitle">Sourcing requirements</div>
+		<div class="product-information__message">
+			{{ rfqInfo.moreInformation }}
+		</div>
 	</div>
 </div>
+
+<ng-template #emptyValue>-</ng-template>

@@ -36,8 +36,6 @@ export class AuthResetPasswordModalComponent {
 	public messageSent = false;
 
 	constructor(
-		// private readonly _ngxSmartModalService: NgxSmartModalService,
-		private readonly _formBuilder: FormBuilder,
 		private readonly _apiService: ApiService,
 		private readonly _hotToastrService: HotToastService,
 		private readonly _changeDetectorRef: ChangeDetectorRef,
@@ -76,10 +74,5 @@ export class AuthResetPasswordModalComponent {
 					this._changeDetectorRef.detectChanges();
 				}
 			);
-	}
-
-	public closeModal() {
-		// const modal = this._ngxSmartModalService.getModal("createContactModal");
-		// modal.close();
 	}
 }

@@ -47,8 +47,9 @@
             <p>{{ $any(item)[bindLabel] }}</p>
         </div>
 
-        <div class="multiple-more" *ngIf="items.length > 1">
+        <div class="multiple-more" *ngIf="items.length > 1;">
             <p>{{ items.length - 1 }} more...</p>
         </div>
     </ng-template>
+
 </ng-select>

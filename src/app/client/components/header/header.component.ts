@@ -341,9 +341,10 @@ export class HeaderComponent implements OnInit {
 	}
 
 	private checkIsMarketPage(url: string): boolean {
+		let u = url.replace(/\?.*$/, '');
 		return (
-			(url.includes('market') || url.includes('sourcing-request')) &&
-			!url.includes('profile')
+			(u.includes('market') || u.includes('sourcing-request')) &&
+			!u.includes('profile')
 		);
 	}
 
@@ -358,10 +359,14 @@ export class HeaderComponent implements OnInit {
 				untilDestroyed(this)
 			)
 			.subscribe((data: any) => {
-				const isPageAuth = data['url'].includes('auth');
+				const url = data['url'].replace(/\?.*$/, '');
+				const isPageAuth = url.includes('auth') || url.includes('email-verify');
 				this.isAuthPageSource.next(isPageAuth);
 			});
-		this.isAuthPageSource.next(this.router.url.includes('auth'));
+		const url = this.router.url.replace(/\?.*$/, '');
+		this.isAuthPageSource.next(
+			url.includes('auth') || url.includes('email-verify')
+		);
 	}
 
 	private isSearchVisibleObserve(): void {

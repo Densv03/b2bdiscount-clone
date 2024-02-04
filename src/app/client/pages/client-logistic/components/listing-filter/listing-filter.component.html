@@ -33,12 +33,11 @@
 				</div>
 				<div class="air-slider">
 					<mat-slider
-						[(ngModel)]="shipInputValue"
 						[min]="shipment.min"
 						(input)="onSliderInput($event)"
 						[max]="shipment.max"
 						[step]="shipment.step">
-						<input matSliderThumb />
+						<input matSliderThumb [(ngModel)]="shipInputValue" />
 					</mat-slider>
 				</div>
 			</div>

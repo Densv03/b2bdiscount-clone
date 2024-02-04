@@ -90,7 +90,7 @@ export class ClientFooterComponent {
 		return [
 			{
 				icon: 'fb',
-				href: 'https://www.facebook.com/b2b.discount',
+				href: 'https://www.facebook.com/globy.platform',
 			},
 			{
 				icon: 'twitter',
@@ -98,7 +98,7 @@ export class ClientFooterComponent {
 			},
 			{
 				icon: 'linkedin',
-				href: 'https://www.linkedin.com/company/globy-platform',
+				href: 'https://www.linkedin.com/company/globy-b2bplatform',
 			},
 			{
 				icon: 'youtube',

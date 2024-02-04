@@ -17,12 +17,11 @@ import { MatDialog } from '@angular/material/dialog';
 export class AdminSupplierProductListComponent implements OnInit {
 	public marketplaceProducts$ =
 		this.clientMarketplaceService.marketplaceProducts$;
-	public productsLimit: number = this.clientMarketplaceService.PRODUCTS_LIMIT;
 	public productsTotalLength$: Observable<any> =
 		this.clientMarketplaceService.marketplaceProductsLength$;
 	public menuOptions = this.getMenuOptions();
-	private filteredQueryObj: PaginationParamsModel = {
-		limit: this.productsLimit,
+	public filteredQueryObj: PaginationParamsModel = {
+		limit: 10,
 		offset: 0,
 	};
 
@@ -43,10 +42,12 @@ export class AdminSupplierProductListComponent implements OnInit {
 
 	public togglePage(pageNumber: number): void {
 		this.filteredQueryObj = {
-			...this.filteredQueryObj,
-			offset: (pageNumber - 1) * this.productsLimit,
+			limit: 10,
+			offset: (pageNumber - 1) * this.filteredQueryObj.limit,
 		};
-		this.clientMarketplaceService.updateProductsByAdmin(this.filteredQueryObj);
+		this.clientMarketplaceService.updateProductsByAdmin(this.filteredQueryObj, {
+			supplierId: this.route.snapshot.params['id'],
+		});
 	}
 
 	public redirectToProductDetails(product: any): void {
@@ -58,6 +59,7 @@ export class AdminSupplierProductListComponent implements OnInit {
 			},
 		});
 	}
+
 	private getMenuOptions() {
 		return [
 			{

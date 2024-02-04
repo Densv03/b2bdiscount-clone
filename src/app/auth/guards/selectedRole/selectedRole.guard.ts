@@ -24,6 +24,7 @@ export class SelectedRoleGuard {
 				[this.b2bNgxLinkService.getStaticLink('/auth/register-credentials')],
 				route.queryParams
 			);
+			localStorage.setItem('blocked-route', this._router.url);
 		}
 
 		return !!role;

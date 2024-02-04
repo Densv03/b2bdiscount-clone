@@ -2,11 +2,8 @@ import {
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
-	ElementRef,
 	EventEmitter,
-	OnInit,
 	Output,
-	ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -58,8 +55,8 @@ export class ListingFilterComponent implements AfterViewInit {
 	}
 
 	onSliderInput(event: any) {
-		this.sliderValueSubject.next(event.value);
-		this.shipInputValue = event.value;
+		this.sliderValueSubject.next(event.target.value);
+		this.shipInputValue = event.target.value;
 	}
 
 	public chooseContainerType(containerType: ContainerType): void {

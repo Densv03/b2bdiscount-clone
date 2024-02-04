@@ -156,7 +156,7 @@
 								formGroup.controls['specifications'].value?.length > 60
 									? 0
 									: 60 -
-									  (formGroup.controls['specifications'].value?.length || 0)
+										(formGroup.controls['specifications'].value?.length || 0)
 							}}
 						</span>
 
@@ -536,6 +536,7 @@
 								class="two-in-row"
 								formControlName="country"
 								placeholder="Select country"
+								[hideCountriesWithoutPorts]="true"
 								(closeSelect)="selectCountry(i)"
 								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY">
 								<label class="input-label"> Country </label>

@@ -74,9 +74,9 @@ export class AdminBillingService {
 		GetPaymentPlanResponse[]
 	> {
 		return this.apiService
-			.get<GetPaymentPlanResponse[]>(
-				`authorize-net/get-payment-plan?type=quotes`
-			)
+			.get<
+				GetPaymentPlanResponse[]
+			>(`authorize-net/get-payment-plan?type=quotes`)
 			.pipe(
 				map((data) => {
 					if (data.length > 3) {

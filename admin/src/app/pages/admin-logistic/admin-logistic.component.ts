@@ -236,7 +236,7 @@ export class AdminLogisticComponent implements OnInit {
 											!!city.ports && city.ports.length > 0
 									)
 									.map((el: { ports: any }) => el.ports)
-						  )
+							)
 						: data.data.map((data: { cities: any[] }) =>
 								data.cities
 									.filter(
@@ -244,7 +244,7 @@ export class AdminLogisticComponent implements OnInit {
 											!!city.airports && city.airports.length > 0
 									)
 									.map((el: { airports: any }) => el.airports)
-						  );
+							);
 				this.itemOptions = items.flatMap((subArray: any[]) => subArray.flat());
 			});
 	}

@@ -45,7 +45,7 @@
 		<button
 			*ngIf="getActiveBtnType() === 'my-rfq'"
 			b2bNgxButton
-			routerLink="/sourcing-request/add-rfq"
+			(click)="openCreateRfqDialog()"
 			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
 			class="add-rfq-btn">
 			Add new Rfq

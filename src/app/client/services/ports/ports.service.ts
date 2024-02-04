@@ -2,15 +2,20 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 import { PortsStore } from '../../state/ports/ports.store';
 import { PortsQuery } from '../../state/ports/ports.query';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { take, tap } from 'rxjs/operators';
+import { first, take, tap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Injectable({
 	providedIn: 'root',
 })
 export class PortsService {
+	private countriesWithPortsSource: BehaviorSubject<string[]> =
+		new BehaviorSubject<string[]>([]);
+	public countriesWithPorts: Observable<string[]> =
+		this.countriesWithPortsSource.asObservable();
+
 	constructor(
 		private readonly apiService: ApiService,
 		private readonly portsStore: PortsStore,
@@ -30,6 +35,23 @@ export class PortsService {
 			);
 		} else {
 			return this.portsQuery.selectPorts$;
+		}
+	}
+
+	public async getCountriesWithPorts(): Promise<string[]> {
+		if (this.countriesWithPortsSource.getValue().length) {
+			return this.countriesWithPortsSource.getValue();
+		}
+
+		try {
+			const countries = await this.apiService
+				.get<string[]>('get-port-countries')
+				.pipe(first())
+				.toPromise();
+			this.countriesWithPortsSource.next(countries);
+			return countries;
+		} catch (error) {
+			throw error;
 		}
 	}
 }

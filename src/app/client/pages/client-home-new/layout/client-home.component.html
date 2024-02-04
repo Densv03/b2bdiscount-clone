@@ -22,11 +22,7 @@
 					</button>
 					<button
 						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-						[routerLink]="
-							(user$ | async)
-								? '/profile/your-workspace/b2bmarket'
-								: '/auth/register-credentials'
-						"
+						[routerLink]="'/profile/your-workspace/b2bmarket'"
 						b2bNgxButton
 						class="home-btn"
 						id="header-get-started-buyer">

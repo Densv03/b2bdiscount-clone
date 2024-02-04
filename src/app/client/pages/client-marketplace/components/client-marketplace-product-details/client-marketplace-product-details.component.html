@@ -183,7 +183,7 @@
 								[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
 								[routerLink]="'/b2bmarket/supplier-listing/' + product.user"
 								class="company-products-count"
-								>{{ companyInfo.countActiveUserProducts }} products total</a
+								>{{ companyInfo?.countActiveUserProducts }} products total</a
 							>
 
 							<div class="flex-gap align-items-center">
@@ -221,14 +221,18 @@
 						<div class="btn-row">
 							<a
 								(click)="openPhoneModal()"
-								[class.w-100]="!companyInfo?.website"
-								[class.text-center]="!companyInfo?.website">
+								[class.w-100]="
+									!(companyInfo?.website && containsDot(companyInfo?.website))
+								"
+								[class.text-center]="
+									!(companyInfo?.website && containsDot(companyInfo?.website))
+								">
 								Phone
 							</a>
 
 							<a
-								*ngIf="companyInfo.website"
-								[href]="companyInfo.website"
+								*ngIf="companyInfo.website && containsDot(companyInfo.website)"
+								[href]="getFullUrl(companyInfo.website)"
 								target="_blank"
 								rel="nofollow">
 								Website

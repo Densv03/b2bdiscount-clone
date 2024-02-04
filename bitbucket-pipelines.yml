@@ -1,29 +1,35 @@
-image: node:16
+image: node:18
 
-
+#definitions:
+#  caches:
+#    pnpm: $BITBUCKET_CLONE_DIR/.pnpm-store
 
 pipelines:
   branches:
     dev:
-      - step:
-          name: Installing dependencies
-          size: 2x
-          caches:
-            - node
-          script:
-            - echo "Installing dependencies..."
-            - npm install --legacy-peer-deps
-            - echo "Building Angular app..."
-            - npm run build:ssr
-            - echo "Successfully built"
-          artifacts:
-            - dist/**
+#      - step:
+#          name: Installing dependencies
+#          size: 2x
+#          caches:
+#            - pnpm
+#            - node
+#          script:
+#            - echo "Enable pnpm"
+#            - corepack enable
+#            - corepack prepare pnpm@latest-8 --activate
+#            - echo "Installing dependencies..."
+#            - pnpm install
+#            - echo "Building Angular app..."
+#            - pnpm run build:ssr
+#            - echo "Successfully built"
+#          artifacts:
+#            - dist/**
       - step:
           name: Deploy to Server
           deployment: dev
           script:
             - echo "Setting up SSH..."
-            - scp -r -P 22 dist/ discount@159.89.4.114:/home/discount/
+            # - scp -r -P 22 dist/ discount@159.89.4.114:/home/discount/
             - ssh discount@159.89.4.114 'sh build-fe.sh'
             - echo "DEPLOYED"
 

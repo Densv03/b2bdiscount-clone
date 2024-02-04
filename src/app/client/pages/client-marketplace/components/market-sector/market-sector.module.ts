@@ -13,6 +13,7 @@ import { MarketProductItemComponent } from './components/market-product-item/mar
 import { B2bNgxInputModule } from '@b2b/ngx-input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @NgModule({
 	declarations: [
@@ -31,6 +32,7 @@ import { B2bNgxButtonModule } from '@b2b/ngx-button';
 		B2bNgxInputModule,
 		ReactiveFormsModule,
 		B2bNgxButtonModule,
+		PageLoaderModule,
 	],
 })
 export class MarketSectorModule {}

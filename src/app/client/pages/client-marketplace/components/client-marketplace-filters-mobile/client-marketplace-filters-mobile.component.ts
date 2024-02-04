@@ -15,6 +15,8 @@ import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { InitialCategoryState } from '../../shared/models/initial-category-state.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { getName } from 'country-list';
+import { ActivatedRoute } from '@angular/router';
+import { NavigationOption } from '../../layout/client-marketplace-listing.component';
 
 @Component({
 	selector: 'b2b-client-marketplace-filters-mobile',
@@ -47,13 +49,16 @@ export class ClientMarketplaceFiltersMobileComponent
 	public onChange: any = () => {};
 	public onTouched: any = () => {};
 
-	constructor(private changeDetectorRef: ChangeDetectorRef) {}
+	constructor(
+		private changeDetectorRef: ChangeDetectorRef,
+		private route: ActivatedRoute
+	) {}
 
 	public getCountryName(countryCode: string): string {
 		if (!countryCode) {
 			return '';
 		}
-		return getName(countryCode);
+		return getName(countryCode.toUpperCase());
 	}
 
 	public ngAfterViewInit(): void {
@@ -97,6 +102,45 @@ export class ClientMarketplaceFiltersMobileComponent
 		return (
 			option.name === filtersArr[filterIndex].selectedOption.getValue().name
 		);
+	}
+
+	public getNavigationByOption(
+		option: any,
+		hiddenLabel: string
+	): NavigationOption {
+		switch (hiddenLabel) {
+			case 'rootCategory':
+				return {
+					routerLink: ['/b2bmarket/listing', option.path],
+				};
+			case 'categories':
+				return {
+					routerLink: [option.path],
+					queryParamsHandling: 'merge',
+					relativeTo: this.route,
+				};
+			case 'country[]':
+				return {
+					routerLink: [],
+					queryParams: { 'country[]': option.name },
+					queryParamsHandling: 'merge',
+					relativeTo: this.route,
+				};
+			case 'type':
+				return {
+					routerLink: [],
+					queryParams: { type: option.name },
+					queryParamsHandling: 'merge',
+					relativeTo: this.route,
+				};
+			default:
+				return {
+					routerLink: [],
+					queryParams: {},
+					queryParamsHandling: null,
+					relativeTo: null,
+				};
+		}
 	}
 
 	private initTrackingBackdropClick(): void {

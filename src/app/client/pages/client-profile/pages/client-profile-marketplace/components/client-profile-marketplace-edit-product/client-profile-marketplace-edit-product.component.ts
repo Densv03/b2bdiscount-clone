@@ -10,6 +10,7 @@ import {
 	BehaviorSubject,
 	combineLatest,
 	filter,
+	firstValueFrom,
 	Observable,
 	of,
 	pairwise,
@@ -185,14 +186,17 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 					error: 'Archiving failed',
 				})
 			)
-			.subscribe(() => {
+			.subscribe(async () => {
 				this.mixpanelService.track('Product archived', {
 					'Product Category': this.level2Categories.find(
-						(category) => category._id === this.formGroup.value.category
-					).name,
+						(category) => category._id === this.formGroup.value?.category
+					)?.name,
 					"Supplier's Country": getName(this.suppliersCountry),
-					'Product Count': this.formGroup.value.amount,
-					'Archivation Date': Date(),
+					'Product Count':
+						(await firstValueFrom(
+							this.clientMarketplaceService.getTotalProductsCount()
+						)) || 1,
+					'Archivation Date': new Date(),
 				});
 				// this.clientMarketplaceService.updateMarketplaceProducts(this.filteredQueryObj);
 				this.router.navigate(['profile/your-workspace/b2bmarket']);
@@ -225,13 +229,22 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		} else {
 			this.updateProductByUser();
 		}
+		this.trackEditEvent();
+	}
+
+	private async trackEditEvent() {
 		this.mixpanelService.track('Product edited', {
 			'Product Category': this.level2Categories.find(
 				(category) => category._id === this.formGroup.value.category
 			).name,
+			'Product URL': `https://globy.com/b2bmarket/listing/products/${this.productId}`,
+			'Product Id': this.productId,
 			"Supplier's Country": getName(this.suppliersCountry),
-			'Product Count': this.formGroup.value.amount,
-			'Edit Date': Date(),
+			'Product Count':
+				(await firstValueFrom(
+					this.clientMarketplaceService.getTotalProductsCount()
+				)) || 1,
+			'Edit Date': new Date(),
 		});
 	}
 
@@ -294,8 +307,8 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 
 	public addField(): void {
 		const specificationList = this.formBuilder.group({
-			specification: ['', onlyLatinAndNumber()],
-			item: ['', onlyLatinAndNumber()],
+			specification: ['', onlyLatinAndNumberAndSymbols()],
+			item: ['', onlyLatinAndNumberAndSymbols()],
 		});
 		this.specificationList.push(specificationList);
 	}
@@ -856,7 +869,7 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 				? this.clientMarketplaceService.deletePhotosFromProduct(
 						this.productId,
 						this.removedFilesId
-				  )
+					)
 				: of(null);
 
 		this.clientMarketplaceService
@@ -947,7 +960,10 @@ export class ClientProfileMarketplaceEditProductComponent implements OnInit {
 		this.portsService
 			.getPorts(country)
 			.pipe(untilDestroyed(this))
-			.subscribe((ports) => (this.portsItems[index] = ports));
+			.subscribe((ports) => {
+				this.portsItems[index] = ports;
+				this.changeDetectorRef.detectChanges();
+			});
 	}
 
 	private getPorts(

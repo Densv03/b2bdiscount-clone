@@ -42,7 +42,7 @@ export class MarketProductItemComponent implements OnInit {
 				? this.product.photos?.reduce((acc: any[], val: any) => {
 						acc[val?.serialNumber] = val?.lg;
 						return acc.filter((el) => !!el);
-				  }, [])
+					}, [])
 				: this.product?.photos
 						?.filter((el: Photo) => el?.lg)
 						?.map((el: Photo) => el?.lg);

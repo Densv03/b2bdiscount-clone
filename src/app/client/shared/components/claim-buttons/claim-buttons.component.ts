@@ -9,6 +9,7 @@ import { NavigationStart, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ClaimButtonsClassesEnum } from '../../enums/claim-buttons-classes.enum';
 import { MixpanelService } from '../../../../core/services/mixpanel/mixpanel.service';
+import { DialogService } from '../../../../core/services/dialog-service/dialog.service';
 
 @UntilDestroy()
 @Component({
@@ -40,7 +41,8 @@ export class ClaimButtonsComponent implements OnInit {
 		private readonly userService: UserService,
 		private readonly dialog: MatDialog,
 		private readonly router: Router,
-		private readonly mixpanelService: MixpanelService
+		private readonly mixpanelService: MixpanelService,
+		private readonly dialogService: DialogService
 	) {}
 
 	ngOnInit(): void {
@@ -72,22 +74,19 @@ export class ClaimButtonsComponent implements OnInit {
 	}
 
 	public openCreateRfqDialog(): void {
-		if (this.userService.getUser()) {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-			this.track();
-		} else {
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/register-credentials']);
-		}
+		this.track();
+		this.dialogService.openDialog(CreateRfqDialogComponent, {
+			panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
+		});
 	}
 
 	public track(): void {
-		this.mixpanelService.track('button in header clicked', {
-			URL: location.host + this.router.url,
-			'Account Type': this.accountType,
-		});
+		if (this.userService.getUser()) {
+			this.mixpanelService.track('button in header clicked', {
+				URL: location.host + this.router.url,
+				'Account Type': this.accountType,
+			});
+		}
 	}
 
 	private checkUser(): void {

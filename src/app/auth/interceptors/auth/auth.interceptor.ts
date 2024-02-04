@@ -44,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor {
 				if (error.error?.code && error.error.code === 1012) {
 					return throwError(error);
 				}
-				if (error.status === 401 && !request.url.includes('products')) {
+				if (error.status === 401 && !request?.url?.includes('products')) {
 					if (
 						error.error.message === 'User authorization token is not up to date'
 					) {
@@ -61,8 +61,8 @@ export class AuthInterceptor implements HttpInterceptor {
 						// });
 					}
 				}
-				const url = error.url?.toLowerCase();
-				if (excludedUrls.some((excludedUrl) => url.includes(excludedUrl))) {
+				const url = error?.url?.toLowerCase();
+				if (excludedUrls.some((excludedUrl) => url?.includes(excludedUrl))) {
 					return throwError(error);
 				}
 				return throwError(error);

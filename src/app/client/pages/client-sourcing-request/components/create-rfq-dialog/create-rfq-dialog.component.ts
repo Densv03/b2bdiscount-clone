@@ -59,11 +59,11 @@ export class CreateRfqDialogComponent implements OnInit {
 		productName: new FormControl(null, Validators.required),
 		productSector: new FormControl(null, Validators.required),
 		category: new FormControl(null, Validators.required),
-		amount: new FormControl(null, [Validators.required, onlyNumber()]),
+		quantity: new FormControl(null, [Validators.required, onlyNumber()]),
 		moreInformation: new FormControl(null, Validators.required),
 		tradeTerms: new FormControl(null, Validators.required),
 		destination: new FormControl(null, Validators.required),
-		units: new FormControl(null, Validators.required),
+		unitMeasure: new FormControl(null, Validators.required),
 	});
 
 	public isValid$: Observable<boolean> = this.rfqFormGroup.statusChanges.pipe(
@@ -104,6 +104,7 @@ export class CreateRfqDialogComponent implements OnInit {
 				this.mixpanelService.track('New RFQ posted', {
 					'Product Sector': this.selectedCategory,
 					Destination: getName(el.destination.to),
+					Source: 'Pop Up',
 				});
 				this.dialogRef.close(el);
 				this.dialog.open(ProductCreationCongratsDialogComponent, {
@@ -173,9 +174,9 @@ export class CreateRfqDialogComponent implements OnInit {
 	}
 
 	private getUnit(): void {
-		this.units$ = this.rfqFormGroup.controls['amount'].valueChanges.pipe(
+		this.units$ = this.rfqFormGroup.controls['quantity'].valueChanges.pipe(
 			switchMap((amount: number) => {
-				this.rfqFormGroup.get('units').reset();
+				this.rfqFormGroup.get('unitMeasure').reset();
 
 				if (amount) {
 					return this.getUnit$(amount);

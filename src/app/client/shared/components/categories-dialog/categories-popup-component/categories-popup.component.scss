@@ -1,26 +1,16 @@
 @import 'projects/shared/src/styles';
 
 .modal-wrapper {
-	padding: 20px 0 70px 0;
 	padding-bottom: 0;
-	.mat-dialog-actions {
-		height: 30px;
-		display: block;
+	position: relative;
+
+	.cross-icon {
 		position: absolute;
-		top: 4px;
-		right: 20px;
-		cursor: pointer;
-		.close-btn {
-			width: 60px;
-			height: 60px;
-			padding-left: 40px;
-			svg {
-				width: 27px;
-				height: 27px;
-			}
-		}
+		top: 24px;
+		right: 24px;
 	}
-	.mat-dialog-title {
+
+	.mat-mdc-dialog-title {
 		font-size: 26px;
 		color: #303247;
 		font-weight: 600;
@@ -78,7 +68,7 @@
 			max-width: 95vw !important;
 		}
 	}
-	.mat-dialog-container {
+	.mat-mdc-dialog-container {
 		position: relative !important;
 		padding: 10px 0 0 0;
 		overflow: hidden !important;
@@ -91,7 +81,7 @@
 		display: none;
 	}
 
-	.mat-dialog-content {
+	.mat-mdc-dialog-content {
 		overflow: hidden;
 		max-height: 100vh;
 	}

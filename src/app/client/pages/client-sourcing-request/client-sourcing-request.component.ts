@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../client-profile/services/user/user.service';
 import { RfqCreatedDialogComponent } from './components/rfq-created-dialog/rfq-created-dialog.component';
 import { SeoService } from '../../../core/services/seo/seo.service';
+import { DialogService } from '../../../core/services/dialog-service/dialog.service';
 
 @Component({
 	selector: 'b2b-client-sourcing-request',
@@ -23,9 +24,7 @@ export class ClientSourcingRequestComponent implements OnInit {
 	constructor(
 		domSanitizer: DomSanitizer,
 		private linkService: B2bNgxLinkService,
-		private readonly router: Router,
-		private readonly userService: UserService,
-		private dialog: MatDialog,
+		private readonly dialogService: DialogService,
 		private seoService: SeoService
 	) {
 		this.tradebidWhatIsSafeUrl = domSanitizer.bypassSecurityTrustResourceUrl(
@@ -45,13 +44,7 @@ export class ClientSourcingRequestComponent implements OnInit {
 	}
 
 	public openCreateRfqDialog(): void {
-		if (!this.userService.getUser()) {
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/log-in']);
-			return;
-		}
-
-		this.dialog.open(CreateRfqDialogComponent, {
+		this.dialogService.openDialog(CreateRfqDialogComponent, {
 			panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
 		});
 	}

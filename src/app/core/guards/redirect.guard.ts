@@ -7,10 +7,10 @@ import { Router } from '@angular/router';
 export class RedirectGuard {
 	constructor(private readonly _router: Router) {}
 	canActivate() {
-		if (window.location.href.includes('discount.')) {
-			this._router.navigateByUrl('/');
-			return true;
-		}
+		// if (window.location.href.includes('discount.')) {
+		// 	this._router.navigateByUrl('/');
+		// 	return true;
+		// }
 
 		return true;
 	}

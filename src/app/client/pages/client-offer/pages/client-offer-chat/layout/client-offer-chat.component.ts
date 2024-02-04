@@ -146,9 +146,9 @@ export class ClientOfferChatComponent implements OnInit, OnDestroy {
 							const isSeller = offer.user === message.author;
 							const author = isSeller
 								? message.contact?.personName ||
-								  `${this.translateService.instant('CHAT.SELLER')} of ${
+									`${this.translateService.instant('CHAT.SELLER')} of ${
 										offer.title
-								  }`
+									}`
 								: user.fullName;
 
 							return {

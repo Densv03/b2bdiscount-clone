@@ -65,7 +65,7 @@
 								selectedCategory.path || selectedCategory._id,
 								childCategory.path || childCategory._id
 							]">
-							<img b2bNgxImage [name]="childCategory.image" />
+							<img b2bNgxImage [name]="getCategoryImage(childCategory.image)" />
 
 							<p>{{ childCategory.name }}</p>
 						</a>
@@ -91,9 +91,6 @@
 				class="rfq-button"
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_WHITE"
-				[routerLink]="
-					(isAuth$ | async) === false ? '/auth/register-credentials' : null
-				"
 				(click)="createRfq()">
 				Create request
 			</button>
@@ -121,7 +118,7 @@
 			<button
 				b2bNgxButton
 				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-				(click)="redirectToProfile()">
+				[routerLink]="'/profile/your-workspace/b2bmarket'">
 				Get started
 			</button>
 		</div>

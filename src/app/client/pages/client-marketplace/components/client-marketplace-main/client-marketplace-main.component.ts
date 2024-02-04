@@ -23,6 +23,7 @@ import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { CreateRfqDialogComponent } from '../../../client-sourcing-request/components/create-rfq-dialog/create-rfq-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriesMobileListComponent } from '../../../../shared/components/categories-mobile-list/categories-mobile-list.component';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
 
 @Component({
 	selector: 'b2b-client-marketplace-main',
@@ -71,7 +72,8 @@ export class ClientMarketplaceMainComponent implements OnInit {
 		private readonly authService: AuthService,
 		private readonly userService: UserService,
 		private readonly seoService: SeoService,
-		private readonly dialog: MatDialog
+		private readonly dialog: MatDialog,
+		private readonly dialogService: DialogService
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
@@ -115,21 +117,13 @@ export class ClientMarketplaceMainComponent implements OnInit {
 	}
 
 	public createRfq(): void {
-		if (this.userService.getUser()) {
-			this.dialog.open(CreateRfqDialogComponent, {
-				panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
-			});
-		} else {
-			this.router.navigate(['/auth/register-credentials']);
-		}
+		this.dialogService.openDialog(CreateRfqDialogComponent, {
+			panelClass: ['add-rfq-popup', 'contact-supplier-form-dialog'],
+		});
 	}
 
-	public redirectToProfile(): void {
-		if (this.userService.getUser()) {
-			this.router.navigate(['/profile/your-workspace/b2bmarket']);
-		} else {
-			this.router.navigate(['/auth/register-credentials']);
-		}
+	public getCategoryImage(categoryImage: string): string {
+		return categoryImage[0] === '/' ? categoryImage.slice(1) : categoryImage;
 	}
 
 	private getCategories(): void {
@@ -159,6 +153,4 @@ export class ClientMarketplaceMainComponent implements OnInit {
 			'Explore our catalog of wholesale goods to buy from direct suppliers. Join the B2B marketplace platform to show your products to thousands of users worldwide'
 		);
 	}
-
-	protected readonly B2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 }

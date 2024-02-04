@@ -113,7 +113,7 @@ export class ClientOfferComponent implements OnInit {
 			.pipe(untilDestroyed(this))
 			.subscribe((user) => {
 				if (!user) {
-					return this._router.navigateByUrl('/auth/log-in');
+					return this._router.navigateByUrl('/offers');
 				}
 				return this._router.navigateByUrl('/offers/' + offer._id + '/chat');
 			});
@@ -203,7 +203,7 @@ export class ClientOfferComponent implements OnInit {
 							isDocument: DocumentExtensions.includes(
 								GetUrlExtension(document.path)
 							),
-					  }))
+						}))
 					: offer.documents,
 			})),
 			tap(() => {

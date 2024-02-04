@@ -19,7 +19,7 @@ function generateQueryString(
 				? `${queryString}${value.reduce(
 						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
 						''
-				  )}`
+					)}`
 				: `${queryString}${key}=${value}&`;
 		}, initialValue);
 }

@@ -61,7 +61,6 @@ export class AuthGoogleSignInSuccessComponent implements OnInit {
 			.pipe(untilDestroyed(this))
 			.subscribe((params) => {
 				const { token, recovered } = params;
-				console.log('TOKEN: ', token);
 				const updatedToken = token.endsWith('/') ? token.slice(0, -1) : token;
 				this._authService.updateToken(updatedToken);
 				this._authService.initUser();
@@ -82,14 +81,14 @@ export class AuthGoogleSignInSuccessComponent implements OnInit {
 						}
 
 						console.log('AUTH SERVICE GOOGLE SIGN IN');
-
 						const mixpanel = {
 							User_id: user?._id,
 							'Account type': user?.rootRole?.displayName,
 							'Company Name': user?.company,
 							'Auth Method': user?.socialAuthType,
 						};
-						this.mixpanelService.logIn(mixpanel, 'Login completed');
+						this.mixpanelService.logIn(mixpanel);
+						this.mixpanelService.track('Login completed', mixpanel);
 						this._authService.updateToken(updatedToken);
 						this._authService.updateRole(user?.role);
 

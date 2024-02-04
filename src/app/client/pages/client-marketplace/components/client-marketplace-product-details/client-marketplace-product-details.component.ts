@@ -39,6 +39,8 @@ import { ProductDetailsModel } from '../../models/product-details.model';
 import { ClientMarketCompanyPagePhoneDialogComponent } from '../../pages/client-market-company-page/components/client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
 import { checkSerialNumber } from '../../../../../core/helpers/function/check-serial-number';
 import { SeoService } from '../../../../../core/services/seo/seo.service';
+import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
+import { result } from 'lodash';
 
 @UntilDestroy()
 @Component({
@@ -88,7 +90,8 @@ export class ClientMarketplaceProductDetailsComponent
 		private readonly title: Title,
 		private readonly meta: Meta,
 		private readonly dialog: MatDialog,
-		private readonly seoService: SeoService
+		private readonly seoService: SeoService,
+		private readonly dialogService: DialogService
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
@@ -120,7 +123,7 @@ export class ClientMarketplaceProductDetailsComponent
 									? product.photos.reduce((acc: any[], val: any) => {
 											acc[val?.serialNumber] = this.apiAddress + val.lg;
 											return acc.filter((el) => !!el);
-									  }, [])
+										}, [])
 									: product.photos
 											.filter((el) => el.lg)
 											.map((el: Photo) => this.apiAddress + el.lg),
@@ -217,27 +220,12 @@ export class ClientMarketplaceProductDetailsComponent
 		});
 	}
 
-	public openImages() {
-		this.dialog.open(ClientOfferImagesComponent, {
-			data: {
-				...this.productSource,
-			},
-			width: '80vw',
-			height: '80vh',
-		});
-	}
-
 	public goTo(link: string) {
 		this.router.navigate([link]);
 	}
 
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
-		if (!this.userService.getUser()) {
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/log-in']);
-			return;
-		}
 
 		if (
 			this.productSource
@@ -246,30 +234,46 @@ export class ClientMarketplaceProductDetailsComponent
 		) {
 			this.startChat();
 		} else {
-			const dialog = this.dialog.open(ContactSupplierFormDialogComponent, {
-				data: {
-					product: this.productSource.getValue(),
-				},
-				panelClass: 'contact-supplier-form-dialog',
-			});
-
-			dialog
-				.afterClosed()
-				.pipe(
-					filter((result) => !!result),
-					untilDestroyed(this)
-				)
-				.subscribe((result: any) => {
-					this.startChat();
-					this.socket.emit('message', {
-						type: 'text',
-						body: result.moreInformation,
-						userId: this.productSource.getValue().user,
-						productId: this.productSource.getValue()._id,
-						typeRoom: 'product',
+			const dialog = this.dialogService.openDialog(
+				ContactSupplierFormDialogComponent,
+				{
+					data: {
+						product: this.productSource.getValue(),
+					},
+					panelClass: 'contact-supplier-form-dialog',
+				}
+			);
+			if (dialog) {
+				dialog
+					.afterClosed()
+					.pipe(
+						filter((result) => !!result),
+						untilDestroyed(this)
+					)
+					.subscribe((result) => {
+						this.startChat();
+						this.socket.emit('message', {
+							type: 'text',
+							body: result ? result?.['moreInformation'] : null,
+							userId: this.productSource.getValue().user,
+							productId: this.productSource.getValue()._id,
+							typeRoom: 'product',
+						});
 					});
-				});
+			}
 		}
+	}
+
+	public getFullUrl(url: string): string {
+		if (!url.startsWith('http://') && !url.startsWith('https://')) {
+			return `http://${url}`;
+		}
+		return url;
+	}
+
+	public containsDot(str: string): boolean {
+		const pattern = /.*\..*/;
+		return pattern.test(str);
 	}
 
 	private openConnection(token: string): void {

@@ -10,7 +10,6 @@ import { combineLatest, of, switchMap } from 'rxjs';
 import { User } from '../../../core/models/user/user.model';
 import { SourcingRequestService } from '../../../client/pages/client-sourcing-request/sourcing-request.service';
 import { MixpanelService } from '../../../core/services/mixpanel/mixpanel.service';
-import mixpanel from 'mixpanel-browser';
 import { PlatformService } from '../../../client/services/platform/platform.service';
 import { getName } from 'country-list';
 import { catchError } from 'rxjs/operators';
@@ -30,6 +29,7 @@ export class AuthRegisterComponent implements OnInit {
 	public stepperSelectedIndex = 0;
 	private basicInfo!: BasicInfoInterface;
 	private categoriesNames: string[];
+
 	constructor(
 		private readonly authService: AuthService,
 		private readonly router: Router,
@@ -65,11 +65,12 @@ export class AuthRegisterComponent implements OnInit {
 	}
 
 	public firstStep(stepper: MatStepper, event: BasicInfoInterface): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		stepper.next();
 		this.basicInfo = event;
-		this.mixpanelService.track('Sign-Up 1st step completed', {
-			'Auth Method': 'Email',
-		});
+		this.mixpanelService.track('Sign-Up 1st step completed');
 	}
 
 	public secondStep(stepper: MatStepper, event: 'buyer' | 'supplier'): void {
@@ -79,7 +80,9 @@ export class AuthRegisterComponent implements OnInit {
 	}
 
 	public thirdStep(event: any): void {
-		if (this.isSubmitting) return;
+		if (this.isSubmitting) {
+			return;
+		}
 
 		if (event.hasOwnProperty('categoriesNames')) {
 			this.categoriesNames = [...event.categoriesNames];
@@ -96,6 +99,7 @@ export class AuthRegisterComponent implements OnInit {
 			this.registerUser(event);
 			this.isSubmitting = true;
 		}
+		this.mixpanelService.track('Sign-Up 3rd step completed');
 	}
 
 	private registerUser(event: any): void {
@@ -118,9 +122,6 @@ export class AuthRegisterComponent implements OnInit {
 			.pipe(untilDestroyed(this))
 			.subscribe(
 				({ token }) => {
-					this.mixpanelService.track('Sign-Up 3nd step completed', {
-						'Auth Method': 'E-mail',
-					});
 					this.authService.updateToken(token);
 					this.authService.initUser();
 					this.router.navigateByUrl(
@@ -135,7 +136,12 @@ export class AuthRegisterComponent implements OnInit {
 
 	private updateUserData(event: any): void {
 		const { rootRoleId, roleId } = event;
-		let user = { ...this.userService.getUser(), roleId, rootRoleId, ...event };
+		let user = {
+			...this.userService.getUser(),
+			roleId,
+			rootRoleId,
+			...event,
+		};
 		if (this.basicInfo) {
 			user = { ...user, ...this.basicInfo?.phone };
 
@@ -164,13 +170,13 @@ export class AuthRegisterComponent implements OnInit {
 		this.authService.updateCompany(company);
 
 		const refId = parseInt(localStorage.getItem('ref') as string);
-		const utm_source = localStorage.getItem('utm_source') as string;
-		const utm_campaign = localStorage.getItem('utm_campaign') as string;
-		const utm_medium = localStorage.getItem('utm_medium') as string;
-
-		const utm_term = localStorage.getItem('utm_term') as string;
-		const utm_content = localStorage.getItem('utm_content') as string;
-		const utm_id = localStorage.getItem('utm_id') as string;
+		// const utm_source = localStorage.getItem('utm_source') as string;
+		// const utm_campaign = localStorage.getItem('utm_campaign') as string;
+		// const utm_medium = localStorage.getItem('utm_medium') as string;
+		//
+		// const utm_term = localStorage.getItem('utm_term') as string;
+		// const utm_content = localStorage.getItem('utm_content') as string;
+		// const utm_id = localStorage.getItem('utm_id') as string;
 
 		const firstRequest$ = refId
 			? this.userService.addUserStatistics({
@@ -178,7 +184,7 @@ export class AuthRegisterComponent implements OnInit {
 					email: user.email,
 					refId,
 					typeRegistration: 'socials',
-			  })
+				})
 			: of(null);
 
 		firstRequest$
@@ -228,21 +234,23 @@ export class AuthRegisterComponent implements OnInit {
 						});
 						this.mixpanelService.signUp(
 							{
-								'CUSTOM UTM SOURCE': utm_source ? utm_source : 'Organic',
-								'CUSTOM UTM CAMPAIGN': utm_campaign ? utm_campaign : 'Organic',
-								'CUSTOM UTM MEDIUM': utm_medium ? utm_medium : 'Organic',
-								'CUSTOM UTM TERM': utm_term ? utm_term : 'Organic',
-								'CUSTOM UTM CONTENT': utm_content ? utm_content : 'Organic',
-								'CUSTOM UTM ID': utm_id ? utm_id : 'Organic',
+								// 'CUSTOM UTM SOURCE': utm_source ? utm_source : 'Organic',
+								// 'CUSTOM UTM CAMPAIGN': utm_campaign ? utm_campaign : 'Organic',
+								// 'CUSTOM UTM MEDIUM': utm_medium ? utm_medium : 'Organic',
+								// 'CUSTOM UTM TERM': utm_term ? utm_term : 'Organic',
+								// 'CUSTOM UTM CONTENT': utm_content ? utm_content : 'Organic',
+								// 'CUSTOM UTM ID': utm_id ? utm_id : 'Organic',
 								name: user.fullName,
 								User_id: user?._id,
 								'Registration date': new Date().toISOString(),
+								'Registration method': 'Email',
 								'Email confirmed': user.email,
 								'Account type': this.selectedUserType,
 								'Company Name': user.company,
 								'Product sectors': this.categoriesNames,
 								Country: getName(user.country),
 								'Auth Method': user.socialAuthType,
+								// 'Campaign Source': utm_campaign ? utm_campaign : 'Organic',
 							},
 							'Sign-Up completed'
 						);
@@ -252,7 +260,10 @@ export class AuthRegisterComponent implements OnInit {
 								{ state: { showPopUp: true } }
 							);
 						} else {
-							if (localStorage.getItem('blocked-route')) {
+							if (
+								localStorage.getItem('blocked-route') &&
+								(user.rootRole?.name === 'buyer' || 'supplier')
+							) {
 								this.router.navigate([
 									localStorage.getItem('blocked-route'),
 									{

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import { AdminSidenavData } from '../../../data/admin-sidenav.data';
 
 @Component({
 	selector: 'b2b-login',
@@ -29,7 +30,6 @@ export class LoginComponent {
 	) {}
 
 	public signIn() {
-		console.log(this.signInFromGroup.value);
 		this.authService
 			.logInWithForm(this.signInFromGroup.value)
 			.pipe(
@@ -46,8 +46,12 @@ export class LoginComponent {
 				filter((user) => !!user),
 				take(1)
 			)
-			.subscribe(() => {
-				this.router.navigate(['/users']);
+			.subscribe((user) => {
+				user?.moderatorRole
+					? AdminSidenavData.updateModeratorSidenavData(user)
+					: null;
+				console.log(AdminSidenavData.sideNavData);
+				this.router.navigate([AdminSidenavData.sideNavData[0].path]);
 			});
 	}
 }

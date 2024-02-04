@@ -1,0 +1,26 @@
+<div class="content">
+	<div class="title">Add Role</div>
+	<form [formGroup]="form" class="form">
+		<b2b-ngx-multiselect
+			[options]="apiList"
+			formControlName="apiTypes"
+			placeholder="Choose api types">
+			Api types
+		</b2b-ngx-multiselect>
+		<div class="control">
+			<input
+				b2bNgxInput
+				[theme]="b2bNgxInputTheme.BACKGROUND_GRAY"
+				formControlName="name"
+				label="Role"
+				placeholder="Enter role name" />
+		</div>
+
+		<button
+			(click)="addModeratorRole()"
+			b2bNgxButton
+			[theme]="b2bNgxButtonTheme.BACKGROUND_BLACK">
+			{{ data ? 'Change Role' : 'Add Role' }}
+		</button>
+	</form>
+</div>

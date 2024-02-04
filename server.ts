@@ -1,27 +1,25 @@
-import 'zone.js/dist/zone-node';
-
-import { ngExpressEngine } from '@nguniversal/express-engine';
+import 'zone.js';
 import * as express from 'express';
 import { join } from 'path';
 
-import { AppServerModule } from './src/main.server';
+import bootstrap from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 import cookieParser from 'cookie-parser';
-import 'localstorage-polyfill';
 import { environment } from 'src/environments/environment';
 import * as crypto from 'crypto';
 import * as cors from 'cors';
+import 'localstorage-polyfill';
 import redirectMiddleware from "./ssr/middlewares/redirect.middleware";
 import { MixpanelService } from "./ssr/core/services/mixpanel.service";
-import { corsOptions } from "./ssr/middlewares/cors/cors.middleware";
+import { REQUEST, RESPONSE } from "./src/express.tokens";
+import { CommonEngine } from "@angular/ssr";
 
 var bodyParser = require('body-parser')
 
 const MockBrowser                          = require('mock-browser').mocks.MockBrowser;
 const mock                                 = new MockBrowser();
 global['navigator']                        = mock.getNavigator();
-global['localStorage']                     = localStorage;
 global['window']                           = mock.getWindow();
 (global as any)['window']['cookieconsent'] = {
     initialise: function () {
@@ -30,6 +28,7 @@ global['window']                           = mock.getWindow();
 };
 global['document']                         = window.document;
 const secretKey                            = environment.intercomSecretKey;
+global['localStorage']                     = localStorage;
 
 function generateIntercomHMAC(userEmail: string): string {
     return crypto.createHmac('sha256',
@@ -42,24 +41,17 @@ var jsonParser = bodyParser.json();
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
     const server     = express();
-    const distFolder = join(process.cwd(),
-                            'dist/fe-b2b/browser');
-    const indexHtml  = existsSync(join(distFolder,
-                                       'index.original.html'))
-        ? 'index.original.html'
-        : 'index';
+    const distFolder = join(process.cwd(), 'dist/fe-b2b/browser');
+    const indexHtml = existsSync(join(distFolder, 'index.original.html'))
+        ? join(distFolder, 'index.original.html')
+        : join(distFolder, 'index.html');
+
+    const commonEngine = new CommonEngine();
 
     const mixpanelService = new MixpanelService();
     server.use(cookieParser());
     server.use(cors());
 
-    // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-    server.engine(
-        'html',
-        ngExpressEngine({
-                            bootstrap: AppServerModule,
-                        }),
-    );
     server.set('view engine',
                'html');
     server.set('views',
@@ -81,7 +73,7 @@ export function app(): express.Express {
                     req: express.Request,
                     res: express.Response) => {
                     return mixpanelService.initPeople(req,
-                                                     res);
+                                                      res);
                 });
 
     // Example Express Rest API endpoints
@@ -155,16 +147,40 @@ export function app(): express.Express {
     server.get('*',
                (
                    req,
-                   res) => {
-                   res.render(indexHtml,
-                              {
-                                  req,
-                                  providers: [{
-                                      provide:  APP_BASE_HREF,
-                                      useValue: req.baseUrl,
-                                  }],
-                              });
+                   res,
+                   next) => {
+                   const {
+                             protocol,
+                             originalUrl,
+                             baseUrl,
+                             headers,
+                         } = req;
+
+                   commonEngine
+                       .render({
+                                   bootstrap,
+                                   documentFilePath: indexHtml,
+                                   url:              `${protocol}://${headers.host}${originalUrl}`,
+                                   publicPath:       distFolder,
+                                   providers:        [
+                                       {
+                                           provide:  APP_BASE_HREF,
+                                           useValue: baseUrl,
+                                       },
+                                       {
+                                           provide:  RESPONSE,
+                                           useValue: res,
+                                       },
+                                       {
+                                           provide:  REQUEST,
+                                           useValue: req,
+                                       },
+                                   ],
+                               })
+                       .then((html) => res.send(html))
+                       .catch((err) => next(err));
                });
+
     return server;
 }
 
@@ -210,6 +226,11 @@ function normalizeUrl(url: string): string {
     ) {
         normalizedUrl = normalizedUrl.replace(/\/(index|home)\.(php|html|htm)$/,
                                               '/');
+    }
+
+    if (normalizedUrl.endsWith('/') && normalizedUrl.length !== 1) {
+        normalizedUrl = normalizedUrl.slice(0,
+                                            normalizedUrl.length - 1);
     }
     return normalizedUrl;
 }

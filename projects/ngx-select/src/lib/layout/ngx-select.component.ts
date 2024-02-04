@@ -1,6 +1,6 @@
 import {
 	AfterViewInit,
-	ChangeDetectionStrategy,
+	ChangeDetectionStrategy, ChangeDetectorRef,
 	Component,
 	EventEmitter,
 	forwardRef,
@@ -67,7 +67,7 @@ export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnCh
 	private onChange: (value: string | string[]) => void;
 	private onTouched: () => void;
 
-	constructor() {
+	constructor(private readonly cdr: ChangeDetectorRef) {
 		this.searched = new EventEmitter<string>();
 		this.changed = new EventEmitter<string>();
 		this.onChange = () => null;
@@ -100,6 +100,7 @@ export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnCh
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+		// console.log(changes['options'].currentValue)
 		if (changes['errors']) {
 			this.formControl.setErrors(changes['errors'].currentValue);
 		}
@@ -114,10 +115,11 @@ export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnCh
 			this.multipleCheckboxArray = [...this.formControl.value];
 			this.multipleCheckboxArray.forEach((el: string) => {
 				this.isSelected(el);
-				this.trackValue(el, null, true);
+				// this.trackValue(el, null, true);
 			})
 		}
 	}
+
 
 	public clearSelect(): void {
 		// this.ngSelectComponent.handleClearClick();

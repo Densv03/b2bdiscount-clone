@@ -112,6 +112,9 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 	}
 
 	public openPhoneModal(companyInfo: PublicCompanyInfoModel): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		const { number, dialCode } = companyInfo.phone;
 		this.dialog
 			.open(ClientMarketCompanyPagePhoneDialogComponent, {
@@ -140,7 +143,7 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 			count: 10,
 			animation: 'progress',
 			theme: {
-				height: window.innerHeight / 3,
+				height: this.platformService.isServer ? 500 : window.innerHeight / 3,
 			},
 		};
 	}
@@ -150,11 +153,13 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 	}
 
 	public openChat(event: MouseEvent, userId: string): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		event.stopPropagation();
 
 		if (!this.userIsAuth) {
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/log-in']);
+			this.router.navigate(['profile/your-workspace/b2bmarket']);
 		} else {
 			this.openConnection(this.token);
 			this.socket.emit('start_users_chat', {
@@ -169,6 +174,9 @@ export class ClientMarketCompanyPageComponent implements OnInit {
 	}
 
 	private openConnection(token: string): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		if (this.socket) {
 			this.socket.disconnect();
 		}
