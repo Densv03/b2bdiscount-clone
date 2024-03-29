@@ -22,8 +22,6 @@ import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
 import { onlyNumber } from 'src/app/core/helpers/validator/only-number';
 import { CategoriesService } from 'src/app/client/services/categories/categories.service';
 import { UnitsService } from 'src/app/client/services/units/units.service';
-import { TranslateService } from '@ngx-translate/core';
-import { SelectItem } from 'src/app/client/pages/client-profile/pages/client-company-information/layout/client-company-information.component';
 import { SourcingRequestService } from '../../sourcing-request.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -31,6 +29,9 @@ import { ProductCreationCongratsDialogComponent } from '../../../../shared/compo
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
 import { getName } from 'country-list';
 import { Category } from '../../../../../core/models/category.model';
+import {
+	SelectItem
+} from "../../../client-profile/pages/client-profile-settings-new/tabs/client-company-information/client-company-information.interface";
 
 @UntilDestroy()
 @Component({
@@ -150,7 +151,8 @@ export class CreateRfqDialogComponent implements OnInit {
 						displayName: string;
 					}) => ({
 						...unit,
-						displayName: amount > 1 ? unit.pluralDisplayName : unit.displayName,
+						displayName:
+							amount > 1 ? unit.pluralDisplayName : unit.pluralDisplayName,
 					})
 				)
 			)

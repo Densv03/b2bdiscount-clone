@@ -8,6 +8,11 @@ export interface MarketProductModel {
 	chatStarted: string[];
 	reasonForDeletion: string;
 	price: Price;
+	priceRange: {
+		minimum: number;
+		maximum: number;
+	};
+	priceRangeUnit: string;
 	amount: Amount;
 	contact: Contact;
 	visibility: Visibility;

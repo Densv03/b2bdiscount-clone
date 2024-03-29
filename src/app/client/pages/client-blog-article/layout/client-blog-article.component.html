@@ -24,8 +24,8 @@
 
 		<div class="client-trading-wiki-article-content">
 			<div
-				class="article-description"
-				[innerHTML]="article.blog.description"></div>
+				class="article-description ck-content"
+				[innerHTML]="sanitizer.bypassSecurityTrustHtml(article.blog.description)"></div>
 		</div>
 
 		<div class="client-trading-wiki-article-share">

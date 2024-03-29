@@ -2,12 +2,11 @@
 
 .client-profile {
 	display: flex;
-	background: #f3f6f8;
-	padding: 0 100px;
-	@include breakpoint('5') {
-		padding: 0 30px 0 70px;
-	}
-	@include breakpoint('3') {
+	background: #ffffff;
+	padding-right: 100px;
+	padding-left: 0;
+
+	@include breakpoint('4') {
 		padding: 0;
 	}
 	.client-profile-sidenav {

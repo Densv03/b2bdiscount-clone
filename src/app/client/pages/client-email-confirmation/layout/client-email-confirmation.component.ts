@@ -82,11 +82,11 @@ export class ClientEmailConfirmationComponent implements AfterViewInit {
 						User_id: user?._id,
 						'Registration date': new Date().toISOString(),
 						'Email confirmed': user.emailConfirmed,
-						'Account type': user.rootRole.name,
+						'Account Type': user.rootRole.name,
 						'Company Name': user.company,
-						'Product sectors': names,
+						'Product Sectors': names,
 						Country: getName(user.country),
-						'Auth Method': user.socialAuthType,
+						'Auth Method': user?.socialAuthType ?? 'Email',
 					},
 					'Sign-Up completed'
 				);

@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	Input,
 	OnDestroy,
@@ -9,9 +10,7 @@ import { ClientMarketplaceService } from '../../client-marketplace.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	BehaviorSubject,
-	exhaustMap,
-	finalize,
-	mergeMap,
+	fromEvent,
 	Observable,
 	of,
 	Subject,
@@ -19,14 +18,13 @@ import {
 } from 'rxjs';
 import { getName } from 'country-list';
 import { ClientOfferReportComponent } from '../../../client-offer/components/client-offer-report/client-offer-report.component';
-import { ClientOfferImagesComponent } from '../../../client-offer/components/client-offer-images/client-offer-images.component';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { UserService } from '../../../client-profile/services/user/user.service';
 import { io } from 'socket.io-client';
 import { environment } from '../../../../../../environments/environment';
 import { User } from '../../../../../core/models/user/user.model';
-import { filter, first, map, skip, startWith, takeUntil } from 'rxjs/operators';
+import { filter, first, map, startWith, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../../auth/services/auth/auth.service';
 import { MarketProductModel } from '../../models/market-product.model';
 import { Meta, Title } from '@angular/platform-browser';
@@ -35,12 +33,15 @@ import { ContactSupplierFormDialogComponent } from 'src/app/client/pages/client-
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatDialog } from '@angular/material/dialog';
 import { Photo } from '../../../../../core/models/photo.model';
-import { ProductDetailsModel } from '../../models/product-details.model';
 import { ClientMarketCompanyPagePhoneDialogComponent } from '../../pages/client-market-company-page/components/client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
 import { checkSerialNumber } from '../../../../../core/helpers/function/check-serial-number';
 import { SeoService } from '../../../../../core/services/seo/seo.service';
 import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
-import { result } from 'lodash';
+import { PlatformService } from '../../../../services/platform/platform.service';
+import { CategoriesService } from '../../../../services/categories/categories.service';
+import { PublicUserInfo } from '../../../../../core/models/shared/public-user-info';
+import { PriceTypeEnum } from '../../../../shared/enums/price-type.enum';
+import { ViewportScroller } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -58,6 +59,7 @@ export class ClientMarketplaceProductDetailsComponent
 	public productSource: BehaviorSubject<MarketProductModel> =
 		new BehaviorSubject<MarketProductModel>(null);
 	public user: User;
+	public companyContactPersonLogo$: Observable<string> = of(null);
 	public token: string;
 	public otherProducts: MarketProductModel[];
 	public otherSuppliersProducts: MarketProductModel[];
@@ -67,31 +69,41 @@ export class ClientMarketplaceProductDetailsComponent
 	public b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum;
 	public companyId: string;
 	public isSpecificationList: boolean = true;
-	public apiAddress = environment.apiUrl;
+	public apiAddress = environment.apiUrl.includes('staging')
+		? 'https://api.globy.com/'
+		: environment.apiUrl;
 	public isAuth$: Observable<boolean>;
 	public isAmount: boolean = false;
 	public isCurrentUser: boolean = false;
+	public similarProductsClass: string;
 	public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
 		false
 	);
 	public readonly getName = getName;
+	public companySectors: string;
+	public scrolling: BehaviorSubject<boolean> = new BehaviorSubject(true);
+	public certificateCurrentIndex = 0;
 
 	private socket: any;
 	private componentIsDestroyed: Subject<void> = new Subject();
 	private isPhoneNumberVisible = false;
 
 	constructor(
+		public readonly platformService: PlatformService,
+		public readonly b2bNgxLinkService: B2bNgxLinkService,
 		private readonly marketService: ClientMarketplaceService,
 		private readonly userService: UserService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
-		public readonly b2bNgxLinkService: B2bNgxLinkService,
 		private readonly authService: AuthService,
 		private readonly title: Title,
 		private readonly meta: Meta,
 		private readonly dialog: MatDialog,
 		private readonly seoService: SeoService,
-		private readonly dialogService: DialogService
+		private readonly dialogService: DialogService,
+		private readonly categoriesService: CategoriesService,
+		private readonly cdr: ChangeDetectorRef,
+		private readonly viewportScroller: ViewportScroller
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
@@ -100,6 +112,9 @@ export class ClientMarketplaceProductDetailsComponent
 	}
 
 	ngOnInit(): void {
+		if (this.platformService.isBrowser) {
+			this.handleSizeWidth();
+		}
 		this.getUser();
 		if (!this.productView) {
 			this.activatedRoute.params
@@ -131,6 +146,20 @@ export class ClientMarketplaceProductDetailsComponent
 								product.ports.length > 0 && product.ports[0] !== null
 									? this.getPorts(product)
 									: [],
+							price:
+								!product.priceRange?.minimum && !product.price?.unit
+									? { old: PriceTypeEnum.PriceUponRequest }
+									: product.price,
+							paymentMethods:
+								product.paymentMethods?.length === 0 ||
+								product.paymentMethods?.every((el) => el === null)
+									? []
+									: product.paymentMethods,
+							shipping:
+								product.shipping?.length === 0 ||
+								product.shipping?.every((el) => el === null)
+									? []
+									: product.shipping,
 						};
 
 						this.isSpecificationList = productModel.specificationList.some(
@@ -147,6 +176,12 @@ export class ClientMarketplaceProductDetailsComponent
 						this.companyId = company.path || company._id;
 						this.addSeoTags(product);
 						this.companyInfo = company;
+
+						this.getPublicUserInfo(company.user).subscribe((data) => {
+							this.companyContactPersonLogo$ = of(data?.logo);
+							this.cdr.detectChanges();
+						});
+						this.companySectors = this.getCompanyCategories(company.categories);
 						this.companyName = company.companyName;
 						this.otherSuppliersProducts = otherSuppliersProducts;
 						if (
@@ -167,6 +202,9 @@ export class ClientMarketplaceProductDetailsComponent
 						? this.getPorts(this.productView)
 						: [],
 			};
+			this.companySectors = this.getCompanyCategories(
+				this.companyInfo.categories
+			);
 			this.isAmount = !!product.amount;
 			this.productSource.next(product);
 			this.isCurrentUser = product.user !== this.user?._id;
@@ -174,11 +212,25 @@ export class ClientMarketplaceProductDetailsComponent
 			this.isSpecificationList = this.productView?.specificationList.some(
 				({ specification, item }) => !!specification || !!item
 			);
+
+			if (this.user.logo) {
+				this.companyContactPersonLogo$ = of(this.user.logo.lg);
+			} else {
+				this.companyContactPersonLogo$ = of(null);
+			}
+			this.cdr.detectChanges();
 		}
 
 		this.userService.getToken$().subscribe((token) => {
 			this.token = token;
 		});
+		if (this.platformService.isBrowser) {
+			setTimeout(() => this.viewportScroller.scrollToPosition([0, 0]), 0);
+		}
+	}
+
+	private getPublicUserInfo(id: string): Observable<PublicUserInfo> {
+		return this.userService.getPublicUserInfo(id).pipe(first());
 	}
 
 	public getCountryName(countryCode: string): string {
@@ -204,8 +256,8 @@ export class ClientMarketplaceProductDetailsComponent
 			});
 	}
 
-	public navigateOnProductDetail(productId: string): void {
-		this.router.navigate([`/b2bmarket/listing/products/`, productId]);
+	public setCertificateItemIndex(event: number): void {
+		this.certificateCurrentIndex = event;
 	}
 
 	public openReportPopover() {
@@ -227,6 +279,10 @@ export class ClientMarketplaceProductDetailsComponent
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
 
+		if (this.productSource.value.user === this.user?._id) {
+			return;
+		}
+
 		if (
 			this.productSource
 				.getValue()
@@ -234,6 +290,7 @@ export class ClientMarketplaceProductDetailsComponent
 		) {
 			this.startChat();
 		} else {
+			this.scrolling.next(false);
 			const dialog = this.dialogService.openDialog(
 				ContactSupplierFormDialogComponent,
 				{
@@ -247,10 +304,15 @@ export class ClientMarketplaceProductDetailsComponent
 				dialog
 					.afterClosed()
 					.pipe(
+						tap(() => this.scrolling.next(true)),
 						filter((result) => !!result),
 						untilDestroyed(this)
 					)
 					.subscribe((result) => {
+						if (this.platformService.isServer) {
+							return;
+						}
+
 						this.startChat();
 						this.socket.emit('message', {
 							type: 'text',
@@ -277,6 +339,10 @@ export class ClientMarketplaceProductDetailsComponent
 	}
 
 	private openConnection(token: string): void {
+		if (this.platformService.isServer) {
+			return;
+		}
+
 		if (this.socket) {
 			this.socket.disconnect();
 		}
@@ -322,6 +388,10 @@ export class ClientMarketplaceProductDetailsComponent
 	}
 
 	private startChat(): void {
+		if (this.platformService.isServer) {
+			return;
+		}
+
 		const { user, _id } = this.productSource.getValue();
 
 		this.openConnection(this.token);
@@ -343,10 +413,45 @@ export class ClientMarketplaceProductDetailsComponent
 			.subscribe((user) => (this.user = user));
 	}
 
+	private getCompanyCategories(categoriesIds: string[]): string {
+		const allCategories =
+			this.categoriesService.getCategories()?.categories || [];
+		let selectedCategories: string;
+
+		if (allCategories?.length > 0) {
+			selectedCategories = allCategories
+				.filter((parent: { children: any[] }) => {
+					return parent.children.some((child: { _id: string }) =>
+						categoriesIds?.includes(child._id)
+					);
+				})
+				.map((parent: { name: string }) => parent?.name)
+				.join(', ');
+		}
+
+		return selectedCategories;
+	}
+
+	private handleSizeWidth(): void {
+		fromEvent(window, 'resize')
+			.pipe(
+				startWith(600 > window.innerWidth),
+				map(() => 600 > window.innerWidth),
+				untilDestroyed(this)
+			)
+			.subscribe(
+				(isMobileSize) =>
+					(this.similarProductsClass = isMobileSize
+						? ' product-details-page'
+						: 'flex-start')
+			);
+	}
+
 	ngOnDestroy(): void {
 		this.componentIsDestroyed.next();
 		this.title.setTitle('Globy');
 	}
 
 	protected readonly Number = Number;
+	protected readonly PriceTypeEnum = PriceTypeEnum;
 }

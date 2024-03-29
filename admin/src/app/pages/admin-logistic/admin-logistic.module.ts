@@ -17,6 +17,8 @@ import { MatTableModule } from '@angular/material/table';
 import { CreateDirectionDialogComponent } from './components/create-direction-dialog/create-direction-dialog.component';
 import { B2bNgxSelectModule } from 'projects/ngx-select/src/public-api';
 import { B2bNgxRadioModule } from 'projects/ngx-radio/src/public-api';
+import { PaginationModule } from '../../../../../src/app/client/shared/components/pagination/pagination.module';
+import { B2bNgxIconModule } from '@b2b/ngx-icon';
 
 @NgModule({
 	declarations: [
@@ -24,21 +26,23 @@ import { B2bNgxRadioModule } from 'projects/ngx-radio/src/public-api';
 		AddLogisticProfileDialogComponent,
 		CreateDirectionDialogComponent,
 	],
-	imports: [
-		CommonModule,
-		AdminLogisticRoutingModule,
-		B2bNgxCountrySelectModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatButtonModule,
-		MatIconModule,
-		TranslateModule,
-		B2bNgxTelModule,
-		B2bNgxCheckboxModule,
-		B2bNgxPaginationModule,
-		MatTableModule,
-		B2bNgxSelectModule,
-		B2bNgxRadioModule,
-	],
+  imports: [
+    CommonModule,
+    AdminLogisticRoutingModule,
+    B2bNgxCountrySelectModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslateModule,
+    B2bNgxTelModule,
+    B2bNgxCheckboxModule,
+    B2bNgxPaginationModule,
+    MatTableModule,
+    B2bNgxSelectModule,
+    B2bNgxRadioModule,
+    PaginationModule,
+    B2bNgxIconModule,
+  ],
 })
 export class AdminLogisticModule {}

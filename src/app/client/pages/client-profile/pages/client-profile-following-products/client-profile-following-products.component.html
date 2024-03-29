@@ -1,0 +1,64 @@
+<div class="products">
+	<div class="products__title">Following products</div>
+	<div class="products__description">
+		Manage the product categories you are subscribed to.
+	</div>
+	<div class="products__button">
+		<button
+			(click)="openSectorsDialog()"
+			mat-flat-button
+			class="!bg-[#EEEEEE] !font-medium !text-md products__button">
+			<span class="products__button-content">
+				<div class="products__button-title">Manage products</div>
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M20 21H4M16 4C15.75 5.75 17.25 7.25 19 7M7 16L7.57005 13.7198C7.73008 13.0797 7.8101 12.7596 7.93877 12.4612C8.05301 12.1963 8.19557 11.9445 8.36397 11.7102C8.55366 11.4464 8.78694 11.2131 9.25351 10.7465L16.5001 3.49998C16.5798 3.42036 16.6196 3.38054 16.6548 3.3485C17.4177 2.65508 18.5826 2.6551 19.3454 3.34854C19.3807 3.38058 19.4205 3.4204 19.5001 3.50003V3.50003C19.5797 3.57966 19.6195 3.61947 19.6516 3.65472C20.345 4.41755 20.3449 5.58244 19.6515 6.34525C19.6195 6.3805 19.5797 6.42031 19.5001 6.49994L12.2535 13.7465C11.7869 14.2131 11.5536 14.4464 11.2898 14.636C11.0555 14.8044 10.8037 14.947 10.5388 15.0612C10.2404 15.1899 9.92035 15.2699 9.28023 15.4299L7 16Z"
+						stroke="black"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+				</svg>
+			</span>
+		</button>
+	</div>
+	<div class="products__list">
+		@for (sector of companyCategories$ | async; track sector.name) {
+			<div class="products__item">
+				<div class="products__item-head">
+					@if (platformIsBrowser) {
+						<svg-icon [src]="generateSectorIconPath(sector.path)"></svg-icon>
+					}
+					<div class="sector-name">{{ sector.name }}</div>
+				</div>
+				<div #itemBody class="products__item-body">
+					@for (child of sector.children; track child.name) {
+						<div class="products__item-child">{{ child.name }}</div>
+					}
+					@if (itemBody.scrollHeight > 60) {
+						<div class="arrow">
+							<svg
+								(click)="toggleOpenedBody(itemBody)"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M6 9L12 15L18 9"
+									stroke="black"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round" />
+							</svg>
+						</div>
+					}
+				</div>
+			</div>
+		}
+	</div>
+</div>

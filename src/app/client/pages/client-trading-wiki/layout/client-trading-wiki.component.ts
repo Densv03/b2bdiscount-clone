@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { untilDestroyed } from '@ngneat/until-destroy';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
@@ -16,6 +16,7 @@ import {
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { WikiService } from 'src/app/client/services/wiki/wiki.service';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { DOCUMENT } from '@angular/common';
 
 function generateQueryString(obj: any) {
 	return Object.entries(obj)
@@ -32,7 +33,7 @@ function generateQueryString(obj: any) {
 				: `${queryString}${key}=${value}&`;
 		}, '?');
 }
-function stripHtml(html: any) {
+function stripHtml(html: any, document: Document) {
 	// Create a new div element
 	const temporalDivElement = document.createElement('div');
 	// Set the HTML content with the providen
@@ -73,7 +74,8 @@ export class ClientTradingWikiComponent {
 	constructor(
 		private readonly _wikiService: WikiService,
 		private readonly _categoriesService: CategoriesService,
-		private readonly _formBuilder: FormBuilder
+		private readonly _formBuilder: FormBuilder,
+		@Inject(DOCUMENT) private document: Document
 	) {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -161,7 +163,7 @@ export class ClientTradingWikiComponent {
 
 				const posts = res.posts.map((post: any) => ({
 					...post,
-					preview: stripHtml(post.description),
+					preview: stripHtml(post.description, this.document),
 				}));
 
 				return posts;

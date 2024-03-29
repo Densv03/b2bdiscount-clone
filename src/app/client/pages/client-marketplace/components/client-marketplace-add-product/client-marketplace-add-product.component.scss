@@ -99,11 +99,15 @@
 			}
 
 			.section-title {
-				font-size: 16px;
+				font-size: 14px;
 				font-weight: 500;
-				line-height: 22px;
+				line-height: 19px;
 				letter-spacing: 0.01em;
 				margin: 32px 0 16px;
+
+				@include breakpoint('3') {
+					margin-top: 24px;
+				}
 
 				&.subtitle {
 					font-weight: 400;
@@ -118,8 +122,12 @@
 				max-width: 720px;
 				margin-top: 24px;
 
-				input[type='file'] {
-					display: none;
+				@include breakpoint('3') {
+					margin-top: 0;
+
+					&.main-form-block {
+						margin-top: 16px;
+					}
 				}
 
 				.photos-advice {
@@ -131,8 +139,11 @@
 
 				.photos-wrapper {
 					gap: 16px;
-					flex-wrap: wrap;
 					justify-content: flex-start;
+
+					@include breakpoint('3') {
+						flex-wrap: wrap;
+					}
 
 					.photos {
 						display: flex;
@@ -140,23 +151,25 @@
 						align-items: center;
 
 						.dragged-image {
-							width: 128px;
-							height: 128px;
+							width: 96px;
+							height: 19628px;
 						}
 
 						> div {
-							max-width: 128px;
-							max-height: 128px;
-							background: #d9d9d980;
+							max-width: 96px;
+							max-height: 96px;
+							background: #ffffff;
 							border-radius: 4px;
 							border: 1px solid #0000004d;
-							padding: 40px;
+							padding: 32px;
 							position: relative;
 							line-height: 0;
 
 							@include breakpoint('3') {
-								width: 100px;
-								height: 100px;
+								max-width: 162px;
+								max-height: 162px;
+								width: 162px;
+								height: 162px;
 								display: flex;
 								justify-content: center;
 								align-items: center;
@@ -166,20 +179,20 @@
 								padding: 0;
 
 								img {
-									width: 128px;
-									height: 128px;
+									width: 96px;
+									height: 96px;
 
 									@include breakpoint('3') {
-										width: 100px;
-										height: 100px;
+										width: 162px;
+										height: 162px;
 									}
 								}
 							}
 
 							img {
 								cursor: move;
-								width: 48px;
-								height: 48px;
+								width: 32px;
+								height: 32px;
 							}
 
 							span {
@@ -223,10 +236,30 @@
 			.control-wrapper {
 				margin-bottom: 24px;
 
+				@include breakpoint('3') {
+					margin-bottom: 16px;
+				}
+
+				&.organization {
+					@include breakpoint('3') {
+						margin-top: 16px;
+					}
+				}
+
 				input::-webkit-outer-spin-button,
 				input::-webkit-inner-spin-button {
 					-webkit-appearance: none;
 					margin: 0;
+				}
+
+				&.custom-certificates-input {
+					position: relative;
+
+					.use-certificates-icon {
+						position: absolute;
+						right: 9px;
+						bottom: 18px;
+					}
 				}
 
 				&:last-of-type {
@@ -255,20 +288,6 @@
 						top: 135px;
 						right: 14px;
 						color: #979797;
-					}
-				}
-
-				.input-label {
-					font-size: 14px;
-					font-weight: 400;
-					line-height: 20px;
-					letter-spacing: 0.01em;
-					color: #556274;
-
-					.desc-text {
-						font-size: 12px;
-						line-height: 17px;
-						color: #9fa4bb;
 					}
 				}
 
@@ -305,6 +324,21 @@
 				}
 			}
 
+			.input-label {
+				display: block;
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 20px;
+				letter-spacing: 0.01em;
+				color: #556274;
+
+				.desc-text {
+					font-size: 12px;
+					line-height: 17px;
+					color: #9fa4bb;
+				}
+			}
+
 			.checkbox-column {
 				display: flex;
 				flex-direction: column;
@@ -317,7 +351,9 @@
 				gap: 14px;
 
 				@include breakpoint('3') {
-					flex-direction: column;
+					b2b-ngx-checkbox {
+						min-width: 47%;
+					}
 				}
 			}
 
@@ -327,6 +363,43 @@
 				line-height: 20px;
 				margin: 31px 0 16px;
 			}
+
+			.chips {
+				display: flex;
+				gap: 16px;
+				flex-wrap: wrap;
+
+				@include breakpoint('3') {
+					padding-top: 16px;
+				}
+
+				&__item {
+					display: flex;
+					align-items: center;
+					border: 1px solid #0f0f11;
+					padding: 7px 10px 7px 10px;
+					border-radius: 1050px;
+					max-width: 218px;
+
+					span {
+						display: block;
+						max-width: 90%;
+						overflow: hidden;
+						white-space: nowrap;
+						font-size: 14px;
+						font-weight: 500;
+						line-height: 18px;
+						letter-spacing: 0.02em;
+						text-overflow: ellipsis;
+					}
+
+					&-icon {
+						cursor: pointer;
+						width: 8px;
+						height: 8px;
+					}
+				}
+			}
 		}
 
 		.two-in-row {
@@ -334,6 +407,59 @@
 
 			@include breakpoint('3') {
 				width: 100%;
+			}
+		}
+
+		.w-70 {
+			width: 70%;
+
+			@include breakpoint('3') {
+				width: 100%;
+				margin-bottom: 0;
+			}
+		}
+
+		.w-25 {
+			width: 25%;
+
+			@include breakpoint('3') {
+				width: 100% !important;
+				margin-top: 0;
+			}
+
+			&.price-unit {
+				@include breakpoint('3') {
+					margin-top: 16px;
+				}
+			}
+		}
+
+		.mt-20 {
+			margin-top: 20px;
+
+			@include breakpoint('3') {
+				margin-top: 0;
+			}
+		}
+
+		.price-input {
+			position: relative;
+
+			.usd {
+				position: absolute;
+				right: 11px;
+				margin-top: 18px;
+				color: #9fa4bb;
+				font-size: 14px;
+				font-weight: 700;
+				line-height: 20px;
+				letter-spacing: 0.01em;
+			}
+		}
+
+		.fixed-price {
+			@include breakpoint('3') {
+				margin-bottom: 0;
 			}
 		}
 
@@ -448,6 +574,12 @@ input[type='text']::placeholder {
 	display: flex;
 	align-items: center;
 	gap: 3px;
+
+	.certificate-hint {
+		margin: 24px 0 0 16px;
+		font-size: 14px;
+		line-height: 19px;
+	}
 }
 
 ::ng-deep {
@@ -506,10 +638,46 @@ input[type='number']::placeholder {
 	opacity: 1;
 }
 
+input[type='file'] {
+	display: none;
+}
+
 ::ng-deep {
 	.ng-select .ng-select-container .ng-value-container .ng-placeholder {
-		color: #9fa4bb;
+		color: #9fa4bb !important;
+		font-size: 16px;
+	}
+
+	input.datepicker {
+		height: 49px;
+		border: none;
+		border-radius: 4px;
+		padding: 0 16px;
+		width: 100%;
+		background-color: #f3f4f6;
+
+		&::placeholder {
+			color: #9fa4bb;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 20px;
+		}
+	}
+
+	.ng-select .ng-select-container,
+	.b2b-ngx-input.background.background-gray {
+		color: #556274 !important;
+		font-size: 16px;
+		padding: 11px 16px 10px;
+	}
+
+	input.has-value {
+		color: #556274 !important;
+		max-width: 100% !important;
+		padding: 0 16px !important;
 	}
 }
 
-//.b2b-ngx-input::placeholder,
+input:read-only {
+	opacity: 0.5;
+}

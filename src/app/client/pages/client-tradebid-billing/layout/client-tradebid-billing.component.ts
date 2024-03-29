@@ -12,7 +12,7 @@ import { Validators } from '@angular/forms';
 import { onlyNumber } from '../../../../core/helpers/validator/only-number';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { onlyLatin } from '../../../../core/helpers/validator/only-latin';
-import { onlyLatinAndNumberAndSymbols } from '../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';

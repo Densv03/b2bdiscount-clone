@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { getCode, getName } from 'country-list';
@@ -52,8 +52,21 @@ export class CreateDirectionDialogComponent implements OnInit {
 		private readonly changeDetectorRef: ChangeDetectorRef
 	) {}
 
+
+	get countryNames(): FormArray {
+		return this.directionForm?.get('countryNames') as FormArray;
+	}
+
 	ngOnInit(): void {
 		this.setForm();
+	}
+
+	public deleteAlternativeName(index: number): void {
+		this.countryNames.removeAt(index);
+	}
+
+	public addField(): void {
+		this.countryNames.push(new FormControl(null));
 	}
 
 	public save(): void {
@@ -78,6 +91,10 @@ export class CreateDirectionDialogComponent implements OnInit {
 			model.cityId = country;
 		}
 
+		if (type === 'country' && this.countryNames.length > 0) {
+			model.countryNames = this.countryNames.value;
+		}
+
 		this.dialogRef.close(model);
 	}
 
@@ -88,6 +105,9 @@ export class CreateDirectionDialogComponent implements OnInit {
 			name: new FormControl(null),
 			city: new FormControl(null),
 			active: new FormControl(false),
+			countryNames: new FormArray([
+				new FormControl(null)
+			])
 		});
 
 		const countryControl = this.directionForm.get('country');

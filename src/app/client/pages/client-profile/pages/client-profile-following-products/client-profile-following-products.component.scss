@@ -1,0 +1,112 @@
+@import 'projects/shared/src/styles';
+:host {
+	.products {
+		&__title {
+			font-size: 16px;
+			font-weight: 600;
+			line-height: 18px;
+			letter-spacing: 0.02em;
+		}
+
+		&__description {
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 18px;
+			letter-spacing: 0.02em;
+			margin-top: 24px;
+		}
+
+		&__button {
+			margin-top: 16px;
+			&-content {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			&-title {
+				font-size: 14px;
+				font-weight: 500;
+				line-height: 18px;
+				letter-spacing: 0.02em;
+			}
+		}
+
+		&__list {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+			margin-top: 48px;
+			padding-bottom: 50px;
+		}
+
+		&__item {
+			display: flex;
+			border: 1px solid #c6d1e2;
+			border-radius: 4px;
+			@include breakpoint('2') {
+				flex-direction: column;
+			}
+
+			&-head {
+				width: 40%;
+				border-right: 1px solid #c6d1e2;
+				padding: 16px;
+				display: flex;
+				align-items: flex-start;
+				gap: 8px;
+				@include breakpoint('2') {
+					border-bottom: 1px solid #c6d1e2;
+					width: 100%;
+				}
+			}
+
+			.sector-name {
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+			}
+
+			&-body {
+				position: relative;
+				display: flex;
+				width: 60%;
+				flex-wrap: wrap;
+				gap: 16px;
+				padding: 16px;
+				max-height: 58px;
+				overflow: hidden;
+				transition: 0.5s max-height;
+				padding-right: 35px;
+				@include breakpoint('2') {
+					width: 100%;
+				}
+
+				.arrow {
+					transition: 0.5s transform;
+					position: absolute;
+					right: 10px;
+					cursor: pointer;
+				}
+
+				&.opened {
+					max-height: 500px;
+
+					.arrow {
+						transform: rotate(180deg);
+					}
+				}
+			}
+
+			&-child {
+				font-size: 14px;
+				font-weight: 500;
+				line-height: 18px;
+				letter-spacing: 0.02em;
+				background: #f3f6f8;
+				border-radius: 12px;
+				padding: 5px 10px;
+			}
+		}
+	}
+}

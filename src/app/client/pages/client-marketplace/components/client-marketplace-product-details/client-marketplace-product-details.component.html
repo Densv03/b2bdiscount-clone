@@ -1,314 +1,507 @@
-<!--<ng-container *ngIf="">-->
 <div class="product-detail-wrapper">
 	<ng-container
 		*ngIf="
 			!(isLoading$ | async) && (productSource | async) as product;
 			else loading
 		">
-		<b2b-breadcrumbs
-			*ngIf="!productView"
-			[breadcrumbLabel]="product.title"></b2b-breadcrumbs>
+		<div class="w-100">
+			<b2b-breadcrumbs
+				*ngIf="!productView"
+				[breadcrumbLabel]="product.title"></b2b-breadcrumbs>
+		</div>
 
 		<div class="product-detail">
-			<h1 class="product-name mb-4">{{ product.title }}</h1>
+			<div class="w-100">
+				<h1 class="product-name mobile-none">{{ product.title }}</h1>
+			</div>
+
+			@if ((scrolling | async) && user?._id !== product.user) {
+				<div class="mobile-button">
+					<button
+						b2bNgxButton
+						(click)="openChat($event)"
+						[id]="
+							(isAuth$ | async) === true
+								? 'marketplace-product-details-authorized'
+								: 'marketplace-product-details-unauthorized'
+						"
+						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+						class="btn-100">
+						Send message
+					</button>
+				</div>
+			}
 
 			<b2b-custom-carousel
 				[isImage]="true"
 				[slides]="product.photosUrl"></b2b-custom-carousel>
 
+			<h3 class="mobile-name">{{ product.title }}</h3>
+
 			<section class="product-information">
 				<div class="product-info">
-					<div class="description">
-						<h3 class="section-title">Product description</h3>
+					<a
+						[class.no-cursor]="productView"
+						class="company-info"
+						[routerLink]="[
+							'/b2bmarket/company/',
+							companyInfo?.path || companyInfo._id
+						]">
+						<div class="company-info-logo-and-name">
+							@if (!!companyInfo?.logo?.path) {
+								<img
+									class="h-[48px] w-[48px]"
+									[src]="apiAddress + companyInfo?.logo?.path"
+									width="48"
+									height="48" />
+							} @else {
+								<img
+									class="h-[48px] w-[48px]"
+									[src]="'assets/icons/no-company-logo.svg'"
+									width="48"
+									height="48" />
+							}
+							<h3 class="company-name">{{ companyInfo.companyName }}</h3>
+						</div>
 
-						<p class="section-text">{{ product.specifications }}</p>
+						<mat-icon
+							*ngIf="platformService.isBrowser"
+							[svgIcon]="'arrow-right-2'"></mat-icon>
+					</a>
+
+					<div
+						class="price-info product-section"
+						*ngIf="product.price?.old || product.priceRange?.minimum">
+						<div class="left-side-price">
+							<h3 class="section-title">Product price</h3>
+
+							<h2 class="product-price">
+								<span
+									*ngIf="product?.price?.old && !product?.priceRange?.minimum"
+								>{{ product.price.old }}
+									<span
+										*ngIf="product.price.old !== PriceTypeEnum.PriceUponRequest"
+									>USD</span
+									>
+								</span>
+								<span
+									*ngIf="product?.price?.unit && !product?.priceRange?.unit"
+									class="unit">
+									per {{ product.price.unit.displayName }}
+								</span>
+								<span *ngIf="product.priceRange?.minimum"
+								>{{ product.priceRange.minimum }} -
+									{{ product?.priceRange?.maximum }} USD
+								</span>
+								<span *ngIf="product?.priceRange?.unit" class="unit">
+									per {{ product.priceRange.unit.displayName }}
+								</span>
+							</h2>
+						</div>
+
+						<a
+							[class.no-cursor]="productView"
+							routerLink="/quick-logistics"
+							target="_blank"
+							class="button-and-mobile-link"
+						>Discover freight cost</a
+						>
 					</div>
 
-					<div class="origin">
-						<h3 class="section-title">Product origin:</h3>
+					<div class="product-details product-section">
+						<h3 class="section-title">Product details</h3>
 
-						<p class="section-text">
-							{{
-								getName(
-									product?.productOrigin
-										? product?.productOrigin
-										: product?.country
-								)
-							}}
-						</p>
+						<p class="section-text description">{{ product.specifications }}</p>
+
+						<div
+							class="product-details-text"
+							*ngIf="product?.productOrigin || product?.country">
+							<span class="section-text grey-color">Product origin</span>
+
+							<span class="section-text">{{
+									getName(
+										product?.productOrigin
+											? product?.productOrigin
+											: product?.country
+									)
+								}}</span>
+						</div>
+
+						<div
+							class="product-details-text"
+							*ngIf="product?.productCapacity?.count">
+							<span class="section-text grey-color">Production capacity</span>
+
+							<span class="section-text">
+								{{ product.productCapacity.count }}
+
+								{{
+									product.productCapacity.count > 1
+										? product.productCapacity.unit.displayName
+										: product.productCapacity.unit.pluralDisplayName
+								}}
+
+								/ {{ product.productCapacity.timeSpan }}
+							</span>
+						</div>
+
+						<div class="product-details-text" *ngIf="product?.brandName">
+							<span class="section-text grey-color">Brand</span>
+
+							<span class="section-text">{{ product.brandName }}</span>
+						</div>
 					</div>
 
-					<div class="origin" *ngIf="isAmount">
-						<h3 class="section-title">Minimum order quantity:</h3>
+					<div class="more-info product-section" *ngIf="isSpecificationList">
+						<h3 class="section-title">Specification</h3>
 
-						<p class="section-text">
-							{{ product.amount?.count || product?.amount }}/{{
-								(+product.amount?.count > 1
-									? product.amount?.unit?.pluralDisplayName
-									: product.amount?.unit?.displayName) ||
-									product.amount?.unit ||
-									product?.unit
-							}}
-						</p>
-					</div>
-
-					<div class="origin" *ngIf="product?.brandName">
-						<h3 class="section-title">Brand:</h3>
-
-						<p class="section-text">{{ product.brandName }}</p>
-					</div>
-
-					<div class="more-info" *ngIf="isSpecificationList">
-						<h3 class="section-title">More information</h3>
-
-						<div class="more-info-block">
+						<div
+							class="more-info-block"
+							[class.one-row]="product.specificationList.length === 1">
 							<div *ngFor="let info of product.specificationList">
-								<p class="section-text">{{ info.specification }}</p>
+								<p class="section-text specification">
+									{{ info.specification }}
+								</p>
 								<p class="section-text">{{ info.item }}</p>
 							</div>
 						</div>
 					</div>
 
 					<div
-						class="method"
-						*ngIf="
-							!!product?.paymentMethods &&
-							product.paymentMethods.length > 0 &&
-							product.paymentMethods[0] !== null
-						">
-						<h3 class="section-title">Payment method</h3>
+						class="product-section certificates-block product-details"
+						*ngIf="product?.certificates && product?.certificates?.length > 0">
+						<h3 class="section-title certifications-title">Certifications</h3>
 
-						<div class="flex-gap">
-							<p
-								class="section-text method-text"
-								*ngFor="let method of product?.paymentMethods">
-								{{ method }}
-							</p>
-						</div>
+						<b2b-categories-carousel
+							[customCLass]="'w-100'"
+							[otherCarouselItems]="product?.certificates"
+							[showArrows]="product.certificates.length > 1">
+							@for (certificate of product?.certificates; track certificate._id; let i = $index) {
+								<div
+									class="certificate-item">
+									<div class="certificate-header">
+										<img
+											[src]="
+											certificate.logo
+												? certificate.logo
+												: 'assets/icons/certificate-logos/default.svg'
+										"
+											width="48"
+											height="48" />
+
+										<h3 class="certificate-name">
+											{{ certificate.certificateName }}
+										</h3>
+									</div>
+
+									<div class="certificate-main">
+										<div class="product-details-text">
+											<span class="section-text grey-color">Organization</span>
+
+											<span class="section-text">{{
+													certificate.organization
+												}}</span>
+										</div>
+
+										<div class="product-details-text">
+										<span class="section-text grey-color"
+										>Certificate Number</span
+										>
+
+											<span class="section-text">{{
+													certificate.certificateNumber
+												}}</span>
+										</div>
+
+										<div class="product-details-text">
+											<span class="section-text grey-color">Issued Date</span>
+
+											<span class="section-text">{{
+													certificate.issueDate | date: 'MMM dd, yyyy'
+												}}</span>
+										</div>
+
+										<div class="product-details-text">
+											<span class="section-text grey-color">Validity</span>
+
+											<span class="section-text">{{
+													certificate.dateValidTo | date: 'MMM dd, yyyy'
+												}}</span>
+										</div>
+									</div>
+								</div>
+							}
+						</b2b-categories-carousel>
 					</div>
 
 					<div
-						class="method"
-						*ngIf="!!product?.tradingAreas && product?.tradingAreas.length > 0">
-						<h3 class="section-title">Trading areas</h3>
+						class="product-section product-details"
+						*ngIf="product?.samplesInfo?.samplePrice">
+						<h3 class="section-title">Samples information</h3>
 
-						<div class="flex-gap">
-							<p
-								class="section-text method-text"
-								*ngFor="let area of product.tradingAreas">
-								{{ area }}
-							</p>
+						<div class="product-details-text">
+							<span class="section-text grey-color"
+							>Minimum order quantity</span
+							>
+
+							<span class="section-text">
+								{{ product.samplesInfo.maximumOrderQuantity }}
+								{{ product.samplesInfo.measure }}
+							</span>
 						</div>
+
+						<div class="product-details-text">
+							<span class="section-text grey-color">Sample price</span>
+
+							<span class="section-text fw-bolder"
+							>${{ product.samplesInfo.samplePrice }} /
+								{{ product.samplesInfo.measure }}</span
+							>
+						</div>
+
+						<button
+							[disabled]="productView"
+							(click)="openChat($event)"
+							class="button-and-mobile-link">
+							Order sample
+						</button>
 					</div>
 
-					<div
-						class="method"
-						*ngIf="
-							product?.shipping &&
-							product?.shipping.length > 0 &&
-							product.shipping[0] !== null
-						">
-						<h3 class="section-title">Shipping information</h3>
+					<div class="product-section product-details more-info">
+						<h3 class="section-title">Payment and shipping information</h3>
 
-						<div class="flex-gap">
-							<p
-								class="section-text method-text"
-								*ngFor="let shipping of product.shipping">
-								{{ shipping }}
-							</p>
+						<div
+							class="product-details-text"
+							*ngIf="product?.paymentMethods?.length > 0">
+							<span class="section-text grey-color">Payment method</span>
+
+							<span class="section-text fw-bolder">{{
+									product.paymentMethods.join(', ')
+								}}</span>
 						</div>
-					</div>
 
-					<div
-						class="method"
-						*ngIf="product?.ports && product?.ports.length > 0">
-						<h3 class="section-title">Port of shipping</h3>
+						<div
+							class="product-details-text"
+							*ngIf="product?.tradingAreas?.length > 0">
+							<span class="section-text grey-color">Trading areas</span>
 
-						<div class="flex-gap ports-wrapper">
+							<span class="section-text fw-bolder">{{
+									product.tradingAreas.join(', ')
+								}}</span>
+						</div>
+
+						<div
+							class="product-details-text"
+							*ngIf="product?.shipping?.length > 0">
+							<span class="section-text grey-color">Shipping information</span>
+
+							<span class="section-text fw-bolder">{{
+									product.shipping.join(', ')
+								}}</span>
+						</div>
+
+						<ng-template [ngIf]="product?.ports && product?.ports.length > 0">
+							<p class="section-text grey-color port-title">Port of shipping</p>
+
 							<div
-								class="section-text method-text w-100 port-text"
-								*ngFor="let port of product.ports">
-								<div class="port-row">
-									<div class="port-country">
+								class="more-info-block ports"
+								[class.one-row]="product.ports.length === 1">
+								<div *ngFor="let port of product.ports">
+									<p class="section-text specification">
 										<img
 											b2bNgxIcon
 											group="flags/"
 											[name]="port.countryCode?.toUpperCase()" />
-
-										<p class="section-text method-text port-text">
-											{{ port.country }}
-										</p>
-									</div>
-
-									<div class="ports">
-										<p
-											class="section-text method-text port-text"
-											*ngFor="let portName of port.portName">
-											{{ portName }}
-										</p>
-									</div>
+										{{ port.country }}
+									</p>
+									<p class="section-text port-names">
+										{{ port.portName.join(', ') }}
+									</p>
 								</div>
 							</div>
+						</ng-template>
+					</div>
+
+					<div class="product-section product-details">
+						<h3 class="section-title">About the supplier</h3>
+
+						<div class="flex-gap company-full">
+							<img
+								class="company-big-logo"
+								[src]="
+									companyInfo?.logo?.path
+										? apiAddress + companyInfo.logo?.path
+										: 'assets/icons/no-company-logo.svg'
+								"
+								width="100"
+								height="100" />
+
+							<div class="supplier-full-info">
+								<a
+									*ngIf="!productView"
+									[routerLink]="
+										'/b2bmarket/company/' +
+										(companyInfo?.path || companyInfo._id)
+									"
+									class="company-name"
+								>{{ companyInfo.companyName }}</a
+								>
+
+								<span *ngIf="productView" class="company-name">{{
+										companyInfo.companyName
+									}}</span>
+
+								<a
+									[class.no-cursor]="productView"
+									*ngIf="otherProducts && !productView"
+									b2bNgxLink
+									[theme]="b2bNgxLinkThemeEnum.TEXT_GRAY"
+									[routerLink]="'/b2bmarket/supplier-listing/' + product.user"
+									class="products-count">
+									{{ companyInfo?.countActiveUserProducts }} products total
+								</a>
+
+								<a
+									[class.no-cursor]="productView"
+									[routerLink]="
+										'/b2bmarket/company/' +
+										(companyInfo?.path || companyInfo._id)
+									"
+									class="button-and-mobile-link mobile-none supplier-page-button"
+								>Visit supplier page
+								</a>
+							</div>
+						</div>
+
+						<a
+							[class.no-cursor]="productView"
+							[routerLink]="
+								'/b2bmarket/company/' + (companyInfo?.path || companyInfo._id)
+							"
+							class="supplier-page"
+						>Visit supplier page</a
+						>
+
+						<div
+							class="product-details-text"
+							*ngIf="product?.suppliersType || user.role.displayName">
+							<span class="section-text grey-color">Business Type</span>
+
+							<span class="section-text">{{
+									product?.suppliersType || user.role.displayName
+								}}</span>
+						</div>
+
+						<div class="product-details-text" *ngIf="companyInfo?.country">
+							<span class="section-text grey-color">Country</span>
+
+							<span class="section-text">{{
+									getName(companyInfo?.country)
+								}}</span>
+						</div>
+
+						<div
+							class="product-details-text"
+							*ngIf="companyInfo?.yearOfFoundation">
+							<span class="section-text grey-color">Year of establishment</span>
+
+							<span class="section-text">{{
+									companyInfo?.yearOfFoundation
+								}}</span>
+						</div>
+
+						<div
+							class="product-details-text"
+							[class.no-cursor]="productView"
+							*ngIf="companyInfo?.website && containsDot(companyInfo?.website)">
+							<span class="section-text grey-color">Company website</span>
+
+							<a
+								[class.no-cursor]="productView"
+								class="section-text link company-link"
+								[href]="getFullUrl(companyInfo.website)"
+								target="_blank"
+								rel="nofollow"
+							>{{ companyInfo.website }}</a
+							>
+						</div>
+
+						<div class="product-details-text" *ngIf="companySectors">
+							<span class="section-text grey-color">Product sector</span>
+
+							<span class="section-text categories-text">{{
+									companySectors
+								}}</span>
 						</div>
 					</div>
 				</div>
 
-				<div class="company-info">
-					<div
-						*ngIf="product?.hidden || $any(product)?.deleted"
-						class="disable">
-						<p *ngIf="$any(product)?.deleted; else HIDDEN">
-							Product was deleted
-						</p>
-						<ng-template #HIDDEN>
-							<p>Product was hidden</p>
-						</ng-template>
-					</div>
+				<div class="contact-info">
+					<h3 class="section-title mobile-none">Contact supplier</h3>
 
-					<div class="company-text">
-						<div class="text">
-							<a
-								b2bNgxLink
-								[routerLink]="
-									'/b2bmarket/company/' + (companyInfo?.path || companyInfo._id)
-								"
-								[theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
-								class="company-title">
-								{{ companyInfo.companyName }}</a
-							>
+					<div class="contact-block">
+						<div class="company-text">
+							@if (((companyContactPersonLogo$ | async) &&
+								(companyContactPersonLogo$ | async).includes('userLogo')) ||
+							(companyContactPersonLogo$ | async) === null) {
+								<img
+									[src]="'assets/icons/user-product-detail.svg'"
+									width="48"
+									height="48" />
+							} @else {
+								<img
+									[src]="apiAddress + (companyContactPersonLogo$ | async)"
+									width="48"
+									height="48" />
+							}
+							<div class="text">
+								<h3 class="section-title">
+									{{ companyInfo?.fullName || product?.contact?.personName }}
+								</h3>
 
-							<a
-								*ngIf="otherProducts"
-								b2bNgxLink
-								[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
-								[routerLink]="'/b2bmarket/supplier-listing/' + product.user"
-								class="company-products-count"
-								>{{ companyInfo?.countActiveUserProducts }} products total</a
-							>
-
-							<div class="flex-gap align-items-center">
-								<mat-icon>business_center</mat-icon>
-
-								<p class="section-text">
-									{{ product?.suppliersType || user.role.displayName }}
-								</p>
-							</div>
-
-							<div class="flex-gap align-items-center address mobile">
-								<mat-icon>home</mat-icon>
-
-								<p class="section-text">{{ companyInfo.address }}</p>
+								<p>{{ companyInfo.position }}</p>
 							</div>
 						</div>
-
-						<img
-							[src]="
-								companyInfo?.logo?.path
-									? apiAddress + companyInfo.logo?.path
-									: 'assets/images/no-company-logo.png'
-							"
-							width="72"
-							height="72" />
-					</div>
-
-					<div class="flex-gap align-items-center address desktop">
-						<mat-icon>home</mat-icon>
-
-						<p class="section-text">{{ companyInfo.address }}</p>
-					</div>
-
-					<div class="buttons">
-						<div class="btn-row">
-							<a
-								(click)="openPhoneModal()"
-								[class.w-100]="
-									!(companyInfo?.website && containsDot(companyInfo?.website))
-								"
-								[class.text-center]="
-									!(companyInfo?.website && containsDot(companyInfo?.website))
-								">
-								Phone
-							</a>
-
-							<a
-								*ngIf="companyInfo.website && containsDot(companyInfo.website)"
-								[href]="getFullUrl(companyInfo.website)"
-								target="_blank"
-								rel="nofollow">
-								Website
-							</a>
+						<div class="buttons">
+							@if (user?._id !== product.user) {
+								<button
+									b2bNgxButton
+									(click)="openChat($event)"
+									[id]="
+										(isAuth$ | async) === true
+											? 'marketplace-product-details-authorized'
+											: 'marketplace-product-details-unauthorized'
+									"
+									[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+									class="btn-100">
+									Send message
+								</button>
+							}
 						</div>
-
-						<button
-							b2bNgxButton
-							(click)="openChat($event)"
-							*ngIf="isCurrentUser"
-							[id]="
-								(isAuth$ | async) === true
-									? 'marketplace-product-details-authorized'
-									: 'marketplace-product-details-unauthorized'
-							"
-							[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-							class="btn-100">
-							<img b2bNgxIcon name="messages-2" />
-
-							Contact
-						</button>
 					</div>
 				</div>
 			</section>
 
 			<div *ngIf="otherProducts?.length" class="other-products">
-				<div class="flex-between">
-					<h3 class="other-products-title">More products from this supplier</h3>
-
-					<a
-						b2bNgxLink
-						[routerLink]="'/b2bmarket/supplier-listing/' + product.user"
-						[id]="
-							(isAuth$ | async) === true
-								? 'marketplace-other-products-authorized'
-								: 'marketplace-other-products-unauthorized'
-						"
-						[theme]="b2bNgxLinkThemeEnum.TEXT_BLUE"
-						>View all</a
-					>
-				</div>
-
-				<ul class="products" [class.between]="otherProducts.length === 4">
-					<li *ngFor="let product of otherProducts" class="product-wrapper">
-						<b2b-client-marketplace-product-item
-							(click)="navigateOnProductDetail(product.path || product._id)"
-							[logoLink]="companyInfo?.logo?.path ?? 'plug'"
-							[product]="product">
-						</b2b-client-marketplace-product-item>
-					</li>
-				</ul>
+				<b2b-categories-carousel
+					[customCLass]="' product-details-page smaller-size'"
+					*ngIf="otherProducts?.length > 0"
+					[showArrows]="false"
+					title="More products from the supplier"
+					[products]="otherProducts"></b2b-categories-carousel>
 			</div>
+		</div>
 
-			<div *ngIf="otherSuppliersProducts?.length" class="other-products">
-				<div class="flex-between">
-					<h3 class="other-products-title">Similar products</h3>
-				</div>
-
-				<ul
-					class="products"
-					[class.between]="otherSuppliersProducts.length === 4">
-					<li
-						*ngFor="let product of otherSuppliersProducts"
-						class="product-wrapper">
-						<b2b-client-marketplace-product-item
-							(click)="navigateOnProductDetail(product.path || product._id)"
-							[logoLink]="companyInfo?.logo?.path ?? 'plug'"
-							[product]="product">
-						</b2b-client-marketplace-product-item>
-					</li>
-				</ul>
-			</div>
+		<div *ngIf="otherSuppliersProducts?.length" class="similar-products">
+			<b2b-categories-carousel
+				[customCLass]="similarProductsClass"
+				*ngIf="otherSuppliersProducts?.length > 0"
+				[showArrows]="otherSuppliersProducts?.length > 5"
+				title="Similar product"
+				[products]="otherSuppliersProducts"></b2b-categories-carousel>
 		</div>
 	</ng-container>
 </div>
-<!--</ng-container>-->
 
 <ng-template #loading>
 	<b2b-page-loader class="page-loader" style="z-index: 10000"></b2b-page-loader>

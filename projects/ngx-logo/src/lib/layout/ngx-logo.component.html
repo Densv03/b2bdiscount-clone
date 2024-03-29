@@ -1,33 +1,30 @@
 <div class="ngx-file">
-	<label class="ngx-file-label" for="file">
-		<ng-content></ng-content>
-	</label>
+	<div class="flex flex-col items-center justify-center gap-2">
+		@if (showIcon) {
+			<img b2bNgxIcon
+					 class="!h-[32px] !w-[32px]"
+					 name="image-plus"
+					 alt="image"/>
+		}
+		<button class="!bg-[#EEEEEE] !text-xs"
+						mat-flat-button
+						#button
+						(click)="fileInput.click()"
+						[class.ng-invalid]="formControl.invalid"
+						[class.ng-touched]="formControl.touched">
+			<mat-icon>add</mat-icon>
+			<span>{{ label }}</span>
+			<input
+				#fileInput
+				[accept]="'image/png, image/jpeg, image/svg, image/webp'"
+				(change)="uploadFiles($event)"
+				class="ngx-file-input hidden"
+				type="file"
+				id="file"/>
+		</button>
+		@if (!isImage) {
+			<mat-error class="text-red-500 text-xs text-center">Should be in image format. E.g. jpeg, jpg, web, svg, png</mat-error>
+		}
 
-<div *ngIf="!logo" class="control">
-	<button
-		b2bNgxButton
-		[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
-		class="ngx-file-button"
-		[class.ng-invalid]="formControl.invalid"
-		[class.ng-touched]="formControl.touched">
-		<img b2bNgxIcon name="photo" alt="photo" />
-		<span class="ngx-file-button-text">{{ label }}</span>
-		<input
-			#fileInput
-			[accept]="'.svg, .jpg, .png'"
-
-			(change)="uploadFiles($event)"
-			class="ngx-file-input"
-			type="file"
-			id="file" />
-	</button>
-
-	<div class="empty-file-label">No File Chosen</div>
-</div>
-		<div *ngIf="logo" class="ngx-logo">
-			<img [src]="preview$ | async | safe: 'url'" alt="logo"/>
-			<span class="ngx-logo-name">{{ logo.name }}</span>
-			<img (click)="removeLogo()" b2bNgxIcon name="cancel" class="ngx-logo-icon" alt="cancel" />
-		</div>
-
+	</div>
 </div>

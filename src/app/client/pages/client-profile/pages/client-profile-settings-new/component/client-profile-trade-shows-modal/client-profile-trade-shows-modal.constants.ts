@@ -1,0 +1,1 @@
+export const fileUploadDescription = 'Image file size should be less than 5MB. Supported formats; .jpeg jpg .png. Recommended image size is more than 640px. * 640px. Imaged should be clear and easy for buyers to view at a glance.'

@@ -63,19 +63,19 @@
 							[class.fill-white]="isTransparent$ | async"
 							fill-rule="evenodd"
 							clip-rule="evenodd"
-							d="M25 10.375L7 10.375L7 8.125L25 8.125L25 10.375Z" />
+							d="M25 10.375L7 10.375L7 8.125L25 8.125L25 10.375Z"/>
 						<path
 							[class.fill-white]="isTransparent$ | async"
 							fill-rule="evenodd"
 							clip-rule="evenodd"
 							d="M25 17.125L7 17.125L7 14.875L25 14.875L25 17.125Z"
-							fill="#0F0F11" />
+							fill="#0F0F11"/>
 						<path
 							[class.fill-white]="isTransparent$ | async"
 							fill-rule="evenodd"
 							clip-rule="evenodd"
 							d="M25 23.875L7 23.875L7 21.625L25 21.625L25 23.875Z"
-							fill="#0F0F11" />
+							fill="#0F0F11"/>
 					</svg>
 				</button>
 				<div (click)="closeNav()" class="header__main-logo">
@@ -86,9 +86,9 @@
 						<img
 							*ngIf="!(isTransparent$ | async); else whiteLogo"
 							b2bNgxIcon
-							name="logo-blue" />
+							name="logo-blue"/>
 						<ng-template #whiteLogo
-							><img b2bNgxIcon name="logo-white"
+						><img b2bNgxIcon name="logo-white"
 						/></ng-template>
 					</a>
 				</div>
@@ -118,7 +118,7 @@
 									stroke="black"
 									stroke-width="1.5"
 									stroke-linecap="round"
-									stroke-linejoin="round" />
+									stroke-linejoin="round"/>
 							</svg>
 						</div>
 					</div>
@@ -144,7 +144,7 @@
 									stroke="black"
 									stroke-width="1.5"
 									stroke-linecap="round"
-									stroke-linejoin="round" />
+									stroke-linejoin="round"/>
 							</svg>
 						</div>
 					</div>
@@ -155,7 +155,7 @@
 							[class.active-header-link]="checkLinkIsActive('/b2bmarket')"
 							[class.d-none]="isAuthPage$ | async"
 							class="header__main-link"
-							>B2B Market</a
+						>B2B Market</a
 						>
 						<a
 							routerLink="/sourcing-request/listing"
@@ -166,19 +166,21 @@
 							b2bTooltip
 							[tooltipType]="tooltipTypeEnum.SOURCING_REQUEST"
 							class="header__main-link"
-							>Sourcing Request</a
+						>Sourcing Request</a
 						>
 					</ng-container>
 				</div>
-				<div *ngIf="showSearch" class="search-wrapper">
-					<input
-						b2bNgxInput
-						[formControl]="control"
-						(keydown.enter)="setSearchControlValue()"
-						[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-						class="subheader-search"
-						placeholder="Search products" />
-					<img (click)="setSearchControlValue()" b2bNgxIcon name="search" />
+				<div *ngIf="showSearch" class="search-wrapper border flex flex-row gap-2">
+					<div class="grid">
+						<input
+							b2bNgxInput
+							[formControl]="control"
+							(keydown.enter)="setSearchControlValue()"
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+							class="subheader-search !border-none w-full z-10"
+							placeholder="Search products"/>
+					</div>
+					<img class="z-100" (click)="setSearchControlValue()" b2bNgxIcon name="search"/>
 				</div>
 
 				<div [class.d-none]="isAuthPage$ | async" class="header__main-auth">
@@ -208,7 +210,7 @@
 										stroke="black"
 										stroke-width="1.5"
 										stroke-linecap="round"
-										stroke-linejoin="round" />
+										stroke-linejoin="round"/>
 								</svg>
 
 								<div
@@ -241,7 +243,7 @@
 										stroke="black"
 										stroke-width="1.5"
 										stroke-linecap="round"
-										stroke-linejoin="round" />
+										stroke-linejoin="round"/>
 								</svg>
 							</div>
 						</div>

@@ -1,0 +1,16 @@
+<mat-form-field appearance="outline">
+	<mat-select
+		[formControl]="control"
+		[multiple]="true"
+		[placeholder]="placeholder"
+		[compareWith]="compareCategoryObjects"
+		panelClass="select-panel-class">
+		<div class="options-wrapper">
+			@for (option of options; track option._id) {
+				<mat-option [value]="option._id">
+					{{ option.portName }}
+				</mat-option>
+			}
+		</div>
+	</mat-select>
+</mat-form-field>

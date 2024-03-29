@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { FirstStepDataModel } from '../auth-register-individual-account/shared/first-step-data.model';
 import { BrowserStorageKeysEnum } from '../../../client/shared/enums/browser-storage-keys.enum';
-import { onlyLatinAndNumberAndSymbols } from '../../../core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../core/helpers/validator/only-latin-numbers-symbols';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

@@ -16,6 +16,26 @@
 		}
 	}
 
+	&.product-details-page:hover {
+		.product-title {
+			color: #000000;
+		}
+	}
+
+	&.smaller-size {
+		width: 148px;
+		gap: 16px;
+
+		.hidden-product,
+		.product-header {
+			height: 148px !important;
+
+			@include breakpoint('3') {
+				height: 88px !important;
+			}
+		}
+	}
+
 	&.product-carousel {
 		@include breakpoint('3') {
 			gap: 20px;

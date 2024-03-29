@@ -40,9 +40,11 @@ export class ProductInformationComponent implements OnInit {
 				filter((data) => !!data?.length),
 				first(),
 				map((res) => {
-					this.measureName = res.find(
-						(item: { _id: any }) => item._id === this.rfqInfo.unitMeasure
-					).displayName;
+					const amountIsPlural = Number(this.rfqInfo.amount.count) > 1;
+					this.measureName =
+						res?.find(
+							(item: { _id: any }) => item._id === this.rfqInfo.unitMeasure
+						)?.[amountIsPlural ? 'pluralDisplayName' : 'displayName'] || '';
 				})
 			)
 			.subscribe(() => {

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CategoriesService } from '../../../../../../../src/app/client/services/categories/categories.service';
 import { ClientMarketplaceService } from '../../../../../../../src/app/client/pages/client-marketplace/client-marketplace.service';
 import { PaginationParamsModel } from '../../../../../../../src/app/core/models/pagination-params.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../../../../../../src/app/client/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -19,6 +19,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { getName } from 'country-list';
 import { VisibleListEnum } from '../../admin-marketplace.component';
 import { B2bNgxInputThemeEnum } from 'projects/ngx-input/src/public-api';
+import { CompanyProfileInterface } from '../../../admin-logistic/interface/company-profile-interface';
 
 @UntilDestroy()
 @Component({
@@ -155,8 +156,6 @@ export class AdminProductListComponent implements OnInit {
 							this.mixpanelService.track('Admin approved user product', {
 								'Product Category': offer.category[0]?.name,
 								"Supplier's Country": offer.company[0]?.country,
-								'Product Count':
-									offer.amount.count + ' ' + offer.amount.unit.name,
 								'Posting Date': Date(),
 							});
 							this.hotToastService.success('approved');
@@ -170,19 +169,23 @@ export class AdminProductListComponent implements OnInit {
 				onClick: (offer: {
 					_id: string;
 					category: { name: any }[];
-					company: { country: any; countActiveUserProducts: number }[];
+					company: CompanyProfileInterface[];
+					user: string;
 					amount: { count: string; unit: { name: string } };
 					updatedAt: any;
 				}) => {
 					this.marketService
 						.declineProductByAdmin(offer._id)
 						.pipe(untilDestroyed(this))
-						.subscribe(() => {
+						.subscribe(async () => {
+							const user = await firstValueFrom(
+								this.userService.getUserById(offer.user)
+							);
 							this.mixpanelService.track('Product declined', {
+								distinctId: offer.user,
 								'Product Category': offer?.category[0]?.name,
 								"Supplier's Country": getName(offer?.company[0]?.country),
-								'Product Count':
-									offer?.company[0]?.countActiveUserProducts || 0,
+								'Product Count': user?.statistics?.products?.approved || 0,
 								'Product declined': offer?.updatedAt,
 							});
 							this.hotToastService.success('declined');
@@ -234,10 +237,10 @@ export class AdminProductListComponent implements OnInit {
 			userId,
 			typeRoom: 'users',
 		});
-		-this.socket.on('users_chat_info', (data: { _id: any }) => {
+
+		this.socket.on('users_chat_info', (data: { _id: any }) => {
 			this.router.navigate([
-				'profile/your-workspace/b2bmarket/chat/',
-				data._id,
+				'profile/your-workspace/b2bmarket/chat/' + data._id
 			]);
 		});
 	}

@@ -12,6 +12,7 @@ export class B2bNgxImagesCarouselComponent implements OnChanges {
 	@Input() public options: any[];
 	@Input() public className: string = '';
 	public images: ImageItem[] = null;
+	private apiUrl = environment.apiUrl.includes('staging') ? 'https://api.globy.com/' : environment.apiUrl
 
 	public get imagesCarouselClassName() {
 		return `${this.className}`;
@@ -25,8 +26,8 @@ export class B2bNgxImagesCarouselComponent implements OnChanges {
 		if (changes['options'].currentValue) {
 			this.images = changes['options'].currentValue.map((option: any) => {
 				return new ImageItem({
-					src: environment.apiUrl + option.lg,
-					thumb: environment.apiUrl + option.lg,
+					src: this.apiUrl + option.lg,
+					thumb: this.apiUrl + option.lg,
 				});
 			});
 		}

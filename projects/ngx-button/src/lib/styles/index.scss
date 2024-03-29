@@ -60,6 +60,8 @@
     }
   }
   &.outline {
+		outline-style: none;
+
     &.outline-black {
       border-color: $color-black-800;
       &:hover {

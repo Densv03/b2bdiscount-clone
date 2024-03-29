@@ -15,10 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { CategoriesMobileListComponent } from './categories-mobile-list/categories-mobile-list.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ParentCategoriesMobileListComponent } from './parent-categories-mobile-list/parent-categories-mobile-list.component';
-import { MatRippleModule } from '@angular/material/core';
+import { MatOption, MatRippleModule } from '@angular/material/core';
+import { CustomCarouselDialogComponent } from './custom-carousel-dialog/custom-carousel-dialog.component';
+import { MultipleDropdownComponent } from './multiple-dropdown/multiple-dropdown.component';
+import { MatFormField, MatSelect } from '@angular/material/select';
 
 @NgModule({
 	declarations: [
+		MultipleDropdownComponent,
 		ConfirmationDialogComponent,
 		BlogGridListComponent,
 		ClientSubheaderComponent,
@@ -26,6 +30,7 @@ import { MatRippleModule } from '@angular/material/core';
 		CustomCarouselComponent,
 		CategoriesMobileListComponent,
 		ParentCategoriesMobileListComponent,
+		CustomCarouselDialogComponent,
 	],
 	imports: [
 		CommonModule,
@@ -39,12 +44,16 @@ import { MatRippleModule } from '@angular/material/core';
 		MatIconModule,
 		MatDialogModule,
 		MatRippleModule,
+		MatSelect,
+		MatOption,
+		MatFormField,
 	],
 	exports: [
 		BlogGridListComponent,
 		ClientSubheaderComponent,
 		ClaimButtonsComponent,
 		CustomCarouselComponent,
+		MultipleDropdownComponent,
 	],
 })
 export class SharedModule {}

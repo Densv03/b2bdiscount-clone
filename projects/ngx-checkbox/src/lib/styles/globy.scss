@@ -1,0 +1,120 @@
+@import "projects/shared/src/styles";
+
+:host {
+  .globy-ngx-checkbox {
+    position: relative;
+    height: 1.25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+		cursor: pointer;
+
+    .globy-ngx-checkbox__label {
+      color: #556274;
+      padding-left: 2rem;
+    }
+
+    .globy-ngx-checkbox__icon {
+      height: 100%;
+      width: 1.25rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.2rem;
+      border: 0.1rem solid #D2DEFF;
+
+      img {
+        display: none;
+      }
+    }
+
+    .globy-ngx-checkbox__input {
+      opacity: 0;
+
+      &:checked ~ .globy-ngx-checkbox__icon {
+        background-color: $color-black-800;
+        border-color: $color-black-800;
+
+        img {
+          display: block;
+        }
+      }
+
+      &.ng-invalid.ng-touched ~ .globy-ngx-checkbox__icon {
+        background-color: $color-red-50;
+        border-color: $color-red-500;
+      }
+    }
+
+    &.d-flex {
+      display: flex;
+      align-items: center;
+    }
+
+    &.reverse {
+      position: initial;
+      justify-content: space-between;
+      align-items: center;
+
+      .globy-ngx-checkbox__label {
+        padding: 0;
+      }
+
+      .globy-ngx-checkbox__icon {
+        position: initial;
+      }
+    }
+
+    &.pointer {
+      font-size: 14px;
+      cursor: pointer;
+
+      .globy-ngx-checkbox__label {
+        color: #556274;
+      }
+    }
+
+    &.subscription-checkbox {
+      .globy-ngx-checkbox__label {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: 0.01em;
+        color: #FFFFFF;
+        width: max-content;
+      }
+
+      .globy-ngx-checkbox__input:checked ~ .globy-ngx-checkbox__icon {
+        background-color: #FFFFFF;
+        border-color: #FFFFFF;
+
+        img {
+          filter: invert(1);
+        }
+      }
+    }
+
+    &.selectablePart .globy-ngx-checkbox__icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+
+::ng-deep {
+  .form-submitted {
+    .globy-ngx-checkbox {
+      .globy-ngx-checkbox__input {
+        &.ng-invalid ~ .globy-ngx-checkbox__icon {
+          background-color: $color-red-50;
+          border-color: $color-red-500;
+        }
+      }
+    }
+  }
+}

@@ -72,6 +72,9 @@
 			}
 
 			&-item {
+				display: flex;
+				flex-direction: column;
+				justify-items: center;
 				width: 56px;
 				text-align: center;
 				z-index: 1;

@@ -1,8 +1,14 @@
-import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	HostListener,
+	OnInit,
+} from '@angular/core';
 import {
 	AbstractControl,
 	FormArray,
 	FormBuilder,
+	FormControl,
 	FormGroup,
 	Validators,
 } from '@angular/forms';
@@ -14,6 +20,7 @@ import {
 	BehaviorSubject,
 	combineLatest,
 	filter,
+	firstValueFrom,
 	Observable,
 	of,
 	pairwise,
@@ -35,7 +42,7 @@ import { PlatformService } from '../../../../../../../src/app/client/services/pl
 import { getName } from 'country-list';
 import { onlyLatinAndNumber } from '../../../../../../../src/app/core/helpers/validator/only-latin-and-number';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { onlyLatinAndNumberAndSymbols } from '../../../../../../../src/app/core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../../../src/app/core/helpers/validator/only-latin-numbers-symbols';
 import { onlyNumber } from '../../../../../../../src/app/core/helpers/validator/only-number';
 import { map, startWith } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -45,6 +52,10 @@ import { capitalizeFirstLetter } from '../../../../../../../src/app/core/helpers
 import { MarketProductModel } from '../../../../../../../src/app/client/pages/client-marketplace/models/market-product.model';
 import { EditMode } from '../../../../../../../src/app/client/pages/client-profile/pages/client-profile-marketplace/components/client-profile-marketplace-edit-product/client-profile-marketplace-edit-product.component';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { PriceTypeEnum } from '../../../../../../../src/app/client/shared/enums/price-type.enum';
+import moment from 'moment/moment';
+import { certificationNames } from '../../../../../../../src/app/core/helpers/constant/certification-names';
+import { timeSpan } from '../../../../../../../src/app/core/helpers/constant/time-span';
 
 @UntilDestroy()
 @Component({
@@ -65,13 +76,15 @@ import { animate, style, transition, trigger } from '@angular/animations';
 		]),
 	],
 })
-export class AdminProductDetailsComponent {
+export class AdminProductDetailsComponent implements OnInit {
 	public PRODUCTS_LIMIT: number = this.clientMarketplaceService.PRODUCTS_LIMIT;
 	public formGroup: FormGroup;
+	public certificatesData: FormGroup;
 	public formState: { [key: string]: AbstractControl };
 	public editMode: EditMode;
 	public EditModeEnum = EditMode;
 	public portsItems: any = [];
+	public selectedPortCountries: string[] = [];
 	public buttonLength: string = 'No file chosen';
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
@@ -82,8 +95,29 @@ export class AdminProductDetailsComponent {
 		{ length: 5 },
 		() => 'assets/icons/no-image-icon.svg'
 	);
-
+	public priceUnits$ = this.getUnit(1);
+	public priceType = Object.values(PriceTypeEnum).filter(
+		(value) => typeof value === 'string'
+	);
+	public priceTypeEnum = PriceTypeEnum;
+	public certificationStringArray: string[] = [];
+	public certificationNames = certificationNames.map((el) => ({
+		_id: el,
+		displayName: el,
+	}));
+	public tooltipClass: string;
+	public showCertificationHint: boolean = false;
+	public hintText: string;
+	public useInputForCertificationName: boolean = false;
+	public productionCapacityTimeSpanOptions = timeSpan.map((el) => ({
+		_id: el,
+		displayName: el,
+	}));
 	public unit$: Observable<any>;
+	public maximumUnitQuantity$: Observable<any>;
+	public isValidCertificateForm: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
+
 	private isRedirectFromAdminPanel =
 		!!this.activatedRoute.snapshot.queryParams?.['admin'];
 
@@ -104,11 +138,14 @@ export class AdminProductDetailsComponent {
 	private productId: string = this.activatedRoute.snapshot.params['id'];
 	private suppliersCountry: string;
 	private removedFilesId: string[] = [];
+	private removedCertificatesId: string[] = [];
 	private selectedPaymentMethods: string[] = [];
 	private selectedTradingAreas: string[] = [];
 	private selectedShippingMethods: string[] = [];
 	private company: PublicCompanyInfoModel;
 	private files: any[] = Array.from({ length: 5 }, () => null);
+	private certificationArray: any[] = [];
+	private product: MarketProductModel;
 
 	constructor(
 		private portsService: PortsService,
@@ -128,18 +165,6 @@ export class AdminProductDetailsComponent {
 		private platformService: PlatformService
 	) {}
 
-	ngOnInit(): void {
-		this.createFormGroup();
-		this.getLevel1Categories$();
-		this.detectEditMode();
-		this.patchForm();
-		if (this.platformService.isBrowser) {
-			this.onResize();
-		}
-
-		this.categoriesService.getCategories$();
-	}
-
 	get specificationList(): FormArray {
 		return this.formGroup.get('specificationList') as FormArray;
 	}
@@ -152,16 +177,20 @@ export class AdminProductDetailsComponent {
 		return this.hideLabelSource.asObservable();
 	}
 
-	@HostListener('window:resize', ['$event'])
-	private onResize(): void {
-		if (this.platformService.isServer) {
-			return;
+	ngOnInit(): void {
+		this.createFormGroup();
+		this.getLevel1Categories$();
+		this.detectEditMode();
+		this.patchForm();
+		if (this.platformService.isBrowser) {
+			this.onResize();
 		}
-		this.hideLabelSource.next(window.innerWidth < 889);
+
+		this.categoriesService.getCategories$();
 	}
 
 	public cancel(): void {
-		this.router.navigate(['profile/your-workspace/b2bmarket']);
+		this.router.navigate(['/b2bmarket']);
 	}
 
 	public archive(): void {
@@ -174,20 +203,9 @@ export class AdminProductDetailsComponent {
 					error: 'Archiving failed',
 				})
 			)
-			.subscribe(() => {
-				this.mixpanelService.track('Product archived', {
-					'Product Category': this.level2Categories.find(
-						(category) => category._id === this.formGroup.value.category
-					).name,
-					"Supplier's Country": getName(this.suppliersCountry),
-					'Product Count': this.company.countActiveUserProducts
-						? this.company.countActiveUserProducts
-						: 'undefined',
-					// this.formGroup.value.amount,
-					'Archivation Date': Date(),
-				});
-				// this.clientMarketplaceService.updateMarketplaceProducts(this.filteredQueryObj);
-				this.router.navigate(['profile/your-workspace/b2bmarket']);
+			.subscribe(async () => {
+				await this.router.navigate(['/b2bmarket']);
+				await this.trackEvent();
 			});
 	}
 
@@ -212,7 +230,45 @@ export class AdminProductDetailsComponent {
 			serialNumbers: this.getPhotosOrder(this.files),
 		});
 
-		this.updateProductByAdmin();
+		this.clientMarketplaceService
+			.updateProductByAdmin(
+				this.productId,
+				this.getFormData(
+					this.getBodyForRequest(this.formGroup.value, this.company)
+				)
+			)
+			.pipe(
+				this.hotToastService.observe({
+					loading: 'Updating product...',
+					success: 'Product updated successfully',
+					error: 'Error updating product',
+				}),
+				switchMap(() => {
+					return this.removedFilesId.length > 0 ||
+						this.removedCertificatesId.length > 0
+						? this.clientMarketplaceService.deletePhotosFromProduct(
+								this.productId,
+								this.removedFilesId.length > 0 ? this.removedFilesId : null,
+								this.removedCertificatesId.length > 0
+									? this.removedCertificatesId
+									: null
+							)
+						: of(null);
+				}),
+				this.hotToastService.observe({
+					loading: 'Updating photos...',
+					success: 'Photos updated successfully',
+					error: 'Error updating photos',
+				})
+			)
+			.subscribe(() => {
+				const page = this.activatedRoute.snapshot.queryParams['page'];
+				this.router.navigate(['/b2bmarket'], {
+					queryParams: {
+						page,
+					},
+				});
+			});
 	}
 
 	public updateAndRestore(): void {
@@ -221,7 +277,10 @@ export class AdminProductDetailsComponent {
 		}
 		if (!this.formGroup.valid) {
 			this.formGroup.markAllAsTouched();
-			window.scrollTo({ top: 0, behavior: 'smooth' });
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth',
+			});
 			return;
 		}
 
@@ -274,8 +333,8 @@ export class AdminProductDetailsComponent {
 
 	public addField(): void {
 		const specificationList = this.formBuilder.group({
-			specification: ['', onlyLatinAndNumber()],
-			item: ['', onlyLatinAndNumber()],
+			specification: ['', onlyLatinAndNumberAndSymbols()],
+			item: ['', onlyLatinAndNumberAndSymbols()],
 		});
 		this.specificationList.push(specificationList);
 	}
@@ -300,6 +359,12 @@ export class AdminProductDetailsComponent {
 
 	public deletePortsRow(index: number): void {
 		this.ports.removeAt(index);
+		this.selectedPortCountries.splice(
+			this.selectedPortCountries.findIndex(
+				(el) => el === this.portsItems[index].country,
+				1
+			)
+		);
 	}
 
 	public addPortsField(): void {
@@ -319,14 +384,14 @@ export class AdminProductDetailsComponent {
 		}
 
 		const newImages = Array.from(files);
-		const format = ['svg', 'jpg', 'png', 'webp', 'jpeg', 'bmp'];
+		const format = ['svg', 'jpg', 'png', 'webp', 'jpeg', 'bmp', 'image/jpeg'];
 
 		newImages.forEach((file, index) => {
 			if (
 				format.includes(
-					file.name?.split('.')[file.name?.split('.').length - 1]
+					file.name?.split('.')[file.name?.split('.').length - 1].toLowerCase()
 				) ||
-				format.includes(file?.type)
+				format.includes(file?.type.toLowerCase())
 			) {
 				const fileReader = new FileReader();
 				fileReader.readAsDataURL(file);
@@ -349,11 +414,22 @@ export class AdminProductDetailsComponent {
 								this.files[index] = file;
 								this.changeDetectorRef.detectChanges();
 							} else {
-								this.images.pop();
-								this.images.unshift(fileReader.result);
+								if (
+									(this.images.every(
+										(el) => el === 'assets/icons/no-image-icon.svg'
+									) &&
+										this.images.length <= 5) ||
+									this.images.length > 7
+								) {
+									this.files.pop();
+									this.files.unshift(file);
+									this.images.pop();
+									this.images.unshift(fileReader.result);
+								} else {
+									this.images.push(fileReader.result);
+									this.files.push(file);
+								}
 
-								this.files.pop();
-								this.files.unshift(file);
 								this.changeDetectorRef.detectChanges();
 							}
 
@@ -366,23 +442,65 @@ export class AdminProductDetailsComponent {
 					this.changeDetectorRef.detectChanges();
 					this.formGroup.markAsDirty();
 				}
-			} else this.hotToastService.error('Wrong file format');
+			} else {
+				this.hotToastService.error('Wrong file format');
+			}
 		});
 		input.value = null;
 	}
 
 	public deleteImage(index: number): void {
 		this.images.splice(index, 1);
-		this.images.push('assets/icons/no-image-icon.svg');
+		if (this.images.length < 5) {
+			this.images.push('assets/icons/no-image-icon.svg');
+			this.files.push(null);
+		}
 		if (this.files[index]?._id) {
 			this.removedFilesId.push(this.files[index]?._id);
 		}
 		this.files.splice(index, 1);
-		this.files.push(null);
 		if (this.files.every((file) => file === null)) {
 			this.files = [];
 		}
 		this.formGroup.patchValue({ photos: this.files });
+	}
+
+	public addCertificationFields(): void {
+		if (this.showCertificationHint) {
+			this.showCertificationHint = false;
+		}
+
+		const certificatesData = {
+			...this.certificatesData.value,
+			issueDate: moment(this.certificatesData.value.issueDate).format(
+				'yyyy-MM-DD'
+			),
+			dateValidTo: moment(this.certificatesData.value.dateValidTo).format(
+				'yyyy-MM-DD'
+			),
+		};
+
+		this.certificationArray.push(certificatesData);
+		this.certificationStringArray.push(
+			Object.values(this.certificatesData.value).join('/ ')
+		);
+		Object.keys(this.certificatesData.value).forEach((control) =>
+			this.certificatesData.patchValue({ [control]: null })
+		);
+	}
+
+	public removeChip(index: number): void {
+		if (this.certificationArray[index]._id) {
+			this.removedCertificatesId.push(this.certificationArray[index]._id);
+		}
+		this.certificationStringArray.splice(index, 1);
+		this.certificationArray.splice(index, 1);
+	}
+
+	public addCertificateName(): void {
+		this.showCertificationHint = true;
+		this.tooltipClass = 'section-title';
+		this.useInputForCertificationName = true;
 	}
 
 	public drop(event: CdkDragDrop<string[]>): void {
@@ -452,6 +570,33 @@ export class AdminProductDetailsComponent {
 
 	public trackByImageFn = (_: number, value: string): string => value;
 
+	@HostListener('window:resize', ['$event'])
+	private onResize(): void {
+		if (this.platformService.isServer) {
+			return;
+		}
+		this.hideLabelSource.next(window.innerWidth < 889);
+	}
+
+	private async trackEvent() {
+		const productCount = (
+			await firstValueFrom(this.userService.getUserById(this.product.user))
+		)?.statistics?.products?.approved;
+		this.mixpanelService.track('Product archived', {
+			'Product Category': this.level2Categories.find(
+				(category) => category._id === this.formGroup.value?.category
+			)?.name,
+			"Supplier's Country": getName(this.suppliersCountry),
+			'Product Count': productCount,
+			'Archivation Date': new Date(),
+		});
+		this.mixpanelService.set({
+			properties: {
+				'Product Count': productCount,
+			},
+		});
+	}
+
 	private getPhotosOrder(arr: Array<File | any>): any[] {
 		return arr.reduce((acc, curr, index) => {
 			acc.push({
@@ -507,7 +652,22 @@ export class AdminProductDetailsComponent {
 				!!this.specificationList.at(0).value.item
 					? this.specificationList.value
 					: null,
+			certificates: null,
+			certificatesData: null,
+			priceRangeUnit:
+				data?.priceType === PriceTypeEnum.PriceRange ? data.priceUnit : null,
+			priceUnit:
+				data?.priceType === PriceTypeEnum.FixedPrice ? data.priceUnit : null,
 		};
+		const certificatesData = this.certificationArray.filter((el) => !el._id);
+
+		if (certificatesData.length > 0) {
+			model.certificatesData = certificatesData.map((ceritificate) => ({
+				...ceritificate,
+				name: ceritificate.certificateName,
+				logo: this.setLogoName(ceritificate.certificateName),
+			}));
+		}
 
 		const photos = this.formGroup.value.photos.filter(
 			(photo: any) => photo instanceof File
@@ -517,6 +677,16 @@ export class AdminProductDetailsComponent {
 		}
 
 		return model;
+	}
+
+	private setLogoName(name: string): string {
+		if (this.certificationNames.some((el) => el.displayName === name)) {
+			return `./assets/icons/certificate-logos/${name
+				.split(' ')
+				.join('-')}.svg`;
+		} else {
+			return './assets/icons/certificate-logos/default.svg';
+		}
 	}
 
 	private createFormGroup(): void {
@@ -530,18 +700,25 @@ export class AdminProductDetailsComponent {
 					onlyLatinAndNumberAndSymbols(),
 				],
 			],
-			amount: [null, onlyNumber()],
-			unit: [null],
+			priceType: [PriceTypeEnum.FixedPrice, Validators.required],
+			price: [null, [Validators.required, onlyNumber()]],
+			priceUnit: [null, Validators.required],
+			productionCapacityCount: [null, onlyNumber()],
+			productionCapacityUnit: [null],
+			productionCapacityTimeSpan: [null],
 			brandName: [null, onlyLatinAndNumberAndSymbols()],
 			productSector: [null, Validators.required],
-			category: [null, Validators.required],
+			category: [{ value: null, disabled: true }, Validators.required],
 			photos: [null, Validators.required],
-			serialNumbers: [null],
 			visibilityPhotos: [true],
-			shipping: [null],
-			paymentMethods: [null],
-			tradingAreas: [null],
+			serialNumbers: [null, Validators.required],
+			shipping: [null, Validators.required],
+			paymentMethods: [null, Validators.required],
+			tradingAreas: [null, Validators.required],
 			productOrigin: [null, Validators.required],
+			maximumOrderQuantity: [null],
+			samplesInfoMeasure: [null],
+			samplePrice: [null, onlyNumber()],
 			specificationList: this.formBuilder.array([
 				this.formBuilder.group({
 					specification: ['', onlyLatinAndNumberAndSymbols()],
@@ -554,6 +731,20 @@ export class AdminProductDetailsComponent {
 					portName: [''],
 				}),
 			]),
+		});
+
+		this.certificatesData = this.formBuilder.group({
+			organization: [null],
+			certificateName: [null],
+			certificateNumber: [null],
+			issueDate: [null],
+			dateValidTo: [null],
+		});
+
+		this.certificatesData.valueChanges.subscribe((formGroup) => {
+			this.isValidCertificateForm.next(
+				!Object.values(formGroup).some((el) => el === null)
+			);
 		});
 
 		this.formState = this.formGroup.controls;
@@ -605,29 +796,121 @@ export class AdminProductDetailsComponent {
 					case 5:
 						this.buttonLength = 'Fife files chosen';
 						break;
-					default:
+					case 0:
 						this.buttonLength = 'No file chosen';
+						break;
+					default:
+						this.buttonLength = 'More than fife files chosen';
 						break;
 				}
 			});
 
-		this.unit$ = this.formGroup.controls['amount'].valueChanges.pipe(
+		this.unit$ = this.formGroup.controls[
+			'productionCapacityCount'
+		].valueChanges.pipe(
 			switchMap((amount) => {
 				if (amount) {
-					this.formGroup.get('unit').setValidators([Validators.required]);
-					this.formGroup.get('unit').updateValueAndValidity();
-					this.formGroup.get('unit').markAsTouched();
+					this.formGroup
+						.get('productionCapacityUnit')
+						.addValidators(Validators.required);
+					this.formGroup
+						.get('productionCapacityTimeSpan')
+						.addValidators(Validators.required);
+					this.formGroup
+						.get('productionCapacityTimeSpan')
+						.updateValueAndValidity();
+					this.formGroup.get('productionCapacityUnit').updateValueAndValidity();
 
 					return this.getUnit(amount);
 				} else {
-					this.formGroup.get('unit').setValue(null);
-					this.formGroup.get('unit').clearValidators();
-					this.formGroup.get('unit').updateValueAndValidity();
+					this.formGroup.get('productionCapacityUnit').setValue(null);
+					this.formGroup.get('productionCapacityUnit').clearValidators();
+					this.formGroup.get('productionCapacityUnit').updateValueAndValidity();
+					this.formGroup.get('productionCapacityTimeSpan').setValue(null);
+					this.formGroup.get('productionCapacityTimeSpan').clearValidators();
+					this.formGroup
+						.get('productionCapacityTimeSpan')
+						.updateValueAndValidity();
 
 					return of([]);
 				}
 			})
 		);
+
+		this.maximumUnitQuantity$ = this.formGroup.controls[
+			'maximumOrderQuantity'
+		].valueChanges.pipe(
+			switchMap((maximumOrderQuantity) => {
+				if (maximumOrderQuantity) {
+					this.formGroup.get('samplesInfoMeasure').updateValueAndValidity();
+					this.formGroup.get('samplesInfoMeasure').markAsTouched();
+
+					return this.getUnit(maximumOrderQuantity, [
+						'item',
+						'kilogram',
+						'pack',
+						'set',
+						'liter',
+					]);
+				} else {
+					this.formGroup.get('samplesInfoMeasure').setValue(null);
+					this.formGroup.get('samplesInfoMeasure').clearValidators();
+					this.formGroup.get('samplesInfoMeasure').updateValueAndValidity();
+
+					return of([]);
+				}
+			})
+		);
+
+		this.formGroup.controls['priceType'].valueChanges
+			.pipe(untilDestroyed(this))
+			.subscribe((priceType) => {
+				switch (priceType) {
+					case PriceTypeEnum.FixedPrice:
+						this.formGroup.removeControl('priceRangeMinimum');
+						this.formGroup.removeControl('priceRangeMaximum');
+						this.formGroup.addControl(
+							'price',
+							new FormControl(null, [Validators.required, onlyNumber()])
+						);
+						this.formGroup.addControl(
+							'priceUnit',
+							new FormControl(null, Validators.required)
+						);
+						this.formGroup.updateValueAndValidity();
+						return;
+					case PriceTypeEnum.PriceRange:
+						this.formGroup.removeControl('price');
+						this.formGroup.addControl(
+							'priceRangeMinimum',
+							new FormControl(null, [Validators.required, onlyNumber()])
+						);
+						this.formGroup.addControl(
+							'priceRangeMaximum',
+							new FormControl(null, [Validators.required, onlyNumber()])
+						);
+						this.formGroup.addControl(
+							'priceUnit',
+							new FormControl(null, Validators.required)
+						);
+						this.formGroup.updateValueAndValidity();
+						return;
+					case PriceTypeEnum.PriceUponRequest:
+						const controlsArray = [
+							'priceRangeMinimum',
+							'priceRangeMaximum',
+							'priceUnit',
+						];
+						controlsArray.forEach((control) =>
+							this.formGroup.removeControl(control)
+						);
+						this.formGroup.controls['price'].setErrors(null);
+						this.formGroup.controls['price'].clearValidators();
+						this.formGroup.controls['price'].setValue('Price upon request');
+						this.formGroup.updateValueAndValidity();
+						return;
+				}
+			});
 	}
 
 	private getArrayForSelect(
@@ -666,7 +949,7 @@ export class AdminProductDetailsComponent {
 			.subscribe(({ company, product }) => {
 				this.company = company;
 				this.suppliersCountry = company.country;
-
+				this.product = product;
 				const sector = this.level1Categories.find((el) =>
 					el.children.find(
 						(child) => child._id === (product.category as Category)._id
@@ -677,11 +960,69 @@ export class AdminProductDetailsComponent {
 					{
 						...product,
 						productOrigin: product.productOrigin || product.country,
-						productSector: sector._id,
+						productSector: sector?._id,
 						category: (product.category as Category)._id,
+						ports: null,
 					},
 					{ emitEvent: false }
 				);
+
+				if (product?.price?.old && product?.price?.unit?._id) {
+					this.formGroup.patchValue({
+						price: product.price?.old,
+						priceUnit: product?.price?.unit?._id,
+					});
+				} else if (
+					product?.priceRange &&
+					Object.values(product?.priceRange).every((value) => value !== null)
+				) {
+					this.formGroup.patchValue({
+						priceType: PriceTypeEnum.PriceRange,
+						priceRangeMinimum: product.priceRange.minimum,
+						priceRangeMaximum: product.priceRange.maximum,
+						priceUnit: product.priceRange?.unit?._id,
+					});
+				} else {
+					this.formGroup.patchValue({
+						priceType: PriceTypeEnum.PriceUponRequest,
+					});
+				}
+
+				if (product.certificates.length > 0) {
+					this.certificationArray = product.certificates.map((el) => ({
+						certificateName: el.certificateName,
+						certificateNumber: el.certificateNumber,
+						organization: el.organization,
+						issueDate: el.issueDate,
+						dateValidTo: el.dateValidTo,
+						documentName: el.documentName,
+						_id: el._id,
+					}));
+
+					product.certificates.forEach((el) => {
+						const certificateDataObj = `${el.certificateName} / ${el.certificateNumber} / ${el.issueDate}`;
+						this.certificationStringArray.push(certificateDataObj);
+					});
+				}
+
+				if (
+					product?.productCapacity?.count &&
+					product.productCapacity?.unit?._id
+				) {
+					this.formGroup.patchValue({
+						productionCapacityCount: product?.productCapacity?.count,
+						productionCapacityUnit: product.productCapacity?.unit?._id,
+						productionCapacityTimeSpan: product?.productCapacity?.timeSpan,
+					});
+				}
+
+				if (product?.samplesInfo) {
+					this.formGroup.patchValue({
+						maximumOrderQuantity: product?.samplesInfo?.maximumOrderQuantity,
+						samplesInfoMeasure: product?.samplesInfo?.measure,
+						samplePrice: product?.samplesInfo?.samplePrice,
+					});
+				}
 
 				if (product.photos.length > 0) {
 					if (
@@ -703,8 +1044,14 @@ export class AdminProductDetailsComponent {
 					product.photos.forEach((photo, index: any) => {
 						if (photo.lg) {
 							const fileUrl = environment.apiUrl + photo.lg;
-							this.images.splice(index, 1, fileUrl);
-							this.files.splice(index, 1, photo);
+
+							if (this.images.length <= 5) {
+								this.images.splice(index, 1, fileUrl);
+								this.files.splice(index, 1, photo);
+							} else {
+								this.files.push(photo);
+								this.images.push(fileUrl);
+							}
 						}
 					});
 					this.formGroup.patchValue({
@@ -776,20 +1123,27 @@ export class AdminProductDetailsComponent {
 			});
 	}
 
-	private getUnit(amount: number): Observable<any> {
+	private getUnit(amount: number, filterArray?: string[]): Observable<any> {
 		return this.unitsService.getUnits().pipe(
-			map((units) =>
-				units.map(
+			map((units) => {
+				const updatedUnits = filterArray
+					? units.filter((unit: { name: string }) =>
+							filterArray.includes(unit.name)
+						)
+					: units;
+				return updatedUnits.map(
 					(unit: {
+						_id: string;
 						name: string;
 						pluralDisplayName: string;
 						displayName: string;
 					}) => ({
 						...unit,
+						_id: filterArray ? unit.name : unit._id,
 						displayName: amount > 1 ? unit.pluralDisplayName : unit.displayName,
 					})
-				)
-			)
+				);
+			})
 		);
 	}
 
@@ -799,12 +1153,12 @@ export class AdminProductDetailsComponent {
 		Object.entries(data)
 			.filter(([, value]) => !!value)
 			.forEach(([key, value]: [string, any]) => {
-				if (key === 'photos' || key === 'documents') {
+				if (key === 'photos' || key === 'documents' || key === 'certificates') {
 					Array.from(value).forEach((file: any) => {
 						formData.append(key, file);
 					});
 				} else if (Array.isArray(value)) {
-					if (key === 'serialNumbers') {
+					if (key === 'serialNumbers' || key === 'certificatesData') {
 						formData.append(key, JSON.stringify(value));
 						return;
 					}
@@ -832,10 +1186,13 @@ export class AdminProductDetailsComponent {
 
 	private updateProductByUser(): void {
 		const deleteRequest$ =
-			this.removedFilesId.length > 0
+			this.removedFilesId.length > 0 || this.removedCertificatesId.length > 0
 				? this.clientMarketplaceService.deletePhotosFromProduct(
 						this.productId,
-						this.removedFilesId
+						this.removedFilesId.length > 0 ? this.removedFilesId : null,
+						this.removedCertificatesId.length > 0
+							? this.removedCertificatesId
+							: null
 					)
 				: of(null);
 
@@ -866,42 +1223,6 @@ export class AdminProductDetailsComponent {
 			});
 	}
 
-	private updateProductByAdmin(): void {
-		this.clientMarketplaceService
-			.updateProductByAdmin(
-				this.productId,
-				this.getFormData(
-					this.getBodyForRequest(this.formGroup.value, this.company)
-				)
-			)
-			.pipe(
-				this.hotToastService.observe({
-					loading: 'Updating product...',
-					success: 'Product updated successfully',
-					error: 'Error updating product',
-				}),
-				switchMap(() => {
-					return this.clientMarketplaceService.deletePhotosFromProduct(
-						this.productId,
-						this.removedFilesId
-					);
-				}),
-				this.hotToastService.observe({
-					loading: 'Updating photos...',
-					success: 'Photos updated successfully',
-					error: 'Error updating photos',
-				})
-			)
-			.subscribe(() => {
-				const page = this.activatedRoute.snapshot.queryParams['page'];
-				this.router.navigate(['/b2bmarket'], {
-					queryParams: {
-						page,
-					},
-				});
-			});
-	}
-
 	private detectEditMode(): void {
 		this.activatedRoute.queryParams
 			.pipe(
@@ -927,7 +1248,11 @@ export class AdminProductDetailsComponent {
 		this.portsService
 			.getPorts(country)
 			.pipe(untilDestroyed(this))
-			.subscribe((ports) => (this.portsItems[index] = ports));
+			.subscribe((ports) => {
+				this.portsItems.splice(index, 0, { country: country, ports: ports });
+				this.selectedPortCountries.push(country);
+				this.changeDetectorRef.detectChanges();
+			});
 	}
 
 	private getPorts(

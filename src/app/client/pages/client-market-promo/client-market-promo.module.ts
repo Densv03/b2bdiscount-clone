@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 import { ClientMarketPromoRoutingModule } from './client-market-promo-routing.module';
 import { ClientMarketPromoComponent } from './layout/client-market-promo.component';
@@ -20,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		B2bNgxIconModule,
 		WriteToSupportModule,
 		TranslateModule,
+		NgOptimizedImage,
 	],
 })
 export class ClientMarketPromoModule {}

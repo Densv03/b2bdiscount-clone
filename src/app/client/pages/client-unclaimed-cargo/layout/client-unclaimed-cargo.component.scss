@@ -1,5 +1,6 @@
 @import 'projects/shared/src/styles';
 
+
 .latest-offers-no-offers {
 	padding: 50px;
 	text-align: center;
@@ -181,9 +182,9 @@
 	}
 }
 .latest-offers {
-	background-color: $color-gray-100;
 	max-width: 1170px;
 	margin: auto;
+	background-color: #f3f6f8;
 	@include breakpoint('4') {
 		max-width: 95%;
 	}

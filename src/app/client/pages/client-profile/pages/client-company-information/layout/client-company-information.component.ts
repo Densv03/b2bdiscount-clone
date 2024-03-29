@@ -3,6 +3,7 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
+	Inject,
 	OnInit,
 	Renderer2,
 } from '@angular/core';
@@ -21,14 +22,10 @@ import {
 import { HotToastService } from '@ngneat/hot-toast';
 import { AuthService } from '../../../../../../auth/services/auth/auth.service';
 import { UserService } from '../../../services/user/user.service';
-import { SocialMediaEnum } from '../social-media.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoriesService } from '../../../../../services/categories/categories.service';
 import { getFormData } from '../../../../../../core/helpers/function/get-form-data';
-import {
-	PublicCompanyInfoModel,
-	SocialMedia,
-} from '../../../../../../core/models/public-company-info.model';
+import { PublicCompanyInfoModel } from '../../../../../../core/models/public-company-info.model';
 import { socialLink } from '../../../../../../core/helpers/validator/social-link';
 import { siteLink } from '../../../../../../core/helpers/validator/site-link';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -40,6 +37,8 @@ import { MixpanelService } from '../../../../../../core/services/mixpanel/mixpan
 import { CategoriesPopupComponent } from '../../../../../shared/components/categories-dialog/categories-popup-component/categories-popup.component';
 import { DocumentModel } from 'src/app/core/models/document.model';
 import _ from 'lodash';
+import { DOCUMENT } from '@angular/common';
+import { SocialMediaEnum } from '../../client-profile-settings-new/tabs/client-company-information/social-media.enum';
 
 export interface SelectItem {
 	id: string;
@@ -146,7 +145,8 @@ export class ClientCompanyInformationComponent
 		private readonly route: ActivatedRoute,
 		private readonly hotToastrService: HotToastService,
 		private readonly mixpanelService: MixpanelService,
-		private readonly router: Router
+		private readonly router: Router,
+		@Inject(DOCUMENT) private document: Document
 	) {
 		if (router.getCurrentNavigation()?.extras.state?.['showPopUp']) {
 			hotToastrService.info(
@@ -293,7 +293,7 @@ export class ClientCompanyInformationComponent
 			...form.value,
 			documents,
 			uploadedDocs,
-			yearOfFoundation: form.value.foundationYear,
+			yearOfFoundation: form.value.yearOfFoundation,
 			phone: form.value?.phone?.number,
 			dialCode: form.value?.phone?.dialCode,
 			countryCode: form.value?.phone?.countryCode,
@@ -314,6 +314,15 @@ export class ClientCompanyInformationComponent
 					loading: 'Updating company information...',
 					success: 'Company information successfully updated.',
 					error: 'Company information updating failed',
+				}),
+				tap(() => {
+					this.mixpanelService.set({
+						distinctId: this.userService.getUser()._id,
+						properties: {
+							'Account Type': this.form.value.rootRole,
+							'Company Name': companyInfo.get('companyName'),
+						},
+					});
 				})
 			)
 			.subscribe((company) => this.authService.updateCompany(company));
@@ -328,7 +337,7 @@ export class ClientCompanyInformationComponent
 			)!._id;
 
 			this.userService
-				.changeRole(this.userService.getToken(), roleId, rootRoleId)
+				.changeRole(localStorage.getItem('token'), roleId, rootRoleId)
 				.pipe(
 					this.hotToastService.observe({
 						loading: 'Updating business type...',
@@ -458,28 +467,47 @@ export class ClientCompanyInformationComponent
 	}
 
 	private trackCompanyChange() {
-		const company = this.initialCompanyData;
-		if (
-			company.companyName &&
-			company.businessType &&
-			company.country &&
-			company.yearOfFoundation &&
-			company.employeesNumber &&
-			company.annualRevenue &&
-			company.companyDescription &&
-			company.phone &&
-			company.address &&
-			company.website &&
-			company.position &&
-			company.role &&
-			company.categories
-		) {
-			setTimeout(() => {
-				this.mixpanelService.track('Company information completed', {
-					'Account Type': this.userService.getUser().rootRole.name,
-				});
-			}, 200);
+		const requiredProperties = [
+			'companyName',
+			'businessType',
+			'country',
+			'employeesNumber',
+			'yearOfFoundation',
+			'annualRevenue',
+			'companyDescription',
+			'phone',
+			'address',
+			'position',
+			'categories',
+		];
+		const newCompanyData = _.omitBy(
+			_.pick(this.handleTrackFormObj(), requiredProperties),
+			(v) => _.isUndefined(v) || _.isNull(v) || v === ''
+		);
+		const oldCompanyData = _.pick(this.initialCompanyData, requiredProperties);
+		const keys = Object.keys(newCompanyData);
+		const isCompleted = _.isEqual(keys.sort(), requiredProperties.sort());
+		if (isCompleted && !_.isEqual(newCompanyData, oldCompanyData)) {
+			this.mixpanelService.track('Company information completed', {
+				'Account Type': this.userService.getUser().rootRole?.name,
+			});
+			this.initialCompanyData = {
+				...this.initialCompanyData,
+				...newCompanyData,
+			};
 		}
+	}
+
+	private handleTrackFormObj() {
+		const phone = _.pick(this.form.value?.phone, [
+			'countryCode',
+			'number',
+			'dialCode',
+		]);
+		return {
+			...this.form.value,
+			phone,
+		};
 	}
 
 	private trackWebsiteChange(form: any) {
@@ -494,7 +522,7 @@ export class ClientCompanyInformationComponent
 	private trackSocialMediaLinksChange(form: FormGroup) {
 		const oldSocialMediaLinks = _.omitBy(
 			this.initialCompanyData.socialMedia,
-			(v) => _.isUndefined(v) || _.isNull(v) || v === ''
+			(v) => _.isUndefined(v) || _.isNull(v) || v === '' || v === ' '
 		);
 		const newSocialMediaLinks = _.pick(form.value, [
 			'facebook',
@@ -506,6 +534,7 @@ export class ClientCompanyInformationComponent
 			this.mixpanelService.track('Social Media Link added', {
 				'Social Media Type': newSocialMediaLinks,
 			});
+			this.initialCompanyData.socialMedia = newSocialMediaLinks;
 		}
 	}
 
@@ -514,7 +543,7 @@ export class ClientCompanyInformationComponent
 			companyName: ['', [Validators.required]],
 			businessType: ['', [Validators.required]],
 			country: ['', [Validators.required]],
-			foundationYear: ['', [Validators.required]],
+			yearOfFoundation: ['', [Validators.required]],
 			employeesNumber: ['', [Validators.required]],
 			annualRevenue: ['', [Validators.required]],
 			phone: ['', [Validators.required]],
@@ -556,7 +585,7 @@ export class ClientCompanyInformationComponent
 		this.initCategoryChips(categories);
 		this.form.patchValue({
 			companyName,
-			foundationYear: yearOfFoundation,
+			yearOfFoundation,
 			website,
 			country,
 			address,
@@ -694,7 +723,7 @@ export class ClientCompanyInformationComponent
 		const scrollInterval = setInterval(() => {
 			if (window.pageYOffset > 0) {
 				this.renderer2.setProperty(
-					document.documentElement,
+					this.document.documentElement,
 					'scrollTop',
 					window.pageYOffset - scrollStep
 				);

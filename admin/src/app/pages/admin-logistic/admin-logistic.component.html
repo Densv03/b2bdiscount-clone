@@ -9,11 +9,10 @@
 			<div class="search-wrapper country-wrapper">
 				<b2b-ngx-country-select
 					formControlName="countryId"
-					[customOptions]="countryOptions | async"
+					[customOptions]="{value: countryOptions,length: countryOptions.value?.length }"
 					[theme]="b2bNgxSelectThemeEnum.BACKGROUND_WHITE"
 					placeholder="Select Country"
-					>Select country for ports or airports</b2b-ngx-country-select
-				>
+					>Select country for ports or airports</b2b-ngx-country-select>
 
 				<mat-icon
 					[class.show]="this.pointsGroup?.controls['countryId'].value"
@@ -169,10 +168,11 @@
 				*matRowDef="let row; columns: displayedColumns"></tr>
 		</table>
 
-		<b2b-ngx-pagination
+		<b2b-pagination
+			[currentPage]="currentPage"
 			[length]="totalCount"
 			[perPage]="productsLimit"
-			(togglePageNumber)="togglePage($event)"></b2b-ngx-pagination>
+			(togglePageNumber)="togglePage($event)"></b2b-pagination>
 	</ng-container>
 
 	<ng-template #noProfiles>

@@ -14,6 +14,7 @@ import { B2bNgxInputModule } from '@b2b/ngx-input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
 import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
+import {MarketCategoryCardComponent} from "./components/market-category-card/market-category-card.component";
 
 @NgModule({
 	declarations: [
@@ -21,18 +22,20 @@ import { PageLoaderModule } from '../../../../../core/components/page-loader/pag
 		CategoriesCarouselComponent,
 		MarketProductItemComponent,
 	],
-	imports: [
-		CommonModule,
-		MarketSectorRoutingModule,
-		B2bBreadcrumbsModule,
-		MatIconModule,
-		B2bNgxImageModule,
-		B2bNgxIconModule,
-		MatButtonModule,
-		B2bNgxInputModule,
-		ReactiveFormsModule,
-		B2bNgxButtonModule,
-		PageLoaderModule,
-	],
+    imports: [
+        CommonModule,
+        MarketSectorRoutingModule,
+        B2bBreadcrumbsModule,
+        MatIconModule,
+        B2bNgxImageModule,
+        B2bNgxIconModule,
+        MatButtonModule,
+        B2bNgxInputModule,
+        ReactiveFormsModule,
+        B2bNgxButtonModule,
+        PageLoaderModule,
+        MarketCategoryCardComponent,
+    ],
+	exports: [CategoriesCarouselComponent],
 })
 export class MarketSectorModule {}

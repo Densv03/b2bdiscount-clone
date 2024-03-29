@@ -1,0 +1,76 @@
+.mat-mdc-form-field-type-mat-select {
+	margin-top: 6px;
+	max-height: 49px;
+	width: 100%;
+
+	.mdc-text-field--outlined .mat-mdc-form-field-infix,
+	.mdc-text-field--no-label .mat-mdc-form-field-infix {
+		padding-top: 12px;
+	}
+
+	.mat-mdc-select-value {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 16px;
+		color: #6c7077;
+	}
+
+	.mat-mdc-text-field-wrapper {
+		background: #f3f6f8;
+		border-radius: 4px;
+		height: 49px;
+
+		.mat-mdc-form-field-flex {
+			.mdc-notched-outline {
+				&__leading,
+				&__notch,
+				&__trailing {
+					border: none;
+				}
+			}
+		}
+	}
+
+	.mat-mdc-select-placeholder {
+		color: #9fa4bb;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 16px;
+	}
+
+	.mat-mdc-select-arrow {
+		color: #999;
+	}
+
+	&.mat-focused {
+		.mat-mdc-select-arrow {
+			color: #999 !important;
+		}
+	}
+}
+
+.select-panel-class {
+	.options-wrapper {
+		.mat-mdc-option {
+			min-height: 40px;
+			flex-direction: row-reverse;
+			padding-right: 0;
+
+			.mat-pseudo-checkbox-full {
+				margin-right: 13px;
+				border-radius: 4px;
+				width: 20px;
+				height: 20px;
+			}
+
+			.mat-pseudo-checkbox-checked {
+				background-color: #000000;
+			}
+		}
+
+		.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled)
+			.mdc-list-item__primary-text {
+			color: #000000;
+		}
+	}
+}

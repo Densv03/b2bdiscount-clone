@@ -1,62 +1,66 @@
-<footer class="footer">
-	<div class="footer__body">
-		<div class="footer__body-wrapper">
-			<div class="footer__logo"><img b2bNgxIcon name="logo-blue" /></div>
-			<div class="footer__social-list">
-				<div *ngFor="let item of socialMedias" class="footer__social-item">
-					<a
-						b2bNgxLink
-						class="footer__icons-list-item-link"
-						target="_blank"
-						[href]="item.href">
-						<ng-container *ngIf="platformService.isBrowser">
-							<svg-icon
-								class="social-icon {{ item.icon }}"
-								[src]="'/assets/icons/footer/' + item.icon + '.svg'"></svg-icon>
-						</ng-container>
-					</a>
+@if (!(isProfilePage$ | async)) {
+	<footer class="footer">
+		<div class="footer__body">
+			<div class="footer__body-wrapper">
+				<div class="footer__logo"><img b2bNgxIcon name="logo-blue" /></div>
+				<div class="footer__social-list">
+					<div *ngFor="let item of socialMedias" class="footer__social-item">
+						<a
+							b2bNgxLink
+							class="footer__icons-list-item-link"
+							target="_blank"
+							[href]="item.href">
+							<ng-container *ngIf="platformService.isBrowser">
+								<svg-icon
+									class="social-icon {{ item.icon }}"
+									[src]="
+										'/assets/icons/footer/' + item.icon + '.svg'
+									"></svg-icon>
+							</ng-container>
+						</a>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="footer__list">
-			<div *ngFor="let item of footerOptions" class="footer__column">
-				<div class="footer__column-name">{{ item.name }}</div>
-				<div *ngFor="let option of item.options">
-					<ng-container *ngIf="option.link; else callbackOption">
-						<a [routerLink]="option.link" class="footer__item">{{
-							option.label
-						}}</a>
-					</ng-container>
-					<ng-template #callbackOption>
-						<div (click)="option.callback()" class="footer__item">
+			<div class="footer__list">
+				<div *ngFor="let item of footerOptions" class="footer__column">
+					<div class="footer__column-name">{{ item.name }}</div>
+					<div *ngFor="let option of item.options">
+						<ng-container *ngIf="option.link; else callbackOption">
+							<a [routerLink]="option.link" class="footer__item">{{
+								option.label
+							}}</a>
+						</ng-container>
+						<ng-template #callbackOption>
+							<div (click)="option.callback()" class="footer__item">
+								{{ option.label }}
+							</div>
+						</ng-template>
+					</div>
+				</div>
+
+				<div *ngFor="let item of footerOptions" class="footer__dropdown">
+					<b2b-client-dropdown [title]="item.name">
+						<div
+							*ngFor="let option of item.options"
+							(click)="processItemClick(option)"
+							class="footer__dropdown-item">
 							{{ option.label }}
 						</div>
-					</ng-template>
+					</b2b-client-dropdown>
 				</div>
 			</div>
-
-			<div *ngFor="let item of footerOptions" class="footer__dropdown">
-				<b2b-client-dropdown [title]="item.name">
-					<div
-						*ngFor="let option of item.options"
-						(click)="processItemClick(option)"
-						class="footer__dropdown-item">
-						{{ option.label }}
-					</div>
-				</b2b-client-dropdown>
+		</div>
+		<div class="footer__bottom">
+			<div class="footer__mark">&#169; {{ currentYear }} Globy</div>
+			<div class="footer__privacy">
+				<a
+					*ngFor="let privacy of privacyOptions"
+					[routerLink]="privacy.link"
+					class="footer__privacy-item"
+					>{{ privacy.label }}</a
+				>
 			</div>
 		</div>
-	</div>
-	<div class="footer__bottom">
-		<div class="footer__mark">&#169; {{ currentYear }} Globy</div>
-		<div class="footer__privacy">
-			<a
-				*ngFor="let privacy of privacyOptions"
-				[routerLink]="privacy.link"
-				class="footer__privacy-item"
-				>{{ privacy.label }}</a
-			>
-		</div>
-	</div>
-</footer>
+	</footer>
+}

@@ -51,12 +51,17 @@
 }
 
 ::ng-deep {
-	.rfq-created-pop-up .mat-dialog-container {
+	.rfq-created-pop-up .mat-mdc-dialog-container {
 		background: #628cea;
 		border-radius: 8px;
 		color: #fff;
 		position: relative;
 		padding: 0;
+
+		.mdc-dialog__surface {
+			background: no-repeat;
+			box-shadow: none;
+		}
 
 		.cross-icon {
 			position: absolute;

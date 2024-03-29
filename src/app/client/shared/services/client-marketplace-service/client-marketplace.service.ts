@@ -9,6 +9,7 @@ import { ApiService } from '../../../../core/services/api/api.service';
 import { environment } from '../../../../../environments/environment';
 import { ProductDetailsModel } from '../../../pages/client-marketplace/models/product-details.model';
 import { PaginationParamsModel } from '../../../../core/models/pagination-params.model';
+import { keys } from 'lodash';
 
 @Injectable({
 	providedIn: 'root',
@@ -312,7 +313,7 @@ export class ClientMarketplaceService {
 			});
 	}
 
-	getTotalProductsCount() {
+	getTotalProductsCount(): Observable<number> {
 		this.startLoading();
 		let url = `products/my?limit=${1}&offset=${0}`;
 		return this.apiService.get(url).pipe(
@@ -373,12 +374,25 @@ export class ClientMarketplaceService {
 
 	public deletePhotosFromProduct(
 		productId: string,
-		photos: string[]
+		photos?: string[],
+		certificates?: string[]
 	): Observable<any> {
-		return this.apiService.delete(`product/${productId}/files/delete`, {
-			body: {
-				photos,
+		let body = {
+			photos,
+			certificates,
+		};
+		const filteredBody = Object.entries(body).reduce(
+			(acc: any, [key, value]) => {
+				if (value !== null) {
+					acc[key] = value;
+				}
+				return acc;
 			},
+			{}
+		);
+
+		return this.apiService.delete(`product/${productId}/files/delete`, {
+			body: filteredBody,
 		});
 	}
 

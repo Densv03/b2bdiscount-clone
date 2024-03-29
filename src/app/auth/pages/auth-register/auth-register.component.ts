@@ -13,6 +13,7 @@ import { MixpanelService } from '../../../core/services/mixpanel/mixpanel.servic
 import { PlatformService } from '../../../client/services/platform/platform.service';
 import { getName } from 'country-list';
 import { catchError } from 'rxjs/operators';
+import { Phone } from '../../../core/models/user/phone.model';
 
 @UntilDestroy()
 @Component({
@@ -144,16 +145,30 @@ export class AuthRegisterComponent implements OnInit {
 		};
 		if (this.basicInfo) {
 			user = { ...user, ...this.basicInfo?.phone };
+			const {
+				countryCode,
+				dialCode,
+				e164Number,
+				internationalNumber,
+				nationalNumber,
+				number,
+			} = this.basicInfo.phone;
 
-			user.phoneCountryCode = this.basicInfo.phone.countryCode;
-			user.phoneDialCode = this.basicInfo.phone.dialCode;
-			user.phoneE164Number = this.basicInfo.phone.e164Number;
-			user.phoneInternationalNumber = this.basicInfo.phone.internationalNumber;
-			user.phoneNationalNumber = this.basicInfo.phone.nationalNumber;
-			user.phoneNumber = this.basicInfo.phone.number;
+			user.phoneCountryCode = countryCode;
+			user.phoneDialCode = dialCode;
+			user.phoneE164Number = e164Number;
+			user.phoneInternationalNumber = internationalNumber;
+			user.phoneNationalNumber = nationalNumber;
+			user.phoneNumber = number;
 			user.company = this.basicInfo?.company;
 			user.fullName = this.basicInfo?.fullName;
 			user.country = this.basicInfo?.country;
+			this.updateUserStore(
+				this.basicInfo.phone,
+				this.basicInfo?.company,
+				this.basicInfo?.fullName,
+				this.basicInfo?.country
+			);
 		}
 
 		user.preferences = event.categories;
@@ -170,13 +185,6 @@ export class AuthRegisterComponent implements OnInit {
 		this.authService.updateCompany(company);
 
 		const refId = parseInt(localStorage.getItem('ref') as string);
-		// const utm_source = localStorage.getItem('utm_source') as string;
-		// const utm_campaign = localStorage.getItem('utm_campaign') as string;
-		// const utm_medium = localStorage.getItem('utm_medium') as string;
-		//
-		// const utm_term = localStorage.getItem('utm_term') as string;
-		// const utm_content = localStorage.getItem('utm_content') as string;
-		// const utm_id = localStorage.getItem('utm_id') as string;
 
 		const firstRequest$ = refId
 			? this.userService.addUserStatistics({
@@ -217,7 +225,6 @@ export class AuthRegisterComponent implements OnInit {
 				})
 			)
 			.subscribe(() => {
-				this.authService.updateUser(user);
 				combineLatest([
 					this.authService.getRootRoles(),
 					this.authService.getRoles(),
@@ -234,22 +241,16 @@ export class AuthRegisterComponent implements OnInit {
 						});
 						this.mixpanelService.signUp(
 							{
-								// 'CUSTOM UTM SOURCE': utm_source ? utm_source : 'Organic',
-								// 'CUSTOM UTM CAMPAIGN': utm_campaign ? utm_campaign : 'Organic',
-								// 'CUSTOM UTM MEDIUM': utm_medium ? utm_medium : 'Organic',
-								// 'CUSTOM UTM TERM': utm_term ? utm_term : 'Organic',
-								// 'CUSTOM UTM CONTENT': utm_content ? utm_content : 'Organic',
-								// 'CUSTOM UTM ID': utm_id ? utm_id : 'Organic',
 								name: user.fullName,
 								User_id: user?._id,
 								'Registration date': new Date().toISOString(),
 								'Registration method': 'Email',
 								'Email confirmed': user.email,
-								'Account type': this.selectedUserType,
+								'Account Type': this.selectedUserType,
 								'Company Name': user.company,
 								'Product sectors': this.categoriesNames,
 								Country: getName(user.country),
-								'Auth Method': user.socialAuthType,
+								'Auth Method': user?.socialAuthType ?? 'Email',
 								// 'Campaign Source': utm_campaign ? utm_campaign : 'Organic',
 							},
 							'Sign-Up completed'
@@ -287,5 +288,20 @@ export class AuthRegisterComponent implements OnInit {
 	private updateStepperSelectedIndex(): void {
 		const newStepperIndex = this.route.snapshot.paramMap.get('registerStep');
 		newStepperIndex ? (this.stepperSelectedIndex = +newStepperIndex) : null;
+	}
+
+	private updateUserStore(
+		phone: Phone,
+		company?: string,
+		fullName?: string,
+		country?: string
+	): void {
+		this.authService.updateUser({
+			...this.userService.getUser(),
+			phone,
+			company,
+			fullName,
+			country,
+		});
 	}
 }

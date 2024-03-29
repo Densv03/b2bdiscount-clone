@@ -14,9 +14,9 @@ import redirectMiddleware from "./ssr/middlewares/redirect.middleware";
 import { MixpanelService } from "./ssr/core/services/mixpanel.service";
 import { REQUEST, RESPONSE } from "./src/express.tokens";
 import { CommonEngine } from "@angular/ssr";
+import { normalizeUrlMiddleware } from "./ssr/middlewares/normalize-url.middleware";
 
-var bodyParser = require('body-parser')
-
+const bodyParser                           = require('body-parser')
 const MockBrowser                          = require('mock-browser').mocks.MockBrowser;
 const mock                                 = new MockBrowser();
 global['navigator']                        = mock.getNavigator();
@@ -41,10 +41,14 @@ var jsonParser = bodyParser.json();
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
     const server     = express();
-    const distFolder = join(process.cwd(), 'dist/fe-b2b/browser');
-    const indexHtml = existsSync(join(distFolder, 'index.original.html'))
-        ? join(distFolder, 'index.original.html')
-        : join(distFolder, 'index.html');
+    const distFolder = join(process.cwd(),
+                            'dist/fe-b2b/browser');
+    const indexHtml  = existsSync(join(distFolder,
+                                       'index.original.html'))
+        ? join(distFolder,
+               'index.original.html')
+        : join(distFolder,
+               'index.html');
 
     const commonEngine = new CommonEngine();
 
@@ -112,36 +116,7 @@ export function app(): express.Express {
 
     server.use(redirectMiddleware)
 
-    server.use((
-                   req,
-                   res,
-                   next) => {
-        const url          = normalizeUrl(req.url);
-        const excludedUrls = [
-            'registration-complete',
-            'email-verify',
-            'register-google-account',
-            'register-linkedin-account',
-            'google-sign-in-success',
-            'admin',
-            'email-confirmation',
-            'b2bmarket',
-            'profile',
-        ];
-
-        const shouldExclude      = excludedUrls.some(urlPart => req.url.includes(urlPart));
-        const redirectToFaceBook = req.headers['user-agent'].indexOf('facebookexternalhit') === -1;
-        if (shouldExclude && !redirectToFaceBook) {
-            next();
-        } else {
-            if (url !== req.url && !shouldExclude && redirectToFaceBook) {
-                res.redirect(301,
-                             url);
-            } else {
-                next();
-            }
-        }
-    });
+    server.use(normalizeUrlMiddleware);
 
     // All regular routes use the Universal engine
     server.get('*',
@@ -194,45 +169,6 @@ function run(): void {
                   () => {
                       console.log(`Node Express server listening on http://localhost:${port}`);
                   });
-}
-
-function normalizeUrl(url: string): string {
-
-    const urlParts    = url.split('?');
-    let normalizedUrl = urlParts[0]?.toLowerCase();
-
-    if (urlParts.length > 1) {
-        normalizedUrl += `?${urlParts[1]}`;
-    }
-
-    if (url.includes('#')) {
-        const fragmentParts = normalizedUrl.split('#');
-        const fragment      = fragmentParts[1]?.toLowerCase();
-        normalizedUrl       = fragmentParts[0] + '#' + fragment;
-    }
-
-    if (normalizedUrl.endsWith('.')) {
-        normalizedUrl = normalizedUrl.slice(0,
-                                            -1);
-    }
-
-    if (
-        normalizedUrl.endsWith('index.php') ||
-        normalizedUrl.endsWith('home.php') ||
-        normalizedUrl.endsWith('index.html') ||
-        normalizedUrl.endsWith('home.html') ||
-        normalizedUrl.endsWith('index.htm') ||
-        normalizedUrl.endsWith('home.htm')
-    ) {
-        normalizedUrl = normalizedUrl.replace(/\/(index|home)\.(php|html|htm)$/,
-                                              '/');
-    }
-
-    if (normalizedUrl.endsWith('/') && normalizedUrl.length !== 1) {
-        normalizedUrl = normalizedUrl.slice(0,
-                                            normalizedUrl.length - 1);
-    }
-    return normalizedUrl;
 }
 
 // Webpack will replace 'require' with '__webpack_require__'

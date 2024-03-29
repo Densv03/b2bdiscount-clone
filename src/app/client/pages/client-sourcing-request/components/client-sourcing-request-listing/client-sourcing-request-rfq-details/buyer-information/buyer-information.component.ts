@@ -47,6 +47,7 @@ export class BuyerInformationComponent implements OnInit, OnChanges {
 		if (this.userService.getUser() && !this.showBuyerInfo) {
 			this.showBuyerInfo = true;
 		} else {
+			localStorage.setItem('blocked-route', this.router.url);
 			this.router.navigate(['/auth/register-credentials']);
 		}
 	}

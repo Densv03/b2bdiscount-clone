@@ -41,6 +41,7 @@ export class AdminLogisticComponent implements OnInit {
 	public searchGroup: FormGroup;
 	public pointsGroup: FormGroup;
 	public itemOptions: any[];
+	public currentPage: number = 1;
 	public countryOptions: BehaviorSubject<{ label: string; code: string }[]> =
 		new BehaviorSubject<{ label: string; code: string }[]>(null);
 	public cityOptions: BehaviorSubject<{ label: string; code: string }[]> =
@@ -148,6 +149,8 @@ export class AdminLogisticComponent implements OnInit {
 			...this.filteredQueryObj,
 			offset: (page - 1) * this.productsLimit,
 		};
+		this.currentPage = page;
+		this.fetchData();
 	}
 
 	public openProfileDetails(id: string): void {

@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientMainComponent } from './client-main.component';
 import { B2bNgxInputModule } from '@b2b/ngx-input';
@@ -19,6 +19,7 @@ const routes: Routes = [{ path: '', component: ClientMainComponent }];
 		B2bNgxInputModule,
 		B2bNgxIconModule,
 		B2bNgxButtonModule,
+		NgOptimizedImage,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -41,7 +41,7 @@ export class TooltipService {
 				this.componentFactoryResolver.resolveComponentFactory(TooltipComponent);
 			this.tooltipComponentRef = tooltipComponentFactory.create(this.injector);
 			this.appRef.attachView(this.tooltipComponentRef.hostView);
-			document.body.appendChild(
+			this.document.body.appendChild(
 				this.tooltipComponentRef.location.nativeElement
 			);
 			this.tooltipComponentRef.hostView.detectChanges();

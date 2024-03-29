@@ -1,29 +1,60 @@
 @import 'projects/shared/src/styles';
 
 :host {
-	.company-products {
-		padding-top: 20px;
-		.pagination {
+	.products {
+		padding: 48px 0;
+		border-top: 1px solid #d9d9d9;
+		&__title {
+			color: #000;
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 134%;
+			letter-spacing: 0.2px;
+		}
+		&__list {
 			display: flex;
-			justify-content: center;
-			margin-bottom: 10px;
+			gap: 24px;
+			margin-top: 21px;
+			overflow: auto;
+			@media (max-width: 992px) {
+				padding-bottom: 20px;
+			}
 		}
-	}
-}
-
-:host::ng-deep {
-	.marketplace-grid {
-		grid-template-columns: repeat(3, 30%) !important;
-		justify-content: center !important;
-	}
-	@include breakpoint('2') {
-		.marketplace-grid {
-			grid-template-columns: repeat(2, 45%) !important;
+		&__item {
+			width: 142px;
+			&:hover {
+				.products__item-name {
+					color: #005DFF;
+				}
+			}
+			img {
+				width: 142px;
+				height: 142px;
+				object-fit: cover;
+				border-radius: 4px;
+				overflow: hidden;
+			}
+			&-name {
+				line-height: 18px;
+				font-size: 15px;
+				font-weight: 600;
+				margin-top: 8px;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				width: 142px;
+				transition: .3s color;
+			}
 		}
-	}
-	@include breakpoint('1') {
-		.marketplace-grid {
-			grid-template-columns: repeat(1, 80%) !important;
+		&__view-all {
+			border-radius: 4px;
+			background: #eee;
+			padding: 7px 22px;
+			display: flex;
+			align-items: center;
+			margin-top: 17px;
+			width: 120px;
+			cursor: pointer;
 		}
 	}
 }

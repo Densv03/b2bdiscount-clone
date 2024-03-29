@@ -3,6 +3,7 @@
 	.container {
 		//overflow: hidden;
 		position: relative;
+		max-width: unset;
 	}
 	.main-title {
 		font-size: 32px;
@@ -89,7 +90,6 @@
 		&__header {
 			position: absolute;
 			top: -350px;
-			left: 50px;
 			width: 600px;
 			@include breakpoint('4') {
 				top: -250px;
@@ -193,6 +193,7 @@
 			}
 			&-arrow {
 				display: none;
+				margin-top: 5px;
 				@include breakpoint('1') {
 					margin-left: auto;
 					display: block;
@@ -635,7 +636,6 @@
 			}
 			&-header {
 				margin: auto;
-				width: 90%;
 				margin-top: 100px;
 				display: flex;
 				align-items: center;
@@ -659,12 +659,10 @@
 				}
 			}
 			&-list {
-				width: 90%;
-				margin: auto;
 				display: flex;
 				flex-wrap: wrap;
 				gap: 70px;
-				margin-top: 20px;
+				margin: 20px 0 auto;
 				@include breakpoint('3') {
 					gap: 30px;
 					margin-top: 30px;
@@ -764,7 +762,7 @@
 			left: -50px;
 		}
 		.swiper-button-next {
-			right: -30px;
+			right: -50px;
 			@include breakpoint('4') {
 				right: -45px;
 			}
@@ -783,7 +781,7 @@
 			.category-item {
 				cursor: pointer;
 				display: flex;
-				width: 363px;
+				width: 340px;
 				height: 96px;
 				border-radius: 14px;
 				background: #fff;
@@ -815,9 +813,10 @@
 				}
 
 				.item-body {
-					display: flex;
+					display: grid;
+					grid-auto-flow: column;
 					align-items: center;
-					gap: 20px;
+					gap: 1rem;
 					@include breakpoint('2') {
 						gap: 0;
 					}

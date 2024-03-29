@@ -1,0 +1,92 @@
+<div class="flex flex-col gap-6 mb-10 md:mb-0">
+	<div class="flex flex-row gap-3 justify-between items-center">
+
+	<span class="font-secondary text-lg font-medium"
+	>Highlight up to three (3) advantages of your company so that buyers can
+		learn more about you.</span>
+		<div class="flex flex-row justify-center items-center">
+			<button [disabled]="advantages?.length === 3" type="button" (click)="addForm()" mat-flat-button
+							class="px-3 !bg-[#EEEEEE]">
+				<mat-icon>add</mat-icon>
+				<span>Add</span>
+			</button>
+		</div>
+	</div>
+	<form [formGroup]="form"
+				(ngSubmit)="onSubmit()"
+				class="flex flex-col gap-10">
+		<div formArrayName="advantages" class="flex flex-col gap-10">
+			@for (item of controls; track $index) {
+				<div class="flex flex-row items-center gap-1">
+					<div class="flex flex-col gap-3 w-full" [formGroup]="item">
+						<div class="flex flex-row gap-1">
+							<div class="flex flex-col gap-1 w-full">
+								<input b2bNgxInput
+											 formControlName="title"
+											 [version]="NgxInputVersionEnum.GLOBY"
+											 placeholder="{{$index + 1}}. Advanced and efficient production process"
+											 type="text">
+								@if (item.get('title').errors?.['required']) {
+									<mat-error class="text-red-500 text-xs">This field is required</mat-error>
+								}
+								@if (item.get('title').errors?.['cyrillic']) {
+									<mat-error class="text-red-500 text-xs">Please, use only latin letters</mat-error>
+								}
+								@if (item.get('title').errors?.['maxlength']) {
+									<mat-error class="text-red-500 text-xs">Title is to long. Title length must be no longer then 300
+										symbols
+									</mat-error>
+								}
+								@if (item.get('title').errors?.['minlength']) {
+									<mat-error class="text-red-500 text-xs">Title is to short. Title must contain at least 10 symbols
+									</mat-error>
+								}
+							</div>
+						</div>
+						<div class="flex flex-col gap-1">
+					<textarea b2bNgxInput
+										class="min-h-32"
+										formControlName="content"
+										placeholder="{{$index + 1}}. e.g. Our advanced manufacturing processes, combined with a commitment to sustainable practices, position us at the forefront of innovation and environmental stewardship in the industry."
+										[version]="NgxInputVersionEnum.GLOBY"></textarea>
+							@if (item.get('title').errors?.['required']) {
+								<mat-error class="text-red-500 text-xs">This field is required</mat-error>
+							}
+							@if (item.get('content').errors?.['cyrillic']) {
+								<mat-error class="text-red-500 text-xs">Please, use only latin letters</mat-error>
+							}
+							@if (item.get('content').errors?.['maxlength']) {
+								<mat-error class="text-red-500 text-xs">Description is to long. Description length must be no longer
+									then
+									1000 symbols
+								</mat-error>
+							}
+							@if (item.get('content').errors?.['minlength']) {
+								<mat-error class="text-red-500 text-xs">Description is to short. Description must contain at least 40
+									symbols
+								</mat-error>
+							}
+						</div>
+					</div>
+					<button type="button"
+									(click)="deleteForm($index)"
+									mat-icon-button>
+						<mat-icon>delete</mat-icon>
+					</button>
+				</div>
+			}
+		</div>
+		<div class="hidden md:flex flex-row justify-center items-center">
+			<button
+				[disabled]="form.invalid || isEqual"
+				type="submit"
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				b2bNgxButton>
+				Save changes
+			</button>
+		</div>
+	</form>
+
+	<b2b-client-profile-mobile-toolbar (initSave)="onSubmit()"
+																		 class="fixed md:hidden left-0 bottom-0 w-full"></b2b-client-profile-mobile-toolbar>
+</div>

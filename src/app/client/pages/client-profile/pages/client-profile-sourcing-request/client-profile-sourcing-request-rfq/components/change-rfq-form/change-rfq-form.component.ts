@@ -5,7 +5,13 @@ import {
 	OnInit,
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import {
+	BehaviorSubject,
+	combineLatest,
+	Observable,
+	pairwise,
+	switchMap,
+} from 'rxjs';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
@@ -14,7 +20,7 @@ import { UnitsService } from '../../../../../../../services/units/units.service'
 import { HotToastService } from '@ngneat/hot-toast';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SourcingRequestService } from '../../../../../../client-sourcing-request/sourcing-request.service';
-import { first, map, take, tap } from 'rxjs/operators';
+import { first, map, startWith, take, tap } from 'rxjs/operators';
 import { snakeCase } from '../../../../../../../../core/helpers/function/snake-case';
 import { environment } from '../../../../../../../../../environments/environment';
 import { GetUrlExtension } from '../../../../../../../../core/helpers/function/get-url-extension';
@@ -31,15 +37,18 @@ import { ClientProfileSourcingRequestService } from '../../../client-profile-sou
 import { MatDialog } from '@angular/material/dialog';
 import { MixpanelService } from '../../../../../../../../core/services/mixpanel/mixpanel.service';
 import { getName } from 'country-list';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../../../../../../services/platform/platform.service';
+import { Category } from '../../../../../../../../core/models/category.model';
+import { Unit } from '../../../../../../../../core/models/unit.model';
 
 interface SelectItem {
 	id: string;
 	value: string;
 }
 
+@UntilDestroy()
 @Component({
 	selector: 'b2b-change-rfq-form',
 	templateUrl: './change-rfq-form.component.html',
@@ -61,17 +70,12 @@ interface SelectItem {
 export class ChangeRfqFormComponent implements OnInit {
 	public form: FormGroup;
 
-	public categories$: Observable<any> = this.getCategories();
-	public unit$: Observable<any> = this.getUnit();
-	public sourcingPurpose$: Observable<SelectItem[]>;
+	public sectors: Category[];
+	public childCategories: Category[];
+	public unit$: Observable<Unit>;
 	public tradeTerms$: Observable<SelectItem[]>;
-	public currencies$: Observable<SelectItem[]>;
-
-	public shippingMethod$: Observable<SelectItem[]>;
-	public paymentMethod$: Observable<SelectItem[]>;
 
 	public isSubmitButtonActive$: Observable<boolean>;
-	public isFileLabelVisible: boolean;
 
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -95,74 +99,19 @@ export class ChangeRfqFormComponent implements OnInit {
 		private readonly mixpanelService: MixpanelService,
 		private platformService: PlatformService
 	) {
-		this.form = this.formBuilder.group({
-			productInformation: this.createProductInformationGroup(),
-			paymentShipping: this.createPaymentShippingGroup(),
-		});
-
-		this.sourcingPurpose$ = this.getSourcingPurpose().pipe(
-			map((options) => {
-				return options.map((option) => {
-					return {
-						...option,
-						value: this.translateService.instant(
-							`TRADEBID.SOURCING_PURPOSE.${snakeCase(option.value)}`
-						),
-					};
-				});
-			})
-		);
+		this.form = this.createProductInformationGroup();
 
 		this.tradeTerms$ = this.getTradeTerms().pipe(
 			tap((options) => {
 				this.form.patchValue({
-					productInformation: {
-						tradeTerms: options[0].value,
-					},
-				});
-			})
-		);
-
-		this.currencies$ = this.getCurrencies().pipe(
-			tap((options) => {
-				this.form.patchValue({
-					productInformation: {
-						budget: {
-							currency:
-								options.find((option) => option.value === 'USD')?.value ||
-								options[0].value,
-						},
-					},
-				});
-			})
-		);
-
-		this.shippingMethod$ = this.getShippingMethod().pipe(
-			map((options) => {
-				return options.map((option) => {
-					return {
-						...option,
-						value: this.translateService.instant(
-							`TRADEBID.SHIPPING_METHOD.${snakeCase(option.value)}`
-						),
-					};
-				});
-			})
-		);
-
-		this.paymentMethod$ = this.getPaymentMethod().pipe(
-			tap((options) => {
-				this.form.patchValue({
-					paymentShipping: {
-						paymentMethod: options[0].value,
-					},
+					tradeTerms: options[0].value,
 				});
 			})
 		);
 
 		this.isSubmitButtonActive$ = combineLatest([
 			this.form.statusChanges,
-			this.form.get('paymentShipping').get('readRFQRules').valueChanges,
+			this.form.get('readRFQRules').valueChanges,
 		]).pipe(
 			map(([statusChanges, isReadRFQ]) => {
 				return statusChanges === 'VALID' && isReadRFQ;
@@ -175,35 +124,12 @@ export class ChangeRfqFormComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.form
-			.get('productInformation')
-			.get('photos')
-			.valueChanges.subscribe((data: string | any[]) => {
-				this.isFileLabelVisible = !(typeof data === 'object' && data.length);
-			});
+		this.getProductSectors();
+		this.patchValueToForm();
+		this.handleValueChanges();
 		if (this.platformService.isBrowser) {
 			this.onResize();
 		}
-		this.patchValueToForm();
-	}
-
-	public openDocument(ev: { name: any }): void {
-		const document = this.form.value.documents.find(
-			(el: { _id: any }) => el._id === ev.name
-		);
-
-		const data = {
-			fullPath: environment.apiUrl + document.path,
-			extension: GetUrlExtension(document.path),
-			isImage: ImageExtensions.includes(GetUrlExtension(document.path)),
-			isDocument: DocumentExtensions.includes(GetUrlExtension(document.path)),
-		};
-
-		this.dialog.open(ClientOfferDocumentComponent, {
-			data,
-			width: '80vw',
-			height: '80vh',
-		});
 	}
 
 	public submitForm(form: FormGroup): void {
@@ -221,10 +147,8 @@ export class ChangeRfqFormComponent implements OnInit {
 			.subscribe({
 				complete: () => {
 					this.mixpanelService.track('RFQ edited', {
-						'Product Sector': this.getCategoryName(
-							form.value.productInformation.category
-						),
-						Destination: getName(form.value.paymentShipping?.destination),
+						'Product Sector': this.getCategoryName(form.value?.productSector),
+						Destination: getName(form.value?.destination),
 					});
 
 					this.router.navigate([
@@ -273,48 +197,27 @@ export class ChangeRfqFormComponent implements OnInit {
 	}
 
 	private getBodyRequest(form: FormGroup): any {
-		const productInformation = form.value.productInformation;
-		const paymentShipping = form.value.paymentShipping;
-
 		return {
-			productName: productInformation.productName,
-			quantity: productInformation.quantity.quantity,
-			budget: productInformation.budget.maxBudget,
-			currency: productInformation.budget.currency,
-			measure: productInformation.quantity.measure,
-			thePurposeOfSourcing: productInformation.sourcingPurpose,
-			tradeTerms: productInformation.tradeTerms,
-			category: productInformation.category,
-			moreInformation: productInformation.moreInformation,
-			photos: productInformation.photos,
-			shippingMethod: paymentShipping.shippingMethod,
-			paymentMethod: paymentShipping.paymentMethod,
-			destination: paymentShipping.destination,
+			productName: form.value.productName,
+			quantity: form.value.quantity.quantity,
+			unitMeasure: form.value.quantity.measure,
+			tradeTerms: form.value.tradeTerms,
+			category: form.value.category,
+			moreInformation: form.value.moreInformation,
+			destination: form.value.destination,
 			rfqId: this.route.snapshot.params['id'],
 		};
 	}
 
-	private getUnit(): Observable<any> {
+	private getUnit(amount: number): Observable<Unit> {
 		return this.unitsService.getUnits().pipe(
 			map((units) =>
-				units.map((unit: { name: string }) => ({
+				units.map((unit: Unit) => ({
 					...unit,
-					displayName: this.translateService.instant(
-						`UNITS.${unit.name.toUpperCase()}`
-					),
+					displayName: amount > 1 ? unit.pluralDisplayName : unit.displayName,
 				}))
 			)
 		);
-	}
-
-	private getSourcingPurpose(): Observable<SelectItem[]> {
-		return this.sourcingRequestService.getObservableForSelect([
-			'Own consumption',
-			'Wholesale distribution',
-			'Retail',
-			'Manufacturing purpose',
-			'Government supply',
-		]);
 	}
 
 	private getTradeTerms(): Observable<SelectItem[]> {
@@ -333,68 +236,35 @@ export class ChangeRfqFormComponent implements OnInit {
 		]);
 	}
 
-	private getCurrencies(): Observable<SelectItem[]> {
-		return this.sourcingRequestService.getObservableForSelect(CURRENCIES);
-	}
-
-	private getShippingMethod(): Observable<SelectItem[]> {
-		return this.sourcingRequestService.getObservableForSelect([
-			'Sea freight',
-			'Land freight',
-			'Air Freight',
-		]);
-	}
-
-	private getPaymentMethod(): Observable<SelectItem[]> {
-		return this.sourcingRequestService.getObservableForSelect([
-			'T/T',
-			'L/C',
-			'D/P',
-			'Western Union',
-			'Money Gram',
-		]);
-	}
-
 	private createProductInformationGroup(): FormGroup {
 		return this.formBuilder.group({
-			productName: [null, [Validators.required, onlyLatin()]],
+			productName: [null, [Validators.required]],
+			productSector: [null, Validators.required],
 			category: [null, Validators.required],
-			sourcingPurpose: [null, Validators.required],
 			quantity: this.formBuilder.group({
 				quantity: [null, [Validators.required, onlyNumber()]],
 				measure: [null, Validators.required],
 			}),
 			tradeTerms: [null, Validators.required],
-			budget: this.formBuilder.group({
-				maxBudget: [null, [Validators.required, onlyNumber()]],
-				currency: [null, Validators.required],
-			}),
 			moreInformation: [
 				null,
-				[Validators.required, Validators.minLength(20), onlyLatinAndNumber()],
+				[Validators.required],
 			],
-			photos: [[]],
-		});
-	}
-
-	private createPaymentShippingGroup(): FormGroup {
-		return this.formBuilder.group({
-			shippingMethod: [null, Validators.required],
 			destination: [null, Validators.required],
-			paymentMethod: [null, Validators.required],
 			readRFQRules: [false, Validators.required],
 		});
 	}
 
-	private getCategories(): Observable<any> {
-		return this.categoriesService.getCategories$().pipe(
-			map(({ categories }) =>
-				categories.map((category: { _id: any; name: any }) => ({
-					id: category._id,
-					value: category.name,
-				}))
+	private getProductSectors(): void {
+		this.categoriesService
+			.getCategories$()
+			.pipe(
+				map(({ categories }) =>
+					categories.filter((category: any) => category.children.length)
+				),
+				untilDestroyed(this)
 			)
-		);
+			.subscribe((el) => (this.sectors = el));
 	}
 
 	@HostListener('window:resize', ['$event'])
@@ -409,30 +279,61 @@ export class ChangeRfqFormComponent implements OnInit {
 		this.sourcingRequestService
 			.getRfqById(this.route.snapshot.params['id'])
 			.subscribe((el) => {
+				const sector = this.sectors.find((item) =>
+					item.children.find((child) => child._id === el.category)
+				);
+
 				this.form.patchValue({
-					productInformation: {
-						productName: el?.productName,
-						category: el?.category,
-						sourcingPurpose: el?.thePurposeOfSourcing,
-						quantity: {
-							quantity: el?.quantity,
-							measure: el?.measure,
-						},
-						tradeTerms: el?.tradeTerms,
-						budget: {
-							maxBudget: el?.budget,
-							currency: el?.currency,
-						},
-						moreInformation: el?.moreInformation,
-						photos: el?.photos,
+					productName: el?.productName,
+					productSector: sector?._id,
+					category: el?.category,
+					quantity: {
+						quantity: el?.amount?.count,
+						measure: el?.unitMeasure,
 					},
-					paymentShipping: {
-						shippingMethod: el?.shippingMethod,
-						destination: el?.destination?.to,
-						paymentMethod: el?.paymentMethod,
-						readRFQRules: true,
-					},
+					tradeTerms: el?.tradeTerms,
+					moreInformation: el?.moreInformation,
+					destination: el?.destination?.to,
+					readRFQRules: true,
 				});
+
+				this.form.markAllAsTouched();
+			});
+	}
+
+	private handleValueChanges(): void {
+		this.unit$ = this.form
+			.get('quantity')
+			.get('quantity')
+			.valueChanges.pipe(switchMap((amount) => this.getUnit(amount)));
+
+		this.form
+			.get('productSector')
+			.valueChanges.pipe(
+				startWith(null),
+				pairwise(),
+				switchMap(([prevId, curId]) => {
+					if (prevId) {
+						this.form.get('category').reset();
+						this.form.get('category').enable();
+						this.form.updateValueAndValidity();
+					}
+
+					return this.categoriesService
+						.getCategories$()
+						.pipe(
+							map(
+								({ categories }) =>
+									categories.find(
+										(foundCategory: any) => foundCategory._id === curId
+									)?.children
+							)
+						);
+				}),
+				untilDestroyed(this)
+			)
+			.subscribe((categories: Category[]) => {
+				this.childCategories = categories;
 			});
 	}
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, of } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
 import { User } from '../../../core/models/user/user.model';
@@ -56,6 +56,9 @@ export class AuthService {
 	}
 
 	public initUser() {
+		if (this.platformService.isServer) {
+			return;
+		}
 		const token = this.getToken();
 		this.updateToken(token || '');
 
@@ -90,6 +93,9 @@ export class AuthService {
 	}
 
 	public returnInitedUser(): Observable<User> {
+		if (this.platformService.isServer) {
+			return of(null);
+		}
 		return this.apiService
 			.get<User>('user/')
 			.pipe(tap((user) => this.updateUser(<User>user)));
@@ -100,6 +106,9 @@ export class AuthService {
 	}
 
 	public updateToken(token: string) {
+		if (this.platformService.isServer) {
+			return;
+		}
 		localStorage.setItem('token', token);
 		this.authStore.update({ token });
 	}
@@ -234,6 +243,5 @@ export class AuthService {
 		}
 
 		this.router.navigate([localStorage.getItem('blocked-route')]);
-		localStorage.removeItem('blocked-route');
 	}
 }

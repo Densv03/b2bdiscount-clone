@@ -1,0 +1,9 @@
+<div class="flex flex-col gap-3 bg-[#F3F6F8] md:min-w-96 w-full rounded-lg">
+	<div class="flex flex-row justify-between" [ngClass]="{'justify-end': !label}">
+			<span class="font-bold text-lg">{{ label }}</span>
+		<button (click)="initClose()" b2bNgxButton>
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<ng-content></ng-content>
+</div>

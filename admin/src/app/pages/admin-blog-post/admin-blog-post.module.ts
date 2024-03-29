@@ -7,25 +7,39 @@ import { B2bNgxCountrySelectModule } from 'projects/ngx-country-select/src/publi
 import { B2bNgxFileModule } from 'projects/ngx-file/src/public-api';
 import { B2bNgxInputModule } from 'projects/ngx-input/src/public-api';
 import { B2bNgxSelectModule } from 'projects/ngx-select/src/public-api';
-import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AdminBlogPostRoutingModule } from './admin-blog-post-routing.module';
 import { AdminBlogPostComponent } from './layout/admin-blog-post.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
+import { B2bDatepickerModule } from "@b2b/datepicker";
+import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatInput } from "@angular/material/input";
+import { MatIcon } from "@angular/material/icon";
+import { MatButton, MatIconButton } from "@angular/material/button";
+import { MatCheckbox } from "@angular/material/checkbox";
 
 @NgModule({
 	declarations: [AdminBlogPostComponent],
-	imports: [
-		CommonModule,
-		AdminBlogPostRoutingModule,
-		B2bNgxInputModule,
-		B2bNgxFileModule,
-		B2bNgxSelectModule,
-		B2bNgxButtonModule,
-		B2bNgxCountrySelectModule,
-		AngularEditorModule,
-		ReactiveFormsModule,
-		B2bNgxChipsModule,
-		TranslateModule,
-	],
+    imports: [
+        CommonModule,
+        AdminBlogPostRoutingModule,
+        B2bNgxInputModule,
+        B2bNgxFileModule,
+        B2bNgxSelectModule,
+        B2bNgxButtonModule,
+        B2bNgxCountrySelectModule,
+        ReactiveFormsModule,
+        B2bNgxChipsModule,
+        TranslateModule,
+        CKEditorModule,
+        B2bDatepickerModule,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        MatIcon,
+        MatIconButton,
+        MatButton,
+        MatCheckbox
+    ],
 })
 export class AdminBlogPostModule {}

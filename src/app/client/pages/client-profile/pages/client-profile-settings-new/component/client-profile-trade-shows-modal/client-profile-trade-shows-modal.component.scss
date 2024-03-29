@@ -1,0 +1,52 @@
+:host {
+	&__datepicker {
+		margin-left: 8px;
+
+		::ng-deep {
+			input.datepicker {
+				height: 64px;
+				border: none;
+				border-radius: 14px;
+				padding: 0 16px;
+				width: 100%;
+
+				&::placeholder {
+					padding-left: 20px;
+				}
+			}
+		}
+	}
+}
+
+.datepicker {
+	@apply bg-black
+}
+
+::ng-deep {
+	input.datepicker {
+		height: 48px;
+			width: 100%;
+		border: 1px solid #C6D1E2;
+		@apply rounded-md px-4 py-2 #{'!important'};
+
+		&::placeholder {
+			padding-left: 20px;
+		}
+	}
+
+	//img.b2b-ngx-icon {
+	//	display: none !important;
+	//}
+
+	button.b2b-ngx-button .ngx-file-button .outline .outline-black {
+		border: 1px solid black;
+	}
+
+	.ngx-file .control button {
+		@apply border
+	}
+}
+
+mat-error {
+	@apply text-xs text-red-500;
+}

@@ -11,12 +11,16 @@
 	class="dropdown">
 	<div class="dropdown__header">
 		<div class="dropdown__header-title">{{ title }}</div>
-		<div
+		<a
+			[routerLink]="navigationForChange?.routerLink"
+			[queryParams]="navigationForChange?.queryParams"
+			[queryParamsHandling]="navigationForChange?.queryParamsHandling"
+			[relativeTo]="navigationForChange?.relativeTo"
 			*ngIf="selectedOption"
 			(click)="resetSelected($event)"
 			class="dropdown__header-subtitle">
 			Change
-		</div>
+		</a>
 	</div>
 	<div *ngIf="menuIsOpen || selectedOption" class="content">
 		<ng-content></ng-content>

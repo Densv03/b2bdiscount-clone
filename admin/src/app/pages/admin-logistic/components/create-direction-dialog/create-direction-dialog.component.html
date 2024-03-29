@@ -19,31 +19,49 @@
 		</div>
 
 		<div class="search-wrapper" *ngIf="directionForm.controls['type'].value">
-			<b2b-ngx-country-select
-				*ngIf="
-					directionForm.controls['type'].value === 'city' ||
-						directionForm.controls['type'].value === 'country';
-					else isCity
-				"
-				[customOptions]="countryOptions | async"
-				formControlName="country"
-				class="admin-article__country"
-				placeholder="Select Country"></b2b-ngx-country-select>
+			@if (directionForm.controls['type'].value === 'country') {
 
-			<p
-				[@fadeInOut]
-				class="error"
-				*ngIf="directionForm.get('country').errors?.['cityExists']">
-				This {{ directionForm.controls['type'].value }} already exist
-			</p>
-
-			<ng-template #isCity>
+				<div class="pt-2">
 				<b2b-ngx-country-select
-					[customOptions]="cityOptions | async"
+					formControlName="country"
+					class="admin-article__country"
+					placeholder="Select Country"></b2b-ngx-country-select>
+				</div>
+
+
+				<p [@fadeInOut]
+					 class="error"
+					 *ngIf="directionForm.get('country').errors?.['cityExists']">
+					This {{ directionForm.controls['type'].value }} already exist
+				</p>
+
+				<div formArrayName="countryNames">
+				@for (item of countryNames.controls; let i = $index; track item) {
+						<div class="d-flex gap-1 pt-4">
+							<input
+								[formControlName]="i"
+								class="b2b-ngx-input background background-gray"
+								placeholder="Input alternative country name" />
+
+							<img b2bNgxIcon (click)="deleteAlternativeName(i)" name="delete" />
+						</div>
+				}
+				</div>
+
+
+				<div class="d-flex justify-content-end w-100">
+					<button type="button" class="add-more bg-white" (click)="addField()">
+						+ Add more
+					</button>
+				</div>
+
+			} @else {
+				<b2b-ngx-country-select
+					[customOptions]="{value: cityOptions,length: cityOptions.value?.length }"
 					formControlName="country"
 					class="admin-article__country"
 					placeholder="Select city"></b2b-ngx-country-select>
-			</ng-template>
+			}
 		</div>
 
 		<div class="search-wrapper" *ngIf="showNameInput">
@@ -62,9 +80,9 @@
 
 		<b2b-ngx-checkbox
 			formControlName="active"
-			*ngIf="directionForm.controls['type'].value"
-			>Active</b2b-ngx-checkbox
-		>
+			*ngIf="directionForm.controls['type'].value">
+			Active
+		</b2b-ngx-checkbox>
 
 		<div class="button-wrapper mt-16">
 			<button

@@ -9,7 +9,7 @@
 	<b2b-ngx-file
 		[isPhoto]="true"
 		[isClickable]="true"
-		formControlName="image"
+		formControlName="images"
 		class="admin-article__image">
 		Image
 	</b2b-ngx-file>
@@ -20,105 +20,81 @@
 			class="admin-article__input"
 			[label]="'LABELS.ARTICLE_LABEL' | translate"
 			placeholder="Enter post label"></b2b-ngx-input>
-		<b2b-ngx-input
-			formControlName="author"
-			class="admin-article__input"
-			[label]="'LABELS.ARTICLE_AUTHOR' | translate"
-			placeholder="Enter post author"></b2b-ngx-input>
 	</div>
 
-	<div class="admin-article__categories">
-		<div class="admin-article__category">
-			<b2b-ngx-select
-				formControlName="level1Category"
-				placeholder="Select category"
-				[options]="level1Categories"
-				bindValue="_id"
-				bindLabel="name"
-				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"></b2b-ngx-select>
-		</div>
-		<div class="admin-article__sub-category">
-			<b2b-ngx-select
-				formControlName="level2Category"
-				placeholder="Select subcategory"
-				[options]="level2Categories"
-				bindValue="_id"
-				bindLabel="name"
-				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"></b2b-ngx-select>
-		</div>
+	<b2b-ngx-select [options]="articleTypes$ | async"
+									bindValue="id"
+									bindLabel="value"
+									placeholder="Select article type"
+									className="w-100"
+									[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+									formControlName="typeArticle"
+	></b2b-ngx-select>
+
+	<b2b-datepicker
+		formControlName="datePublication"
+		inputClassName="datepicker"
+		iconName="filled-calendar"
+		[iconPosition]="{ left: '10px', top: '20px' }"></b2b-datepicker>
+
+	<mat-form-field appearance="outline">
+		<mat-label>Enter publication date</mat-label>
+		<input type="time" matInput formControlName="timePublication" name="week">
+	</mat-form-field>
+
+	<b2b-ngx-select [options]="blogAuthors$ | async"
+									bindLabel="fullName"
+									bindValue="_id"
+									placeholder="Select author"
+									className="w-100"
+									[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+									formControlName="authorId"
+	></b2b-ngx-select>
+
+	<div formArrayName="recommendations">
+		@for (recommendation of recommendationsFormArray().controls; track $index) {
+			<div>
+				<mat-form-field>
+					<input matInput type="text" [formControlName]="$index" placeholder="Enter link to article">
+				</mat-form-field>
+				<button type="button"
+								(click)="removeRecommendation($index)"
+								mat-icon-button>
+					<mat-icon>delete</mat-icon>
+				</button>
+			</div>
+		}
 	</div>
 
-	<div class="admin-article__additional">
-		<b2b-ngx-country-select
-			formControlName="country"
-			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-			class="admin-article__country"
-			placeholder="Select Country"></b2b-ngx-country-select>
-
-		<div class="admin-article__tags">
-			<b2b-ngx-chips
-				formControlName="tags"
-				(searched)="setSearch($event)"
-				[searchedOptions]="searchedOptions$ | async"></b2b-ngx-chips>
-		</div>
+	<div>
+		<button (click)="addRecommendation()" mat-flat-button color="primary">Add recommendation link</button>
 	</div>
 
-	<div class="admin-article__main">
-		<input
+	<div>
+		<mat-checkbox formControlName="isDraft">Save as draft</mat-checkbox>
+	</div>
+
+
+	<div class="admin-article__main w-100">
+		<textarea
 			type="text"
 			b2bNgxInput
 			[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 			formControlName="shortDescription"
-			placeholder="Enter short description of this article (up to 140 symbols)" />
+			placeholder="Enter short description of this article (up to 500 symbols)"
+			rows="15"
+			wrapperClass="w-100"></textarea>
 	</div>
 
-	<angular-editor
-		class="admin-article__description"
+	<b2b-ngx-chips
+		formControlName="tags"
+		(searched)="setSearch($event)"
+		[searchedOptions]="searchedOptions$ | async"></b2b-ngx-chips>
+
+	<ckeditor
+		[editor]="Editor"
 		formControlName="description"
-		[config]="editorConfig"></angular-editor>
-
-	<div *ngIf="blogAction === blogActionEnum.EDIT" class="image-alts">
-		<div class="image-alts__input">
-			<input
-				type="text"
-				b2bNgxInput
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-				placeholder="Enter alt for picture 1"
-				label="Alt for picture 1"
-				formControlName="alt1" />
-		</div>
-		<div class="image-alts__input">
-			<input
-				type="text"
-				b2bNgxInput
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-				placeholder="Enter alt for picture 2"
-				label="Alt for picture 2"
-				formControlName="alt2" />
-		</div>
-		<div class="image-alts__input">
-			<input
-				type="text"
-				b2bNgxInput
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-				placeholder="Enter alt for picture 3"
-				label="Alt for picture 3"
-				formControlName="alt3" />
-		</div>
-		<div class="image-alts__input">
-			<input
-				type="text"
-				b2bNgxInput
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-				placeholder="Enter alt for picture 4"
-				label="Alt for picture 4"
-				formControlName="alt4" />
-		</div>
-	</div>
-
-	<div *ngIf="blogAction === blogActionEnum.CREATE" class="image-alts__tooltip">
-		To change alts for picture, edit this post after creation
-	</div>
+	></ckeditor>
 
 	<button
 		b2bNgxButton

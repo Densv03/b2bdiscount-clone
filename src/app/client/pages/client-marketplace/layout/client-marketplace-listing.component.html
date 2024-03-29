@@ -22,6 +22,7 @@
 		<b2b-client-marketplace-filters-mobile
 			[filtersState]="filtersArr$ | async"
 			[animationState]="animationState$ | async"
+			filterType="b2bmarket"
 			(closePopUp)="closePopUp()"
 			(filterEvent)="extractFilterOptions($event)"
 			[initialCategoryState]="categoriesInitialState$ | async"
@@ -60,7 +61,10 @@
 					[menuIsOpen]="filter.isOpen"
 					[openIsRestricted]="restrictOpen(filter, filtersArr)"
 					[selectedOption]="filter.selectedOption.getValue()"
-					[title]="filter.name">
+					[title]="filter.name"
+					[navigationForChange]="
+						getNavigationForDeleteMode(filter.hiddenLabel)
+					">
 					<ng-container>
 						<div
 							*ngIf="!filter.selectedOption.getValue(); else selectedOption"

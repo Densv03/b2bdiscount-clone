@@ -73,7 +73,7 @@ export class MixpanelProvider {
 			eventName,
 			properties: {
 				...properties,
-				distinct_id: distinctId,
+				distinct_id: properties?.distinctId ?? distinctId,
 				deviceType: this.detectDeviceType(),
 				$user_id: distinctId,
 				$device_id: deviceId,

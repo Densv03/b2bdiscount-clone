@@ -3,6 +3,7 @@ import {
 	Component,
 	ElementRef,
 	HostListener,
+	Inject,
 	Input,
 	OnInit,
 	ViewChild,
@@ -18,6 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../../services/platform/platform.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { DOCUMENT } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -46,7 +48,8 @@ export class ClientMarketPromoComponent implements OnInit {
 		private readonly translateService: TranslateService,
 		private readonly activatedRoute: ActivatedRoute,
 		private readonly platformService: PlatformService,
-		private readonly router: Router
+		private readonly router: Router,
+		@Inject(DOCUMENT) private document: Document
 	) {}
 
 	public ngOnInit() {
@@ -107,7 +110,7 @@ export class ClientMarketPromoComponent implements OnInit {
 	}
 
 	public smoothScrollToAdvantages(): void {
-		const advantagesElement = document.getElementById('ts-advantages');
+		const advantagesElement = this.document.getElementById('ts-advantages');
 		advantagesElement.scrollIntoView({
 			behavior: 'smooth',
 			block: 'start',

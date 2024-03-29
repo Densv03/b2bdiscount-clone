@@ -1,166 +1,3 @@
-//@import 'projects/shared/src/styles';
-//
-//.badge {
-//	display: flex;
-//	align-items: center;
-//	img {
-//		margin-right: 15px;
-//	}
-//	background: #eff7ff;
-//	border: 1px solid #005dff;
-//	box-sizing: border-box;
-//	border-radius: 4px;
-//	padding: 12px 16px;
-//	font-size: 12px;
-//	color: #222224;
-//	margin-top: 30px;
-//	&.invalid {
-//		background-color: rgba(230, 61, 61, 0.05);
-//		border: 1px solid #922f08;
-//	}
-//	.text {
-//		line-height: 19px;
-//		white-space: pre-line;
-//		text-align: left;
-//	}
-//}
-//
-//.client-profile-add-offer-wrapper {
-//	@include breakpoint('3') {
-//		padding: 0 0 30px;
-//	}
-//
-//	.error {
-//		display: block;
-//		font-size: 14px;
-//		color: #e63d3d;
-//		margin-top: 4px;
-//	}
-//
-//	.client-profile-add-offer {
-//		background: #ffffff;
-//		border-radius: 4px;
-//		padding: 60px;
-//		@include breakpoint('4') {
-//			padding: 60px 15px;
-//		}
-//		@include breakpoint('3') {
-//			padding: 0 20px 20px 0;
-//			margin-top: 20px;
-//		}
-//		@include breakpoint('2') {
-//			padding: 10px;
-//		}
-//		.client-profile-add-offer-title {
-//			font-weight: bold;
-//			font-size: 32px;
-//			color: #0f0f11;
-//		}
-//		form {
-//			width: 100%;
-//			display: flex;
-//			justify-content: space-between;
-//			padding-top: 16px;
-//			@include breakpoint('2') {
-//				flex-direction: column;
-//			}
-//			.product-price,
-//			.product-details {
-//				width: 47%;
-//				.title {
-//					color: #0f0f11;
-//					font-size: 17px;
-//					font-weight: 700;
-//					margin-bottom: 10px;
-//				}
-//				.specifications-area,
-//				.company-info-area {
-//					padding: 10px;
-//					min-height: 120px;
-//				}
-//				.short-selects {
-//					display: flex;
-//					justify-content: space-between;
-//					align-items: flex-end;
-//					.control-wrapper {
-//						width: 48%;
-//					}
-//				}
-//
-//				.control-wrapper {
-//					margin-top: 16px;
-//				}
-//				.mt-0 {
-//					margin-top: 0;
-//				}
-//				@include breakpoint('2') {
-//					width: 100%;
-//				}
-//			}
-//			.product-details {
-//				.tip {
-//					font-weight: 400;
-//					font-size: 12px;
-//					letter-spacing: 0.01em;
-//					color: #9fa4bb;
-//					margin-top: 15px;
-//				}
-//			}
-//			.product-price {
-//				margin-top: 17px;
-//				.control-wrapper {
-//					.title {
-//						color: #0f0f11;
-//						font-size: 17px;
-//						font-weight: 700;
-//						margin-bottom: 10px;
-//					}
-//				}
-//			}
-//		}
-//	}
-//	.form-buttons {
-//		display: flex;
-//		justify-content: space-around;
-//		width: 50%;
-//		margin: auto;
-//		margin-top: 60px;
-//		@include breakpoint('3') {
-//			flex-direction: column-reverse;
-//			width: 100%;
-//		}
-//		button {
-//			padding: 15px 40px;
-//		}
-//		.cancel-btn {
-//			width: 200px;
-//			@include breakpoint('3') {
-//				margin-top: 20px;
-//			}
-//			svg {
-//				transform: translateY(2px);
-//			}
-//			span {
-//				font-size: 16px;
-//			}
-//		}
-//	}
-//}
-//
-//::ng-deep {
-//	.ng-dropdown-panel .ng-dropdown-panel-items {
-//		min-width: 115px;
-//	}
-//}
-//
-//.auth-register-individual-account__main-input {
-//	::ng-deep {
-//		.ng-placeholder {
-//			display: block;
-//		}
-//	}
-//}
-
 @import 'projects/shared/src/styles';
 
 .badge {
@@ -242,9 +79,9 @@
 			}
 
 			.section-title {
-				font-size: 16px;
+				font-size: 14px;
 				font-weight: 500;
-				line-height: 22px;
+				line-height: 19px;
 				letter-spacing: 0.01em;
 				margin: 32px 0 16px;
 
@@ -261,8 +98,12 @@
 				max-width: 720px;
 				margin-top: 24px;
 
-				input[type='file'] {
-					display: none;
+				@include breakpoint('3') {
+					margin-top: 0;
+
+					&.main-form-block {
+						margin-top: 16px;
+					}
 				}
 
 				.photos-advice {
@@ -274,8 +115,11 @@
 
 				.photos-wrapper {
 					gap: 16px;
-					flex-wrap: wrap;
 					justify-content: flex-start;
+
+					@include breakpoint('3') {
+						flex-wrap: wrap;
+					}
 
 					.photos {
 						display: flex;
@@ -283,17 +127,17 @@
 						align-items: center;
 
 						.dragged-image {
-							width: 128px;
-							height: 128px;
+							width: 96px;
+							height: 19628px;
 						}
 
 						> div {
-							max-width: 128px;
-							max-height: 128px;
-							background: #d9d9d980;
+							max-width: 96px;
+							max-height: 96px;
+							background: #ffffff;
 							border-radius: 4px;
 							border: 1px solid #0000004d;
-							padding: 40px;
+							padding: 32px;
 							position: relative;
 							line-height: 0;
 
@@ -311,8 +155,8 @@
 								padding: 0;
 
 								img {
-									width: 128px;
-									height: 128px;
+									width: 96px;
+									height: 96px;
 
 									@include breakpoint('3') {
 										width: 162px;
@@ -323,8 +167,8 @@
 
 							img {
 								cursor: move;
-								width: 48px;
-								height: 48px;
+								width: 32px;
+								height: 32px;
 							}
 
 							span {
@@ -365,6 +209,20 @@
 				}
 			}
 
+			.input-label {
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 20px;
+				letter-spacing: 0.01em;
+				color: #556274;
+
+				.desc-text {
+					font-size: 12px;
+					line-height: 17px;
+					color: #9fa4bb;
+				}
+			}
+
 			.control-wrapper {
 				margin-bottom: 24px;
 
@@ -388,7 +246,7 @@
 					height: 146px;
 
 					&::placeholder {
-						color: #999;
+						color: #9fa4bb;
 					}
 				}
 
@@ -400,20 +258,6 @@
 						top: 135px;
 						right: 14px;
 						color: #979797;
-					}
-				}
-
-				.input-label {
-					font-size: 14px;
-					font-weight: 400;
-					line-height: 20px;
-					letter-spacing: 0.01em;
-					color: #556274;
-
-					.desc-text {
-						font-size: 12px;
-						line-height: 17px;
-						color: #9fa4bb;
 					}
 				}
 
@@ -459,10 +303,12 @@
 			.checkbox-row {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 16px;
+				gap: 14px;
 
 				@include breakpoint('3') {
-					flex-direction: column;
+					b2b-ngx-checkbox {
+						min-width: 47%;
+					}
 				}
 			}
 
@@ -472,6 +318,68 @@
 				line-height: 20px;
 				margin: 31px 0 16px;
 			}
+
+			.chips {
+				display: flex;
+				gap: 16px;
+				flex-wrap: wrap;
+
+				@include breakpoint('3') {
+					padding-top: 16px;
+				}
+
+				&__item {
+					display: flex;
+					align-items: center;
+					border: 1px solid #0f0f11;
+					padding: 7px 10px 7px 10px;
+					border-radius: 1050px;
+					max-width: 218px;
+
+					span {
+						display: block;
+						max-width: 90%;
+						overflow: hidden;
+						white-space: nowrap;
+						font-size: 14px;
+						font-weight: 500;
+						line-height: 18px;
+						letter-spacing: 0.02em;
+						text-overflow: ellipsis;
+					}
+
+					&-icon {
+						cursor: pointer;
+						width: 8px;
+						height: 8px;
+					}
+				}
+			}
+		}
+
+		.w-70 {
+			width: 70%;
+
+			@include breakpoint('3') {
+				width: 100%;
+			}
+		}
+
+		.w-25 {
+			width: 25%;
+
+			@include breakpoint('3') {
+				width: 100% !important;
+				margin-top: 16px;
+			}
+		}
+
+		.mt-20 {
+			margin-top: 20px;
+
+			@include breakpoint('3') {
+				margin-top: 0;
+			}
 		}
 
 		.two-in-row {
@@ -479,6 +387,21 @@
 
 			@include breakpoint('3') {
 				width: 100%;
+			}
+		}
+
+		.price-input {
+			position: relative;
+
+			.usd {
+				position: absolute;
+				right: 11px;
+				margin-top: 16px;
+				color: #9fa4bb;
+				font-size: 14px;
+				font-weight: 700;
+				line-height: 20px;
+				letter-spacing: 0.01em;
 			}
 		}
 
@@ -638,9 +561,34 @@ input[type='number']::placeholder {
 	color: #9fa4bb;
 }
 
+input[type='file'] {
+	display: none;
+}
+
 ::ng-deep {
 	.b2b-ngx-input::placeholder,
 	.ng-select .ng-select-container .ng-value-container .ng-placeholder {
 		color: #9fa4bb;
+	}
+
+	input.datepicker {
+		height: 49px;
+		border: none;
+		border-radius: 4px;
+		padding: 0 16px;
+		width: 100%;
+		background-color: #f3f4f6;
+
+		&::placeholder {
+			color: #55627499;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 20px;
+		}
+	}
+
+	input.has-value {
+		max-width: 100% !important;
+		padding: 0 16px !important;
 	}
 }

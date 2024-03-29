@@ -14,7 +14,6 @@ import { AdminSupplierProductListComponent } from './components/admin-supplier-p
 import { B2bNgxSelectModule } from 'projects/ngx-select/src/public-api';
 import { AdminProductListComponent } from './components/admin-product-list/admin-product-list.component';
 import { AdminCompaniesListComponent } from './components/admin-companies-list/admin-companies-list.component';
-import { SharedModule } from 'projects/shared/src/public-api';
 import { CategoriesDialogModule } from 'projects/categories-modal/src/public-api';
 import { PaginationModule } from '../../../../../src/app/client/shared/components/pagination/pagination.module';
 import { AdminProductDetailsComponent } from './components/admin-product-details/admin-product-details.component';
@@ -24,6 +23,9 @@ import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { ClientProfileAddOfferModule } from '../../../../../src/app/client/pages/client-profile/pages/client-profile-add-offer/client-profile-add-offer.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { B2bDatepickerModule } from '@b2b/datepicker';
+import { B2bNgxRadioModule } from '@b2b/ngx-radio';
+import { SharedModule } from '../../../../../src/app/client/shared/components/shared.module';
 
 @NgModule({
 	declarations: [
@@ -55,6 +57,9 @@ import { TranslateModule } from '@ngx-translate/core';
 		CdkDropList,
 		ClientProfileAddOfferModule,
 		TranslateModule,
+		B2bDatepickerModule,
+		B2bNgxRadioModule,
+		SharedModule,
 	],
 })
 export class AdminMarketplaceModule {}

@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { BehaviorSubject, first, Observable, of } from 'rxjs';
-import { filter, map, skip } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { CategoriesService } from 'src/app/client/services/categories/categories.service';
-import { ApiService } from 'src/app/core/services/api/api.service';
 import { SourcingRequestService } from '../../sourcing-request.service';
 import { UserService } from 'src/app/client/pages/client-profile/services/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,8 +16,7 @@ import { COUNTRIES } from '../../../../../../../projects/ngx-country-select/src/
 import { getName } from 'country-list';
 import { ChipsService } from '../../../client-marketplace/components/filter-chips/chips.service';
 import { WindowScrollingService } from '../../../../../core/services/window-scrolling/window-scrolling.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ProductCreationCongratsDialogComponent } from '../../../../shared/components/product-creation-congrats-dialog/product-creation-congrats-dialog.component';
+import { SeoService } from '../../../../../core/services/seo/seo.service';
 
 let defaultState: any[] = null;
 
@@ -70,14 +68,13 @@ export class ClientSourcingRequestListingComponent
 	constructor(
 		private formBuilder: FormBuilder,
 		private categoriesService: CategoriesService,
-		private apiService: ApiService,
 		private sourcingRequestService: SourcingRequestService,
 		private userService: UserService,
 		private router: Router,
 		private route: ActivatedRoute,
 		public chipsService: ChipsService,
 		private windowScrollingService: WindowScrollingService,
-		private dialog: MatDialog
+		private seoService: SeoService
 	) {
 		this.rfqQuotesCounter = this.userService.getUser()?.rfqQuotes;
 	}
@@ -93,6 +90,11 @@ export class ClientSourcingRequestListingComponent
 		this.listingState.subscribe((state) => {
 			this.updateRfqListSource({ ...state, limit: 10, offset: 0 });
 		});
+
+		this.seoService.setTitle('Source Wholesale Online | Globy B2B Marketplace');
+		this.seoService.setDescription(
+			'Request quotation for wholesale goods online or quote as a supplier. Join Globy B2B Marketplace for effortless sourcing, procurement and sales boost.'
+		);
 	}
 
 	ngAfterViewInit() {

@@ -2,17 +2,22 @@
 	<div class="company-text d-flex align-items-center">
 		<div class="d-flex">
 			<img
-				[src]="
+				ngSrc="
+					{{
 					supplierInfo?.companyLogo?.path
 						? apiAddress + supplierInfo?.companyLogo?.path
-						: 'assets/images/no-company-logo.png'
+						: 'assets/icons/no-company-logo.svg'
+				}}
 				"
 				width="72"
 				height="72" />
 
 			<a
 				b2bNgxLink
-				[routerLink]="'/b2bmarket/company/' + supplierInfo?.companyId"
+				[routerLink]="
+					'/b2bmarket/company/' + supplierInfo?.companyPath ||
+					supplierInfo?.companyId
+				"
 				[theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
 				class="company-title"
 				>{{ supplierInfo?.companyName }}

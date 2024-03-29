@@ -17,27 +17,18 @@ export class DialogService {
 		private readonly dialog: MatDialog,
 		private readonly userService: UserService,
 		private readonly router: Router,
-		private readonly hotToastrService: HotToastService
-	) {}
+		private readonly hotToastrService: HotToastService,
+	) {
+	}
 
 	public openDialog(
 		dialogComponent: ComponentType<unknown>,
-		dialogConfig: MatDialogConfig<any>
+		dialogConfig: MatDialogConfig<any>,
 	): MatDialogRef<unknown, null> {
 		if (this.userService.getUser()) {
 			return this.openAuthedDialog(dialogComponent, dialogConfig);
 		} else {
-			this.hotToastrService.info(`Please log in before using this page`, {
-				style: {
-					border: '2px solid #005dff',
-					padding: '20px 15px',
-				},
-				autoClose: true,
-				dismissible: true,
-			});
-
-			localStorage.setItem('blocked-route', this.router.url);
-			this.router.navigate(['/auth/log-in']);
+			this.notifyWhenUserNotLoggedIn();
 			return null;
 		}
 	}
@@ -47,7 +38,7 @@ export class DialogService {
 		role: string,
 		alternateUrl: string,
 		dialogComponent: ComponentType<unknown>,
-		dialogConfig: MatDialogConfig<any>
+		dialogConfig: MatDialogConfig<any>,
 	): void {
 		if (!url.length) {
 			const user = this.userService.getUser();
@@ -56,23 +47,27 @@ export class DialogService {
 					? this.openDialog(dialogComponent, dialogConfig)
 					: this.router.navigate([alternateUrl]);
 			} else {
-				this.hotToastrService.info(`Please log in before using this page`, {
-					style: {
-						border: '2px solid #005dff',
-						padding: '20px 15px',
-					},
-					autoClose: true,
-					dismissible: true,
-				});
-				localStorage.setItem('blocked-route', this.router.url);
-				this.router.navigate(['/auth/log-in']);
+				this.notifyWhenUserNotLoggedIn();
 			}
 		}
 	}
 
+	public notifyWhenUserNotLoggedIn(): void {
+		this.hotToastrService.info(`Please log in before using this page`, {
+			style: {
+				border: '2px solid #005dff',
+				padding: '20px 15px',
+			},
+			autoClose: true,
+			dismissible: true,
+		});
+		localStorage.setItem('blocked-route', this.router.url);
+		this.router.navigate(['/auth/log-in']);
+	}
+
 	private openAuthedDialog(
 		dialogComponent: ComponentType<unknown>,
-		dialogConfig: MatDialogConfig<any>
+		dialogConfig: MatDialogConfig<any>,
 	): MatDialogRef<unknown> {
 		return this.dialog.open(dialogComponent, dialogConfig);
 	}

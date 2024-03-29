@@ -1,0 +1,53 @@
+@import "projects/shared/src/styles/colors";
+
+.ngx-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.globy-ngx-input-label {
+  display: block;
+  font-size: 14px;
+  color: #556274;
+}
+
+.globy-ngx-input {
+  border: 1px solid #C6D1E2;
+  border-radius: 0.25rem;
+  padding: 14px 16px;
+  width: 100%;
+  font-size: 14px;
+  color: #000000;
+  &.background {
+    &.background-gray {
+      color: $color-gray-400;
+      background-color: $color-gray-100;
+    }
+    &.background-white {
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+  &.ng-invalid.ng-touched {
+    background-color: $color-red-50;
+    border-color: $color-red-500;
+  }
+}
+
+.form-submitted {
+  .globy-ngx-input {
+    &.background {
+      &.ng-invalid {
+        background-color: $color-red-50;
+        border-color: $color-red-500;
+      }
+    }
+  }
+}
+
+.control-error {
+  display: block;
+  font-size: 14px;
+  color: rgba(108, 112, 119, 0.6);
+  margin-top: 4px;
+}

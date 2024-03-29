@@ -1,0 +1,9 @@
+:host {
+	svg {
+		&:hover {
+			path {
+				stroke: #1c5bfe;
+			}
+		}
+	}
+}

@@ -1,0 +1,165 @@
+<div class="flex flex-col gap-4 md:mb-0 mb-32 z-10">
+	<b2b-client-profile-settings-image-uploader
+		[company]="company"
+		(data)="handleData($event)"/>
+	<form class="flex flex-col gap-12" (ngSubmit)="onSubmit()" [formGroup]="form">
+		<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-1">
+				<input
+					[label]="'Company name'"
+					placeholder="Example: Google"
+					[formControlName]="'companyName'"
+					[version]="NgxInputVersionEnum.GLOBY"
+					b2bNgxInput
+					type="text"/>
+				@if (form.get('companyName').errors?.['cyrillic']) {
+					<mat-error class="text-red-500 text-xs">Please use only latin letters</mat-error>
+				}
+			</div>
+			<div class="flex flex-col gap-1">
+				<textarea
+					class="h-40"
+					[label]="'Company description'"
+					placeholder="Briefly describe your company (at least 40 characters)"
+					[version]="NgxInputVersionEnum.GLOBY"
+					[formControlName]="'companyDescription'"
+					b2bNgxInput></textarea>
+				@if (form.get('companyDescription').errors?.['cyrillic']) {
+					<mat-error class="text-red-500 text-xs">Please use only latin letters</mat-error>
+				}
+				@if (form.get('companyDescription').errors?.['minlength']) {
+					<mat-error class="text-red-500 text-xs">You description is too short. Min length 40 symbols</mat-error>
+				}
+				<span class="font-secondary text-xs text-[#556274]">e.g. Company has been a trusted name in the manufacturing of
+					high-quality steel components for over 30 years. Specializing in both
+					domestic and international markets, we pride ourselves on delivering
+					durable products that meet rigorous industry standards.</span
+				>
+			</div>
+
+			<div class="border border-[#CFDEFF]"></div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				<b2b-ngx-select
+					[options]="yearOfFoundationList"
+					[bindValue]="'id'"
+					[bindLabel]="'value'"
+					[version]="NgxSelectVariantEnum.GLOBY"
+					[formControlName]="'yearOfFoundation'"
+					placeholder="Select"
+				>Year established
+				</b2b-ngx-select>
+				<b2b-ngx-select
+					[options]="employeesNumberList"
+					[bindValue]="'id'"
+					[bindLabel]="'value'"
+					[version]="NgxSelectVariantEnum.GLOBY"
+					[formControlName]="'employeesNumber'"
+					placeholder="Select"
+				>Number of employees
+				</b2b-ngx-select>
+				<b2b-ngx-select
+					[options]="annualRevenueList"
+					[version]="NgxSelectVariantEnum.GLOBY"
+					[bindValue]="'id'"
+					[bindLabel]="'value'"
+					[formControlName]="'annualRevenue'"
+					placeholder="Select"
+				>Annual revenue
+				</b2b-ngx-select>
+				<b2b-ngx-select
+					[options]="clientCompanyInformationService?.subRoles"
+					[bindValue]="isAdmin ? '_id' : 'id'"
+					bindLabel="displayName"
+					[version]="NgxSelectVariantEnum.GLOBY"
+					[formControlName]="'businessType'"
+					placeholder="Select"
+				>Business type
+				</b2b-ngx-select>
+				<b2b-ngx-country-select
+					[version]="NgxSelectVariantEnum.GLOBY"
+					[theme]="B2bNgxSelectThemeEnum.BACKGROUND_WHITE"
+					[formControlName]="'country'"
+					placeholder="Select"
+				>Country
+				</b2b-ngx-country-select>
+			</div>
+			<div class="flex flex-col gap-1">
+			<textarea
+				class="h-40"
+				[label]="'Office address'"
+				placeholder="Input office address"
+				[version]="NgxInputVersionEnum.GLOBY"
+				[formControlName]="'address'"
+				b2bNgxInput></textarea>
+				@if (form.get('address').errors?.['cyrillic']) {
+					<mat-error class="text-red-500 text-xs">Please use only latin letters</mat-error>
+				}
+			</div>
+
+			<div class="border border-[#CFDEFF]"></div>
+
+			<div class="text-lg font-bold">Official resources</div>
+
+			<div class="flex flex-col gap-1">
+				<div class="flex flex-row items-center gap-1 bg-white rounded-md border border-[#C6D1E2]">
+					<div class="w-fit px-3 flex flex-row gap-2 items-center bg-white">
+						<mat-icon [svgIcon]="'globe'"></mat-icon>
+						<span class="h-full">Website</span>
+					</div>
+					<div class="w-full grid">
+						<input
+							placeholder="Paste link"
+							[version]="NgxInputVersionEnum.GLOBY"
+							b2bNgxInput
+							[formControlName]="'website'"
+							class="!w-full rounded-md border-none"
+							type="text"/>
+					</div>
+					@if (website.valid && website?.value?.length > 0) {
+						<mat-icon class="mr-4 w-12 min-w-[24px]" [svgIcon]="'check-green'"></mat-icon>
+					}
+				</div>
+				@if (form.get('website').errors) {
+					<mat-error class="text-red-500 text-xs">Must be website link. E.g. "https://google.com"</mat-error>
+				}
+			</div>
+			<div
+				class="grid grid-cols-1 gap-4 md:grid-cols-2"
+				[formGroupName]="'socialMedia'">
+				@for (item of socialMedias; track $index) {
+					<div
+						[ngClass]="{ '!py-0': item.edit }"
+						class="flex flex-row justify-between pl-3 pr-2 items-center !py-2 bg-white border border-[#C6D1E2] rounded-md">
+						<div class="flex flex-row gap-2">
+							<mat-icon [svgIcon]="item.icon + '_new'"></mat-icon>
+							<span>{{ item.name }}</span>
+							@if (!item.edit && socialMedia.get(item.formControlName).value.length > 0) {
+								<mat-icon [svgIcon]="'check-green'"></mat-icon>
+							}
+						</div>
+						<button
+							type="button"
+							(click)="changeMedia(item)"
+							class="!bg-[#EEEEEE] !px-10 !z-0"
+							mat-flat-button>
+							{{ item?.edit ? 'Edit' : 'Link' }}
+						</button>
+					</div>
+				}
+			</div>
+		</div>
+		<div class="hidden md:flex flex-row justify-center items-center">
+			<button
+				[disabled]="isEqual || form.invalid"
+				type="submit"
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				b2bNgxButton>
+				Save changes
+			</button>
+		</div>
+	</form>
+</div>
+
+<b2b-client-profile-mobile-toolbar (initSave)="onSubmit()"
+																	 class="fixed md:hidden left-0 bottom-0 w-full"></b2b-client-profile-mobile-toolbar>

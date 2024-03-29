@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { B2bNgxButtonModule } from 'projects/ngx-button/src/public-api';
 import { MatTableModule } from '@angular/material/table';
 import { B2bNgxIconModule } from 'projects/ngx-icon/src/public-api';
+import {PaginationModule} from "../../../../../src/app/client/shared/components/pagination/pagination.module";
 
 @NgModule({
 	declarations: [AdminManagerComponent],
@@ -21,6 +22,7 @@ import { B2bNgxIconModule } from 'projects/ngx-icon/src/public-api';
 		B2bNgxInputModule,
 		MatTableModule,
 		B2bNgxIconModule,
+		PaginationModule,
 	],
 })
 export class AdminManagerModule {}

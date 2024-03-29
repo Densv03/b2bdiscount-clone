@@ -38,6 +38,7 @@ export class ClientMarketplaceFiltersMobileComponent
 	@Input() animationState: 'in' | 'out';
 	@Input() initialCategoryState: InitialCategoryState;
 	@Input() filtersState: any[];
+	@Input() filterType: 'b2bmarket' | 'sourcing-request';
 
 	@Output() closePopUp: EventEmitter<void> = new EventEmitter<void>();
 	@Output() filterEvent: EventEmitter<any> = new EventEmitter<any>();

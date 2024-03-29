@@ -13,6 +13,7 @@ import { delay, exhaustMap, filter, map, tap } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { Router } from '@angular/router';
+import { MixpanelService } from '../../../../core/services/mixpanel/mixpanel.service';
 
 @Component({
 	selector: 'b2b-role-switcher',
@@ -27,7 +28,8 @@ export class RoleSwitcherComponent {
 		private readonly userService: UserService,
 		private readonly authService: AuthService,
 		private readonly hotToastService: HotToastService,
-		private readonly router: Router
+		private readonly router: Router,
+		private readonly mixpanelService: MixpanelService
 	) {}
 
 	public updateUserRole(oldRoleId: string): void {
@@ -66,6 +68,13 @@ export class RoleSwitcherComponent {
 						role: subRole,
 						rootRole: newRole,
 					});
+					this.mixpanelService.set({
+						distinctId: this.user._id,
+						properties: {
+							'Account Type': newRole.displayName,
+						},
+					});
+
 					redirectRoutes.forEach((route) => {
 						if (newRole.name === 'buyer' && this.router.url.includes(route)) {
 							this.router

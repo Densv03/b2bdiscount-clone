@@ -11,6 +11,11 @@ import { environment } from '../../../../../../../../environments/environment';
 import { websiteProtocolRegex } from '../../../../../../../core/helpers/validator/site-link';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientMarketCompanyPagePhoneDialogComponent } from '../client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
+import { Observable, of } from 'rxjs';
+import { PublicUserInfo } from '../../../../../../../core/models/shared/public-user-info';
+import { map } from 'rxjs/operators';
+import { HotToastService } from '@ngneat/hot-toast';
+import { DialogService } from '../../../../../../../core/services/dialog-service/dialog.service';
 
 @Component({
 	selector: 'b2b-company-contact-card',
@@ -21,6 +26,8 @@ export class CompanyContactCardComponent implements OnInit {
 	@Input() companyInfo: PublicCompanyInfoModel;
 
 	public user: User;
+	public supplierName$: Observable<string>;
+	public supplierLogo$: Observable<string>;
 	public userIsAuth: boolean;
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
 
@@ -31,7 +38,7 @@ export class CompanyContactCardComponent implements OnInit {
 	constructor(
 		private readonly userService: UserService,
 		private readonly router: Router,
-		private readonly dialog: MatDialog
+		private readonly dialogService: DialogService
 	) {
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.user = this.userService.getUser();
@@ -39,24 +46,26 @@ export class CompanyContactCardComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.userService
+			.getPublicUserInfo(this.companyInfo.user)
+			.subscribe(console.log);
+		this.supplierName$ = this.userService
+			.getPublicUserInfo(this.companyInfo.user)
+			.pipe(map((info: PublicUserInfo) => info.fullName));
+		this.supplierLogo$ = this.userService
+			.getPublicUserInfo(this.companyInfo.user)
+			.pipe(map((info: PublicUserInfo) => info.logo));
 		this.userService.getToken$().subscribe((token) => {
 			this.token = token;
 			this.openConnection(this.token);
 		});
 	}
 
-	public checkCompanySiteForValid(site: string): string {
-		if (!site.match(websiteProtocolRegex)) {
-			return site.replace(site, 'https://' + site);
-		}
-		return site;
-	}
-
 	public openChat(event: MouseEvent): void {
 		event.stopPropagation();
 
 		if (!this.userIsAuth) {
-			this.router.navigate(['profile/your-workspace/b2bmarket']);
+			this.dialogService.notifyWhenUserNotLoggedIn();
 		} else {
 			this.openConnection(this.token);
 			this.socket.emit('start_users_chat', {
@@ -87,26 +96,5 @@ export class CompanyContactCardComponent implements OnInit {
 		});
 	}
 
-	public getCountryName(countryCode: string): string {
-		if (!countryCode) {
-			return '';
-		}
-		return getName(countryCode);
-	}
-
-	public openPhoneModal(): void {
-		const { number, dialCode } = this.companyInfo.phone;
-		this.dialog
-			.open(ClientMarketCompanyPagePhoneDialogComponent, {
-				data: {
-					dialCode: dialCode,
-					phoneNumber: number,
-					isPhoneVisible: this.isPhoneNumberVisible,
-				},
-			})
-			.afterClosed()
-			.subscribe((data) => {
-				this.isPhoneNumberVisible = data;
-			});
-	}
+	protected readonly environment = environment;
 }

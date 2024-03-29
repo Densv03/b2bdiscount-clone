@@ -1,93 +1,68 @@
-//.admin-users {
-//	padding: 30px;
-//	&__table {
-//		margin-top: 20px;
-//	}
-//}
-//
-//.admin-offers__button {
-//	display: inline-block;
-//	padding: 7.5px 15px;
-//	margin: 0 15px 15px;
-//	border-radius: 5px;
-//	&:first-child {
-//		margin-left: 0;
-//	}
-//	&:last-child {
-//		margin-right: 0;
-//	}
-//}
-//
-//::ng-deep {
-//	.datatable-row-detail {
-//		width: 100vw;
-//	}
-//	.datatable-header {
-//		min-width: 100%;
-//	}
-//
-//	.datatable-body {
-//		min-width: 100%;
-//	}
-//	.datatable-body-cell {
-//		button {
-//			margin-top: 10px;
-//		}
-//		.custom {
-//			height: 45px;
-//			overflow: hidden;
-//		}
-//		.show {
-//			overflow: visible;
-//			height: auto;
-//		}
-//	}
-//}
-//
-//
-//
+.admin-users {
+	padding: 30px;
+	&__table {
+		overflow-x: auto;
+		margin-top: 20px;
 
-/* Structure */
-.example-container {
-	position: relative;
+		tr.detail {
+			height: 0;
+		}
+
+		.mat-column-lastActivity, .mat-column-phoneCountryCode {
+			min-width: 110px;
+		}
+	}
 }
 
-.example-table-container {
-	position: relative;
-	min-height: 200px;
-	max-height: 400px;
-	overflow: auto;
-}
-
-table {
-	width: 100%;
-}
-
-.example-loading-shade {
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 56px;
-	right: 0;
-	background: rgba(0, 0, 0, 0.15);
-	z-index: 1;
+.email-submission-form {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	height: 40px;
+	gap: 30px;
+	margin-bottom: 30px;
+	input {
+		max-width: 400px;
+	}
+	button {
+		padding: 10px 30px;
+		margin: 0;
+	}
 }
 
-.example-rate-limit-reached {
-	max-width: 360px;
-	text-align: center;
+.admin-offers__button {
+	display: inline-block;
+	padding: 7.5px 15px;
+	margin: 0 15px 15px;
+	border-radius: 5px;
+	&:first-child {
+		margin-left: 0;
+	}
+	&:last-child {
+		margin-right: 0;
+	}
 }
 
-/* Column Widths */
-.mat-column-number,
-.mat-column-state {
-	max-width: 64px;
-}
+::ng-deep {
+	.datatable-row-detail {
+		width: 100vw;
+	}
+	.datatable-header {
+		min-width: 100%;
+	}
 
-.mat-column-created {
-	max-width: 124px;
+	.datatable-body {
+		min-width: 100%;
+	}
+	.datatable-body-cell {
+		button {
+			margin-top: 10px;
+		}
+		.custom {
+			height: 45px;
+			overflow: hidden;
+		}
+		.show {
+			overflow: visible;
+			height: auto;
+		}
+	}
 }
-

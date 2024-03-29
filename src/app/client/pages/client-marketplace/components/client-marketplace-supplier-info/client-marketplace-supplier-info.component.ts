@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { ClientMarketCompanyPagePhoneDialogComponent } from '../../pages/client-market-company-page/components/client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PlatformService } from '../../../../services/platform/platform.service';
 
 @Component({
 	selector: 'b2b-client-marketplace-supplier-info',
@@ -32,7 +33,8 @@ export class ClientMarketplaceSupplierInfoComponent implements OnInit {
 	constructor(
 		private readonly userService: UserService,
 		private readonly router: Router,
-		private readonly dialog: MatDialog
+		private readonly dialog: MatDialog,
+		private readonly platformService: PlatformService
 	) {
 		this.user = this.userService.getUser();
 		this.userIsAuth = this.userService.isAuth();
@@ -41,7 +43,9 @@ export class ClientMarketplaceSupplierInfoComponent implements OnInit {
 	ngOnInit(): void {
 		this.userService.getToken$().subscribe((token) => {
 			this.token = token;
-			this.openConnection(this.token);
+			if (this.platformService.isBrowser) {
+				this.openConnection(this.token);
+			}
 		});
 	}
 

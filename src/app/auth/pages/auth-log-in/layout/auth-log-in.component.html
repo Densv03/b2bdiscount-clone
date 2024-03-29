@@ -2,11 +2,7 @@
 	<div class="go-back"></div>
 	<div class="body">
 		<div class="title">Login</div>
-		<form
-			errorTailor
-			class="auth-log-in__main-form"
-			[formGroup]="formGroup"
-			(ngSubmit)="logInWithForm(formGroup)">
+		<div class="auth-log-in__main-form">
 			<div class="form-title">We connect traders globally.</div>
 			<div class="form-subtitle">
 				The B2B platform for wholesale sellers and buyers on the global market.
@@ -20,7 +16,10 @@
 				<img
 					b2bNgxImage
 					name="google"
-					class="auth-log-in__log-in-with-google-button__icon" />
+					ngSrc="assets/images/google.webp"
+					class="auth-log-in__log-in-with-google-button__icon"
+					height="96"
+					width="96" />
 				{{ 'AUTH.LOG_IN_GOOGLE' | translate }}
 			</button>
 			<button
@@ -32,46 +31,53 @@
 				<img
 					b2bNgxImage
 					name="linkedin"
-					class="auth-log-in__log-in-with-google-button__icon" />
+					ngSrc="assets/images/linkedin.webp"
+					class="auth-log-in__log-in-with-google-button__icon"
+					height="512"
+					width="512" />
 				{{ 'AUTH.LOG_IN_LINKEDIN' | translate }}
 			</button>
 			<b2b-ngx-divider theme="white" class="auth-log-in__main-divider"
-				>or</b2b-ngx-divider
-			>
+				>or
+			</b2b-ngx-divider>
+			<form
+				errorTailor
+				[formGroup]="formGroup"
+				(ngSubmit)="logInWithForm(formGroup)">
+				<input
+					b2bNgxInput
+					type="email"
+					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+					[label]="'LABELS.EMAIL' | translate"
+					labelClass="auth-log-in__main-input"
+					formControlName="email"
+					[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate" />
 
-			<input
-				b2bNgxInput
-				type="email"
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-				[label]="'LABELS.EMAIL' | translate"
-				labelClass="auth-log-in__main-input"
-				formControlName="email"
-				[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate" />
+				<div class="control-wrapper">
+					<b2b-ngx-password
+						[hidePasswordErrors]="true"
+						[errors]="formState['password'].errors"
+						formControlName="password">
+					</b2b-ngx-password>
+				</div>
 
-			<div class="control-wrapper">
-				<b2b-ngx-password
-					[hidePasswordErrors]="true"
-					[errors]="formState['password'].errors"
-					formControlName="password">
-				</b2b-ngx-password>
-			</div>
+				<button
+					class="auth-log-in__main-link"
+					type="button"
+					(click)="openResetPasswordModal()">
+					{{ 'AUTH.RESET_PASSWORD' | translate }}
+				</button>
 
-			<button
-				class="auth-log-in__main-link"
-				type="button"
-				(click)="openResetPasswordModal()">
-				{{ 'AUTH.RESET_PASSWORD' | translate }}
-			</button>
-
-			<button
-				b2bNgxButton
-				[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
-				[disabled]="formGroup.invalid"
-				class="auth-log-in__log-in-button"
-				type="submit">
-				{{ 'AUTH.LOG_IN' | translate }}
-			</button>
-		</form>
+				<button
+					b2bNgxButton
+					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
+					[disabled]="formGroup.invalid"
+					class="auth-log-in__log-in-button"
+					type="submit">
+					{{ 'AUTH.LOG_IN' | translate }}
+				</button>
+			</form>
+		</div>
 	</div>
 	<div class="other-page-link">
 		<p class="auth-log-in__header-text-wrapper">

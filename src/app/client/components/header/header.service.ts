@@ -11,6 +11,7 @@ export class HeaderService {
 	private toolTipIsOpenedSource: BehaviorSubject<boolean>;
 	private headerIsTransparentSource: BehaviorSubject<boolean>;
 	private profileNavIsOpenedSource: BehaviorSubject<boolean>;
+	public openWorkSpace$ = new Subject<boolean>();
 	private formControlSource: BehaviorSubject<string | null>;
 
 	public searchFormControl = new FormControl<string>('');

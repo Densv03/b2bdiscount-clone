@@ -5,9 +5,11 @@ import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { filter, map, tap } from 'rxjs/operators';
-import { SelectItem } from '../../../../../client/pages/client-profile/pages/client-company-information/layout/client-company-information.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
+import {
+	SelectItem
+} from "../../../../../client/pages/client-profile/pages/client-profile-settings-new/tabs/client-company-information/client-company-information.interface";
 
 @UntilDestroy()
 @Component({
@@ -106,6 +108,7 @@ export class AuthRegisterSupplierCompanyInfoComponent {
 	private getRoles() {
 		return this.authService.getRootRoles().pipe(
 			untilDestroyed(this),
+			filter((data) => !!data),
 			filter((data) => !!Object.keys(data).length),
 			map((roles) => {
 				const buyerRolesIndex = roles.findIndex(

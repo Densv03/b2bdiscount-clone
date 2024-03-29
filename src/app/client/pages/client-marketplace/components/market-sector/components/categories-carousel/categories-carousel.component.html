@@ -1,66 +1,63 @@
-<div class="container">
-	<div *ngIf="!category" class="title">
-		<h2>{{ title }}</h2>
-	</div>
-
+<div class="container" [ngClass]="customCLass">
+	@if (title) {
+		<div class="title !pl-0">
+			<h2>{{ title }}</h2>
+		</div>
+	}
 	<div class="categories-carousel-wrapper" [class.hide-border]="!showArrows">
-		<button
-			*ngIf="showArrows"
-			(click)="scrollTo(-1)"
-			[disabled]="canScrollStart"
-			[class.product-arrow]="products?.length > 0"
-			class="custom-carousel-arrow">
-			<mat-icon
-				*ngIf="platformService.isBrowser"
-				[svgIcon]="'arrow-left'"></mat-icon>
-		</button>
-
-		<div
-			class="categories-wrapper"
-			[class.is-for-category]="category"
-			#scrollBox>
-			<ng-container *ngIf="category; else productList">
-				<a
-					[routerLink]="[
-						'/b2bmarket/listing',
-						category.path,
-						childCategory.path
-					]"
-					class="category"
-					*ngFor="let childCategory of category?.children">
-					<img b2bNgxImage [name]="childCategory.image" />
-
-					<p>{{ childCategory.name }}</p>
-				</a>
-			</ng-container>
-
-			<ng-template #productList>
-				<b2b-market-product-item
-					[product]="product"
-					[customClass]="'product-carousel'"
-					*ngFor="let product of products">
-				</b2b-market-product-item>
-
+		@if (showArrows) {
+			<button
+				(click)="scrollTo(-1)"
+				[disabled]="canScrollStart"
+				type="button"
+				[class.product-arrow]="products?.length > 0"
+				class="custom-carousel-arrow">
+				@if (platformService.isBrowser) {
+					<mat-icon [svgIcon]="'arrow-left'"></mat-icon>
+				}
+			</button>
+		}
+		<div class="categories-wrapper"
+				 [class.is-for-category]="category"
+				 [class.similar-products-without-arrows]="!showArrows"
+				 #scrollBox>
+			@if (category) {
+				@for (childCategory of category?.children; track $index) {
+					<b2b-market-category-card [category]="category" [childCategory]="childCategory"/>
+				}
+			} @else {
+				@for (product of products; track $index) {
+					<b2b-market-product-item
+						[product]="product"
+						[customClass]="'product-carousel' + customCLass"/>
+				}
 				<div class="dots-container">
-					<span
-						*ngFor="let dot of [0, 1, 2, 3]; let i = index"
-						class="dot"
-						[class.active-dot]="(activeProduct | async) === i"
-						(click)="showSlide(i)">
+					@for (dot of dots; track $index) {
+						<span
+							class="dot"
+							[class.active-dot]="(activeProduct | async) === $index"
+							(click)="showSlide($index)">
 					</span>
+					}
 				</div>
+			}
+			<ng-template
+				[ngIf]="otherCarouselItems?.length > 0 || !!otherCarouselItems">
+				<ng-content></ng-content>
 			</ng-template>
 		</div>
 
-		<button
-			*ngIf="showArrows"
-			(click)="scrollTo(1)"
-			[disabled]="canScrollEnd"
-			class="custom-carousel-arrow"
-			[class.product-arrow]="products?.length > 0">
-			<mat-icon
-				*ngIf="platformService.isBrowser"
-				[svgIcon]="'arrow-right'"></mat-icon>
-		</button>
+		@if (showArrows) {
+			<button
+				(click)="scrollTo(1)"
+				[disabled]="canScrollEnd"
+				type="button"
+				class="custom-carousel-arrow"
+				[class.product-arrow]="products?.length > 0">
+				@if (platformService.isBrowser) {
+					<mat-icon [svgIcon]="'arrow-right'"></mat-icon>
+				}
+			</button>
+		}
 	</div>
 </div>

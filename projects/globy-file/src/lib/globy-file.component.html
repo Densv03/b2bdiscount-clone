@@ -1,0 +1,38 @@
+<div class="flex flex-col gap-3">
+
+	<div class="flex flex-row">
+		<button (click)="fileInput.click()"
+						[ngClass]="buttonClass"
+						b2bNgxButton
+						class="upload-button text-xs rounded-sm px-3 py-2 flex flex-row gap-2 items-center"
+						type="button">
+			@if (buttonIcon) {
+				<img b2bNgxIcon [name]="buttonIcon">
+			}
+			<span>{{ buttonLabel }}</span>
+		</button>
+		<input #fileInput
+					 [accept]="acceptTypes"
+					 [multiple]="multiple"
+					 (change)="uploadFile($event)"
+					 class="hidden"
+					 type="file">
+		@if (noFileLabel) {
+			<span class="text-sm">{{ noFileLabel }}</span>
+		}
+	</div>
+
+	@if (description) {
+		<div class="flex items-center justify-start font-secondary text-base">
+			{{ description }}
+		</div>
+	}
+
+	@if (showResulList) {
+		<globy-file-list (deleteItem)="delete($event)"
+										 [customClass]="customListClass"
+										 [showDelete]="showDelete"
+										 [handleItem]="handleItem"
+										 [items]="items"></globy-file-list>
+	}
+</div>

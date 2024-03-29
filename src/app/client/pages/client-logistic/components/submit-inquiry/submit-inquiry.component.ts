@@ -24,7 +24,7 @@ import { B2bNgxButtonModule, B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { CommonModule } from '@angular/common';
 import { FadeInOutAnimation } from 'src/app/client/shared/animations/fade-in-out.animation';
 import { TariffsResponse } from 'src/app/client/pages/client-logistic/models/tariffs/tariffs-response.model';
-import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { onlyLatin } from 'src/app/core/helpers/validator/only-latin';
 import { UserService } from '../../../client-profile/services/user/user.service';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
@@ -135,7 +135,7 @@ export class SubmitInquiryComponent implements OnInit {
 
 		const dateObject = new Date(year, month - 1, day); // Note: months are zero-based in JavaScript Date objects
 
-		return dateObject.toISOString().split('T')[0];
+		return dateObject.toISOString();
 	}
 
 	private patchForm(): void {

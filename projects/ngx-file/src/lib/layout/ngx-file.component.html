@@ -1,38 +1,56 @@
-<div class="ngx-file">
-	<label class="ngx-file-label" for="file">
+<div [class]="classNamePrefix + 'ngx-file'">
+	<label [class]="classNamePrefix + 'ngx-file-label'"
+				 for="file">
 		<ng-content></ng-content>
 	</label>
-
-	<div class="control">
-		<ul class="ngx-files-list">
+	<div [class]="classNamePrefix + 'control'">
+		<ul [class]="classNamePrefix + 'ngx-files-list'">
 			<button
 				b2bNgxButton
-				[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
-				class="ngx-file-button"
+				[theme]="theme"
+				[class]="classNamePrefix + 'ngx-file-button'"
 				[class.ng-invalid]="formControl.invalid"
 				[class.ng-touched]="formControl.touched">
-				<img b2bNgxIcon [name]="isPhoto ? 'photo' : 'attach'" alt="" />
-				<span class="ngx-file-button-text">{{ label }}</span>
+				@if (showIcon) {
+					<img b2bNgxIcon
+							 [name]="iconName"
+							 alt=""/>
+				}
+				<span [class]="classNamePrefix + 'ngx-file-button-text'">{{ label }}</span>
 				<input
 					#fileInput
-					multiple
-					[accept]="isPhoto ? 'image/png, image/jpeg' : '*'"
+					[multiple]="!acceptSingle"
+					[accept]="isPhoto ? 'image/*': '*'"
 					[formControl]="formControl"
 					(change)="uploadFiles($event)"
-					class="ngx-file-input"
+					[class]="classNamePrefix + 'ngx-file-input'"
 					type="file"
-					id="file" />
+					id="file"/>
 			</button>
 
-			<div *ngIf="!files?.length" class="empty-file-label">No File Chosen</div>
+			@if (!isB2BVersion || !files?.length) {
+				<div [class]="classNamePrefix + 'empty-file-label'">
+					{{ emptyFileLabel }}
+				</div>
+			}
 
-			<li *ngFor="let file of files" (click)="handleClick(file)" class="ngx-files-list-item">
-				<img b2bNgxIcon name="document" class="ngx-files-list-item-icon" alt="" />
-				<span class="ngx-files-list-item-name">{{ file?.name || file._id }}</span>
-				<img (click)="removeFile(file?.name || file._id)" b2bNgxIcon name="cancel" class="cancel" alt="cancel" />
-			</li>
+			@if (isB2BVersion && showFilesList) {
+				@for (file of files; track $index) {
+					<li (click)="handleClick(file)"
+							[class]="classNamePrefix + 'ngx-files-list-item'">
+						<img b2bNgxIcon
+								 name="document"
+								 [class]="classNamePrefix + 'ngx-files-list-item-icon'"
+								 alt=""/>
+						<span [class]="classNamePrefix + 'ngx-files-list-item-name'">{{ file?.name || file._id }}</span>
+						<img (click)="removeFile(file?.name || file._id)"
+								 b2bNgxIcon
+								 name="cancel"
+								 class="cancel"
+								 alt="cancel"/>
+					</li>
+				}
+			}
 		</ul>
 	</div>
-
-
 </div>

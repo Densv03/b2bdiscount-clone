@@ -3,9 +3,13 @@
 		<input [id]="option + index" name="radio" type="radio" [formControl]="formControl" [value]="option" />
 		<label [for]="option + index">
 			<span class="circle">
-				<img b2bNgxIcon name="check-white" />
+				<img b2bNgxIcon name="check-white" *ngIf="!showInProductPlacementPage else placementInnerCircle" />
 			</span>
 			<span class="title">{{ option }}</span>
 		</label>
 	</li>
 </ul>
+
+<ng-template #placementInnerCircle>
+	<span class="inner-circle"></span>
+</ng-template>

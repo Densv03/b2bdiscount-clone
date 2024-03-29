@@ -20,7 +20,9 @@
 					formControlName="country"
 					placeholder="Select Country"></b2b-ngx-country-select>
 			</div>
+		</div>
 
+		<div class="mt-16 d-flex email-wrapper">
 			<div>
 				<label for="email" class="b2b-ngx-input-label">
 					{{ 'LABELS.EMAIL' | translate }}
@@ -29,10 +31,22 @@
 				<input
 					id="email"
 					autocomplete="new-email"
-					class="b2b-ngx-input background background-gray"
+					class="b2b-ngx-input background background-gray grow-1"
 					formControlName="email"
 					[placeholder]="'PLACEHOLDERS.YOUR_EMAIL' | translate" />
 			</div>
+			<button (click)="addEmail()" mat-raised-button color="primary" >Add Email</button>
+		</div>
+
+		<div class="mt-16 emails-list">
+			@for (email of emailsList; track email) {
+				<div
+					(click)="removeEmail(email)"
+					class="d-flex list-item justify-between">
+					<div class="email">{{email}}</div>
+					<button mat-raised-button color="warn" >Delete</button>
+				</div>
+			}
 		</div>
 
 		<div class="mt-16">

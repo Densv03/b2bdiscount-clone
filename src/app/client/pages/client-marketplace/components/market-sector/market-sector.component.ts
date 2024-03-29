@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
 import { BehaviorSubject, delay, fromEvent, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../../../../services/categories/categories.service';
-import { debounceTime, filter, map, startWith, take } from 'rxjs/operators';
+import {debounceTime, filter, first, map, startWith, take} from 'rxjs/operators';
 import { Category } from '../../shared/models/category.model';
 import { environment } from '../../../../../../environments/environment';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -20,6 +20,7 @@ import { SourcingRequestService } from '../../../client-sourcing-request/sourcin
 import { MarketProductModel } from '../../../../../core/models/client-marketplace/market-product.model';
 import { HeaderService } from '../../../../components/header/header.service';
 import { SeoService } from '../../../../../core/services/seo/seo.service';
+import { DOCUMENT } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -31,6 +32,7 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 	public newProducts$: Observable<any>;
 	public popularProducts$: Observable<any>;
 	public category$: Observable<Category>;
+	public category: Category;
 	public apiAddress = environment.apiUrl;
 	public suppliersSource$: Observable<any[]>;
 	public sectorsAreLoaded: boolean = false;
@@ -190,9 +192,8 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 
 	private getCategoryData(categoryName: string): void {
 		this.category$ = this.categoriesService.getCategories$().pipe(
-			filter((categories) => categories.categories?.length > 0),
-			take(1),
-			delay(300),
+			filter((categories) => categories?.categories?.length > 0),
+			first(),
 			map((categories) => {
 				const selectedCategory = categories.categories.find(
 					(category: Category) => category.path === categoryName
@@ -200,7 +201,7 @@ export class MarketSectorComponent implements OnInit, AfterViewInit {
 				this.categoryImage = `url('${this.apiAddress}${selectedCategory?.image}')`;
 
 				this.sectorsAreLoaded = true;
-
+				this.category = selectedCategory;
 				return selectedCategory;
 			})
 		);

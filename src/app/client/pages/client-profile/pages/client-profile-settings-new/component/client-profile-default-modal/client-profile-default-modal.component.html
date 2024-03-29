@@ -1,0 +1,17 @@
+<b2b-client-profile-modal-container [label]="label" (close)="onDismiss()">
+	<div class="flex flex-col gap-3">
+		<div class="flex flex-col gap-2">
+			<span class="text-base md:text-lg font-bold">{{ title }}</span>
+			@if (description) {
+				<span class="text-secondary text-[#556274] md:text-base text-sm">{{ description }}</span>
+			}
+		</div>
+		<div class="flex flex-row items-center justify-center gap-3">
+			@for (button of buttons; track $index) {
+				<button class="px-4 py-2 md:text-base text-sm" b2bNgxButton (click)="onDismiss(button.result)" [theme]="theme($index)">
+					{{ button.label }}
+				</button>
+			}
+		</div>
+	</div>
+</b2b-client-profile-modal-container>

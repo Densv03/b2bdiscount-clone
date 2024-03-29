@@ -1,7 +1,5 @@
 <form class="rfq__form" [formGroup]="form" (ngSubmit)="submitForm(form)">
-	<div
-		class="rfq__form__product-information"
-		formGroupName="productInformation">
+	<div class="rfq__form__product-information">
 		<div class="title">Product information</div>
 		<input
 			type="text"
@@ -14,8 +12,8 @@
 			class="rfq__input" />
 		<p
 			*ngIf="
-				this.form.get('productInformation').get('productName').touched &&
-				this.form.get('productInformation').get('productName').errors?.['latin']
+				this.form.get('productName').touched &&
+				this.form.get('productName').errors?.['latin']
 			"
 			class="error"
 			[@fadeInOut]>
@@ -23,36 +21,39 @@
 		</p>
 		<p
 			*ngIf="
-				this.form.get('productInformation').get('productName').touched &&
-				this.form.get('productInformation').get('productName').errors?.[
-					'required'
-				]
+				this.form.get('productName').touched &&
+				this.form.get('productName').errors?.['required']
 			"
 			class="error"
 			[@fadeInOut]>
 			This field is required
 		</p>
+
 		<div class="rfq__half-space">
 			<b2b-ngx-select
-				[options]="categories$ | async"
-				formControlName="category"
-				bindValue="id"
-				bindLabel="value"
-				placeholder="Select category"
-				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-				>Category
+				[options]="sectors"
+				[invalid]="form.get('productSector')?.invalid"
+				[touched]="form.get('productSector')?.touched"
+				formControlName="productSector"
+				bindValue="_id"
+				bindLabel="name"
+				placeholder="Select sector"
+				[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY">
+				Product sector
 			</b2b-ngx-select>
 		</div>
 
 		<b2b-ngx-select
-			[options]="sourcingPurpose$ | async"
-			formControlName="sourcingPurpose"
+			className="border-radius-14"
 			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-			bindValue="id"
-			bindLabel="value"
-			[placeholder]="'Select'"
-			class="rfq__label rfq__half-space"
-			>Purpose</b2b-ngx-select
+			formControlName="category"
+			[invalid]="form.get('category')?.invalid"
+			[touched]="form.get('category')?.touched"
+			[options]="childCategories"
+			placeholder="Select category"
+			bindValue="_id"
+			bindLabel="name"
+			>Product category</b2b-ngx-select
 		>
 
 		<div formGroupName="quantity" class="rfq__container">
@@ -61,19 +62,15 @@
 					type="text"
 					b2bNgxInput
 					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-					[label]="'Quantity'"
+					[label]="'Required amount'"
 					[placeholder]="'Quantity'"
 					labelClass="rfq__label"
 					formControlName="quantity"
 					class="rfq__input" />
 				<p
 					*ngIf="
-						this.form.get('productInformation').get('quantity').get('quantity')
-							.touched &&
-						this.form.get('productInformation').get('quantity').get('quantity')
-							.errors?.['required'] &&
-						!this.form.get('productInformation').get('budget').get('maxBudget')
-							.errors?.['required']
+						this.form.get('quantity').get('quantity').touched &&
+						this.form.get('quantity').get('quantity').errors?.['required']
 					"
 					class="error"
 					[@fadeInOut]>
@@ -81,16 +78,15 @@
 				</p>
 				<p
 					*ngIf="
-						this.form.get('productInformation').get('quantity').get('quantity')
-							.touched &&
-						this.form.get('productInformation').get('quantity').get('quantity')
-							.errors?.['number']
+						this.form.get('quantity').get('quantity').touched &&
+						this.form.get('quantity').get('quantity').errors?.['number']
 					"
 					class="error"
 					[@fadeInOut]>
 					Please use only numbers
 				</p>
 			</div>
+
 			<div class="rfq__half-space flex-select">
 				<div class="measure-select-wrapper">
 					<b2b-ngx-select
@@ -99,13 +95,13 @@
 						bindValue="_id"
 						bindLabel="displayName"
 						[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-						[placeholder]="'Measure'"
-						[class.rfq__input]="hideLabel$ | async">
-						<span *ngIf="!(hideLabel$ | async)">&nbsp;</span>
+						[placeholder]="'Select unit'">
+						Unit
 					</b2b-ngx-select>
 				</div>
 			</div>
 		</div>
+
 		<b2b-ngx-select
 			[options]="tradeTerms$ | async"
 			formControlName="tradeTerms"
@@ -113,59 +109,9 @@
 			bindValue="id"
 			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 			class="rfq__half-space">
-			Trade terms
+			Terms of delivery
 		</b2b-ngx-select>
 
-		<div class="rfq__container" formGroupName="budget">
-			<div class="rfq__half-space">
-				<input
-					type="text"
-					b2bNgxInput
-					[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-					[label]="'Max budget'"
-					[placeholder]="'Max budget'"
-					labelClass="rfq__label"
-					formControlName="maxBudget"
-					class="rfq__input" />
-				<p
-					*ngIf="
-						this.form.get('productInformation').get('budget').get('maxBudget')
-							.touched &&
-						this.form.get('productInformation').get('budget').get('maxBudget')
-							.errors?.['number'] &&
-						!this.form.get('productInformation').get('budget').get('maxBudget')
-							.errors?.['required']
-					"
-					class="error"
-					[@fadeInOut]>
-					Please use only numbers
-				</p>
-				<p
-					*ngIf="
-						this.form.get('productInformation').get('budget').get('maxBudget')
-							.touched &&
-						this.form.get('productInformation').get('budget').get('maxBudget')
-							.errors?.['required']
-					"
-					class="error"
-					[@fadeInOut]>
-					This field is required
-				</p>
-			</div>
-			<div class="rfq__half-space flex-select">
-				<div class="measure-select-wrapper">
-					<b2b-ngx-select
-						[options]="currencies$ | async"
-						formControlName="currency"
-						bindLabel="value"
-						bindValue="id"
-						[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-						[class.rfq__input]="hideLabel$ | async">
-						<span *ngIf="!(hideLabel$ | async)">&nbsp;</span>
-					</b2b-ngx-select>
-				</div>
-			</div>
-		</div>
 		<textarea
 			b2bNgxTextarea
 			formControlName="moreInformation"
@@ -176,10 +122,8 @@
 			class="rfq__textarea rfq__half-space"></textarea>
 		<p
 			*ngIf="
-				this.form.get('productInformation').get('moreInformation').touched &&
-				this.form.get('productInformation').get('moreInformation').errors?.[
-					'latin'
-				]
+				this.form.get('moreInformation').touched &&
+				this.form.get('moreInformation').errors?.['latin']
 			"
 			[ngStyle]="{ marginTop: '15px' }"
 			class="error"
@@ -188,10 +132,8 @@
 		</p>
 		<p
 			*ngIf="
-				this.form.get('productInformation').get('moreInformation').touched &&
-				this.form.get('productInformation').get('moreInformation').errors?.[
-					'required'
-				]
+				this.form.get('moreInformation').touched &&
+				this.form.get('moreInformation').errors?.['required']
 			"
 			[ngStyle]="{ marginTop: '15px' }"
 			class="error"
@@ -200,70 +142,28 @@
 		</p>
 		<p
 			*ngIf="
-				this.form.get('productInformation').get('moreInformation').touched &&
-				this.form.get('productInformation').get('moreInformation').errors?.[
-					'minlength'
-				]
+				this.form.get('moreInformation').touched &&
+				this.form.get('moreInformation').errors?.['minlength']
 			"
 			[ngStyle]="{ marginTop: '15px' }"
 			class="error"
 			[@fadeInOut]>
 			Please, put more than 20 letters, now
-			{{
-				form.get('productInformation').get('moreInformation').errors?.[
-					'minlength'
-				].actualLength
-			}}
+			{{ form.get('moreInformation').errors?.['minlength']?.['actualLength'] }}
 			letters
 		</p>
-		<div class="ngx-file-wrapper">
-			<b2b-ngx-file
-				formControlName="photos"
-				class="rfq__label"
-				label="Choose file"
-				[isPhoto]="true"
-				>Attachments</b2b-ngx-file
-			>
-		</div>
-	</div>
-
-	<!--	PAYMENT AND SHIPPING	-->
-
-	<div class="rfq__form__product-information" formGroupName="paymentShipping">
-		<div class="title">Payment Shipping</div>
-
-		<b2b-ngx-select
-			formControlName="shippingMethod"
-			[placeholder]="'Select'"
-			[options]="shippingMethod$ | async"
-			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-			bindValue="id"
-			bindLabel="value"
-			class="rfq__label-first rfq__half-space">
-			Shipping Method
-		</b2b-ngx-select>
 
 		<b2b-ngx-country-select
 			formControlName="destination"
 			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 			[placeholder]="'Select country'"
 			class="rfq__label rfq__half-space"
-			>Destination</b2b-ngx-country-select
+			>Delivery location</b2b-ngx-country-select
 		>
 
-		<b2b-ngx-select
-			formControlName="paymentMethod"
-			[options]="paymentMethod$ | async"
-			[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-			bindValue="id"
-			bindLabel="value"
-			class="rfq__label rfq__half-space">
-			PAYMENT METHOD
-		</b2b-ngx-select>
-
-		<b2b-ngx-checkbox formControlName="readRFQRules" class="rfq__label"
-			>I have read and I agree with RFQ posting rules.</b2b-ngx-checkbox
-		>
+		<b2b-ngx-checkbox formControlName="readRFQRules" class="rfq__label">
+			I have read and I agree with RFQ posting rules.
+		</b2b-ngx-checkbox>
 
 		<button
 			b2bNgxButton

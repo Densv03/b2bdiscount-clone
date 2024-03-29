@@ -75,6 +75,7 @@ export class ClientComponent implements OnInit {
 
 	ngOnInit() {
 		this.seoService.addCanonicalRef();
+		this.seoService.initRobotsMetaTag();
 		if (this.platformService.isBrowser) {
 			this.mixpanelTracking();
 			this.setQueryParamForAuthorizationType();
@@ -93,14 +94,14 @@ export class ClientComponent implements OnInit {
 		if (this.platformService.isServer) {
 			return;
 		}
-		const scrollToTop = window.setInterval(() => {
-			const pos = window.pageYOffset;
-			if (pos > 0) {
-				window.scrollTo(0, pos - 20);
-			} else {
-				window.clearInterval(scrollToTop);
-			}
-		}, 10);
+		// const scrollToTop = window.setInterval(() => {
+		// 	const pos = window.pageYOffset;
+		// 	if (pos > 0) {
+		// 		window.scrollTo(0, pos - 20);
+		// 	} else {
+		// 		window.clearInterval(scrollToTop);
+		// 	}
+		// }, 10);
 	}
 
 	private setQueryParamForAuthorizationType(): void {

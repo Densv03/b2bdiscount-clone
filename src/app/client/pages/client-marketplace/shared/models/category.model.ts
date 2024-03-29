@@ -10,7 +10,7 @@ export interface Category {
 	descriptionTitle?: string;
 }
 
-interface CategoryChildren {
+export interface CategoryChildren {
 	name: string;
 	sort: number;
 	path: string;

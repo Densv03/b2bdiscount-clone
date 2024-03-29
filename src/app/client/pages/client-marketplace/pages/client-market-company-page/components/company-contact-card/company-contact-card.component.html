@@ -1,47 +1,87 @@
 <div class="card">
-	<div class="card-title">Contact the business</div>
-	<div class="company-name">{{ companyInfo.companyName }}</div>
-	<div class="company-location">
-		<div class="country-image">
-			<img
-				b2bNgxIcon
-				group="flags/"
-				[name]="companyInfo.country | uppercase"
-				class="country-icon" />
+	<div class="card__title">Contact supplier</div>
+	<div class="card__supplier">
+		<div class="card__supplier-image">
+			@if (!(supplierLogo$ | async)?.includes('userLogo')) {
+				<img [src]="environment.apiUrl + (supplierLogo$ | async)">
+			} @else {
+				<svg
+					width="48"
+					height="48"
+					viewBox="0 0 48 48"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<rect width="48" height="48" rx="4" fill="#D9D9D9" fill-opacity="0.3" />
+					<path
+						d="M26.5 34H28.8C30.5673 34 32 32.5673 32 30.8V30.8C32 28.149 29.851 26 27.2 26H20.8C18.149 26 16 28.149 16 30.8V30.8C16 32.5673 17.4327 34 19.2 34H21.5M28 18C28 20.2091 26.2091 22 24 22C21.7909 22 20 20.2091 20 18C20 15.7909 21.7909 14 24 14C26.2091 14 28 15.7909 28 18Z"
+						stroke="#2F384C"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+				</svg>
+			}
+
 		</div>
-		<div class="country-name">{{ getCountryName(companyInfo.country) }}</div>
+		<div class="card__supplier-info">
+			<div class="card__supplier-name">{{ supplierName$ | async }}</div>
+			<div class="card__supplier-position">{{ companyInfo.position }}</div>
+		</div>
 	</div>
-	<div class="company-address">{{ companyInfo.address }}</div>
-	<div class="contact-buttons">
-		<!--		<a [href]="'tel:' + companyInfo.phone.number"-->
-		<!--			 class="phone-button"-->
-		<!--			 b2bNgxButton-->
-		<!--			 [theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"-->
-		<!--			 [class.w-100]="!companyInfo.website">Phone</a>-->
-		<button
-			mat-stroked-button
-			color="primary"
-			[class.w-100]="!companyInfo.website"
-			class="material-btn"
-			(click)="openPhoneModal()">
-			Phone
-		</button>
-		<a
-			*ngIf="companyInfo.website"
-			target="_blank"
-			[href]="checkCompanySiteForValid(companyInfo.website)"
-			mat-stroked-button
-			class="material-btn"
-			>Website</a
-		>
+	<div class="card__actions">
 		<button
 			*ngIf="companyInfo.user !== user?._id"
-			class="contact-button"
-			b2bNgxButton
 			(click)="openChat($event)"
-			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-			<img b2bNgxIcon name="chat-white" />
-			<span>Contact</span>
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE">
+			Send message
 		</button>
 	</div>
 </div>
+
+<!--<div class="card">-->
+<!--	<div class="card-title">Contact the business</div>-->
+<!--	<div class="company-name">{{ companyInfo.companyName }}</div>-->
+<!--	<div class="company-location">-->
+<!--		<div class="country-image">-->
+<!--			<img-->
+<!--				b2bNgxIcon-->
+<!--				group="flags/"-->
+<!--				[name]="companyInfo.country | uppercase"-->
+<!--				class="country-icon" />-->
+<!--		</div>-->
+<!--		<div class="country-name">{{ getCountryName(companyInfo.country) }}</div>-->
+<!--	</div>-->
+<!--	<div class="company-address">{{ companyInfo.address }}</div>-->
+<!--	<div class="contact-buttons">-->
+<!--		&lt;!&ndash;		<a [href]="'tel:' + companyInfo.phone.number"&ndash;&gt;-->
+<!--		&lt;!&ndash;			 class="phone-button"&ndash;&gt;-->
+<!--		&lt;!&ndash;			 b2bNgxButton&ndash;&gt;-->
+<!--		&lt;!&ndash;			 [theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"&ndash;&gt;-->
+<!--		&lt;!&ndash;			 [class.w-100]="!companyInfo.website">Phone</a>&ndash;&gt;-->
+<!--		<button-->
+<!--			mat-stroked-button-->
+<!--			color="primary"-->
+<!--			[class.w-100]="!companyInfo.website"-->
+<!--			class="material-btn"-->
+<!--			(click)="openPhoneModal()">-->
+<!--			Phone-->
+<!--		</button>-->
+<!--		<a-->
+<!--			*ngIf="companyInfo.website"-->
+<!--			target="_blank"-->
+<!--			[href]="checkCompanySiteForValid(companyInfo.website)"-->
+<!--			mat-stroked-button-->
+<!--			class="material-btn"-->
+<!--			>Website</a-->
+<!--		>-->
+<!--		<button-->
+<!--			*ngIf="companyInfo.user !== user?._id"-->
+<!--			class="contact-button"-->
+<!--			b2bNgxButton-->
+<!--			(click)="openChat($event)"-->
+<!--			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">-->
+<!--			<img b2bNgxIcon name="chat-white" />-->
+<!--			<span>Contact</span>-->
+<!--		</button>-->
+<!--	</div>-->
+<!--</div>-->

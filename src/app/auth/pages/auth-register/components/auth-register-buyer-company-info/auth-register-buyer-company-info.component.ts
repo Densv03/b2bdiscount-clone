@@ -77,6 +77,7 @@ export class AuthRegisterBuyerCompanyInfoComponent {
 	private getRoles() {
 		return this.authService.getRootRoles().pipe(
 			untilDestroyed(this),
+			filter((data) => !!data),
 			filter((data) => !!Object.keys(data).length),
 			map((roles) => {
 				const buyerRolesIndex = roles.findIndex(

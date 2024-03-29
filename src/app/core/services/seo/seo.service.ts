@@ -10,7 +10,7 @@ import { APP_BASE_HREF, DOCUMENT, Location } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, startWith } from 'rxjs';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Injectable({
@@ -95,7 +95,7 @@ export class SeoService {
 					}
         `;
 
-		this.renderer2.appendChild(document.body, script);
+		this.renderer2.appendChild(this.doc.body, script);
 	}
 
 	public addCanonicalRef(): void {
@@ -120,6 +120,50 @@ export class SeoService {
 			name: 'description',
 			content,
 		});
+	}
+
+	public initRobotsMetaTag(): void {
+		if (this.isNoIndexUrl(this.router.url)) {
+			this.addRobotsMetaTag(false);
+		} else {
+			this.addRobotsMetaTag();
+		}
+
+		this.router.events
+			.pipe(
+				filter((event) => event instanceof NavigationEnd),
+				tap(() => {
+					this.removeRobotsMetaTag();
+					if (this.isNoIndexUrl(this.router.url)) {
+						this.addRobotsMetaTag(false);
+					} else {
+						this.addRobotsMetaTag();
+					}
+				})
+			)
+			.subscribe();
+	}
+
+	private isNoIndexUrl(url: string): boolean {
+		const sourcingRequestRegex = /sourcing-request\/listing\/.+/i;
+		return sourcingRequestRegex.test(url);
+	}
+
+	private addRobotsMetaTag(index: boolean = true, follow = true): void {
+		const meta = this.doc.createElement('meta');
+		meta.setAttribute('name', 'robots');
+		meta.setAttribute(
+			'content',
+			`${index ? 'index' : 'noindex'}, ${follow ? 'follow' : 'nofollow'}`
+		);
+		this.doc.head.appendChild(meta);
+	}
+
+	private removeRobotsMetaTag(): void {
+		const metaTag = this.doc.querySelector('meta[name="robots"]');
+		if (metaTag) {
+			metaTag.remove();
+		}
 	}
 
 	private initCanonicalRef(): void {
@@ -155,7 +199,7 @@ export class SeoService {
 	}
 
 	private removeCanonicalRefs(): void {
-		const head = document.getElementsByTagName('head')[0];
+		const head = this.doc.getElementsByTagName('head')[0];
 		const links = head.getElementsByTagName('link');
 		for (let i = 0; i < links.length; i++) {
 			const link = links[i];

@@ -1,0 +1,33 @@
+<div class="header-wrapper">
+	<img b2bNgxIcon name="cross" class="cross-icon" mat-dialog-close />
+</div>
+
+<div class="custom-carousel" [class.m-0]="slider.length === 1">
+	<mat-icon (click)="previousSlide()" *ngIf="slider.length > 1"
+		>keyboard_arrow_left</mat-icon
+	>
+
+	<div class="slider-wrapper carousel-content" #carousel>
+		<ng-container *ngFor="let slide of slider; let i = index">
+			<img
+				[ngClass]="{ 'hidden-slide': i !== current }"
+				[src]="slide"
+				class="slide-wrapper" />
+		</ng-container>
+	</div>
+
+	<mat-icon (click)="nextSlide()" *ngIf="slider.length > 1"
+		>keyboard_arrow_right</mat-icon
+	>
+</div>
+
+<div class="footer-images" #footer>
+	@for (image of slider; track image; let i = $index) {
+		<img
+			[ngSrc]="image"
+			width="48"
+			height="48"
+			(click)="selectSlide(+(+i))"
+			[class.selected]="i === current" />
+	}
+</div>

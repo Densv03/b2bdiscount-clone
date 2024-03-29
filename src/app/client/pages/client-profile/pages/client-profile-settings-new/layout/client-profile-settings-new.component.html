@@ -1,0 +1,12 @@
+<div class="flex flex-col gap-10 mb-10">
+	<b2b-client-profile-settings-tabs
+		(activeTab)="changeTab($event)"
+		class="w-full"/>
+	@if (tab$ | async; as tab) {
+		<b2b-client-company-information [hidden]="tab?.label !== TabLabel?.COMPANY_INFORMATION"/>
+		<b2b-client-payment-and-shipping [hidden]="tab?.label !== TabLabel?.PAYMENT_AND_SHIPPING"/>
+		<b2b-client-advantages [hidden]="tab?.label !== TabLabel?.OUR_ADVANTAGES"/>
+		<b2b-client-documents [hidden]="tab?.label !== TabLabel?.DOCUMENTS"/>
+		<b2b-client-trade-shows [hidden]="tab?.label !== TabLabel?.TRADE_SHOWS"/>
+	}
+</div>

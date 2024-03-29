@@ -52,7 +52,7 @@ export class MixpanelService {
                                             status:  200,
                                         });
         } catch (e) {
-            console.error(e);
+            console.error(JSON.stringify(e));
             return res.status(501).send({
                                             message: 'Something went wrong.',
                                             status:  501,

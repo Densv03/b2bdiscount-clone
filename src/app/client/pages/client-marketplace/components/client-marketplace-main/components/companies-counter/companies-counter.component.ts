@@ -3,6 +3,7 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	ElementRef,
+	Inject,
 	Input,
 	ViewChild,
 } from '@angular/core';
@@ -11,6 +12,7 @@ import { UserService } from '../../../../../client-profile/services/user/user.se
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { PlatformService } from '../../../../../../services/platform/platform.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
 	selector: 'b2b-companies-counter',
@@ -29,7 +31,8 @@ export class CompaniesCounterComponent implements AfterViewInit {
 	constructor(
 		private readonly userService: UserService,
 		private readonly router: Router,
-		private readonly platformService: PlatformService
+		private readonly platformService: PlatformService,
+		@Inject(DOCUMENT) private document: Document
 	) {}
 
 	ngAfterViewInit(): void {
@@ -37,7 +40,7 @@ export class CompaniesCounterComponent implements AfterViewInit {
 			return;
 		}
 		const ready = (selector: any, callback: any) => {
-			const elems = [document.querySelector(selector)];
+			const elems = [this.document.querySelector(selector)];
 			if (elems.length) {
 				for (const elem of elems) {
 					callback(elem);

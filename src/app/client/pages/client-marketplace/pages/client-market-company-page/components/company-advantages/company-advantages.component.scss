@@ -1,0 +1,35 @@
+:host {
+	.advantages {
+		margin-top: 48px;
+		&__title {
+			color: #000;
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 148%;
+			letter-spacing: 0.2px;
+		}
+		&__list {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			margin-top: 24px;
+		}
+		&__item {
+			box-shadow: 0px 4px 4px 0px #0000001a;
+			border-radius: 12px;
+			overflow: hidden;
+			&-header {
+				background: #eef3fe;
+				padding: 16px;
+				font-weight: 600;
+				word-break: break-all;
+			}
+			&-body {
+				padding: 16px;
+				line-height: 22px;
+				letter-spacing: 0.01em;
+				word-break: break-all;
+			}
+		}
+	}
+}

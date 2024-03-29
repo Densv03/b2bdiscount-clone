@@ -129,9 +129,6 @@ export class AdminUsersFiltersComponent
 			excludeCountry: null,
 			website: null,
 			preferences: [],
-			categoryOneOrFilterType: false,
-			categoryTwoOrFilterType: false,
-			categoryThreeOrFilterType: false,
 			lastActivity: this.formBuilder.control({
 				startDate: null,
 				endDate: null,

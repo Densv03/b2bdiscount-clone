@@ -4,7 +4,7 @@ import { B2bNgxLinkService } from '@b2b/ngx-link';
 @Component({
 	selector: 'b2b-client-promo-pt',
 	templateUrl: './client-promo-pt.component.html',
-	styleUrls: ['./client-promo-pt.component.scss'],
+	styleUrls: ['./../../client-promo-eng/layout/client-promo-eng.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientPromoPtComponent {

@@ -20,6 +20,28 @@
 	}
 }
 
+.globy-input-wrapper {
+	position: relative;
+	display: flex;
+	gap: 0.25rem;
+	flex-direction: column;
+
+	input {
+		cursor: default;
+
+		&.has-value {
+			padding: 0 0 0 35px;
+			@include breakpoint('4') {
+				max-width: 100%;
+			}
+		}
+	}
+
+	img {
+		position: absolute;
+	}
+}
+
 ::ng-deep {
 	.mat-datepicker-content {
 		width: 308px;

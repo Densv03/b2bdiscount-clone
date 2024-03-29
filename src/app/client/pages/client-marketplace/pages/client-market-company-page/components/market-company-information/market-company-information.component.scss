@@ -1,171 +1,103 @@
 @import 'projects/shared/src/styles';
 
 :host {
-	.company-info {
-		padding: 25px 0 50px;
-		.title {
-			font-weight: 500;
-			font-size: 13px;
-			color: #9fa4bb;
-		}
-		.description {
-			font-weight: 400;
-			font-size: 16px;
+	.information {
+		//border: 1px solid;
+		margin-bottom: 30px;
+		padding-top: 32px;
+		border-right: none;
+
+		&__title {
+			color: #000;
+			font-size: 20px;
+			font-weight: 600;
 			line-height: 148%;
-			letter-spacing: 0.01em;
-			color: #556274;
+			letter-spacing: 0.2px;
 		}
-		.info-section {
-			margin-top: 25px;
-			padding: 25px;
-			background-color: #ffffff;
-		}
-
-		.social {
-			.social-links {
-				display: flex;
-				align-items: center;
-				margin-top: 15px;
-				.website-btn {
-					margin-right: 15px;
-					padding: 10px;
-					border-radius: 4px;
-				}
+		&__contact {
+			display: none;
+			width: 100%;
+			margin: auto;
+			padding: 10px 0;
+			margin-top: 10px;
+			@media (max-width: 768px) {
+				display: block;
 			}
-			@include breakpoint('1') {
-				padding: 15px 10px 5px;
-				.social-links {
-					flex-wrap: wrap;
-					justify-content: center;
-					row-gap: 10px;
-					.website-btn {
-						margin-right: 0;
-						width: 100%;
-						text-align: center;
-					}
-				}
+			@media (max-width: 576px) {
+				//position: fixed;
+				//bottom: 70px;
+				//width: 95%;
+				//left: 2.5%;
+				//z-index: 7516323623;
 			}
 		}
-		.company-data {
-			.key-info {
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: space-between;
-				margin-top: 15px;
-				row-gap: 15px;
-				.key {
-					width: 50%;
-					display: flex;
-					align-items: flex-start;
-					gap: 10px;
-					img {
-						width: 20px;
-					}
-					.value {
-						font-weight: 700;
-						font-size: 16px;
-						letter-spacing: 0.01em;
-						color: #0f0f11;
-					}
-					.label {
-						font-weight: 400;
-						font-size: 14px;
-						letter-spacing: 0.01em;
-						color: #9fa4bb;
-					}
+		.information-contact-wrapper {
+			@media (max-width: 576px) {
+				position: fixed;
+				width: 100%;
+				left: 0;
+				bottom: 0;
+				padding: 16px 0;
+				background: #fff;
+				z-index: 10;
+				border-top: 1px solid #F0F5FF;
+				button {
+					width: 95%;
+					margin-top: 0;
+					padding: 7px 0;
 				}
 			}
 		}
-		.company-categories {
-			.categories-list {
-				display: flex;
-				justify-content: space-between;
-				flex-wrap: wrap;
-				align-items: center;
-				margin-top: 15px;
-				.category {
-					width: 50%;
-					display: flex;
-					gap: 10px;
-					.mark {
-						background: none;
-						transform: translateY(-3px);
-					}
-				}
-			}
+		&__list {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			margin-top: 24px;
 		}
-
-		.company-documents {
-			.documents-list {
-				display: flex;
+		&__item {
+			display: flex;
+			gap: 24px;
+			@include breakpoint('3') {
 				flex-direction: column;
-				margin-top: 15px;
-				overflow: hidden;
-				transition: 0.3s all;
-				min-height: 45px !important;
-				@include breakpoint('1') {
-					min-height: 60px !important;
-				}
-				&:last-child {
-					border-bottom: 1px solid #f3f6f8;
-				}
-
-				.document {
-					display: flex;
-					gap: 70px;
-					padding: 10px 0;
-					border-top: 1px solid #f3f6f8;
-					@include breakpoint('1') {
-						padding-top: 5px;
-						padding-bottom: 0;
-						align-items: center;
-					}
-					.document-data {
-						display: flex;
-						gap: 15px;
-						align-items: center;
-						img {
-							width: 18px;
-							height: 22px;
-						}
-						.size {
-							font-weight: 400;
-							font-size: 13px;
-							letter-spacing: 0.06em;
-							text-transform: uppercase;
-							color: #9fa4bb;
-						}
-						@include breakpoint('1') {
-							flex-direction: column;
-							gap: 5px;
-						}
-					}
-					.label {
-						font-weight: 400;
-						font-size: 16px;
-						letter-spacing: 0.01em;
-						color: #0f0f11;
-						cursor: pointer;
-						&:hover {
-							color: #005dff;
-						}
-					}
-
-					@include breakpoint('1') {
-						gap: 50px;
-						.label {
-							font-size: 13px;
-							color: #005dff;
-						}
-					}
+				gap: 5px;
+			}
+			&-label {
+				color: #474a4f;
+				font-size: 16px;
+				font-weight: 400;
+				letter-spacing: 0.16px;
+				width: 178px;
+				@include breakpoint('3') {
+					width: auto;
 				}
 			}
-			.view-all-block {
-				display: flex;
-				justify-content: center;
-				gap: 15px;
-				cursor: pointer;
-				margin-top: 20px;
+			&-value {
+				max-width: 570px;
+				word-break: break-all;
+				color: #000;
+				@include breakpoint('3') {
+					max-width: 100%;
+				}
+				.categories-list {
+					max-height: 200px;
+					overflow: auto;
+					display: flex;
+					flex-wrap: wrap;
+					gap: 5px;
+				}
+				.website-link {
+					text-decoration: underline;
+					margin-bottom: 10px;
+					display: block;
+					transition: .3s color;
+					&:hover {
+						color: #005DFF;
+					}
+				}
+				.social-media-list {
+					display: flex;
+					gap: 8px;
+				}
 			}
 		}
 	}

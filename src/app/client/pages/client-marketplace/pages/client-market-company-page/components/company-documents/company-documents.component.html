@@ -1,0 +1,42 @@
+@if (documents.length) {
+	<div class="documents">
+		<div class="documents__title">Documents</div>
+		<div class="documents__list">
+			<div
+				*ngFor="
+				let document of modifiedDocuments$
+					| async
+					| slice: 0 : ((viewMoreMode$ | async) === 'more' ? 9 : (modifiedDocuments$ | async)?.length)
+			"
+				(click)="openDocument(document)"
+				class="documents__item">
+				<div class="documents__item-image">
+					<b2b-svg-icon
+						src="/assets/icons/company-page/document.svg"></b2b-svg-icon>
+				</div>
+				<div class="documents__item-label">{{ document.name ?? 'Document without name' }}</div>
+			</div>
+		</div>
+		<ng-container *ngIf="viewMoreMode$ | async as viewMoreMode">
+			<button
+				(click)="changeViewMoreState(viewMoreMode)"
+				class="view-more-button">
+				{{ viewMoreMode === 'more' ? 'View all' : 'View less' }}
+				<svg
+					[class.rotated-arrow]="viewMoreMode === 'less'"
+					width="16"
+					height="16"
+					viewBox="0 0 16 16"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M12 6.66675L8 10.6667L4 6.66675"
+						stroke="#2F384C"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round" />
+				</svg>
+			</button>
+		</ng-container>
+	</div>
+}

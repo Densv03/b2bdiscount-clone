@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../../core/services/api/api.service';
 import { PortsStore } from '../../state/ports/ports.store';
 import { PortsQuery } from '../../state/ports/ports.query';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { first, take, tap } from 'rxjs/operators';
 
@@ -38,20 +38,14 @@ export class PortsService {
 		}
 	}
 
-	public async getCountriesWithPorts(): Promise<string[]> {
+	public getCountriesWithPorts(): Observable<string[]> {
 		if (this.countriesWithPortsSource.getValue().length) {
-			return this.countriesWithPortsSource.getValue();
-		}
-
-		try {
-			const countries = await this.apiService
-				.get<string[]>('get-port-countries')
-				.pipe(first())
-				.toPromise();
-			this.countriesWithPortsSource.next(countries);
-			return countries;
-		} catch (error) {
-			throw error;
+			return this.countriesWithPorts;
+		} else {
+			return this.apiService.get<string[]>('get-port-countries').pipe(
+				tap(countries => {
+					this.countriesWithPortsSource.next(countries);
+				}))
 		}
 	}
 }

@@ -6,7 +6,7 @@ import { environment } from "../../../../../src/environments/environment";
 })
 export class B2bNgxImageDirective implements OnChanges {
 	@Input() public name: string = "plug";
-	@Input() public imageExtension: string = "png";
+	@Input() public imageExtension: string = "webp" ;
 
 	constructor(private readonly _elementRef: ElementRef) {
 		this._elementRef.nativeElement.src = `assets/images/${this.name}.${this.imageExtension}`;
@@ -24,7 +24,7 @@ export class B2bNgxImageDirective implements OnChanges {
 		}
 
 		this._elementRef.nativeElement.src = currentValue.includes("public")
-			? `${environment.apiUrl.includes('staging') ? 'https://api.b2b.discount/' : environment.apiUrl}${currentValue}`
+			? `${environment.apiUrl.includes('staging') ? 'https://api.globy.com/' : environment.apiUrl}${currentValue}`
 			: `assets/images/${currentValue}.${this.imageExtension}`;
 	}
 }

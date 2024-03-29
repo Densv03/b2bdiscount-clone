@@ -8,7 +8,7 @@
 		<b2b-client-marketplace-product-details
 			[productView]="product"
 			*ngIf="isView"
-			[companyInfo]="company">
+			[companyInfo]="company.asObservable() | async">
 		</b2b-client-marketplace-product-details>
 
 		<h1 class="add-offer-title" *ngIf="!isView">Post a new product</h1>
@@ -18,7 +18,7 @@
 				<h2 class="section-title">Product information</h2>
 
 				<p class="badge" [class.invalid]="isBadgeInvalid$ | async">
-					<img b2bNgxIcon name="info-1" class="img" />
+					<img b2bNgxIcon name="info-1" class="img"/>
 
 					<span class="label">
 						When listing your products, please remember to upload only one
@@ -27,26 +27,25 @@
 						buyers. A separate product card for each item ensures accurate
 						search results and provides a clear, detailed view of your product
 						range.
-						<br />
+						<br/>
 						All information should be indicated on English.
 					</span>
 				</p>
 
-				<div class="form-block">
+				<div class="form-block main-form-block">
 					<div class="control-wrapper">
-						<label for="title" class="input-label product-name-input">
+						<label for="title" class="input-label product-name-input !flex !flex-row">
 							Product name
 							<span class="required">*</span>
 							<span class="desc-text">
-								(detailed product name is required)</span
-							>
+								(detailed product name is required)</span>
 							<img
 								b2bNgxIcon
 								name="question-sign"
 								(click)="tooltip.toggle()"
 								#tooltip="matTooltip"
 								matTooltip="Kindly indicate as detailed product name as possible, it will increase a chance of buyers finding and contacting you."
-								matTooltipClass="detail-product-tooltip" />
+								matTooltipClass="detail-product-tooltip"/>
 						</label>
 
 						<input
@@ -55,7 +54,7 @@
 							class="b2b-ngx-input background background-gray"
 							id="title"
 							placeholder="Product name"
-							label="" />
+							label=""/>
 						<p
 							*ngIf="
 								formState['title']?.touched &&
@@ -156,7 +155,7 @@
 								formGroup.controls['specifications'].value?.length > 60
 									? 0
 									: 60 -
-										(formGroup.controls['specifications'].value?.length || 0)
+									(formGroup.controls['specifications'].value?.length || 0)
 							}}
 						</span>
 
@@ -218,127 +217,63 @@
 				</div>
 			</section>
 
-			<section class="product-section" #photos>
+			<section class="product-section">
 				<h2 class="section-title">
-					{{ 'LABELS.PHOTOS' | translate }}
+					Product price
 					<span class="required">*</span>
+					<span>(The price in US dollar only)</span>
 				</h2>
 
 				<div class="form-block">
-					<div class="control-wrapper">
-						<div class="file-button-wrapper">
-							<button
-								class="file-button"
-								type="button"
-								b2bNgxButton
-								[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
-								(click)="fileInput.click()">
-								<img b2bNgxIcon name="photo" alt="" />
-								<span>Choose photos</span>
-							</button>
-
-							<p>{{ buttonLength }}</p>
-						</div>
-
-						<input
-							#fileInput
-							(change)="uploadFile($event)"
-							multiple
-							type="file" />
+					<div class="checkbox-row">
+						<b2b-ngx-radio
+							formControlName="priceType"
+							[customClass]="'product-placement'"
+							[options]="priceType"></b2b-ngx-radio>
 					</div>
-
-					<p class="photos-advice">
-						Image file size should be less than 5MB. Supported formats; .jpeg
-						jpg .png <br />
-						Recommended image size is more than 640px. * 640px. Imaged should be
-						clear and easy for buyers to view at a glance.
-					</p>
 
 					<div
-						class="flex-between photos-wrapper"
-						cdkDropListOrientation="horizontal"
-						cdkDropList
-						(cdkDropListDropped)="drop($event)">
+						class="flex-between"
+						[class.mt-20]="
+							formGroup.controls['priceType'].value === priceTypeEnum.PriceRange
+						"
+						*ngIf="
+							formGroup.controls['priceType'].value !==
+							priceTypeEnum.PriceUponRequest
+						">
 						<div
-							*ngFor="
-								let image of images;
-								let i = index;
-								trackBy: trackByImageFn
-							"
-							class="photos">
-							<div
-								[class.active-image]="
-									image !== 'assets/icons/no-image-icon.svg'
-								"
-								cdkDrag
-								[cdkDragDisabled]="image === 'assets/icons/no-image-icon.svg'">
-								<img
-									*cdkDragPreview
-									class="dragged-image"
-									[src]="image"
-									alt="Image" />
+							class="control-wrapper w-70 mt-20 price-input fixed-price"
+							*ngIf="
+								formGroup.controls['priceType'].value ===
+								priceTypeEnum.FixedPrice
+							">
 
-								<img [src]="image" alt="Image" />
+							<div class="grid">
+								<input
+									class="w-full"
+									type="text"
+									b2bNgxInput
+									[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+									formControlName="price"
+									placeholder="Enter price"/>
 
-								<span *ngIf="i === 0">main</span>
+								<span class="usd !top-0 absolute">USD</span>
 							</div>
-
-							<button
-								type="button"
-								*ngIf="image !== 'assets/icons/no-image-icon.svg'"
-								(click)="deleteImage(i)">
-								Delete
-							</button>
-
-							<img
-								*ngIf="image !== 'assets/icons/no-image-icon.svg'"
-								class="mobile-delete"
-								b2bNgxIcon
-								(click)="deleteImage(i)"
-								name="delete" />
-						</div>
-					</div>
-
-					<p
-						*ngIf="formState['photos']?.errors?.['required']"
-						class="error"
-						[@fadeInOut]>
-						Image is required
-					</p>
-				</div>
-			</section>
-
-			<section class="product-section" #additionalInfo>
-				<h2 class="section-title">
-					Additional information
-					<span>(Optional)</span>
-				</h2>
-
-				<p class="badge">
-					<img b2bNgxIcon name="info-1" class="img" />
-
-					<span class="label">
-						We recommend to indicate as much information as possible to increase
-						your product visibility.
-					</span>
-				</p>
-
-				<div class="form-block">
-					<div class="flex-between">
-						<div class="control-wrapper two-in-row">
-							<label class="input-label"> Minimum order quantity (MOQ) </label>
-
-							<input
-								type="number"
-								b2bNgxInput
-								[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
-								formControlName="amount"
-								placeholder="Enter quantity" />
 
 							<p
 								*ngIf="
-									formState['amount']?.touched &&
-									formState['amount']?.errors?.['number']
+									formState['price']?.touched &&
+									formState['price']?.errors?.['required']
+								"
+								class="error"
+								[@fadeInOut]>
+								Price is required
+							</p>
+
+							<p
+								*ngIf="
+									formState['price']?.touched &&
+									formState['price']?.errors?.['number']
 								"
 								class="error"
 								[@fadeInOut]>
@@ -347,23 +282,313 @@
 						</div>
 
 						<div
-							class="control-wrapper two-in-row"
-							[class.disabled]="!formGroup.value.amount">
+							class="w-70 flex-between"
+							*ngIf="
+								formGroup.controls['priceType'].value ===
+								priceTypeEnum.PriceRange
+							">
+							<div class="control-wrapper two-in-row price-input">
+								<label class="input-label"> Minimum </label>
+								<div class="grid">
+									<input
+										type="text"
+										b2bNgxInput
+										[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+										formControlName="priceRangeMinimum"
+										placeholder="Enter price"/>
+
+									<span class="usd absolute top-5">USD</span>
+								</div>
+								<p
+									*ngIf="
+										formState['priceRangeMinimum']?.touched &&
+										formState['priceRangeMinimum']?.errors?.['required']
+									"
+									class="error"
+									[@fadeInOut]>
+									Price is required
+								</p>
+
+								<p
+									*ngIf="
+										formState['priceRangeMinimum']?.touched &&
+										formState['priceRangeMinimum']?.errors?.['number']
+									"
+									class="error"
+									[@fadeInOut]>
+									Enter only number
+								</p>
+							</div>
+
+							<div class="control-wrapper two-in-row price-input">
+								<label class="input-label"> Maximum </label>
+								<div class="grid">
+									<input
+										type="text"
+										b2bNgxInput
+										[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+										formControlName="priceRangeMaximum"
+										placeholder="Enter price"/>
+
+									<span class="usd absolute top-5">USD</span>
+								</div>
+								<p
+									*ngIf="
+										formState['priceRangeMaximum']?.touched &&
+										formState['priceRangeMaximum']?.errors?.['required']
+									"
+									class="error"
+									[@fadeInOut]>
+									Price is required
+								</p>
+
+								<p
+									*ngIf="
+										formState['priceRangeMaximum']?.touched &&
+										formState['priceRangeMaximum']?.errors?.['number']
+									"
+									class="error"
+									[@fadeInOut]>
+									Enter only number
+								</p>
+							</div>
+						</div>
+
+						<div class="control-wrapper w-25 price-unit">
 							<b2b-ngx-select
-								[options]="unit$ | async"
-								formControlName="unit"
-								[touched]="formState['unit'].touched"
-								[invalid]="formState['unit']?.errors?.['required']"
+								[customParentClass]="'no-gap'"
+								formControlName="priceUnit"
+								[touched]="formState['priceUnit'].touched"
+								[invalid]="formState['priceUnit']?.errors?.['required']"
+								[options]="priceUnits$ | async"
+								(changed)="selectUnitName($event, 'priceUnitName')"
 								bindValue="_id"
 								bindLabel="displayName"
-								(changed)="selectUnitName($event)"
-								label="Measure"
+								placeholder="Unit"
 								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 								[zeroMargin]="true"
-								[placeholder]="'PLACEHOLDERS.MEASURE' | translate"
 								[class.rfq__input]="hideLabel$ | async">
 								<span *ngIf="!(hideLabel$ | async)">&nbsp;</span>
 							</b2b-ngx-select>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="product-section" [formGroup]="certificatesData">
+				<div class="flex-between form-block align-items-center">
+					<h2 class="section-title">
+						Certification
+						<span>(Optional)</span>
+					</h2>
+
+					<p *ngIf="showCertificationHint" [ngClass]="tooltipClass">
+						{{ hintText }}
+					</p>
+				</div>
+
+				<div class="form-block">
+					<div class="flex-between">
+						<div
+							class="control-wrapper w-70"
+							*ngIf="!useInputForCertificationName">
+							<b2b-ngx-select
+								[customParentClass]="'no-gap'"
+								formControlName="certificateName"
+								bindValue="_id"
+								bindLabel="displayName"
+								[options]="certificationNames"
+								[buttonInDropdownLabel]="'+ Create Certificate'"
+								(emitBtnEvent)="addCertificateName()"
+								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+								[zeroMargin]="true"
+								placeholder="Select certificate name">
+								<label class="input-label"> Certificate name </label>
+							</b2b-ngx-select>
+						</div>
+
+						<div
+							class="control-wrapper w-70 custom-certificates-input"
+							*ngIf="useInputForCertificationName">
+							<label class="input-label">
+								<span> Certificate name</span>
+							</label>
+
+							<input
+								type="text"
+								formControlName="certificateName"
+								class="b2b-ngx-input background background-gray"
+								placeholder="Input certificate name"
+								label=""/>
+
+							<svg-icon
+								class="use-certificates-icon"
+								(click)="useInputForCertificationName = false"
+								src="assets/icons/quit.svg"></svg-icon>
+						</div>
+
+						<div class="control-wrapper w-25">
+							<label class="input-label"> Certificate number </label>
+
+							<input
+								type="text"
+								formControlName="certificateNumber"
+								class="b2b-ngx-input background background-gray"
+								placeholder="Certificate number"
+								label=""/>
+						</div>
+					</div>
+
+					<div class="control-wrapper organization">
+						<label class="input-label">
+							<span>Organization</span>
+						</label>
+
+						<input
+							type="text"
+							formControlName="organization"
+							class="b2b-ngx-input background background-gray"
+							placeholder="Input organization"
+							label=""/>
+					</div>
+
+					<div class="flex-between">
+						<div class="control-wrapper two-in-row">
+							<label class="input-label"> Issue date </label>
+
+							<b2b-datepicker
+								[today]="null"
+								formControlName="issueDate"
+								inputClassName="datepicker"
+								iconName="arr-down"
+								placeholder="Select date"
+								[iconPosition]="{ right: '10px', top: '20px' }">
+							</b2b-datepicker>
+						</div>
+
+						<div class="control-wrapper two-in-row">
+							<label class="input-label"> Date valid to </label>
+
+							<b2b-datepicker
+								[today]="certificatesData.value.issueDate"
+								formControlName="dateValidTo"
+								inputClassName="datepicker"
+								iconName="arr-down"
+								placeholder="Select date"
+								[iconPosition]="{ right: '10px', top: '20px' }">
+							</b2b-datepicker>
+						</div>
+					</div>
+				</div>
+
+				<div class="chips" *ngIf="certificationStringArray.length > 0">
+					<div
+						class="chips__item"
+						*ngFor="let chip of certificationStringArray; let i = index">
+						<span>{{ chip }}</span>
+
+						<img
+							(click)="removeChip(i)"
+							class="chips__item-icon"
+							b2bNgxIcon
+							name="cancel"/>
+					</div>
+				</div>
+
+				<div class="product-name-input">
+					<button
+						type="button"
+						class="add-more"
+						(click)="addCertificationFields()"
+						[disabled]="!(isValidCertificateForm | async)">
+						Save
+					</button>
+
+					<span class="certificate-hint">Apply to save certificate</span>
+				</div>
+			</section>
+
+			<section class="product-section" #additionalInfo>
+				<h2 class="section-title">Additional information</h2>
+
+				<p class="badge">
+					<img b2bNgxIcon name="info-1" class="img"/>
+
+					<span class="label">
+						We recommend to indicate as much information as possible to increase
+						your product visibility.
+					</span>
+				</p>
+
+				<div class="form-block main-form-block">
+					<div class="flex-between">
+						<div class="control-wrapper two-in-row">
+							<label class="input-label"> Production capacity </label>
+
+							<input
+								type="number"
+								b2bNgxInput
+								[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+								formControlName="productionCapacityCount"
+								placeholder="Quantity"/>
+
+							<p
+								*ngIf="
+									formState['productionCapacityCount']?.touched &&
+									formState['productionCapacityCount']?.errors?.['number']
+								"
+								class="error"
+								[@fadeInOut]>
+								Enter only number
+							</p>
+						</div>
+
+						<div class="flex-between two-in-row">
+							<div
+								class="control-wrapper two-in-row"
+								[class.disabled]="!formGroup.value.productionCapacityCount">
+								<b2b-ngx-select
+									[customParentClass]="'no-gap'"
+									[options]="unit$ | async"
+									formControlName="productionCapacityUnit"
+									[invalid]="
+										formState['productionCapacityUnit'].touched &&
+										formState['productionCapacityUnit']?.invalid
+									"
+									[touched]="formState['productionCapacityUnit'].touched"
+									bindValue="_id"
+									bindLabel="displayName"
+									(changed)="
+										selectUnitName($event, 'productionCapacityUnitName')
+									"
+									label="Measure"
+									[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+									[zeroMargin]="true"
+									[placeholder]="'PLACEHOLDERS.MEASURE' | translate"
+									[class.rfq__input]="hideLabel$ | async">
+									<span *ngIf="!(hideLabel$ | async)">&nbsp;</span>
+								</b2b-ngx-select>
+							</div>
+
+							<div class="control-wrapper two-in-row">
+								<b2b-ngx-select
+									[customParentClass]="'no-gap'"
+									[class.disabled]="!formGroup.value.productionCapacityCount"
+									[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+									formControlName="productionCapacityTimeSpan"
+									[invalid]="
+										formState['productionCapacityTimeSpan'].touched &&
+										formState['productionCapacityTimeSpan']?.invalid
+									"
+									[touched]="formState['productionCapacityTimeSpan'].touched"
+									[options]="productionCapacityTimeSpanOptions"
+									[zeroMargin]="true"
+									placeholder="Select time span"
+									bindValue="_id"
+									bindLabel="displayName">
+									<span *ngIf="!(hideLabel$ | async)">&nbsp;</span>
+								</b2b-ngx-select>
+							</div>
 						</div>
 					</div>
 
@@ -376,7 +601,7 @@
 							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 							formControlName="brandName"
 							placeholder="Brand name"
-							id="brand" />
+							id="brand"/>
 
 						<p
 							[@fadeInOut]
@@ -393,7 +618,7 @@
 				<h2 class="section-title subtitle">More information</h2>
 
 				<p class="badge disabled-badge more-info-desktop">
-					<img b2bNgxIcon name="info-3" class="img" />
+					<img b2bNgxIcon name="info-3" class="img"/>
 
 					<span class="label">
 						You may specify your custom information about the product that you
@@ -426,7 +651,7 @@
 									b2bNgxInput
 									[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 									formControlName="specification"
-									placeholder="Input specification" />
+									placeholder="Input specification"/>
 
 								<p
 									[@fadeInOut]
@@ -446,7 +671,7 @@
 									b2bNgxInput
 									[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
 									formControlName="item"
-									placeholder="Input item" />
+									placeholder="Input item"/>
 
 								<p
 									[@fadeInOut]
@@ -460,11 +685,11 @@
 						</div>
 
 						<div class="actions" *ngIf="specificationList.controls.length > 1">
-							<img b2bNgxIcon (click)="moveRowUp(i)" name="arrow-down-2" />
+							<img b2bNgxIcon (click)="moveRowUp(i)" name="arrow-down-2"/>
 
-							<img b2bNgxIcon (click)="moveRowDown(i)" name="arrow-down-2" />
+							<img b2bNgxIcon (click)="moveRowDown(i)" name="arrow-down-2"/>
 
-							<img b2bNgxIcon (click)="deleteRow(i)" name="delete" />
+							<img b2bNgxIcon (click)="deleteRow(i)" name="delete"/>
 						</div>
 					</div>
 
@@ -475,7 +700,178 @@
 			</section>
 
 			<section class="product-section">
-				<h2 class="section-title">Payment method</h2>
+				<h2 class="section-title">
+					Samples info
+					<span>(Optional)</span>
+				</h2>
+
+				<div class="flex-between form-block">
+					<div class="control-wrapper two-in-row">
+						<input
+							type="number"
+							b2bNgxInput
+							[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+							formControlName="maximumOrderQuantity"
+							placeholder="Maximum order quantity"/>
+						<p
+							*ngIf="
+								formState['maximumOrderQuantity']?.touched &&
+								formState['maximumOrderQuantity']?.errors?.['number']
+							"
+							class="error"
+							[@fadeInOut]>
+							Enter only number
+						</p>
+					</div>
+
+					<div class="flex-between two-in-row">
+						<div
+							class="control-wrapper two-in-row"
+							[class.disabled]="!formGroup.value.maximumOrderQuantity">
+							<b2b-ngx-select
+								[customParentClass]="'no-gap'"
+								[options]="maximumUnitQuantity$ | async"
+								formControlName="samplesInfoMeasure"
+								[touched]="formState['samplesInfoMeasure'].touched"
+								[invalid]="
+									formState['samplesInfoMeasure']?.errors?.['required']
+								"
+								bindValue="_id"
+								bindLabel="displayName"
+								(changed)="selectUnitName($event, 'samplesInfoMeasure')"
+								label="Measure"
+								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+								[zeroMargin]="true"
+								[placeholder]="'Select measure'"
+								[class.rfq__input]="hideLabel$ | async">
+							</b2b-ngx-select>
+						</div>
+
+						<div class="control-wrapper two-in-row price-input">
+							<div class="grid">
+								<input
+									[readOnly]="!formGroup.value.maximumOrderQuantity"
+									type="text"
+									b2bNgxInput
+									[theme]="b2bNgxInputThemeEnum.BACKGROUND_GRAY"
+									formControlName="samplePrice"
+									placeholder="Sample price"/>
+
+								<span class="usd absolute top-0">USD</span>
+							</div>
+							<p
+								*ngIf="
+									formState['samplePrice']?.touched &&
+									formState['samplePrice']?.errors?.['number']
+								"
+								class="error"
+								[@fadeInOut]>
+								Enter only number
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="product-section" #photos>
+				<h2 class="section-title">
+					{{ 'LABELS.PHOTOS' | translate }}
+					<span class="required">*</span>
+				</h2>
+
+				<div class="form-block">
+					<div class="control-wrapper">
+						<div class="file-button-wrapper">
+							<button
+								class="file-button"
+								type="button"
+								b2bNgxButton
+								[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
+								(click)="fileInput.click()">
+								<img b2bNgxIcon name="photo" alt=""/>
+								<span>Choose photos</span>
+							</button>
+
+							<p>{{ buttonLength }}</p>
+						</div>
+
+						<input
+							#fileInput
+							(change)="uploadFile($event)"
+							multiple
+							type="file"
+							accept="image/png, image/jpeg"/>
+					</div>
+
+					<p class="photos-advice">
+						Image file size should be less than 5MB. Supported formats; .jpeg
+						jpg .png <br/>
+						Recommended image size is more than 640px. * 640px. Imaged should be
+						clear and easy for buyers to view at a glance.
+					</p>
+
+					<div
+						class="flex-between photos-wrapper"
+						cdkDropListOrientation="horizontal"
+						cdkDropList
+						(cdkDropListDropped)="drop($event)">
+						<div
+							*ngFor="
+								let image of images;
+								let i = index;
+								trackBy: trackByImageFn
+							"
+							class="photos">
+							<div
+								[class.active-image]="
+									image !== 'assets/icons/no-image-icon.svg'
+								"
+								cdkDrag
+								[cdkDragDisabled]="image === 'assets/icons/no-image-icon.svg'">
+								<img
+									*cdkDragPreview
+									class="dragged-image"
+									[src]="image"
+									alt="Image"/>
+
+								<img [src]="image" alt="Image"/>
+
+								<span *ngIf="i === 0">main</span>
+							</div>
+
+							<button
+								type="button"
+								*ngIf="image !== 'assets/icons/no-image-icon.svg'"
+								(click)="deleteImage(i)">
+								Delete
+							</button>
+
+							<img
+								*ngIf="image !== 'assets/icons/no-image-icon.svg'"
+								class="mobile-delete"
+								b2bNgxIcon
+								(click)="deleteImage(i)"
+								name="delete"/>
+						</div>
+					</div>
+
+					<p
+						*ngIf="
+							formState['photos']?.errors?.['required'] &&
+							formState['photos']?.touched
+						"
+						class="error"
+						[@fadeInOut]>
+						Image is required
+					</p>
+				</div>
+			</section>
+
+			<section class="product-section">
+				<h2 class="section-title">
+					Payment method
+					<span class="required">*</span>
+				</h2>
 
 				<div class="checkbox-column">
 					<b2b-ngx-checkbox
@@ -483,14 +879,27 @@
 						[formControl]="payments"
 						*ngFor="let method of paymentMethods"
 						[checked]="method.checked"
-						(checkboxChange)="setPaymentMethod($event, method.value)"
-						>{{ method.label }}
+						(checkboxChange)="setPaymentMethod(method.value, $event)"
+					>{{ method.label }}
 					</b2b-ngx-checkbox>
 				</div>
+
+				<p
+					*ngIf="
+						formState['paymentMethods']?.errors?.['required'] &&
+						formState['paymentMethods']?.touched
+					"
+					class="error"
+					[@fadeInOut]>
+					Payment method is required
+				</p>
 			</section>
 
 			<section class="product-section">
-				<h2 class="section-title">Trading areas</h2>
+				<h2 class="section-title">
+					Trading areas
+					<span class="required">*</span>
+				</h2>
 
 				<div class="checkbox-column">
 					<b2b-ngx-checkbox
@@ -498,14 +907,27 @@
 						[formControl]="areas"
 						*ngFor="let area of tradingAreas"
 						[checked]="area.checked"
-						(checkboxChange)="setTradingArea($event, area.value)"
-						>{{ area.label }}
+						(checkboxChange)="setTradingArea(area.value, $event)"
+					>{{ area.label }}
 					</b2b-ngx-checkbox>
 				</div>
+
+				<p
+					*ngIf="
+						formState['tradingAreas']?.errors?.['required'] &&
+						formState['tradingAreas']?.touched
+					"
+					class="error"
+					[@fadeInOut]>
+					Trading areas is required
+				</p>
 			</section>
 
 			<section class="product-section">
-				<h2 class="section-title">Shipping information</h2>
+				<h2 class="section-title">
+					Shipping information
+					<span class="required">*</span>
+				</h2>
 
 				<div class="form-block">
 					<div class="checkbox-row">
@@ -514,10 +936,20 @@
 							[formControl]="shippings"
 							*ngFor="let method of shippingMethods"
 							[checked]="method.checked"
-							(checkboxChange)="setShippingMethod($event, method.value)"
-							>{{ method.label }}
+							(checkboxChange)="setShippingMethod(method.value, $event)"
+						>{{ method.label }}
 						</b2b-ngx-checkbox>
 					</div>
+
+					<p
+						*ngIf="
+							formState['shipping']?.errors?.['required'] &&
+							formState['shipping']?.touched
+						"
+						class="error"
+						[@fadeInOut]>
+						Shipping is required
+					</p>
 
 					<p class="shipping-label flex-between">Port of shipping</p>
 				</div>
@@ -533,40 +965,36 @@
 						class="more-information-block">
 						<div class="form-block inputs flex-between">
 							<b2b-ngx-country-select
+								[customParentClass]="'no-gap'"
 								class="two-in-row"
 								formControlName="country"
 								placeholder="Select country"
-								[hideCountriesWithoutPorts]="true"
+								[customOptions]="{value: countryOptions$, length: (countryOptions$ | async)?.length} "
 								(closeSelect)="selectCountry(i)"
 								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY">
 								<label class="input-label"> Country </label>
 							</b2b-ngx-country-select>
 
-							<b2b-ngx-select
-								formControlName="portName"
-								placeholder="Select ports"
-								bindValue="_id"
-								[clearValue]="currentClear === i"
-								[options]="portsItems[i]?.ports"
-								bindLabel="portName"
-								class="two-in-row"
-								[multiple]="true"
-								[multipleCheckbox]="true"
-								[searchable]="true"
-								[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY">
+							<div class="two-in-row">
 								<label class="input-label"> Ports </label>
-							</b2b-ngx-select>
+
+								<b2b-multiple-dropdown
+									formControlName="portName"
+									[placeholder]="'Ports'"
+									[options]="portsItems[i]?.ports">
+								</b2b-multiple-dropdown>
+							</div>
 						</div>
 
 						<div class="actions port-actions" *ngIf="ports.controls.length > 1">
-							<img b2bNgxIcon (click)="movePortsRowUp(i)" name="arrow-down-2" />
+							<img b2bNgxIcon (click)="movePortsRowUp(i)" name="arrow-down-2"/>
 
 							<img
 								b2bNgxIcon
 								(click)="movePortsRowDown(i)"
-								name="arrow-down-2" />
+								name="arrow-down-2"/>
 
-							<img b2bNgxIcon (click)="deletePortsRow(i)" name="delete" />
+							<img b2bNgxIcon (click)="deletePortsRow(i)" name="delete"/>
 						</div>
 					</div>
 

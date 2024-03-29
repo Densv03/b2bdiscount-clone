@@ -23,8 +23,11 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { NgxDatatableModule } from '@siemens/ngx-datatable';
-import {MatSortModule} from "@angular/material/sort";
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {SvgIconComponent} from "angular-svg-icon";
+import {MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
+import {PaginationModule} from "../../../../../src/app/client/shared/components/pagination/pagination.module";
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @NgModule({
 	declarations: [
@@ -54,8 +57,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 		NgxDaterangepickerMd.forRoot(),
 		MatPaginatorModule,
 		MatTableModule,
-		MatSortModule,
-		MatTooltipModule,
+		SvgIconComponent,
+		MatIconButton,
+		MatIcon,
+		PaginationModule,
+		MatMenuTrigger,
+		MatMenu,
+		MatMenuItem,
 	],
 })
 export class AdminUsersModule {}
