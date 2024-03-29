@@ -1,114 +1,79 @@
-<div class="company-info">
-	<div class="description">{{ companyInfo.companyDescription }}</div>
-
-	<div *ngIf="socialLinksArePresent" class="social info-section">
-		<div class="title">Websites & social media</div>
-		<div class="social-links">
-			<a
-				*ngIf="companyInfo.website"
-				target="_blank"
-				[href]="checkCompanySiteForValid(companyInfo.website)">
-				<button
-					class="website-btn"
-					b2bNgxButton
-					[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
-					[id]="
-						(isAuth$ | async) === true
-							? 'company-page-company-website'
-							: 'company-page-unauthorized-company-website'
-					">
-					Company website
-				</button>
-			</a>
-
-			<a
-				*ngIf="companyInfo.socialMedia.facebook"
-				[href]="companyInfo.socialMedia.facebook"
-				target="_blank">
-				<img b2bNgxIcon name="facebook-blue" />
-			</a>
-
-			<a
-				*ngIf="companyInfo.socialMedia.twitter"
-				[href]="companyInfo.socialMedia.twitter"
-				target="_blank">
-				<img b2bNgxIcon name="twitter-blue" />
-			</a>
-
-			<a
-				*ngIf="companyInfo.socialMedia.linkedin"
-				[href]="companyInfo.socialMedia.linkedin"
-				target="_blank">
-				<img b2bNgxIcon name="linkedin-blue" />
-			</a>
-
-			<a
-				*ngIf="companyInfo.socialMedia.instagram"
-				[href]="companyInfo.socialMedia.instagram"
-				target="_blank">
-				<img b2bNgxIcon name="instagram-blue" />
-			</a>
-		</div>
+<div class="information">
+	<div class="information__title">Company information</div>
+	<div class="information-contact-wrapper">
+		<button
+			*ngIf="companyInfo.user !== user?._id"
+			(click)="openChat($event)"
+			b2bNgxButton
+			[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLUE"
+			class="information__contact">
+			Send message
+		</button>
 	</div>
-	<div class="company-data info-section">
-		<div class="title">Key company info</div>
-		<div class="key-info">
-			<div *ngFor="let key of keyCompanyInfo | async" class="key">
-				<img b2bNgxIcon [name]="key.icon" alt="icon" />
-				<div class="description">
-					<div class="value">{{ key.value }}</div>
-					<div class="label">{{ key.label }}</div>
+	<div class="information__list">
+		@for(option of companyInformationOptions; track option) {
+			@if (companyInfo[option.value]) {
+				<div
+					class="information__item">
+					<div class="information__item-label">
+						@if (option.value === 'socialMedia' && !socialMediaHasNonEmptyValue(companyInfo.socialMedia) && !companyInfo.website) {
+
+						} @else {
+							{{ option.label }}
+						}
+					</div>
+					<div class="information__item-value" [ngSwitch]="option.value">
+						<ng-container *ngSwitchCase="'businessType'">
+							{{ businessType$ | async }}
+						</ng-container>
+						<ng-container *ngSwitchCase="'country'">
+							{{ getName(companyInfo['country']) }}
+						</ng-container>
+						<ng-container *ngSwitchCase="'categories'">
+							<div class="categories-list">
+						<span
+							*ngFor="
+								let category of companyCategories$ | async as sectorsArr
+								let idx = index
+							">
+							{{ category }}{{ idx !== sectorsArr.length - 1 ? ',' : '' }}
+						</span>
+							</div>
+						</ng-container>
+
+						<ng-container *ngSwitchCase="'socialMedia'">
+							<a
+								*ngIf="companyInfo.website"
+								[href]="companyInfo.website"
+								target="_blank"
+								class="website-link"
+							>{{ companyInfo.website }}</a
+							>
+							<div class="social-media-list">
+								<ng-container
+									*ngFor="
+								let socialMedia of convertObjectToArray(companyInfo.socialMedia)
+							">
+									<a
+										*ngIf="socialMedia.value.trim()"
+										[href]="socialMedia.value"
+										target="_blank">
+										<b2b-svg-icon
+											[src]="
+										'/assets/icons/footer/' + socialMedia.key + '.svg'
+									"></b2b-svg-icon>
+									</a>
+								</ng-container>
+
+							</div>
+						</ng-container>
+						<ng-container *ngSwitchDefault>{{
+								companyInfo[option.value]
+							}}</ng-container>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+			}
+		}
 
-	<div
-		class="company-documents info-section"
-		*ngIf="companyInfo.documents?.length">
-		<div class="title">Documents & certificates</div>
-		<div
-			[ngStyle]="{
-				height:
-					!viewAllMode && modifiedDocuments.length < 5
-						? calculateFirstDocumentsHeight()
-						: calculateAllDocumentsHeight()
-			}"
-			class="documents-list">
-			<div
-				*ngFor="let document of modifiedDocuments"
-				#documentEl
-				(click)="openDocument(document)"
-				class="document">
-				<div class="document-data">
-					<img
-						b2bNgxIcon
-						[name]="document.isDocument ? 'document' : 'photo'"
-						alt="" />
-					<div class="size">{{ document.size }}</div>
-				</div>
-				<div class="label">{{ document.name }}</div>
-			</div>
-		</div>
-		<div
-			*ngIf="modifiedDocuments.length > 5"
-			(click)="viewAllMode = !viewAllMode"
-			class="view-all-block">
-			<img
-				b2bNgxIcon
-				[name]="viewAllMode ? 'arrow-down-blue' : 'arrow-top-blue'"
-				alt="arrow" />
-			<div class="text">{{ viewAllMode ? 'Show less' : 'View all' }}</div>
-		</div>
-	</div>
-
-	<div class="company-categories info-section">
-		<div class="title">Product categories</div>
-		<div class="categories-list">
-			<div *ngFor="let category of companyCategories$ | async" class="category">
-				<div class="mark">●</div>
-				<div class="label">{{ category }}</div>
-			</div>
-		</div>
 	</div>
 </div>

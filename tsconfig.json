@@ -115,6 +115,15 @@
       "@b2b/ngx-list": [
         "projects/ngx-list/src/public-api"
       ],
+      "globy-file": [
+        "./dist/globy-file"
+      ],
+      "globy-file-list": [
+        "./dist/globy-file-list"
+      ],
+      "image-uploader": [
+        "./dist/image-uploader"
+      ],
       "@b2b/ngx-datatable": [
         "projects/ngx-datatable/src/public-api"
       ],

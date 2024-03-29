@@ -21,11 +21,12 @@ import { onlyLatinAndNumber } from 'src/app/core/helpers/validator/only-latin-an
 import { animate, style, transition, trigger } from '@angular/animations';
 import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
-import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { AuthService } from 'src/app/auth/services/auth/auth.service';
 import { onlyLatinAndSymbols } from 'src/app/core/helpers/validator/only-latin-symbols';
 import { onlyNumberandSymbols } from 'src/app/core/helpers/validator/only-number-symbols';
 import { siteLink } from 'src/app/core/helpers/validator/site-link';
+import { PlatformService } from '../../../../../../services/platform/platform.service';
 
 interface SelectItem {
 	value: string;
@@ -112,7 +113,8 @@ export class ClientSourcingRequestQuotationFormComponent
 		private unitsService: UnitsService,
 		private _activatedRoute: ActivatedRoute,
 		private sourcingRequestService: SourcingRequestService,
-		private authService: AuthService
+		private authService: AuthService,
+		private platformService: PlatformService
 	) {
 		this.showCancelBtn = !!localStorage.getItem('showCancelButton');
 
@@ -140,7 +142,16 @@ export class ClientSourcingRequestQuotationFormComponent
 		this.businessType$ = this.getBusinessType();
 		this.unit$ = this.unitsService
 			.getUnits()
-			.pipe(map((data: any) => [...data, { displayName: 'Other' }]));
+			.pipe(map((data: any) => {
+				const updatedData = data.map((unit: { _id: any; displayName: any; }) => {
+					return {
+						value: unit._id,
+						displayName: unit.displayName
+					}
+				});
+				updatedData.push({ displayName: 'Other', value: null })
+			return	updatedData;
+			}));
 
 		this.showCustomUnitInput$ = this.form.valueChanges.pipe(
 			map((data) => data.quotationForm.unit === 'Other')
@@ -186,22 +197,6 @@ export class ClientSourcingRequestQuotationFormComponent
 					? this.productionOrCropsYearSource.next('Crops year')
 					: this.productionOrCropsYearSource.next('Production year');
 			});
-
-		// this.getCompanyData()
-		// 	.pipe(first())
-		// 	.subscribe(data => {
-		// 		this.initForm({
-		// 			companyName: data.companyName || '',
-		// 			country: data.country || '',
-		// 			email: data.email || '',
-		// 			phone: data.phone || '',
-		// 			businessType: data.businessType || null,
-		// 			companyDescription: data.companyDescription || '',
-		// 			contactPerson: data.contactPerson || '',
-		// 			website: data.website || '',
-		// 			foundationYear: data.yearOfFoundation || null,
-		// 		});
-		// 	})
 
 		this.form.valueChanges.subscribe(() =>
 			this.form.status === 'VALID'
@@ -260,17 +255,10 @@ export class ClientSourcingRequestQuotationFormComponent
 		this.updateCompanyInfo(this.form).pipe(first()).subscribe();
 	}
 
-	public sendMessage(body: any) {
-		this.socket.emit('message', {
-			type: 'text',
-			body,
-			userId: this.rfq.user._id,
-			rfqId: this.rfqId,
-			typeRoom: 'rfq',
-		});
-	}
-
 	private openConnection(token: string) {
+		if (this.platformService.isServer) {
+			return;
+		}
 		if (this.socket) {
 			this.socket.disconnect();
 		}
@@ -484,6 +472,8 @@ export class ClientSourcingRequestQuotationFormComponent
 		budget: any;
 		tradeTerms: any;
 		photos: any;
+		amount: {count: number};
+		moreInformation: string;
 	}): void {
 		this.form.patchValue({
 			quotationForm: {
@@ -492,10 +482,10 @@ export class ClientSourcingRequestQuotationFormComponent
 				productionYear: data?.year,
 				unit: data?.unitMeasure,
 				price: {
-					price: data?.budget,
+					price: data?.amount?.count,
 					tradeTerms: data?.tradeTerms,
 				},
-				// moreInformation: data?.moreInformation,
+				moreInformation: data?.moreInformation,
 				photos: data?.photos,
 			},
 			// suppliersCompanyInfo: {
@@ -515,6 +505,9 @@ export class ClientSourcingRequestQuotationFormComponent
 	}
 
 	ngOnDestroy(): void {
+		if (this.platformService.isServer) {
+			return;
+		}
 		this.socket.disconnect();
 		localStorage.removeItem('showCancelButton');
 	}

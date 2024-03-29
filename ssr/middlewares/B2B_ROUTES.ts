@@ -115,7 +115,11 @@ export const B2B_ROUTES: PathObject = {
 		nestedPaths: {
 			'your-account': {
 				nestedPaths: {
-					'settings': {},
+					'settings': {
+						nestedPaths: {
+							'following-products': {}
+						}
+					},
 					'company-information': {},
 					'billing': {}
 				}

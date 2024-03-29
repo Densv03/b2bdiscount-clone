@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Inject,
+	OnInit,
+} from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { NavigationStart, Router } from '@angular/router';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
@@ -8,6 +13,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { environment } from '../../../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
+import { DOCUMENT } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -39,7 +45,8 @@ export class AuthRegisterIndividualAccountComponent implements OnInit {
 	constructor(
 		private readonly router: Router,
 		private readonly translateService: TranslateService,
-		public readonly b2bNgxLinkService: B2bNgxLinkService
+		public readonly b2bNgxLinkService: B2bNgxLinkService,
+		@Inject(DOCUMENT) private document: Document
 	) {
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
@@ -61,11 +68,11 @@ export class AuthRegisterIndividualAccountComponent implements OnInit {
 	}
 
 	registerWithGoogle() {
-		document.location.href = `${environment.apiUrl}auth/google`;
+		this.document.location.href = `${environment.apiUrl}auth/google`;
 	}
 
 	registerWithLinkedIn() {
-		document.location.href = `${environment.apiUrl}auth/linkedin`;
+		this.document.location.href = `${environment.apiUrl}auth/linkedin`;
 	}
 
 	private initSocialAuthButtons(): void {

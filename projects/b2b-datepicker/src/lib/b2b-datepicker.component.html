@@ -1,16 +1,21 @@
-<div class="input-wrapper">
+<div [class]="classPrefix + 'input-wrapper'">
 
+	@if (label) {
+		<span class="globy-ngx-input-label">{{label}}</span>
+	}
 	<input [placeholder]="placeholder ? placeholder : 'Choose a date'" [matDatepicker]="picker"
 				 [formControl]="datePicker" [class.has-value]="datePicker.value"
 				 [min]="today"
 				 (click)="picker.open()" readonly [class]="inputClassName">
 
-	<img matDatepickerToggleIcon
-			 b2bNgxIcon [name]="iconName"
-			 [style.top]="iconPosition.top"
-			 [style.left]="iconPosition.left"
-			 [style.right]="iconPosition.right"
-			 [style.bottom]="iconPosition.bottom">
+	@if (iconName) {
+		<img matDatepickerToggleIcon
+				 b2bNgxIcon [name]="iconName"
+				 [style.top]="iconPosition.top"
+				 [style.left]="iconPosition.left"
+				 [style.right]="iconPosition.right"
+				 [style.bottom]="iconPosition.bottom">
+	}
 </div>
 
 <mat-datepicker #picker [calendarHeaderComponent]="customHeader" [touchUi]="mobileSize$ | async">

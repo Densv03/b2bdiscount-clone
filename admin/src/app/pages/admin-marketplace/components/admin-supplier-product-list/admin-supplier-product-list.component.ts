@@ -118,6 +118,11 @@ export class AdminSupplierProductListComponent implements OnInit {
 						.subscribe();
 				},
 			},
+			{
+				label: 'Edit',
+				icon: 'edit',
+				onClick: (product: any) => this.redirectToProductEdit(product),
+			}
 		];
 	}
 
@@ -133,5 +138,15 @@ export class AdminSupplierProductListComponent implements OnInit {
 				})
 			)
 			.subscribe();
+	}
+
+	private redirectToProductEdit(product: any): void {
+		this.router.navigate(['b2bmarket', product._id], {
+			queryParams: {
+				admin: true,
+				page: this.filteredQueryObj.offset,
+			},
+			queryParamsHandling: 'merge',
+		});
 	}
 }

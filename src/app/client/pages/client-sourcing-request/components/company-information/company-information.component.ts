@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
-import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
-import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
-import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
-import { Observable, of } from 'rxjs';
-import { HotToastService } from '@ngneat/hot-toast';
-import { SourcingRequestService } from '../../sourcing-request.service';
-import { filter, first, map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {B2bNgxLinkThemeEnum} from '@b2b/ngx-link';
+import {B2bNgxButtonThemeEnum} from '@b2b/ngx-button';
+import {B2bNgxInputThemeEnum} from '@b2b/ngx-input';
+import {B2bNgxSelectThemeEnum} from '@b2b/ngx-select';
+import {combineLatest, Observable, of} from 'rxjs';
+import {HotToastService} from '@ngneat/hot-toast';
+import {SourcingRequestService} from '../../sourcing-request.service';
+import {filter, first, map} from 'rxjs/operators';
+import {AbstractControl, FormBuilder, FormGroup, Validators,} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from 'src/app/auth/services/auth/auth.service';
+import {UserService} from 'src/app/client/pages/client-profile/services/user/user.service';
+import {ApiService} from 'src/app/core/services/api/api.service';
+import {onlyLatinAndNumberAndSymbols} from "../../../../../core/helpers/validator/only-latin-numbers-symbols";
+import {fadeInOutAnimation} from "../../../client-marketplace/shared/animations/fade-in-out.animation";
+import {User} from "../../../../../core/models/user/user.model";
 import {
-	AbstractControl,
-	FormBuilder,
-	FormGroup,
-	Validators,
-} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/services/auth/auth.service';
-import { UserService } from 'src/app/client/pages/client-profile/services/user/user.service';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { siteLink } from 'src/app/core/helpers/validator/site-link';
-import { animate, style, transition, trigger } from '@angular/animations';
+	ClientCompanyInformationService
+} from "../../../client-profile/pages/client-profile-settings-new/tabs/client-company-information/client-company-information.service";
 
 interface SelectItem {
 	id: string;
@@ -29,19 +28,7 @@ interface SelectItem {
 	selector: 'b2b-company-information',
 	templateUrl: './company-information.component.html',
 	styleUrls: ['./company-information.component.scss'],
-	animations: [
-		trigger('fadeInOut', [
-			transition(':enter', [
-				// :enter is alias to 'void => *'
-				style({ opacity: 0 }),
-				animate(500, style({ opacity: 1 })),
-			]),
-			transition(':leave', [
-				// :leave is alias to '* => void'
-				animate(500, style({ opacity: 0 })),
-			]),
-		]),
-	],
+	animations: [fadeInOutAnimation],
 })
 export class CompanyInformationComponent implements OnInit {
 	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum =
@@ -57,20 +44,13 @@ export class CompanyInformationComponent implements OnInit {
 	public foundationYear$: Observable<SelectItem[]>;
 	public employeesNumber$: Observable<SelectItem[]>;
 	public annualRevenue$: Observable<SelectItem[]>;
-	public position$: Observable<SelectItem[]>;
+	// public position$: Observable<SelectItem[]>;
 	public form: FormGroup;
 	public initialCompanyData: any = null;
 	public formType: 'add-rfq' | 'quotation' | 'unclaimed-cargo' | 'b2bmarket';
 	public navigationUrl!: string;
 	public formState: { [key: string]: AbstractControl };
 	public userRole: string = '';
-
-	private businessTypesArr: string[] = [
-		'Trader',
-		'Manufacturer',
-		'Logistic company',
-		'Broker',
-	];
 	public employeesNumberArr: string[] = [
 		'1-5',
 		'5-10',
@@ -87,7 +67,13 @@ export class CompanyInformationComponent implements OnInit {
 		' CEO ',
 		'Company owner',
 	];
-	public avaliableRoles!: Array<{ id: string; name: string }>;
+	private businessTypesArr: string[] = [
+		'Trader',
+		'Manufacturer',
+		'Logistic company',
+		'Broker',
+		'Wholesaler'
+	];
 
 	constructor(
 		private fb: FormBuilder,
@@ -97,25 +83,25 @@ export class CompanyInformationComponent implements OnInit {
 		private hotToastService: HotToastService,
 		private sourcingRequestService: SourcingRequestService,
 		private userService: UserService,
-		private apiService: ApiService
+		private apiService: ApiService,
+		public clientCompanyInformationService: ClientCompanyInformationService
 	) {
-		this.getRoles();
+		this.clientCompanyInformationService.initDefault();
 		this.form = this.createCompanyInformationGroup();
 		this.formState = this.form.controls;
-		this.sourcingRequestService
-			.getCompanyData()
+		combineLatest([this.sourcingRequestService
+			.getCompanyData(), this.userService.getUser$()])
 			.pipe(
-				first(),
-				map((res) => {
-					this.initialCompanyData = res;
-					this.patchValueToForm(this.initialCompanyData);
+				filter(([company, user]) => !!company && !!user),
+				map(([company, user]) => {
+					this.initialCompanyData = company;
+					this.patchValueToForm(this.initialCompanyData, user);
 				})
 			)
 			.subscribe();
 
 		this.businessType$ = this.getObservableForSelect(this.businessTypesArr);
 		this.foundationYear$ = this.getFoundationYear();
-		this.position$ = this.getObservableForSelect(this.positions);
 		this.employeesNumber$ = this.getObservableForSelect(
 			this.employeesNumberArr
 		);
@@ -123,24 +109,11 @@ export class CompanyInformationComponent implements OnInit {
 		this.formType = this.route.snapshot.queryParams['url'];
 		this.getNavigationLink();
 
-		this.userRole = this.userService.getUser().role.name;
+		this.userRole = this.userService.getUser()?.role?.name;
 	}
 
 	ngOnInit(): void {
 		localStorage.setItem('showCancelButton', 'true');
-	}
-
-	public getRoles() {
-		return this.authService
-			.getRoles()
-			.pipe(
-				filter((res) => !!res),
-				map((roles) =>
-					roles.map((role) => ({ id: role._id, name: role.displayName }))
-				),
-				map((res) => (this.avaliableRoles = res))
-			)
-			.subscribe();
 	}
 
 	public getNavigationLink(): void {
@@ -160,7 +133,7 @@ export class CompanyInformationComponent implements OnInit {
 
 	public onSave() {
 		this.form.markAllAsTouched();
-		if (this.form.status === 'INVALID') {
+		if (this.form.invalid) {
 			return;
 		}
 		const companyInfo: any = {
@@ -192,11 +165,11 @@ export class CompanyInformationComponent implements OnInit {
 						const roleId =
 							this.userService.getUser().role.name === 'admin'
 								? this.userService.getUser().role._id
-								: this.avaliableRoles.find(
-										(role) =>
-											role.name?.toLowerCase() ===
-											this.form.value.businessType?.toLowerCase()
-									)?.id;
+								: this.clientCompanyInformationService.subRoles.find(
+									(role) =>
+										role.name?.toLowerCase() ===
+										this.form.value.businessType?.toLowerCase()
+								)?.id;
 						const phone = data.phone;
 						this.userService
 							.updateUserSettings({
@@ -211,49 +184,45 @@ export class CompanyInformationComponent implements OnInit {
 								phoneE164Number: phone.e164Number,
 							})
 							.subscribe();
-					});
 
-					this.router.navigate([this.navigationUrl]);
+						this.userService.changeRole(this.authService.getToken(), this.form.value['businessType'], this.userService.getUser().rootRole._id)
+							.subscribe(() => this.authService.initUser())
+					});
+					return this.router.navigate([this.navigationUrl]);
 				},
 			});
 	}
 
 	private createCompanyInformationGroup(): FormGroup {
 		return this.fb.group({
-			companyName: ['', [Validators.required]],
+			companyName: ['', [Validators.required, onlyLatinAndNumberAndSymbols()]],
 			businessType: ['', [Validators.required]],
 			country: ['', [Validators.required]],
 			foundationYear: ['', [Validators.required]],
 			employeesNumber: ['', [Validators.required]],
 			annualRevenue: ['', [Validators.required]],
 			phone: ['', [Validators.required]],
-			address: ['', [Validators.required]],
-			website: ['', [siteLink()]],
+			address: ['', [Validators.required, onlyLatinAndNumberAndSymbols()]],
 			companyDescription: [
 				'',
 				[
 					Validators.required,
-					Validators.minLength(20),
+					Validators.minLength(40),
 					Validators.maxLength(500),
+					onlyLatinAndNumberAndSymbols()
 				],
 			],
-			position: ['', [Validators.required]],
 		});
 	}
 
-	private patchValueToForm(res: any): void {
-		const role =
-			this.avaliableRoles
-				.filter((role) => role.id === res?.businessType)
-				.map((role) => role.name)[0] || res?.businessType;
+	private patchValueToForm(res: any, user: User): void {
 		this.form.patchValue({
 			companyName: res?.companyName,
 			foundationYear: res?.yearOfFoundation,
 			website: res?.website,
 			country: res?.country,
 			address: res?.address,
-			position: res?.position,
-			businessType: role,
+			businessType: res?.businessType || user.role._id,
 			companyDescription: res?.companyDescription,
 			phone: res?.phone,
 			employeesNumber: res?.employeesNumber,

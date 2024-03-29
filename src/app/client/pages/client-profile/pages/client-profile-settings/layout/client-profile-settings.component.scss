@@ -24,6 +24,73 @@
 		}
 	}
 
+	.settings__avatar {
+		&-title {
+			color: #000;
+			font-size: 18px;
+			font-weight: 700;
+			line-height: 140%;
+			letter-spacing: 0.18px;
+		}
+		&-wrapper {
+			display: flex;
+			gap: 15px;
+			align-items: flex-end;
+			margin-top: 15px;
+			img {
+				width: 72px;
+				height: 72px;
+				border-radius: 4px;
+			}
+		}
+		&-upload {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			input {
+				display: none;
+			}
+			.upload-button {
+				display: flex;
+				gap: 5px;
+				border: 1px solid;
+				border-radius: 4px;
+				padding: 7px 13px;
+				align-items: center;
+				&:hover {
+					background: rgba(0, 0, 0, 0.02);
+				}
+				span {
+					font-size: 13px;
+				}
+			}
+		}
+		&-action-buttons {
+			display: flex;
+			gap: 10px;
+			.delete-button {
+				border-color: #e63d3d;
+				color: #e63d3d;
+				&:hover {
+					background: rgba(230, 61, 61, 0.02);
+				}
+			}
+		}
+		&-subtitle {
+			color: #000;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 140%;
+			letter-spacing: 0.14px;
+		}
+		&-tooltip {
+			color: #9fa4bb;
+			margin-top: 10px;
+			font-size: 14px;
+			line-height: 19px;
+		}
+	}
+
 	.mobile-buttons {
 		display: none;
 		@include breakpoint('2') {

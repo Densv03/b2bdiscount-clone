@@ -13,7 +13,11 @@ import {
 	DeliveryTypeModel,
 } from '../../models/delivery-type.model';
 import { BehaviorSubject, filter, fromEvent, Observable } from 'rxjs';
-import { ClientLogisticService } from 'src/app/client/pages/client-logistic/services/client-logistic.service';
+import {
+	ClientLogisticService,
+	LogisticAirState,
+	LogisticSeaState,
+} from 'src/app/client/pages/client-logistic/services/client-logistic.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { ShipmentItem } from 'src/app/client/pages/client-logistic/components/listing-filter/models/shipment-item.model';
@@ -192,6 +196,20 @@ export class LogisticSearchComponent implements OnInit, AfterViewInit {
 		this.form.get('countryFrom').setValue(this.form.get('countryTo').value);
 		this.form.get('countryTo').setValue(firstValue);
 		this.clientLogisticsService.swapStateItems();
+		const state = this.getCurrentState();
+		const delivery = this.clientLogisticsService.getActiveDeliveryType();
+		const newState = {
+			...state,
+			countryToName: state.countryFromName,
+			countryFromName: state.countryToName,
+			countryTo: state.countryFrom,
+			countryFrom: state.countryTo,
+		};
+		if (delivery === 'sea') {
+			this.clientLogisticsService.updateSeaState(newState as LogisticSeaState);
+		} else {
+			this.clientLogisticsService.updateAirState(newState as LogisticAirState);
+		}
 	}
 
 	public chooseContainerType(
@@ -243,16 +261,22 @@ export class LogisticSearchComponent implements OnInit, AfterViewInit {
 
 	private handleTackProperties(form: FormGroup) {
 		const value = form.value;
-		const deliveryType = this.clientLogisticsService.getActiveDeliveryType();
-		const state =
-			deliveryType === 'sea'
-				? this.clientLogisticsService.getSeaState()
-				: this.clientLogisticsService.getAirState();
+		const state = this.getCurrentState();
 		return {
-			'Transport mode': value.transportType || deliveryType || 'sea',
+			'Transport mode':
+				value.transportType ||
+				this.clientLogisticsService.getActiveDeliveryType() ||
+				'sea',
 			'ORIGIN OF SHIPMENT': state?.countryFromName,
 			'DESTINATION OF SHIPMENT': state?.countryToName,
 		};
+	}
+
+	getCurrentState() {
+		const deliveryType = this.clientLogisticsService.getActiveDeliveryType();
+		return deliveryType === 'sea'
+			? this.clientLogisticsService.getSeaState()
+			: this.clientLogisticsService.getAirState();
 	}
 
 	private searchOnTyping(

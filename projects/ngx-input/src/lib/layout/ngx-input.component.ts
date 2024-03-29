@@ -13,6 +13,7 @@ import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, Val
 // TODO: uncomment code below when libs will be inserted in b2b
 // import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import {B2bNgxInputThemeEnum} from "../enum/ngx-input-theme.enum";
+import { NgxInputVersionEnum } from "../enum/ngx-input-version.enum";
 
 // @UntilDestroy()
 @Component({
@@ -39,12 +40,17 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 	@Input() public theme: B2bNgxInputThemeEnum;
 	@Input() public label: string = '';
 	@Input() public errors: string | ValidationErrors= '';
+	@Input() public version: NgxInputVersionEnum = NgxInputVersionEnum.B2B;
 
 	public readonly formControl: FormControl<string | null>;
 	public readonly id: string;
 
 	private onChange: (value: string | null) => void;
 	private onTouched: () => void;
+
+	get inputClass() {
+		return this.version === NgxInputVersionEnum.B2B ? 'b2b-ngx-input' : 'globy-ngx-input';
+	}
 
 	constructor(private readonly _changeDetectionRef: ChangeDetectorRef) {
 		this.type = "input";
@@ -56,7 +62,7 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 
 		this.formControl = new FormControl<string | null>('');
 		this.id = idGenerator();
-    this.id = 'id'
+    	this.id = 'id'
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -99,4 +105,6 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 			this.formControl.enable();
 		}
 	}
+
+	protected readonly NgxInputVersionEnum = NgxInputVersionEnum;
 }

@@ -44,7 +44,6 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 
 	public readonly messages$: Observable<any>;
 	public readonly chatInfo$: Observable<any>;
-
 	private readonly _messagesHistoryBehaviourSubject: BehaviorSubject<any>;
 	private readonly _messagesHistory$: Observable<any>;
 
@@ -106,6 +105,10 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 				return this._chatInfo$.pipe(
 					filter((chatInfo) => !!chatInfo),
 					map((chatInfo) => {
+						this._socketService.decreaseUnreadMessagesCount(
+							'offers',
+							chatInfo.unreadMessagesCount
+						);
 						const dispayInfoOf =
 							chatInfo.buyer?._id === user?._id
 								? this.translateService.instant('CHAT.SELLER')

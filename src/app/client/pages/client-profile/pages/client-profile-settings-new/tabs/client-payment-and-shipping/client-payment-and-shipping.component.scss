@@ -1,0 +1,11 @@
+.title {
+	@apply text-lg font-medium font-secondary;
+}
+
+.block {
+	@apply flex flex-col gap-3;
+}
+
+.border__chip {
+	border: 0.16rem solid #000000;
+}

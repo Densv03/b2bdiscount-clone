@@ -2,6 +2,7 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
+	Inject,
 	OnInit,
 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -26,6 +27,7 @@ import Scrollbar from 'swiper';
 import { HotToastService } from '@ngneat/hot-toast';
 import { TreeviewConfig } from '@b2b/ngx-treeview';
 import { SeoService } from '../../../../core/services/seo/seo.service';
+import { DOCUMENT } from '@angular/common';
 
 SwiperCore.use([Scrollbar]);
 @UntilDestroy()
@@ -72,7 +74,8 @@ export class ClientHomeComponent implements OnInit {
 		private readonly hotToastService: HotToastService,
 		private readonly userService: UserService,
 		private readonly cdr: ChangeDetectorRef,
-		private readonly seoService: SeoService
+		private readonly seoService: SeoService,
+		@Inject(DOCUMENT) private document: Document
 	) {
 		// this.offers$ = this.getOffers();
 		this.user$ = this._usersService.getUser$();
@@ -167,7 +170,7 @@ export class ClientHomeComponent implements OnInit {
 
 	public smoothScrollToSolutions(): void {
 		if (this.isAuth()) {
-			const solutions = document.getElementById('solutions');
+			const solutions = this.document.getElementById('solutions');
 			solutions!.scrollIntoView({
 				behavior: 'smooth',
 				block: 'start',

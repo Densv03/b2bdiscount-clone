@@ -1,0 +1,56 @@
+@if (atLeastOnePaymentInfoIsPresented()) {
+	<div class="shipping-info">
+		<div class="shipping-info__title">Payment and shipping information</div>
+		<div class="shipping-info__list">
+			@if (companyInfo.paymentAndShipping.paymentMethods.length) {
+				<div class="shipping-info__item">
+					<div class="shipping-info__item-label">Payment method</div>
+					<div class="shipping-info__item-value">
+						@for (method of companyInfo.paymentAndShipping.paymentMethods; track method; let i = $index) {
+							{{method + (checkElementIsNotLastInArr(i, companyInfo.paymentAndShipping.paymentMethods.length - 1) ? ', ' : '')}}
+						}
+					</div>
+				</div>
+			}
+			@if (companyInfo.paymentAndShipping.tradingAreas.length) {
+				<div class="shipping-info__item">
+					<div class="shipping-info__item-label">Trading areas</div>
+					<div class="shipping-info__item-value">
+						@for (method of companyInfo.paymentAndShipping.tradingAreas; track method; let i = $index) {
+							{{method + (checkElementIsNotLastInArr(i, companyInfo.paymentAndShipping.tradingAreas.length - 1) ? ', ' : '')}}
+						}
+					</div>
+				</div>
+			}
+			@if (companyInfo.paymentAndShipping.deliveryTerms.length) {
+				<div class="shipping-info__item">
+					<div class="shipping-info__item-label">Delivery terms</div>
+					<div class="shipping-info__item-value">
+						@for (term of companyInfo.paymentAndShipping.deliveryTerms; track term; let i = $index) {
+							{{term + (checkElementIsNotLastInArr(i, companyInfo.paymentAndShipping.deliveryTerms.length - 1) ? ', ' : '')}}
+						}
+					</div>
+				</div>
+			}
+		</div>
+
+		@if (companyInfo.paymentAndShipping.countries.length) {
+			<div class="shipping-info__title">Export history</div>
+
+			<div class="shipping-info__map">
+				<div id="chartdiv" [style.width.%]="100" [style.height.%]="100"></div>
+				<div class="home-button-overlay"></div>
+			</div>
+			<div class="shipping-info__countries">
+				<div
+					*ngFor="let country of companyInfo.paymentAndShipping.countries"
+					class="shipping-info__countries-item">
+					<div class="content">
+						<img b2bNgxIcon [name]="country.toUpperCase()" group="flags/" />
+						<div class="country-name">{{ getCountryNameByCode(country) }}</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+}

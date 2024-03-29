@@ -8,37 +8,22 @@ import {
 	OnInit,
 	ViewChild,
 } from '@angular/core';
-import { PublicCompanyInfoModel } from '../../../../../../../core/models/public-company-info.model';
-import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
-import { CompanyKeyInfoModel } from './models/company-key-info.model';
-import { getName } from 'country-list';
-import { CategoryListingService } from '../../../category-listing/category-listing.service';
 import {
-	Observable,
-	combineLatest,
-	from,
-	BehaviorSubject,
-	lastValueFrom,
-	firstValueFrom,
-} from 'rxjs';
-import { ClientOfferDocumentComponent } from '../../../../../client-offer/components/client-offer-document/client-offer-document.component';
-import { environment } from '../../../../../../../../environments/environment';
-import { GetUrlExtension } from '../../../../../../../core/helpers/function/get-url-extension';
-import { ImageExtensions } from '../../../../../../../core/add-offer/image-extensions';
-import { DocumentExtensions } from '../../../../../../../core/add-offer/document-extensions';
-import { DocumentPreviewModel } from '../../../../../../../core/models/document-preview.model';
-import { DocumentModel } from '../../../../../../../core/models/document.model';
+	PublicCompanyInfoModel,
+	SocialMedia,
+} from '../../../../../../../core/models/public-company-info.model';
+import { CategoryListingService } from '../../../category-listing/category-listing.service';
+import { Observable, combineLatest, from, BehaviorSubject } from 'rxjs';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { AuthService } from '../../../../../../../auth/services/auth/auth.service';
-import { map } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
-import {
-	websiteProtocolRegex,
-	websiteRegex,
-} from '../../../../../../../core/helpers/validator/site-link';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Dialog } from '@angular/cdk/dialog';
-import { MatDialog } from '@angular/material/dialog';
+import { UserService } from '../../../../../client-profile/services/user/user.service';
+import { User } from '../../../../../../../core/models/user/user.model';
+import { Router } from '@angular/router';
+import { io } from 'socket.io-client';
+import { environment } from '../../../../../../../../environments/environment';
+import {getName} from "country-list";
 
 @UntilDestroy()
 @Component({
@@ -51,126 +36,64 @@ export class MarketCompanyInformationComponent implements OnInit {
 	@Input() companyInfo: PublicCompanyInfoModel;
 	@ViewChild('documentEl') documentEl: ElementRef;
 
-	public b2bNgxLinkTheme = B2bNgxLinkThemeEnum;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-	public keyCompanyInfo: Promise<CompanyKeyInfoModel[]>;
 	public companyCategories$: Observable<string[]>;
-	public modifiedDocuments: DocumentPreviewModel[];
-	public viewAllMode: boolean = false;
-	public socialLinksArePresent: boolean;
-	public isAuth$ = this.authService.user$.pipe(map((user) => !!user));
+	public businessType$: Observable<string>;
 
+	public user: User = this.userService.getUser();
+	public companyInformationOptions: Array<{
+		label: string;
+		value: keyof PublicCompanyInfoModel;
+	}> = this.getCompanyInformationOptions();
+	private userIsAuth = this.userService.isAuth();
+	private socket: any;
 	private businessTypeSource: BehaviorSubject<string> =
 		new BehaviorSubject<string>('');
+	private token: string;
 
 	constructor(
-		private categoryService: CategoryListingService,
-		private dialog: MatDialog,
-		private changeDetectorRef: ChangeDetectorRef,
+		private router: Router,
 		private authService: AuthService,
+		private userService: UserService,
+		private categoryService: CategoryListingService,
 		@Inject(DOCUMENT) private document: any
-	) {}
+	) {
+		this.businessType$ = this.businessTypeSource.asObservable();
+
+	}
 
 	ngOnInit(): void {
 		this.updateBusinessType();
-		this.keyCompanyInfo = this.generateKeyCompanyInfo();
 		this.companyCategories$ = this.generateCategoriesArr();
-		this.modifiedDocuments = this.generatePreviewDocumentsArr();
-		this.socialLinksArePresent = this.detectSocialLinks();
-	}
-
-	public checkCompanySiteForValid(site: string): string {
-		if (!site.match(websiteProtocolRegex)) {
-			return site.replace(site, 'https://' + site);
-		}
-		return site;
-	}
-
-	public calculateAllDocumentsHeight(): string {
-		if (!this.documentEl?.nativeElement) return '0px';
-		return (
-			this.documentEl.nativeElement.offsetHeight *
-				this.modifiedDocuments.length +
-			'px'
-		);
-	}
-
-	public calculateFirstDocumentsHeight(): string {
-		return 43 * this.modifiedDocuments.length + 'px';
-	}
-
-	public openDocument(document: DocumentPreviewModel) {
-		this.dialog.open(ClientOfferDocumentComponent, {
-			data: document,
-			width: '80vw',
-			height: '80vh',
+		this.userService.getToken$().subscribe((token) => {
+			this.token = token;
+			this.openConnection(this.token);
 		});
 	}
-
-	private detectSocialLinks(): boolean {
-		const {
-			website,
-			socialMedia: { instagram, facebook, twitter, linkedin },
-		} = this.companyInfo;
-		return !!(website || instagram || facebook || twitter || linkedin);
+	public socialMediaHasNonEmptyValue(socialMedia: SocialMedia): boolean {
+		return Object.values(socialMedia).some(item => !!item.trim().length)
 	}
+	public openChat(event: MouseEvent): void {
+		if (!this.userIsAuth) {
+			this.router.navigate(['profile/your-workspace/b2bmarket']);
+		} else {
+			this.openConnection(this.token);
+			this.socket.emit('start_users_chat', {
+				userId: this.companyInfo.user,
+				typeRoom: 'users',
+			});
 
-	private async generateKeyCompanyInfo(): Promise<CompanyKeyInfoModel[]> {
-		const { employeesNumber, yearOfFoundation, country, businessType } =
-			this.companyInfo;
-		return [
-			{
-				value: employeesNumber,
-				icon: 'croud',
-				label: 'Workers amount',
-			},
-			{
-				value: yearOfFoundation,
-				icon: 'flag',
-				label: 'Year esteblished',
-			},
-			{
-				value: getName(country),
-				icon: 'geo',
-				label: 'Country',
-			},
-			{
-				value: await firstValueFrom(this.businessTypeSource),
-				icon: 'business-type',
-				label: 'Business type',
-			},
-		];
+			this.socket.on('users_chat_info', (data: any) => {
+				this.goTo('profile/your-workspace/b2bmarket/chat/' + data._id);
+			});
+		}
 	}
-
-	private generateCategoriesArr(): Observable<string[]> {
-		return this.categoryService.getCategoryNamesArr(
-			this.companyInfo.categories
-		);
-	}
-
-	private generatePreviewDocumentsArr(): DocumentPreviewModel[] {
-		return this.companyInfo.documents.map((document) => ({
-			...document,
-			size: this.formatBytes(document.size),
-			fullPath: environment.apiUrl + document.path,
-			extension: GetUrlExtension(document.path),
-			isImage: ImageExtensions.includes(GetUrlExtension(document.path)),
-			isDocument: DocumentExtensions.includes(GetUrlExtension(document.path)),
+	public convertObjectToArray(objectToConvert: SocialMedia): any[] {
+		return Object.entries(objectToConvert).map(([key, value]) => ({
+			key,
+			value,
 		}));
 	}
-
-	private formatBytes(bytes: string | number, decimals = 2): string {
-		if (!+bytes) return '0 Bytes';
-
-		const k = 1024;
-		const dm = decimals < 0 ? 0 : decimals;
-		const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-		const i = Math.floor(Math.log(+bytes) / Math.log(k));
-
-		return `${parseFloat((+bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-	}
-
 	private updateBusinessType(): void {
 		combineLatest([from([this.companyInfo]), this.authService.getRoles()])
 			.pipe(untilDestroyed(this))
@@ -186,4 +109,69 @@ export class MarketCompanyInformationComponent implements OnInit {
 				}
 			});
 	}
+	public goTo(link: string) {
+		this.router.navigate([link]);
+	}
+	private generateCategoriesArr(): Observable<string[]> {
+		const categories = this.companyInfo?.categories || [];
+		const storageCategories = this.authService?.company?.categories || [];
+		const set = new Set(categories.concat(storageCategories))
+		return this.categoryService.getSectorsNamesArr(
+			[...set.values()]
+		);
+	}
+
+	private openConnection(token: string): void {
+		if (this.socket) {
+			this.socket.disconnect();
+		}
+
+		this.socket = io(environment.apiUrl, {
+			path: '/chat',
+			auth: {
+				token,
+			},
+		});
+	}
+	private getCompanyInformationOptions(): Array<{
+		label: string;
+		value: keyof PublicCompanyInfoModel;
+	}> {
+		return [
+			{
+				label: 'Business type',
+				value: 'businessType',
+			},
+			{
+				label: 'Product category',
+				value: 'categories',
+			},
+			{
+				label: 'Year established',
+				value: 'yearOfFoundation',
+			},
+			{
+				label: 'Numbers of employees',
+				value: 'employeesNumber',
+			},
+			{
+				label: 'Annual revenue',
+				value: 'annualRevenue',
+			},
+			{
+				label: 'Country',
+				value: 'country',
+			},
+			{
+				label: 'Company address',
+				value: 'address',
+			},
+			{
+				label: 'Official resources',
+				value: 'socialMedia',
+			},
+		];
+	}
+
+	protected readonly getName = getName;
 }

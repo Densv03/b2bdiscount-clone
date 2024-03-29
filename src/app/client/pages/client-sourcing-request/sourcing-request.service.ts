@@ -122,6 +122,14 @@ export class SourcingRequestService {
 		return this.apiService.post('tradeBid/update-company-data', body);
 	}
 
+	public deleteBanner() {
+		return this.apiService.delete('company/delete-company-banner')
+	}
+
+	public deleteLogo() {
+		return this.apiService.delete('company/delete-company-logo')
+	}
+
 	public deleteCompanyDocuments(
 		companyId: string,
 		documentIds: string[]

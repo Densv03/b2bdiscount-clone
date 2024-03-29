@@ -14,6 +14,7 @@ export class PaginationComponent {
 	@Input() perPage: number;
 	@Output() togglePageNumber: EventEmitter<number>;
 	@Input() currentPage: number = 1;
+	@Input() shouldScroll: boolean = true;
 
 	private readonly deviceIsMobile: boolean;
 
@@ -64,7 +65,9 @@ export class PaginationComponent {
 
 		this.currentPage = number;
 		this.togglePageNumber.emit(number);
-		this.scroll();
+		if (this.shouldScroll) {
+			this.scroll();
+		}
 	}
 
 	public togglePrevPage() {
@@ -74,8 +77,9 @@ export class PaginationComponent {
 
 		this.currentPage = this.currentPage - 1;
 		this.togglePageNumber.emit(this.currentPage);
-		this.scroll();
-	}
+		if (this.shouldScroll) {
+			this.scroll();
+		}	}
 
 	public toggleNextPage() {
 		if (this.currentPage == Math.ceil(this.length / this.perPage)) {
@@ -84,8 +88,9 @@ export class PaginationComponent {
 
 		this.currentPage = this.currentPage + 1;
 		this.togglePageNumber.emit(this.currentPage);
-		this.scroll();
-	}
+		if (this.shouldScroll) {
+			this.scroll();
+		}	}
 
 	private fillEmptyArray(
 		currentPage: number,

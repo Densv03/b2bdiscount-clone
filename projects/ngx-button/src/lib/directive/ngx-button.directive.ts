@@ -10,7 +10,7 @@ function isValueInEnum(value: string, enumArray: any): boolean {
 	selector: "[b2bNgxButton]",
 })
 export class B2bNgxButtonDirective implements OnChanges {
-	@Input() theme: B2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum.BACKGROUND_BLACK;
+	@Input() theme: B2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum.OUTLINE_GRAY;
 
 	constructor(private readonly _renderer2: Renderer2, private readonly _elementRef: ElementRef) {
 		this._renderer2.addClass(this._elementRef.nativeElement, `b2b-ngx-button`);

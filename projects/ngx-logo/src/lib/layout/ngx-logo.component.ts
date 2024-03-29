@@ -7,24 +7,23 @@ import {
 	forwardRef,
 	Input,
 	OnChanges,
-	OnInit,
-	Output, Pipe, PipeTransform,
+	Output,
 	SimpleChanges,
 	ViewChild,
 } from "@angular/core";
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from "@angular/forms";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl } from "@angular/platform-browser";
-import {async, BehaviorSubject, Observable} from "rxjs";
-import { MatDialog } from "@angular/material/dialog";
+import {UntilDestroy} from "@ngneat/until-destroy";
+import {BehaviorSubject, Observable} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
 import {B2bNgxInputThemeEnum} from "@b2b/ngx-input";
 import {B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
 import {idGenerator} from "@b2b/id-generator";
 import {
-  FileSizeErrorDialogComponent
+	FileSizeErrorDialogComponent
 } from "../../../../../src/app/client/shared/components/file-size-error-dialog/file-size-error-dialog.component";
 import {Photo} from "../../../../../src/app/core/models/photo.model";
 import {environment} from "../../../../../src/environments/environment";
+import {imageFormats} from "./ngx-logo.constant";
 
 
 @UntilDestroy()
@@ -46,19 +45,18 @@ import {environment} from "../../../../../src/environments/environment";
 		},
 	],
 })
-export class B2bNgxLogoComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class B2bNgxLogoComponent implements ControlValueAccessor, OnChanges {
 
 	@ViewChild('fileInput') fileInput: ElementRef;
 	@Input() public readonly type: string;
 	@Input() public readonly placeholder: string;
 	@Input() public readonly theme: B2bNgxInputThemeEnum;
-	@Input() public readonly className: string;
-	@Input() public readonly label: string = "Choose logo";
+	@Input() public className: string;
+	@Input() public label: string = "Choose logo";
 	@Input() public readonly maxAllowedSize: number = 5; //5mb
-	@Input() public readonly isPhoto: boolean;
+	@Input() public showIcon: boolean = true;
 	@Input() public readonly errors: ValidationErrors;
-
-
+	@Output() public url = new EventEmitter<string>()
 	public readonly formControl: FormControl<any>;
 	public readonly id: string;
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
@@ -89,40 +87,6 @@ export class B2bNgxLogoComponent implements ControlValueAccessor, OnInit, OnChan
 		return this.logoPreviewUrl.asObservable();
 	}
 
-	ngOnInit(): void {
-		this.subscribeOnValueChanges();
-	}
-
-	ngOnChanges(changes: SimpleChanges): void {
-		if (changes["errors"]) {
-			this.formControl.setErrors(changes["errors"].currentValue);
-		}
-	}
-
-	public uploadFiles(event: Event): void {
-		this.logo = (event.target as HTMLInputElement).files[0];
-		if(this.logo.size <= this.maxAllowedSizeBytes) {
-			this.onChange([this.logo]);
-			const fileReader = new FileReader();
-			fileReader.onload = () =>
-				this.logoPreviewUrl.next(fileReader.result as string);
-			fileReader.readAsDataURL(this.logo);
-		}
-		else {
-			this.onChange(null)
-			this.fileInput.nativeElement.value = "";
-			this.logo = undefined;
-			this.dialog
-				.open(FileSizeErrorDialogComponent, {
-					data: {
-						maxAllowedSize: this.maxAllowedSize,
-						isSingleFile: false
-					}
-				})
-		}
-
-	}
-
 	public get inputClassName(): string {
 		return `${this.className}`;
 	}
@@ -135,6 +99,44 @@ export class B2bNgxLogoComponent implements ControlValueAccessor, OnInit, OnChan
 		const firstErrorKey = Object.keys(this.errors)[0];
 
 		return this.errors[firstErrorKey] as string;
+	}
+
+	get isImage() {
+		const name = (this.logo as File)?.name;
+		if (!name) {
+			return true;
+		}
+		const format = name?.split('.')?.pop();
+		return imageFormats.includes(format)
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes["errors"]) {
+			this.formControl.setErrors(changes["errors"].currentValue);
+		}
+	}
+
+	public uploadFiles(event: Event): void {
+		this.logo = (event.target as HTMLInputElement).files[0];
+		if (this.logo.size <= this.maxAllowedSizeBytes) {
+			this.onChange([this.logo]);
+			const fileReader = new FileReader();
+			fileReader.onload = () =>
+				this.url.next(fileReader.result as string);
+			this.logoPreviewUrl.next(fileReader.result as string);
+			fileReader.readAsDataURL(this.logo);
+		} else {
+			this.onChange(null)
+			this.fileInput.nativeElement.value = "";
+			this.logo = undefined;
+			this.dialog
+				.open(FileSizeErrorDialogComponent, {
+					data: {
+						maxAllowedSize: this.maxAllowedSize,
+						isSingleFile: false
+					}
+				})
+		}
 	}
 
 	public validate(): ValidationErrors {
@@ -169,9 +171,12 @@ export class B2bNgxLogoComponent implements ControlValueAccessor, OnInit, OnChan
 	public removeLogo(): void {
 		this.logo = undefined;
 		this.onChange(null);
+		this.url.next(undefined)
 	}
 
-	private subscribeOnValueChanges(): void {}
+	click() {
+		this.fileInput.nativeElement.click();
+	}
 }
 
 

@@ -1,0 +1,77 @@
+<div class="sidebar">
+	<div
+		class="sidebar__wrapper"
+		[class.submenu-opened]="
+			(sidebarState$ | async) === 'closed' && (subMenuOptions$ | async)
+		">
+		<div class="sidebar__main">
+			<div
+				class="sidebar__list">
+				@for (item of sidebarOptions; track item.label) {
+					<a
+						[routerLink]="item.hasSubMenu ? null : item.path"
+						(click)="item.callback()"
+						[class.active-link]="(currentUrl$ | async).includes(item.path)"
+						[class.closed]="(sidebarState$ | async) === 'closed'"
+						class="sidebar__item">
+						@if (isBrowser) {
+							<svg-icon class="sidebar__item-icon" [src]="item.icon"></svg-icon>
+						}
+						<span class="sidebar__item-name">{{ item.label }}</span>
+						@if (isBrowser && item.hasSubMenu) {
+							<svg-icon
+								class="sidebar__item-arrow"
+								src="/assets/icons/sidebar/arrow-r.svg"></svg-icon>
+						}
+					</a>
+				}
+
+				<div (click)="logOut()" class="sidebar__item">
+					@if (isBrowser) {
+						<svg-icon
+							class="sidebar__item-icon sidebar__item-logout"
+							src="/assets/icons/header/profile/log-out.svg"></svg-icon>
+					}
+					<div class="sidebar__item-name">Log Out</div>
+				</div>
+			</div>
+		</div>
+		<div class="sidebar__submenu">
+			<div (click)="closeSubMenu()" class="sidebar__submenu-button">
+				<svg
+					width="32"
+					height="32"
+					viewBox="0 0 32 32"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<rect
+						x="0.5"
+						y="0.5"
+						width="31"
+						height="31"
+						rx="1.5"
+						fill="#F0F4F6"
+						stroke="#EAEAEA" />
+					<path
+						d="M11.2929 15.2929C10.9024 15.6834 10.9024 16.3166 11.2929 16.7071L17.6569 23.0711C18.0474 23.4616 18.6805 23.4616 19.0711 23.0711C19.4616 22.6805 19.4616 22.0474 19.0711 21.6569L13.4142 16L19.0711 10.3431C19.4616 9.95262 19.4616 9.31946 19.0711 8.92893C18.6805 8.53841 18.0474 8.53841 17.6569 8.92893L11.2929 15.2929ZM13 15L12 15L12 17L13 17L13 15Z"
+						fill="#0D265B" />
+				</svg>
+			</div>
+			<div class="sidebar__submenu-list">
+				@for (option of subMenuOptions$ | async; track option.label) {
+					<a
+						[routerLink]="option.path"
+						[class.active]="(currentUrl$ | async) === option.path"
+						class="sidebar__submenu-item">
+						@if (isBrowser) {
+							<svg-icon
+								class="sidebar__submenu-icon"
+								[src]="option.icon"></svg-icon>
+						}
+						<span class="sidebar__submenu-label">{{ option.label }}</span>
+					</a>
+				}
+			</div>
+		</div>
+	</div>
+</div>

@@ -105,6 +105,7 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
 
   ngAfterViewInit() {
     this.phoneField.disabled = this.disabled;
+		this.setDropdownWidth();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -178,4 +179,15 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
       // this.inputFormControl.enable();
     }
   }
+
+	public setDropdownWidth() {
+		const inputField: any = document.querySelector('#phone');
+		const countryDropdown: any = document.querySelector('.dropdown-menu.country-dropdown.show');
+
+		if (inputField && countryDropdown) {
+			const commonWidth = Math.max(inputField.offsetWidth, countryDropdown.offsetWidth);
+			inputField.style.width = commonWidth + 'px';
+			countryDropdown.style.width = commonWidth + 'px';
+		}
+	}
 }

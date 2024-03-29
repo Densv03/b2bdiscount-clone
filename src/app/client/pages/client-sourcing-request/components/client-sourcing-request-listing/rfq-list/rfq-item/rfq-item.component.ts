@@ -60,31 +60,32 @@ export class RfqItemComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.user$ = this.userService.getUser$();
-		this.initMeasureName(this.rfqItem.measure);
+		this.initMeasureName(this.rfqItem.measure || this.rfqItem.unitMeasure);
 	}
 
 	private initMeasureName(measure?: string): void {
 		if (!measure) {
 			this.measureName = '';
-		} else if (/[0-9]/.test(measure)) {
+		} else {
 			this.unitService
 				.getUnits()
 				.pipe(
 					filter((data) => !!data?.length),
 					first(),
 					map((res) => {
-						this.measureName = res.find(
-							(item: { _id: any }) => item._id === this.rfqItem.measure
-						).displayName;
+						const isPlural = this.rfqItem.amount.count > 1;
+
+						const measureObj = res.find(
+							(item: { _id: any }) => item._id === measure
+						);
+						this.measureName = isPlural
+							? measureObj.pluralDisplayName
+							: measureObj.displayName;
 					})
 				)
 				.subscribe(() => {
 					this.changeDetectionRef.detectChanges();
 				});
-		} else if (/\./.test(measure)) {
-			this.measureName = this.translateService.instant(measure);
-		} else {
-			this.measureName = measure;
 		}
 	}
 }

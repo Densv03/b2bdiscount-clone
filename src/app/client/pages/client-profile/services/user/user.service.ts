@@ -106,12 +106,19 @@ export class UserService {
 		return this._apiService.put(url, password);
 	}
 
-	public deleteUserById(id: any) {
+	public deleteUserById(id: string) {
 		return this._apiService.delete(`user/${id}/delete`);
+	}
+
+	public permanentDeleteUserById(id: string): Observable<ArrayBuffer> {
+		return this._apiService.delete(`admin/permanent-account-deletion/${id}`);
 	}
 
 	public deleteUser(body?: any) {
 		return this._apiService.delete(`user/deleteAccount`, body);
+	}
+	public deleteUserLogo(): Observable<any> {
+		return this._apiService.delete('user/delete-user-logo');
 	}
 
 	public addUserStatistics({

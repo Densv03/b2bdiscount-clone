@@ -6,7 +6,7 @@ import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { MatDialogRef } from '@angular/material/dialog';
-import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only-latin-numbers-symbols';
 
 @Component({
 	selector: 'b2b-client-profile-billing-dialog',

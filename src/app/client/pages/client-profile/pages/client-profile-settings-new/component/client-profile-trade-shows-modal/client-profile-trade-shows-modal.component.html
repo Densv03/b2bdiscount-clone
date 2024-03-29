@@ -1,0 +1,85 @@
+<b2b-client-profile-modal-container (close)="onDismiss()"
+																		[label]="'Add ' + (tradeShow.type | titlecase) + ' exhibition'"
+																		class="md:max-w-[70vw] max-h-screen overflow-y-auto">
+	<form (ngSubmit)="onSubmit()"
+				[formGroup]="form"
+				class="flex flex-col gap-4 md:mb-0 mb-12">
+		<div class="flex flex-col">
+			<input [formControlName]="'title'" [label]="'Exhibition name'" [placeholder]="'Exhibition name'"
+						 [version]="NgxInputVersionEnum.GLOBY" b2bNgxInput
+						 type="text">
+			@if (title?.errors?.['minlength']) {
+				<mat-error>Your title is too short. Min length is 10 symbols</mat-error>
+			}
+			@if (title?.errors?.['maxlength']) {
+				<mat-error>Your title is too long. Min length is 40 symbols</mat-error>
+			}
+			@if (title?.errors?.['required']) {
+				<mat-error>This field is required</mat-error>
+			}
+			@if (title?.errors?.['cyrillic']) {
+				<mat-error>You can use only latin symbols</mat-error>
+			}
+		</div>
+		<div class="flex flex-col">
+		<textarea [formControlName]="'description'" [label]="'Event description'" [placeholder]="'Event description'"
+							[version]="NgxInputVersionEnum.GLOBY"
+							b2bNgxInput></textarea>
+			@if (description?.errors?.['minlength']) {
+				<mat-error>Your description is too short. Min length is 40 symbols</mat-error>
+			}
+			@if (description?.errors?.['maxlength']) {
+				<mat-error>Your description is too long. Min length is 1000 symbols</mat-error>
+			}
+			@if (description?.errors?.['required']) {
+				<mat-error>This field is required</mat-error>
+			}
+			@if (description?.errors?.['cyrillic']) {
+				<mat-error>You can use only latin symbols</mat-error>
+			}
+		</div>
+		<div class="flex flex-col gap-2 w-full">
+			<span class="font-semibold text-sm">{{ tradeShow.type | titlecase }} period</span>
+			<div class="flex flex-col md:flex-row gap-2">
+				<b2b-datepicker
+					[label]="'Date from'"
+					[today]="today"
+					[version]="NgxInputVersionEnum.GLOBY"
+					class="md:w-1/2"
+					formControlName="startedAt"
+					inputClassName="datepicker">
+					Date from
+				</b2b-datepicker>
+				<b2b-datepicker
+					[label]="'Date to'"
+					[today]="today"
+					[version]="NgxInputVersionEnum.GLOBY"
+					class="md:w-1/2"
+					formControlName="endedAt"
+					inputClassName="datepicker">
+					Date to
+				</b2b-datepicker>
+			</div>
+		</div>
+		<div class="flex flex-col gap-2">
+			<globy-file [buttonLabel]="'Choose photos'"
+									[customListClass]="'grid-cols-2 md:grid-cols-5 lg:grid-cols-7'"
+									[description]="fileUploadDescription"
+									[formControlName]="'images'"
+									[handleItem]="handleImage"
+									[maxFileWeight]="5"
+									[multiple]="true"
+									[showResulList]="true"
+									class="h-fit"/>
+		</div>
+		<div class="flex flex-row justify-center items-center">
+			<button
+				[disabled]="form.invalid"
+				b2bNgxButton
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				type="submit">
+				Save changes
+			</button>
+		</div>
+	</form>
+</b2b-client-profile-modal-container>

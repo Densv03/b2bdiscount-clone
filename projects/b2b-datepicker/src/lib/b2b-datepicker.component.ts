@@ -1,4 +1,4 @@
-import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from "@angular/core";
+import {Component, forwardRef, Input, OnInit} from "@angular/core";
 import {
 	CalendarHeaderComponent
 } from "projects/b2b-datepicker/src/lib/components/calendar-header/calendar-header.component";
@@ -14,7 +14,8 @@ import {
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from "@angular/material-moment-adapter";
-import {fromEvent, map, Observable, of, startWith, tap} from "rxjs";
+import {fromEvent, map, Observable, startWith} from "rxjs";
+import {NgxInputVersionEnum} from "projects/ngx-input/src/lib/enum/ngx-input-version.enum";
 
 interface IconPosition {
 	top: string;
@@ -42,13 +43,13 @@ const MY_DATE_FORMATS = {
 	styleUrls: ['./b2b-datepicker.component.scss'],
 	providers: [
 		{
-		provide: DateAdapter,
-		useClass: MomentDateAdapter,
-		deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-	},
-	{
-		provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS
-	},
+			provide: DateAdapter,
+			useClass: MomentDateAdapter,
+			deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+		},
+		{
+			provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS
+		},
 		{
 			provide: NG_VALUE_ACCESSOR,
 			useExisting: forwardRef(() => B2bDatepickerComponent),
@@ -67,16 +68,21 @@ export class B2bDatepickerComponent implements OnInit, ControlValueAccessor, Val
 	@Input() iconName?: string;
 	@Input() iconPosition?: Partial<IconPosition>;
 	@Input() customHeader?: ComponentType<any> = CalendarHeaderComponent;
+	@Input() today = new Date();
+	@Input() version = NgxInputVersionEnum.B2B;
+	@Input() label: string;
+
 	public mobileSize$: Observable<boolean>;
-	
 	public datePicker = new FormControl(null);
-	public today = new Date();
 	private onChange: (value: Date) => void;
 	private onTouched: () => void;
 
+	get classPrefix() {
+		return this.version === NgxInputVersionEnum.B2B ? '' : 'globy-'
+	}
 
 	ngOnInit(): void {
-		this.mobileSize$ = fromEvent(window, 'resize').pipe(startWith( 600 > window.innerWidth),
+		this.mobileSize$ = fromEvent(window, 'resize').pipe(startWith(600 > window.innerWidth),
 			map(() => 600 > window.innerWidth));
 
 		this.onChange = () => null;

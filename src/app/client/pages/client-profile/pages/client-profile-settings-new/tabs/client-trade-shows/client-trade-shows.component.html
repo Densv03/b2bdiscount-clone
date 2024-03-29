@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-8">
+	<div class="description__border rounded-md p-3 font-secondary text-sm text-black">
+		List the trade shows in which you have participated or plan to participate in the future. For each trade show, you
+		need to add photos of your activity to the exhibition. Mentioning your activities at trade shows can help your
+		business gain trust from potential buyers.
+	</div>
+	<div class="flex flex-col gap-6">
+		@for (section of tradeShowSections; track $index) {
+			<div class="flex flex-row gap-5 items-center justify-start">
+				<div class="text-lg font-medium w-28">{{ section.label }}</div>
+				<button b2bNgxButton
+								(click)="openModal({type: section.type})"
+								class="!bg-[#EEEEEE] rounded-md px-3 py-1 text-sm flex flex-row items-center justify-start">
+					<mat-icon class="scale-75">add</mat-icon>
+					<span>{{ section.button | titlecase }}</span>
+				</button>
+			</div>
+			@defer (when clientTradeShowService.tradeShows$ | async) {
+				<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+					@for (show of clientTradeShowService.tradeShows$ | async; track $index) {
+						@if (show.type === section.type) {
+							<b2b-client-profile-trade-show-card [tradeShow]="show"/>
+						}
+					}
+				</div>
+			} @loading (minimum 300ms) {
+				<div class="flex flex-row justify-center items-center">
+					<mat-spinner diameter="24"></mat-spinner>
+				</div>
+			}
+			@if ($index === 0) {
+				<div class="section__border"></div>
+			}
+		}
+	</div>
+</div>

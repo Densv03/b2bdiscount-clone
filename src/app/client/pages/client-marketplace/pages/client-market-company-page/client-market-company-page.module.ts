@@ -13,6 +13,14 @@ import { B2bNgxSkeletonModule } from '@b2b/ngx-skeleton';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ClientMarketCompanyPagePhoneDialogComponent } from './components/client-market-company-page-phone-dialog/client-market-company-page-phone-dialog.component';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { CompanyShippingInfoComponent } from './components/company-shipping-info/company-shipping-info.component';
+import { CompanyDocumentsComponent } from './components/company-documents/company-documents.component';
+import { CompanyCertificatesComponent } from './components/company-certificates/company-certificates.component';
+import { CompanyAdvantagesComponent } from './components/company-advantages/company-advantages.component';
+import {
+    ClientProfileImageContainerComponent
+} from "../../../client-profile/pages/client-profile-settings-new/component/client-profile-image-container/client-profile-image-container.component";
 
 const routes: Routes = [
 	{ path: '', component: ClientMarketCompanyPageComponent },
@@ -24,18 +32,24 @@ const routes: Routes = [
 		CompanyContactCardComponent,
 		ClientMarketCompanyPagePhoneDialogComponent,
 	],
-	imports: [
-		CommonModule,
-		RouterModule.forChild(routes),
-		B2bNgxIconModule,
-		B2bNgxImageModule,
-		MatTabsModule,
-		MarketCompanyInformationModule,
-		MarketCompanyProductsModule,
-		B2bNgxButtonModule,
-		B2bNgxSkeletonModule,
-		MatButtonModule,
-		MatDialogModule,
-	],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        B2bNgxIconModule,
+        B2bNgxImageModule,
+        MatTabsModule,
+        MarketCompanyInformationModule,
+        MarketCompanyProductsModule,
+        B2bNgxButtonModule,
+        B2bNgxSkeletonModule,
+        MatButtonModule,
+        MatDialogModule,
+        SvgIconComponent,
+        CompanyShippingInfoComponent,
+        CompanyDocumentsComponent,
+        CompanyCertificatesComponent,
+        CompanyAdvantagesComponent,
+        ClientProfileImageContainerComponent,
+    ],
 })
 export class ClientMarketCompanyPageModule {}

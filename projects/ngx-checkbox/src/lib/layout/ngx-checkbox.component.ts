@@ -1,16 +1,7 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	EventEmitter,
-	forwardRef,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { idGenerator } from "@b2b/id-generator";
-import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from "@angular/forms";
+import { ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from "@angular/forms";
+import { NgxInputVersionEnum } from "projects/ngx-input/src/lib/enum/ngx-input-version.enum";
 // TODO: uncomment code below when libs will be inserted in b2b
 // import { FormControl } from "@ngneat/reactive-forms";
 // import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
@@ -35,11 +26,12 @@ import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, Val
 	],
 })
 export class B2bNgxCheckboxComponent implements ControlValueAccessor, OnInit, OnChanges {
-	@Input() public  placeholder: string = '';
+	@Input() public placeholder: string = '';
 	@Input() public checked: boolean = false;
 	@Input() public customClass: string = ''
 	@Input() public customIconClass: string;
 	@Input() public errors: ValidationErrors | null = {};
+	@Input() public version: NgxInputVersionEnum = NgxInputVersionEnum.B2B
 
 	@Output() checkboxChange: EventEmitter<Event> = new EventEmitter<Event>();
 
@@ -60,6 +52,10 @@ export class B2bNgxCheckboxComponent implements ControlValueAccessor, OnInit, On
 		this.id = idGenerator();
 	}
 
+	get classPrefix() {
+		return this.version === NgxInputVersionEnum.B2B ? '' : 'globy-'
+	}
+
 	public get error(): string {
 		if (!this.errors) {
 			return "";
@@ -78,6 +74,10 @@ export class B2bNgxCheckboxComponent implements ControlValueAccessor, OnInit, On
 		if (changes['errors']) {
 			this.formControl.setErrors(changes['errors'].currentValue);
 		}
+	}
+
+	public checkboxClass(className: string) {
+		return this.classPrefix + className;
 	}
 
 	public validate(): ValidationErrors | null {

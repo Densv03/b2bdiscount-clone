@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { B2bNgxButtonThemeEnum } from 'projects/ngx-button/src/public-api';
 import { B2bNgxLinkThemeEnum } from 'projects/ngx-link/src/public-api';
-import { combineLatest, filter, mergeMap, Subject } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, mergeMap, Subject } from 'rxjs';
 import { OffersService } from '../../../../../../src/app/client/services/offers/offers.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { ApiService } from '../../../../../../src/app/core/services/api/api.service';
@@ -153,6 +153,7 @@ export class AdminSourcingRequestComponent implements OnInit {
 					category: { name: any }[];
 					destination: { to: any };
 					amount: { count: any };
+					user: string;
 				}) => {
 					this.adminSourcingRequestService
 						.approveOffer(offer._id)
@@ -161,6 +162,7 @@ export class AdminSourcingRequestComponent implements OnInit {
 							this.forceSubject.next(true);
 							this._hotToastrService.success('approved');
 							this.mixpanelService.track('New RFQ approved', {
+								distinctId: offer.user,
 								'Product Sector': offer.category[0].name,
 								Destination: getName(offer.destination.to),
 								'Approving Date': Date(),
@@ -197,23 +199,39 @@ export class AdminSourcingRequestComponent implements OnInit {
 								this.adminSourcingRequestService
 									.declineOffer(offer._id, message)
 									.pipe(untilDestroyed(this))
-									.subscribe(() => {
+									.subscribe(async () => {
 										this.sendMessage(offer.user, offer._id, message);
 										this.closeConnection();
 										this.forceSubject.next(true);
 										this._hotToastrService.success('declined');
-										this.mixpanelService.track('Product declined', {
-											'Product Category': offer?.category?.name,
-											"Supplier's Country": getName(offer?.destination?.to),
-											'Product Count': offer?.amount?.count,
-											'Deletion Date': Date(),
-										});
+										await this.trackDecline(offer);
 									});
 							}
 						});
 				},
 			},
 		];
+	}
+
+	private trackDecline(offer: {
+		user: any;
+		_id: string;
+		category: { name: any };
+		destination: { to: any };
+		amount: { count: any };
+	}) {
+		setTimeout(async () => {
+			const user = await firstValueFrom(
+				this._usersService.getUserById(offer.user)
+			);
+			this.mixpanelService.track('Product declined', {
+				'Product Category': offer?.category?.name,
+				"Supplier's Country": getName(offer?.destination?.to),
+				'Product Count':
+					user?.statistics?.products?.approved ?? offer?.amount?.count,
+				'Deletion Date': new Date(),
+			});
+		}, 1000);
 	}
 
 	openConnection() {

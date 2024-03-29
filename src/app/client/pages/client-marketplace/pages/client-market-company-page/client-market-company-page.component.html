@@ -1,78 +1,148 @@
 <ng-container *ngIf="companyInfo$ | async as companyInfo; else skeleton">
 	<div class="company">
-		<div class="main">
-			<div class="header">
-				<div class="logo">
-					<img
-						*ngIf="companyInfo?.logo?.path"
-						b2bNgxImage
-						[name]="companyInfo?.logo?.path"
-						alt="logo" />
+		@if (companyInfo?.banner) {
+			<img
+				[src]="environment.apiUrl + companyInfo.banner.path"
+				alt="company-banner"
+				class="company__banner"/>
+		}
+
+		<div
+			[class.no-banner]="!companyInfo?.banner"
+			[class.negative-margin]="companyInfo.logo"
+			class="container">
+			@if (companyInfo.logo && companyInfo.banner) {
+				<div *ngIf="companyInfo.logo"
+						 class="company__logo">
+					<b2b-client-profile-image-container class="!h-52"
+																							[hideButtons]="true"
+																							[path]="companyInfo?.logo?.path"/>
 				</div>
-				<div class="description">
-					<h1 class="title">{{ companyInfo.companyName }}</h1>
-					<div class="location">
-						<div class="country-image">
-							<img
-								b2bNgxIcon
-								group="flags/"
-								[name]="companyInfo.country | uppercase"
-								class="country-icon" />
+			}
+
+			<div class="company__header">
+				<div class="company__header-text">
+					<div class="company__header-body">
+						@if (!companyInfo?.banner && companyInfo.logo) {
+							<b2b-client-profile-image-container class="aspect-square"
+																									[hideButtons]="true"
+																									[path]="companyInfo?.logo?.path"/>
+						}
+						<div class="subtext">
+							<h1 class="company__name">{{ companyInfo.companyName }}</h1>
+							@if (supplierProductsAmount$ | async; as supplierProductsAmount) {
+								<a
+									[routerLink]="'/b2bmarket/supplier-listing/' + companyInfo.user"
+									class="company__products">
+									{{supplierProductsAmount + (supplierProductsAmount > 1 ? ' products' : ' product')}}
+								</a>
+							}
 						</div>
-						<div class="country">{{ getCountryName(companyInfo.country) }}</div>
-						<div class="divider">.</div>
-						<div class="type">{{ businessType$ | async }}</div>
 					</div>
+					<div #description class="company__description">
+						<div
+							[class.long-text]="
+								companyDescriptionIsLong &&
+								(showDescriptionViewButton$ | async) === 'more'
+							"
+							class="content">
+							{{ companyInfo.companyDescription }}
+						</div>
+					</div>
+					<ng-container
+						*ngIf="
+							showDescriptionViewButton$ | async as showDescriptionViewButton
+						">
+						<button
+							(click)="changeShowDescriptionState(showDescriptionViewButton)"
+							class="description-button">
+							{{
+								showDescriptionViewButton === 'more' ? 'View all' : 'View less'
+							}}
+							<svg
+								[class.rotated-arrow]="showDescriptionViewButton === 'less'"
+								width="16"
+								height="16"
+								viewBox="0 0 16 16"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M12 6.66675L8 10.6667L4 6.66675"
+									stroke="#2F384C"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round"/>
+							</svg>
+						</button>
+					</ng-container>
+				</div>
+				<div class="company__header-share">
+					@if (platformService.isBrowser) {
+						<svg-icon
+							(click)="copyLink()"
+							class="social-btn"
+							src="/assets/icons/company-page/share-btn.svg"></svg-icon>
+					}
+					<!--					<svg-icon-->
+					<!--						class="social-btn"-->
+					<!--						src="/assets/icons/company-page/save-btn.svg"></svg-icon>-->
 				</div>
 			</div>
-			<div class="tabs">
-				<mat-tab-group mat-align-tabs="start">
-					<mat-tab label="Information">
+		</div>
+		<div class="company__navigation">
+			@for (item of navigationOptions; let i = $index; track item.label) {
+				@if (item.existInCompanyInfo(companyInfo)) {
+					<div
+						[class.active]="i === activeNavigationIndex"
+						(click)="scrollToSection(i)"
+						class="company__navigation-item">
+						{{ item.label }}
+					</div>
+				}
+			}
+		</div>
+
+		<div class="container">
+			<div class="company__body">
+				<div class="company__content">
+					<section id="section1" class="company__information">
 						<b2b-market-company-information
 							[companyInfo]="companyInfo"></b2b-market-company-information>
-					</mat-tab>
-					<mat-tab label="Products">
+					</section>
+
+					<section id="section2" class="company__information">
 						<b2b-company-products
 							[userId]="companyInfo.user"></b2b-company-products>
-					</mat-tab>
-				</mat-tab-group>
+					</section>
 
-				<div class="mobile-contact">
-					<a
-						(click)="openPhoneModal(companyInfo)"
-						class="phone-button"
-						b2bNgxButton
-						[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
-						>Phone</a
-					>
+						<section id="section3" class="company__information">
+							<b2b-company-shipping-info [companyInfo]="companyInfo"></b2b-company-shipping-info>
+						</section>
 
-					<a
-						*ngIf="companyInfo.website"
-						target="_blank"
-						[href]="checkCompanySiteForValid(companyInfo.website)"
-						class="website-button"
-						b2bNgxButton
-						[theme]="b2bNgxButtonThemeEnum.OUTLINE_BLACK"
-						>Website</a
-					>
+					@if (companyInfo.documents.length) {
+						<section id="section4" class="company__information">
+							<b2b-company-documents
+								[documents]="companyInfo.documents"></b2b-company-documents>
+						</section>
+					}
 
-					<button
-						*ngIf="companyInfo.user !== user?._id"
-						(click)="openChat($event, companyInfo.user)"
-						class="contact-button"
-						b2bNgxButton
-						[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-						<img b2bNgxIcon name="chat-white" />
-						<span>Contact Supplier</span>
-					</button>
+					<!--					<section id="section5" class="company__information">-->
+					<!--						<b2b-company-certificates></b2b-company-certificates>-->
+					<!--					</section>-->
+
+										<section id="section6" class="company__information">
+											<b2b-company-advantages [advantages]="companyInfo.advantages"></b2b-company-advantages>
+										</section>
+				</div>
+				<div class="company__contacts">
+					<b2b-company-contact-card
+						[companyInfo]="companyInfo"></b2b-company-contact-card>
 				</div>
 			</div>
 		</div>
-		<div class="contact">
-			<b2b-company-contact-card
-				[companyInfo]="companyInfo"></b2b-company-contact-card>
-		</div>
 	</div>
+
+
 </ng-container>
 
 <ng-template #skeleton>

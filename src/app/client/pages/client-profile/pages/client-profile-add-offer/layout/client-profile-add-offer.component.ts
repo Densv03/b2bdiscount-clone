@@ -39,7 +39,7 @@ import { DocumentExtensions } from '../../../../../../core/add-offer/document-ex
 import { onlyLatin } from '../../../../../../core/helpers/validator/only-latin';
 import { onlyNumber } from '../../../../../../core/helpers/validator/only-number';
 import { GetUrlExtension } from '../../../../../../core/helpers/function/get-url-extension';
-import { onlyLatinAndNumberAndSymbols } from '../../../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { SourcingRequestService } from '../../../../client-sourcing-request/sourcing-request.service';
 import { getOfferFormData } from '../get-offer-form-data';
 import { Dialog } from '@angular/cdk/dialog';
@@ -418,18 +418,22 @@ export class ClientProfileAddOfferComponent
 	}
 
 	async trackCargoPosted(formGroup: FormGroup) {
-		const category = await firstValueFrom(
-			this._categoriesService
-				.getCategoryNameById(formGroup.value.level2Category)
-				.pipe(first())
-		);
+		const [category] = await Promise.all([
+			firstValueFrom(this.getCategory(formGroup.value.level2Category)),
+		]);
 		this.mixpanelService.track('Unclaimed cargo posted', {
-			'Product Sector': category,
+			'Product category': category,
 			Destination: [
 				getName(formGroup.value.destinationFrom),
 				getName(formGroup.value.destinationTo),
 			],
 		});
+	}
+
+	getCategory(categoryId: string) {
+		return this._categoriesService
+			.getCategoryNameById(categoryId)
+			.pipe(first());
 	}
 
 	public openDocument(ev: any): void {

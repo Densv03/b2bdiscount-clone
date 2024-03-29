@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
 import { SourcingRequestService } from '../../../client-sourcing-request/sourcing-request.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {
 	BehaviorSubject,
 	finalize,
@@ -20,13 +20,11 @@ import {
 	Observable,
 	of,
 } from 'rxjs';
-import { first, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, first, map, switchMap, take, tap } from 'rxjs/operators';
 import { UnitsService } from '../../../../services/units/units.service';
-import { MatDialog } from '@angular/material/dialog';
 import { capitalizeFirstLetter } from '../../../../../core/helpers/function/capitalize-first-letter';
 import { UserService } from '../../../client-profile/services/user/user.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
@@ -35,76 +33,81 @@ import { AuthService } from 'src/app/auth/services/auth/auth.service';
 import { PlatformService } from '../../../../services/platform/platform.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PortsService } from '../../../../services/ports/ports.service';
-import { TreeviewConfig } from '@b2b/ngx-treeview';
 import { PublicCompanyInfoModel } from '../../../../../core/models/public-company-info.model';
 import { MarketProductModel } from '../../models/market-product.model';
-import { PortsQuery } from '../../../../state/ports/ports.query';
 import { onlyNumber } from '../../../../../core/helpers/validator/only-number';
-import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only-latin-numbers-symbols';
+import { PriceTypeEnum } from '../../../../shared/enums/price-type.enum';
+import moment from 'moment';
+import { Unit } from '../../../../../core/models/unit.model';
+import { certificationNames } from '../../../../../core/helpers/constant/certification-names';
+import { timeSpan } from '../../../../../core/helpers/constant/time-span';
+import { DOCUMENT } from '@angular/common';
+import { fadeInOutAnimation } from "../../shared/animations/fade-in-out.animation";
 
 @UntilDestroy()
 @Component({
 	selector: 'b2b-client-marketplace-add-product',
 	templateUrl: './client-marketplace-add-product.component.html',
 	styleUrls: ['./client-marketplace-add-product.component.scss'],
-	animations: [
-		trigger('fadeInOut', [
-			transition(':enter', [
-				// :enter is alias to 'void => *'
-				style({ opacity: 0 }),
-				animate(500, style({ opacity: 1 })),
-			]),
-			transition(':leave', [
-				// :leave is alias to '* => void'
-				animate(500, style({ opacity: 0 })),
-			]),
-		]),
-	],
+	animations: [fadeInOutAnimation],
 })
 export class ClientMarketplaceAddProductComponent implements OnInit {
-	// @ViewChildren('productInformation', 'photos', 'additionalInfo') sectionList: QueryList<ElementRef>;
-
 	public formGroup: FormGroup;
+	public certificatesData: FormGroup;
 	public formState: { [key: string]: AbstractControl };
-	public selectedCategoriesFromModal: BehaviorSubject<string[]> =
-		new BehaviorSubject<string[]>([]);
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public unit$: Observable<any>;
-	public isDragged: boolean = false;
+	public maximumUnitQuantity$: Observable<any>;
 	public buttonLength: string = 'No file chosen';
 	public images: string[] = Array.from(
 		{ length: 5 },
-		() => 'assets/icons/no-image-icon.svg'
+		() => 'assets/icons/no-image-icon.svg',
 	);
+	public priceUnits$ = this.getUnit(1);
 	public product: MarketProductModel;
 	public isView: boolean = false;
 	public areas = new FormControl(false);
 	public shippings = new FormControl(false);
 	public payments = new FormControl(false);
 	public portsItems: { country: string; ports: any[] }[] = [];
-	public config: TreeviewConfig = TreeviewConfig.create({
-		hasAllCheckBox: false,
-		hasFilter: false,
-		hasCollapseExpand: false,
-		decoupleChildFromParent: false,
-		maxHeight: 400,
-	});
+	public selectedPortCountries: string[] = [];
+
 	public level1Categories$: Observable<any[]>;
 	public level2Categories: any[];
-	public company: PublicCompanyInfoModel;
+	public company: BehaviorSubject<PublicCompanyInfoModel> = new BehaviorSubject<PublicCompanyInfoModel>(null);
 	public readonly shippingMethods = this.getArrayForSelect(
-		this.clientMarketplaceService.shippingMethods
+		this.clientMarketplaceService.shippingMethods,
 	);
 	public readonly paymentMethods = this.getArrayForSelect(
-		this.clientMarketplaceService.paymentMethods
+		this.clientMarketplaceService.paymentMethods,
 	);
 	public tradingAreas = this.getArrayForSelect([
 		'Domestic market',
 		'International market',
 	]);
 	public user = this.userService.getUser();
+	public priceType = Object.values(PriceTypeEnum).filter(
+		(value) => typeof value === 'string',
+	);
+	public priceTypeEnum = PriceTypeEnum;
+	public certificationStringArray: string[] = [];
+	public certificationNames = certificationNames.map((el) => ({
+		_id: el,
+		displayName: el,
+	}));
+	public tooltipClass: string;
+	public showCertificationHint: boolean = false;
+	public hintText: string;
+	public useInputForCertificationName: boolean = false;
+	public productionCapacityTimeSpanOptions = timeSpan.map((el) => ({
+		_id: el,
+		displayName: el,
+	}));
+	public isValidCertificateForm: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 
 	private isBadgeInvalidSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
@@ -113,14 +116,17 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	public currentClear: number = 0;
 	public isRequestPending: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
-
 	private files: File[] = Array.from({ length: 5 }, () => null);
 	private hideLabelSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
+	public countryOptions$: Observable<any[]>;
 	private selectedPaymentMethods: string[] = [];
 	private selectedTradingAreas: string[] = [];
 	private selectedShippingMethods: string[] = [];
-	private unitName: string;
+	private priceUnitName: Unit;
+	private productionCapacityUnitName: Unit;
+	private samplesInfoMeasure: string;
+	private certificationArray: any[] = [];
 
 	constructor(
 		private unitsService: UnitsService,
@@ -134,8 +140,10 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		private readonly mixpanelService: MixpanelService,
 		private authService: AuthService,
 		private platformService: PlatformService,
-		private readonly portsService: PortsService
-	) {}
+		private readonly portsService: PortsService,
+		@Inject(DOCUMENT) private document: Document,
+	) {
+	}
 
 	@HostListener('window:resize', ['$event'])
 	private onResize(): void {
@@ -162,7 +170,9 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			this.onResize();
 			this.updateIsBadgeInvalidSource();
 		}
+		this.countryOptions$ = this.getCountryOptions();
 		this.categoriesService.getCategories$();
+		this.patchForm();
 	}
 
 	public get hideLabel$(): Observable<boolean> {
@@ -177,6 +187,12 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		const currentGroup = this.specificationList.at(index);
 		this.specificationList.removeAt(index);
 		this.specificationList.insert(index - 1, currentGroup);
+	}
+
+	public addCertificateName(): void {
+		this.showCertificationHint = true;
+		this.tooltipClass = 'section-title';
+		this.useInputForCertificationName = true;
 	}
 
 	public moveRowDown(index: number): void {
@@ -201,19 +217,56 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		this.specificationList.push(specificationList);
 	}
 
+	public addCertificationFields(): void {
+		if (this.showCertificationHint) {
+			this.showCertificationHint = false;
+		}
+
+		const certificatesData = {
+			...this.certificatesData.value,
+			issueDate: moment(this.certificatesData.value.issueDate).format(
+				'yyyy-MM-DD',
+			),
+			dateValidTo: moment(this.certificatesData.value.dateValidTo).format(
+				'yyyy-MM-DD',
+			),
+			name: this.certificatesData.value.certificateName,
+			logo: this.setLogoName(this.certificatesData.value.certificateName),
+		};
+
+		this.certificationArray.push(certificatesData);
+		this.certificationStringArray.push(
+			Object.values(this.certificatesData.value).join('/ '),
+		);
+		this.formGroup.markAsDirty();
+		this.certificatesData.reset(null);
+	}
+
+	public removeChip(index: number): void {
+		this.certificationStringArray.splice(index, 1);
+		this.certificationArray.splice(index, 1);
+	}
+
 	public movePortsRowUp(index: number): void {
-		if (this.ports.length - 1 === index) {
+		if (0 === index) {
 			return;
 		}
+		const item = this.portsItems[index];
+		this.portsItems[index] = this.portsItems[index - 1];
+		this.portsItems[index - 1] = item;
 		const currentGroup = this.ports.at(index);
 		this.ports.removeAt(index);
 		this.ports.insert(index - 1, currentGroup);
 	}
 
 	public movePortsRowDown(index: number): void {
-		if (index === 0) {
+		if (index === this.ports.length - 1) {
 			return;
 		}
+		const item = this.portsItems[index];
+		this.portsItems[index] = this.portsItems[index + 1];
+		this.portsItems[index + 1] = item;
+
 		const currentGroup = this.ports.at(index);
 		this.ports.removeAt(index);
 		this.ports.insert(index + 1, currentGroup);
@@ -221,6 +274,14 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 	public deletePortsRow(index: number): void {
 		this.ports.removeAt(index);
+		this.selectedPortCountries.splice(
+			this.selectedPortCountries.findIndex(
+				(el) => el === this.portsItems[index].country,
+				1,
+			),
+		);
+		this.filterCountryOptions();
+		this.portsItems.splice(index, 1);
 	}
 
 	public addPortsField(): void {
@@ -240,36 +301,47 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		}
 
 		const newImages = Array.from(files);
-		const format = ['svg', 'jpg', 'png', 'webp', 'jpeg', 'bmp'];
+		const format = ['svg', 'jpg', 'png', 'webp', 'jpeg', 'bmp', 'image/jpeg'];
 
 		newImages.forEach((file, index) => {
 			if (
 				format.includes(
-					file.name?.split('.')[file.name?.split('.').length - 1]
+					file.name?.split('.')[file.name?.split('.').length - 1].toLowerCase(),
 				) ||
-				format.includes(file?.type)
+				format.includes(file?.type.toLowerCase())
 			) {
 				const fileReader = new FileReader();
 				fileReader.readAsDataURL(file);
 				if (this.files.some((el) => el?.name === file.name)) {
 					this.hotToastService.error(
-						`Image with name ${file.name} is already exist`
+						`Image with name ${file.name} is already exist`,
 					);
 				} else {
 					fileReader.onload = (): void => {
 						if (typeof fileReader.result === 'string') {
 							const index = this.images.findIndex(
-								(item) => item === 'assets/icons/no-image-icon.svg'
+								(item) => item === 'assets/icons/no-image-icon.svg',
 							);
 							if (index !== -1) {
 								this.images[index] = fileReader.result;
 								this.files[index] = file;
 							} else {
-								this.images.pop();
-								this.images.unshift(fileReader.result);
+								if (
+									(this.images.every(
+											(el) => el === 'assets/icons/no-image-icon.svg',
+										) &&
+										this.images.length <= 5) ||
+									this.images.length > 7
+								) {
+									this.images.pop();
+									this.images.unshift(fileReader.result);
 
-								this.files.pop();
-								this.files.unshift(file);
+									this.files.pop();
+									this.files.unshift(file);
+								} else {
+									this.images.push(fileReader.result);
+									this.files.push(file);
+								}
 							}
 						}
 						this.formGroup.patchValue({
@@ -285,10 +357,11 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 	public deleteImage(index: number): void {
 		this.images.splice(index, 1);
-
 		this.files.splice(index, 1);
-		this.images.push('assets/icons/no-image-icon.svg');
-		this.files.push(null);
+		if (this.images.length < 5) {
+			this.images.push('assets/icons/no-image-icon.svg');
+			this.files.push(null);
+		}
 		if (this.files.every((file) => file === null)) {
 			this.files = [];
 		}
@@ -301,50 +374,59 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		this.formGroup.patchValue({ photos: this.files });
 	}
 
-	public setPaymentMethod(event: Event, value: string): void {
-		if ((event.target as HTMLInputElement).checked) {
+	public setPaymentMethod(value: string, event?: Event, newValue?: boolean): void {
+		if ((event?.target as HTMLInputElement)?.checked || newValue) {
 			this.selectedPaymentMethods.push(value);
+			this.paymentMethods.find((el) => el.value === value).checked = true;
 		} else {
 			const index = this.selectedPaymentMethods.indexOf(value);
 			this.selectedPaymentMethods.splice(index, 1);
 		}
 		this.formGroup.patchValue(
 			{ paymentMethods: this.selectedPaymentMethods },
-			{ emitEvent: false }
+			{ emitEvent: false },
 		);
 	}
 
-	public setTradingArea(event: Event, value: string): void {
-		if ((event.target as HTMLInputElement).checked) {
+	public setTradingArea(value: string, event?: Event, newValue?: boolean): void {
+		if ((event?.target as HTMLInputElement)?.checked || newValue) {
 			this.selectedTradingAreas.push(value);
+			this.tradingAreas.find((el) => el.value === value).checked = true;
 		} else {
 			const index = this.selectedTradingAreas.indexOf(value);
 			this.selectedTradingAreas.splice(index, 1);
 		}
 		this.formGroup.patchValue(
 			{ tradingAreas: this.selectedTradingAreas },
-			{ emitEvent: false }
+			{ emitEvent: false },
 		);
 	}
 
-	public setShippingMethod(event: Event, value: string): void {
-		if ((event.target as HTMLInputElement).checked) {
+	public setShippingMethod(value: string, event?: Event, newValue?: boolean): void {
+		if ((event?.target as HTMLInputElement)?.checked || newValue) {
 			this.selectedShippingMethods.push(value);
+			this.shippingMethods.find((el) => el.value === value).checked = true;
 		} else {
 			const index = this.selectedShippingMethods.indexOf(value);
 			this.selectedShippingMethods.splice(index, 1);
 		}
 		this.formGroup.patchValue(
 			{ shipping: this.selectedShippingMethods },
-			{ emitEvent: false }
+			{ emitEvent: false },
 		);
 	}
 
-	public selectUnitName(event: any): void {
-		this.unitName =
-			this.formGroup.value?.amount > 1
-				? event.pluralDisplayName
-				: event.displayName;
+	public selectUnitName(event: Unit, controlName: string): void {
+		switch (controlName) {
+			case 'priceUnitName':
+				this.priceUnitName = event;
+				return;
+			case 'productionCapacityUnitName':
+				this.productionCapacityUnitName = event;
+				return;
+			default:
+				this.samplesInfoMeasure = event.name;
+		}
 	}
 
 	public selectCountry(index: number): void {
@@ -361,7 +443,9 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			.getPorts(country)
 			.pipe(untilDestroyed(this))
 			.subscribe((ports) => {
+				this.selectedPortCountries.push(country);
 				this.portsItems.splice(index, 0, { country: country, ports: ports });
+				this.filterCountryOptions();
 			});
 	}
 
@@ -369,7 +453,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		this.formGroup.reset();
 		this.images = Array.from(
 			{ length: 5 },
-			() => 'assets/icons/no-image-icon.svg'
+			() => 'assets/icons/no-image-icon.svg',
 		);
 
 		this.areas.setValue(false);
@@ -392,7 +476,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 		this.clientMarketplaceService
 			.createProduct(
-				this.getFormData(this.getBodyForRequest(this.formGroup, this.company))
+				this.getFormData(this.getBodyForRequest(this.formGroup, this.company.getValue())),
 			)
 			.pipe(
 				first(),
@@ -401,7 +485,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					success: 'Product created successfully',
 					error: 'Product creation failed',
 				}),
-				finalize(() => this.isRequestPending.next(false))
+				finalize(() => this.isRequestPending.next(false)),
 			)
 			.subscribe(async (result: any) => {
 				await this.trackCreation(result);
@@ -459,45 +543,82 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			});
 	}
 
-	private async trackCreation(result: any) {
+	private async trackCreation(result: any): Promise<void> {
+		const productCount =
+			this.userService.getUser()?.statistics?.products?.approved;
 		this.mixpanelService.track('New Product posted', {
 			'Product Category':
 				(await this.getCategoryName(this.formGroup.value.category)) ??
 				'undefined',
-			"Supplier's Country": getName(result.company[0].country),
-			'Product Count':
-				(await firstValueFrom(
-					this.clientMarketplaceService.getTotalProductsCount()
-				)) || 1,
+			'Supplier\'s Country': getName(result.company[0].country),
+			'Product Count': productCount,
 			'Posting Date': new Date(),
+		});
+		this.mixpanelService.set({
+			properties: {
+				'Product Count': productCount,
+			},
 		});
 	}
 
 	public preview(): void {
-		if (this.formGroup.invalid) {
-			this.formGroup.markAllAsTouched();
-			this.isBadgeInvalidSource.next(true);
-			return;
-		}
+		// if (this.formGroup.invalid) {
+		// 	this.formGroup.markAllAsTouched();
+		// 	this.isBadgeInvalidSource.next(true);
+		// 	return;
+		// }
 
 		const selectedPorts = this.portsItems.map((el: any, index: number) => {
 			return el.ports.filter((ports: { _id: any }) =>
-				this.formGroup.value.ports[index]?.portName.includes(ports._id)
+				this.formGroup.value.ports[index]?.portName.includes(ports._id),
 			);
 		});
 
 		this.product = {
 			...this.formGroup.value,
 			ports: this.formGroup.value.ports.some(
-				(el: { country: string }) => !!el.country
+				(el: { country: string }) => !!el.country,
 			)
 				? [].concat(...selectedPorts)
 				: [],
 			photosUrl: this.images.filter(
-				(el) => el !== 'assets/icons/no-image-icon.svg'
+				(el) => el !== 'assets/icons/no-image-icon.svg',
 			),
-			unit: this.formGroup.value.unit ? this.unitName : null,
+			certificates:
+				this.certificationArray?.length > 0 ? this.certificationArray : null,
+			samplesInfo:
+				this.formGroup.value.samplePrice &&
+				this.formGroup.value.samplesInfoMeasure
+					? {
+						samplePrice: this.formGroup.value.samplePrice,
+						maximumOrderQuantity: this.formGroup.value.maximumOrderQuantity,
+						measure: this.samplesInfoMeasure,
+					}
+					: null,
+			productCapacity: {
+				count: this.formGroup.value.productionCapacityCount,
+				unit: this.productionCapacityUnitName,
+				timeSpan: this.formGroup.value.productionCapacityTimeSpan,
+			},
+			selectedCategory: { _id: this.formGroup.value.category },
+			contact: { personName: this.user.fullName },
 		};
+
+		if (this.formGroup.value.priceType === PriceTypeEnum.FixedPrice) {
+			this.product.price = {
+				old: this.formGroup.value.price,
+				unit: this.priceUnitName,
+			};
+		} else if (this.formGroup.value.priceType === PriceTypeEnum.PriceRange) {
+			this.product.priceRange = {
+				minimum: this.formGroup.value.priceRangeMinimum,
+				maximum: this.formGroup.value.priceRangeMaximum,
+				unit: this.priceUnitName,
+			};
+		} else {
+			this.product.price = { old: this.formGroup.value.price };
+		}
+
 		this.isView = true;
 		setTimeout(() => {
 			this.smoothScrollToTop();
@@ -507,21 +628,39 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	public backToEditing(): void {
 		this.isView = false;
 		this.formGroup.controls['category'].enable();
-		this.formGroup.controls['unit'].enable();
 
 		this.paymentMethods.forEach(
 			(method) =>
-				(method.checked = this.selectedPaymentMethods.includes(method.value))
+				(method.checked = this.selectedPaymentMethods.includes(method.value)),
 		);
 		this.shippingMethods.forEach(
 			(method) =>
-				(method.checked = this.selectedShippingMethods.includes(method.value))
+				(method.checked = this.selectedShippingMethods.includes(method.value)),
 		);
 		this.tradingAreas.forEach(
-			(area) => (area.checked = this.selectedTradingAreas.includes(area.value))
+			(area) => (area.checked = this.selectedTradingAreas.includes(area.value)),
 		);
 
 		this.unit$ = this.getUnit(this.formGroup.value.amount);
+		this.maximumUnitQuantity$ = this.getUnit(this.formGroup.value.samplePrice, [
+			'item',
+			'kilogram',
+			'pack',
+			'set',
+			'liter',
+		]);
+		this.filterCountryOptions();
+	}
+
+	public getCountryOptions(): Observable<any[]> {
+		return this.portsService.getCountriesWithPorts().pipe(
+			map(codes => {
+				return codes.map(code => ({
+					label: getName(code),
+					icon: code.toUpperCase(),
+					code: code.toLowerCase(),
+				})).sort((a, b): number => a.label.localeCompare(b.label));
+			}));
 	}
 
 	public trackByFn = (_: number, value: AbstractControl): AbstractControl =>
@@ -531,7 +670,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 
 	private async getCategoryName(id: string): Promise<string> {
 		return await firstValueFrom(
-			this.categoriesService.getCategoryNameById(id).pipe(take(1), first())
+			this.categoriesService.getCategoryNameById(id).pipe(take(1), first()),
 		);
 	}
 
@@ -539,8 +678,7 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		const userInfo = this.userService.getUser();
 		return {
 			...data.value,
-			price: 1,
-			amount: data.value.amount,
+			amount: data.value?.amount,
 			paymentMethods: data.value.paymentMethods,
 			shipping: data.value.shipping,
 			suppliersType:
@@ -561,12 +699,28 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			contactPhoneDialCode: userInfo.phone.dialCode || company.phone.dialCode,
 			contactEmail: userInfo.email,
 			country: data.value.productOrigin,
+			priceRangeUnit:
+				data.value.priceType === PriceTypeEnum.PriceRange
+					? data.value.priceUnit
+					: null,
 			ports: data.value.ports.reduce(
 				(acc: string | any[], current: { portName: any }) =>
 					acc.concat(current.portName),
-				[]
+				[],
 			),
+			certificatesData:
+				this.certificationArray.length > 0 ? this.certificationArray : null,
 		};
+	}
+
+	private setLogoName(name: string): string {
+		if (this.certificationNames.some((el) => el.displayName === name)) {
+			return `./assets/icons/certificate-logos/${name
+				.split(' ')
+				.join('-')}.svg`;
+		} else {
+			return './assets/icons/certificate-logos/default.svg';
+		}
 	}
 
 	private createFormGroup(): void {
@@ -580,17 +734,24 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					onlyLatinAndNumberAndSymbols(),
 				],
 			],
-			amount: [null, onlyNumber()],
-			unit: [null],
+			priceType: [PriceTypeEnum.FixedPrice, Validators.required],
+			price: [null, [Validators.required, onlyNumber()]],
+			priceUnit: [null, Validators.required],
+			productionCapacityCount: [null, onlyNumber()],
+			productionCapacityUnit: [null],
+			productionCapacityTimeSpan: [null],
 			brandName: [null, onlyLatinAndNumberAndSymbols()],
 			productSector: [null, Validators.required],
 			category: [{ value: null, disabled: true }, Validators.required],
 			photos: [null, Validators.required],
 			visibilityPhotos: [true],
-			shipping: [null],
-			paymentMethods: [null],
-			tradingAreas: [null],
+			shipping: [null, Validators.required],
+			paymentMethods: [null, Validators.required],
+			tradingAreas: [null, Validators.required],
 			productOrigin: [null, Validators.required],
+			maximumOrderQuantity: [null],
+			samplesInfoMeasure: [null],
+			samplePrice: [null, onlyNumber()],
 			specificationList: this.formBuilder.array([
 				this.formBuilder.group({
 					specification: ['', onlyLatinAndNumberAndSymbols()],
@@ -603,6 +764,23 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					portName: [''],
 				}),
 			]),
+		});
+
+		this.certificatesData = this.formBuilder.group({
+			organization: [null],
+			certificateName: [null],
+			certificateNumber: [null],
+			issueDate: [null],
+			dateValidTo: [null],
+		});
+
+		this.certificatesData.valueChanges.subscribe((formGroup) => {
+			this.isValidCertificateForm.next(
+				!Object.values(formGroup).some(
+					(el) =>
+						el === null || moment(el).format('yyyy-MM-DD') === '1970-01-01',
+				),
+			);
 		});
 
 		this.formGroup.controls['photos'].valueChanges
@@ -625,28 +803,70 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					case 5:
 						this.buttonLength = 'Fife files chosen';
 						break;
-					default:
+					case 0:
 						this.buttonLength = 'No file chosen';
+						break;
+					default:
+						this.buttonLength = 'More than fife files chosen';
 						break;
 				}
 			});
 
-		this.unit$ = this.formGroup.controls['amount'].valueChanges.pipe(
+		this.unit$ = this.formGroup.controls[
+			'productionCapacityCount'
+			].valueChanges.pipe(
 			switchMap((amount) => {
 				if (amount) {
-					this.formGroup.get('unit').setValidators([Validators.required]);
-					this.formGroup.get('unit').updateValueAndValidity();
-					this.formGroup.get('unit').markAsTouched();
+					this.formGroup
+						.get('productionCapacityUnit')
+						.addValidators(Validators.required);
+					this.formGroup
+						.get('productionCapacityTimeSpan')
+						.addValidators(Validators.required);
+					this.formGroup
+						.get('productionCapacityTimeSpan')
+						.updateValueAndValidity();
+					this.formGroup.get('productionCapacityUnit').updateValueAndValidity();
 
 					return this.getUnit(amount);
 				} else {
-					this.formGroup.get('unit').setValue(null);
-					this.formGroup.get('unit').clearValidators();
-					this.formGroup.get('unit').updateValueAndValidity();
+					this.formGroup.get('productionCapacityUnit').setValue(null);
+					this.formGroup.get('productionCapacityUnit').clearValidators();
+					this.formGroup.get('productionCapacityUnit').updateValueAndValidity();
+					this.formGroup.get('productionCapacityTimeSpan').setValue(null);
+					this.formGroup.get('productionCapacityTimeSpan').clearValidators();
+					this.formGroup
+						.get('productionCapacityTimeSpan')
+						.updateValueAndValidity();
 
 					return of([]);
 				}
-			})
+			}),
+		);
+
+		this.maximumUnitQuantity$ = this.formGroup.controls[
+			'maximumOrderQuantity'
+			].valueChanges.pipe(
+			switchMap((maximumOrderQuantity) => {
+				if (maximumOrderQuantity) {
+					this.formGroup.get('samplesInfoMeasure').updateValueAndValidity();
+					this.formGroup.get('samplesInfoMeasure').markAsTouched();
+
+					return this.getUnit(maximumOrderQuantity, [
+						'item',
+						'kilogram',
+						'pack',
+						'set',
+						'liter',
+					]);
+				} else {
+					this.formGroup.get('samplesInfoMeasure').setValue(null);
+					this.formGroup.get('samplesInfoMeasure').clearValidators();
+					this.formGroup.get('samplesInfoMeasure').updateValueAndValidity();
+
+					return of([]);
+				}
+			}),
 		);
 
 		this.formGroup.controls['productSector'].valueChanges
@@ -659,18 +879,68 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 						map(
 							({ categories }) =>
 								categories.find(
-									(foundCategory: any) => foundCategory._id === id
-								)?.children
-						)
+									(foundCategory: any) => foundCategory._id === id,
+								)?.children,
+						),
 					);
 				}),
-				untilDestroyed(this)
+				untilDestroyed(this),
 			)
 			.subscribe((categories) => (this.level2Categories = categories));
+
+		this.formGroup.controls['priceType'].valueChanges
+			.pipe(untilDestroyed(this))
+			.subscribe((priceType) => {
+				switch (priceType) {
+					case PriceTypeEnum.FixedPrice:
+						this.formGroup.removeControl('priceRangeMinimum');
+						this.formGroup.removeControl('priceRangeMaximum');
+						this.formGroup.addControl(
+							'price',
+							new FormControl(null, [Validators.required, onlyNumber()]),
+						);
+						this.formGroup.addControl(
+							'priceUnit',
+							new FormControl(null, Validators.required),
+						);
+						this.formGroup.updateValueAndValidity();
+						return;
+					case PriceTypeEnum.PriceRange:
+						this.formGroup.removeControl('price');
+						this.formGroup.addControl(
+							'priceRangeMinimum',
+							new FormControl(null, [Validators.required, onlyNumber()]),
+						);
+						this.formGroup.addControl(
+							'priceRangeMaximum',
+							new FormControl(null, [Validators.required, onlyNumber()]),
+						);
+						this.formGroup.addControl(
+							'priceUnit',
+							new FormControl(null, Validators.required),
+						);
+						this.formGroup.updateValueAndValidity();
+						return;
+					default:
+						const controlsArray = [
+							'priceRangeMinimum',
+							'priceRangeMaximum',
+							'priceUnit',
+						];
+						controlsArray.forEach((control) =>
+							this.formGroup.removeControl(control),
+						);
+						this.formGroup.controls['price']?.setErrors(null);
+						this.formGroup.controls['price']?.clearValidators();
+						this.formGroup.controls['price']?.setValue('Price upon request');
+						this.formGroup.updateValueAndValidity();
+						return;
+				}
+			});
 	}
 
 	private getArrayForSelect(
-		array: any[]
+		array: any[],
 	): Array<{ value: any; label: string; checked: boolean }> {
 		return array.map((el) => {
 			return {
@@ -681,20 +951,27 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		});
 	}
 
-	private getUnit(amount: number): Observable<any> {
+	private getUnit(amount: number, filterArray?: string[]): Observable<any> {
 		return this.unitsService.getUnits().pipe(
-			map((units) =>
-				units.map(
+			map((units) => {
+				const updatedUnits = filterArray
+					? units.filter((unit: { name: string }) =>
+						filterArray.includes(unit.name),
+					)
+					: units;
+				return updatedUnits.map(
 					(unit: {
+						_id: string;
 						name: string;
 						pluralDisplayName: string;
 						displayName: string;
 					}) => ({
 						...unit,
+						_id: filterArray ? unit.name : unit._id,
 						displayName: amount > 1 ? unit.pluralDisplayName : unit.displayName,
-					})
-				)
-			)
+					}),
+				);
+			}),
 		);
 	}
 
@@ -703,20 +980,24 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		Object.entries(data)
 			.filter(([, value]) => !!value)
 			.forEach(([key, value]: [string, any]) => {
-				if (key === 'photos' || key === 'documents') {
+				if (key === 'photos' || key === 'documents' || key === 'certificates') {
 					Array.from(value).forEach((file: any) => {
 						formData.append(key, file);
 					});
 				} else if (Array.isArray(value)) {
-					value
-						.filter((arrayItem) => !!arrayItem)
-						.forEach((arrayItem) => {
-							if (key === 'specificationList') {
-								formData.append(key, JSON.stringify(arrayItem));
-							} else {
-								formData.append(key, arrayItem);
-							}
-						});
+					if (key === 'certificatesData') {
+						formData.append(key, JSON.stringify(value));
+					} else {
+						value
+							.filter((arrayItem) => !!arrayItem)
+							.forEach((arrayItem) => {
+								if (key === 'specificationList') {
+									formData.append(key, JSON.stringify(arrayItem));
+								} else {
+									formData.append(key, arrayItem);
+								}
+							});
+					}
 				} else if (typeof value === 'object' && value) {
 					for (const childKey in value) {
 						const fullKey = `${key}${capitalizeFirstLetter(childKey)}`;
@@ -737,9 +1018,9 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 					() =>
 						this.formGroup.invalid &&
 						Object.values(this.formGroup.controls).every(
-							(control) => control.touched
-						)
-				)
+							(control) => control.touched,
+						),
+				),
 			)
 			.subscribe((status) => this.isBadgeInvalidSource.next(status));
 	}
@@ -749,8 +1030,8 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			.getCategories$()
 			.pipe(
 				map(({ categories }) =>
-					categories.filter((category: any) => category.children.length)
-				)
+					categories.filter((category: any) => category.children.length),
+				),
 			);
 	}
 
@@ -758,15 +1039,41 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 		this.sourcingRequestService
 			.getCompanyData()
 			.pipe(first(), untilDestroyed(this))
-			.subscribe((company) => (this.company = company));
+			.subscribe((company) => (this.company.next(company)));
 	}
 
 	private smoothScrollToTop(): void {
-		const pageTop = document.getElementById('page-top');
+		const pageTop = this.document.getElementById('page-top');
 		pageTop!.scrollIntoView({
 			behavior: 'smooth',
 			block: 'start',
 			inline: 'nearest',
 		});
+	}
+
+	private filterCountryOptions(): void {
+		this.countryOptions$ = this.countryOptions$.pipe(map(options => {
+				return options.filter(option => !this.selectedPortCountries.includes(option.code))
+			})
+		);
+	}
+
+	private patchForm() {
+		this.company.pipe(
+			filter(company => !!company),
+			first()
+		).subscribe(company => {
+			company.paymentAndShipping?.paymentMethods.forEach((method: string) => {
+				this.setPaymentMethod(method, null, true);
+			});
+
+			company.paymentAndShipping?.deliveryTerms.forEach((method: string) => {
+				this.setShippingMethod(method, null, true);
+			});
+
+			company.paymentAndShipping?.tradingAreas.forEach((area: string) => {
+				this.setTradingArea(area, null, true);
+			});
+		})
 	}
 }

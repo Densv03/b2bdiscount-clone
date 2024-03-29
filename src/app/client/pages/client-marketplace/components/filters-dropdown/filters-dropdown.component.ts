@@ -12,6 +12,7 @@ import {
 	transition,
 	trigger,
 } from '@angular/animations';
+import { NavigationOption } from '../../layout/client-marketplace-listing.component';
 const dropdownAnimation = trigger('dropdownAnimation', [
 	state(
 		'open',
@@ -44,6 +45,7 @@ export class FiltersDropdownComponent {
 	@Input() options!: any[];
 	@Input() openIsRestricted: boolean;
 	@Input() customWidth?: string;
+	@Input() navigationForChange: NavigationOption;
 	@Output() changeOption: EventEmitter<any> = new EventEmitter<any>();
 	constructor() {}
 	public resetSelected(e: any): void {

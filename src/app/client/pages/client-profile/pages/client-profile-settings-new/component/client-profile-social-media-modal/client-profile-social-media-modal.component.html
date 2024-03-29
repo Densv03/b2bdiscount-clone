@@ -1,0 +1,33 @@
+<b2b-client-profile-modal-container  class="md:w-[50vw]" [label]="'Add resources'" (close)="onDismiss()">
+
+	<div class="flex flex-col gap-4">
+		<div class="flex flex-row pl-3 items-center !py-0 bg-white border border-[#C6D1E2] rounded-md">
+			<div class="flex flex-row gap-2 pr-3">
+				<mat-icon [svgIcon]="socialMediaForm.icon + '_new'"></mat-icon>
+				<span>{{ socialMediaForm.name }}</span>
+			</div>
+			<div class="grid w-full divider">
+				<input
+					[formControl]="control"
+					[placeholder]="'https://' + socialMediaForm.formControlName + '.com' + '/' + 'link'"
+					class="border-none !py-4 w-full"
+					type="text"
+					b2bNgxInput
+					[version]="NgxInputVersionEnum.GLOBY"/>
+			</div>
+		</div>
+
+
+		<div class="flex flex-row justify-center">
+			<button
+				[disabled]="control.invalid"
+				(click)="onDismiss(control.value)"
+				type="submit"
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				b2bNgxButton>
+				Save changes
+			</button>
+		</div>
+	</div>
+
+</b2b-client-profile-modal-container>

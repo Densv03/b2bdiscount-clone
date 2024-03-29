@@ -18,23 +18,20 @@ export class SocketService {
 	private readonly _statusSubject = new Subject();
 	private readonly _status$ = this._statusSubject.asObservable();
 
-	private readonly _unreadMessagesCountBehaviourSubject = new BehaviorSubject(
+	private readonly _unreadMessagesCountSource = new BehaviorSubject(0);
+	private readonly _unreadOfferMessagesCountSource = new BehaviorSubject(0);
+	private readonly _unreadRfqMessagesCountSource = new BehaviorSubject(0);
+	private readonly _unreadMarketplaceMessagesCountSource = new BehaviorSubject(
 		0
 	);
-	private readonly _unreadOfferMessagesCountBehaviourSubject =
-		new BehaviorSubject(0);
-	private readonly _unreadRfqMessagesCountBehaviourSubject =
-		new BehaviorSubject(0);
-	private readonly _unreadMarketplaceMessagesCountBehaviourSubject =
-		new BehaviorSubject(0);
 	private readonly _unreadMessagesCount$ =
-		this._unreadMessagesCountBehaviourSubject.asObservable();
+		this._unreadMessagesCountSource.asObservable();
 	private readonly _unreadOfferMessagesCount$ =
-		this._unreadOfferMessagesCountBehaviourSubject.asObservable();
+		this._unreadOfferMessagesCountSource.asObservable();
 	private readonly _unreadRfqMessagesCount$ =
-		this._unreadRfqMessagesCountBehaviourSubject.asObservable();
+		this._unreadRfqMessagesCountSource.asObservable();
 	private readonly _unreadMarketplaceMessagesCount$ =
-		this._unreadMarketplaceMessagesCountBehaviourSubject.asObservable();
+		this._unreadMarketplaceMessagesCountSource.asObservable();
 
 	constructor(
 		private readonly _usersService: UserService,
@@ -61,12 +58,46 @@ export class SocketService {
 					const { unreadMessagesCount } = await this._apiService
 						.get<any>('my/unreadMessagesCount')
 						.toPromise();
-					this._unreadMessagesCountBehaviourSubject.next(unreadMessagesCount);
+					this._unreadMessagesCountSource.next(unreadMessagesCount);
 				} catch {}
 			});
 	}
 
-	private getUnreadOfferMessagesCount() {
+	public decreaseUnreadMessagesCount(
+		type: 'market' | 'rfq' | 'offers',
+		decreaseAmount: number
+	): void {
+		const unreadMessagesCount = {
+			market: this._unreadMarketplaceMessagesCountSource.getValue(),
+			rfq: this._unreadRfqMessagesCountSource.getValue(),
+			offers: this._unreadOfferMessagesCountSource.getValue(),
+		};
+		switch (type) {
+			case 'market':
+				this._unreadMarketplaceMessagesCountSource.next(
+					unreadMessagesCount['market']
+						? unreadMessagesCount['market'] - decreaseAmount
+						: unreadMessagesCount['market']
+				);
+				break;
+			case 'offers':
+				this._unreadOfferMessagesCountSource.next(
+					unreadMessagesCount['offers']
+						? unreadMessagesCount['offers'] - decreaseAmount
+						: unreadMessagesCount['offers']
+				);
+				break;
+			case 'rfq':
+				this._unreadRfqMessagesCountSource.next(
+					unreadMessagesCount['rfq']
+						? unreadMessagesCount['rfq'] - decreaseAmount
+						: unreadMessagesCount['rfq']
+				);
+				break;
+		}
+	}
+
+	public getUnreadOfferMessagesCount() {
 		this._usersService
 			.getToken$()
 			.pipe(filter((token) => !!token))
@@ -75,14 +106,12 @@ export class SocketService {
 					const { unreadMessagesCount } = await this._apiService
 						.get<any>('my/unreadOfferMessagesCount')
 						.toPromise();
-					this._unreadOfferMessagesCountBehaviourSubject.next(
-						unreadMessagesCount
-					);
+					this._unreadOfferMessagesCountSource.next(unreadMessagesCount);
 				} catch {}
 			});
 	}
 
-	private getUnreadRfqMessagesCount() {
+	public getUnreadRfqMessagesCount() {
 		this._usersService
 			.getToken$()
 			.pipe(filter((token) => !!token))
@@ -91,14 +120,12 @@ export class SocketService {
 					const { unreadMessagesCount } = await this._apiService
 						.get<any>('my/unreadRfqMessagesCount')
 						.toPromise();
-					this._unreadRfqMessagesCountBehaviourSubject.next(
-						unreadMessagesCount
-					);
+					this._unreadRfqMessagesCountSource.next(unreadMessagesCount);
 				} catch {}
 			});
 	}
 
-	private getUnreadMarketplaceMessagesCount(): void {
+	public getUnreadMarketplaceMessagesCount(): void {
 		this._usersService
 			.getToken$()
 			.pipe(
@@ -109,7 +136,7 @@ export class SocketService {
 				])
 			)
 			.subscribe((data) => {
-				this._unreadMarketplaceMessagesCountBehaviourSubject.next(
+				this._unreadMarketplaceMessagesCountSource.next(
 					data[1].unreadMessagesCount + data[2].unreadMessagesCount
 				);
 			});
@@ -144,32 +171,31 @@ export class SocketService {
 
 			switch (newMessage.typeRoom) {
 				case 'rfq':
-					this._unreadRfqMessagesCountBehaviourSubject.next(
-						this._unreadRfqMessagesCountBehaviourSubject.getValue() + 1
+					this._unreadRfqMessagesCountSource.next(
+						this._unreadRfqMessagesCountSource.getValue() + 1
 					);
 					break;
 				case 'product':
-					this._unreadMarketplaceMessagesCountBehaviourSubject.next(
-						this._unreadMarketplaceMessagesCountBehaviourSubject.getValue() + 1
+					this._unreadMarketplaceMessagesCountSource.next(
+						this._unreadMarketplaceMessagesCountSource.getValue() + 1
 					);
 					break;
 				case 'offer':
-					this._unreadOfferMessagesCountBehaviourSubject.next(
-						this._unreadOfferMessagesCountBehaviourSubject.getValue() + 1
+					this._unreadOfferMessagesCountSource.next(
+						this._unreadOfferMessagesCountSource.getValue() + 1
 					);
 					break;
 			}
 
 			this._newMessageSubject.next(newMessage);
 
-			const unreadMessagesCount =
-				this._unreadMessagesCountBehaviourSubject.getValue();
-			this._unreadMessagesCountBehaviourSubject.next(unreadMessagesCount + 1);
+			const unreadMessagesCount = this._unreadMessagesCountSource.getValue();
+			this._unreadMessagesCountSource.next(unreadMessagesCount + 1);
 		});
 	}
 
 	public get unreadMessagesCount$() {
-		return this._unreadMessagesCountBehaviourSubject.asObservable();
+		return this._unreadMessagesCountSource.asObservable();
 	}
 
 	public get unreadOfferMessagesCount$() {
@@ -185,9 +211,8 @@ export class SocketService {
 	}
 
 	public readMessages(count: number) {
-		const newCount =
-			this._unreadMessagesCountBehaviourSubject.getValue() - count;
-		this._unreadMessagesCountBehaviourSubject.next(newCount);
+		const newCount = this._unreadMessagesCountSource.getValue() - count;
+		this._unreadMessagesCountSource.next(newCount);
 	}
 
 	public get newMessage$() {

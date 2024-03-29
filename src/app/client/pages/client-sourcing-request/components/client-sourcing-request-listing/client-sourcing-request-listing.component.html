@@ -44,6 +44,7 @@
 	<b2b-client-marketplace-filters-mobile
 		[filtersState]="filtersSource | async"
 		[animationState]="animationState$ | async"
+		filterType="sourcing-request"
 		(closePopUp)="closePopUp()"
 		(filterEvent)="extractFilterOptions($event)"
 		class="mobile-filters-pop-up"></b2b-client-marketplace-filters-mobile>

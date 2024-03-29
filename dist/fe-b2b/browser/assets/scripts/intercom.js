@@ -1,4 +1,39 @@
-// We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/fgjzhwn9'
+function shouldHideMessenger() {
+	if (window.innerWidth > 768) {
+		return false;
+	}
+
+	const paths = [
+		'/b2bmarket/listing/products',
+		'/b2bmarket/company',
+		'/profile/your-account/settings'
+	]
+
+	const links = [
+		'http://localhost:4200',
+		'http://localhost:4000',
+		'https://globy.com',
+		'https://dev.globy.com',
+		'https://staging.globy.com',
+	]
+
+	let urls = [];
+
+	for (const link of links) {
+		for (const path of paths) {
+			urls.push(link+path)
+		}
+	}
+
+	// Check if the current URL is in the list of URLs to hide
+	return urls.includes(window.location.href);
+}
+
+window.intercomSettings = {
+	app_id: 'fgjzhwn9',
+	hide_default_launcher: shouldHideMessenger()
+};
+
 (function () {
 	var w = window;
 	var ic = w.Intercom;

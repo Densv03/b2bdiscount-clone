@@ -1,5 +1,7 @@
-import { capitalizeFirstLetter } from './capitalize-first-letter';
-import { SocialMediaEnum } from '../../../client/pages/client-profile/pages/client-company-information/social-media.enum';
+import {capitalizeFirstLetter} from './capitalize-first-letter';
+import {
+	SocialMediaEnum
+} from '../../../client/pages/client-profile/pages/client-profile-settings-new/tabs/client-company-information/social-media.enum';
 
 export function getFormData(data: any): FormData {
 	const socials = Object.values(SocialMediaEnum).filter(

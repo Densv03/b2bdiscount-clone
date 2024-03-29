@@ -1,16 +1,30 @@
-<div class="company-products">
-	<div class="grid">
-		<b2b-client-marketplace-listing-grid
-			[showBanner]="false"
-			[marketplaceProducts]="products$ | async">
-		</b2b-client-marketplace-listing-grid>
+<div *ngIf="products$ | async as products" class="products">
+	<div class="products__title">Products</div>
+	<div class="products__list">
+		<a
+			*ngFor="let product of products | slice: 0 : 5"
+			[href]="'/b2bmarket/listing/products/' + product?.path"
+			class="products__item">
+			<img b2bNgxImage [name]="product?.photos[0]?.lg" />
+			<h2 class="products__item-name">{{ product.title }}</h2>
+		</a>
 	</div>
-
-	<div class="pagination">
-		<b2b-ngx-pagination
-			(togglePageNumber)="togglePage($event)"
-			[length]="totalProductsLength$ | async"
-			[perPage]="PRODUCTS_LIMIT"
-			class="pagination"></b2b-ngx-pagination>
-	</div>
+	<a
+		[href]="'b2bmarket/supplier-listing/' + products[0]?.user"
+		class="products__view-all">
+		View all
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 16 16"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M6.6665 4L10.6665 8L6.6665 12"
+				stroke="#2F384C"
+				stroke-width="1.5"
+				stroke-linecap="round"
+				stroke-linejoin="round" />
+		</svg>
+	</a>
 </div>

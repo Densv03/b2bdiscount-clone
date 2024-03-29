@@ -1,45 +1,36 @@
 import {
 	ChangeDetectionStrategy,
-	ChangeDetectorRef,
 	Component,
-	ElementRef,
 	EventEmitter,
 	HostListener,
-	Inject,
 	Input,
 	OnInit,
 	Output,
-	Renderer2,
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
-import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
-import { FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, filter, skip, startWith } from 'rxjs/operators';
-import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
-import { PopupTypeEnum } from './types/popup-type.emun';
-import { HeaderPopupComponent } from './components/header-popup/header-popup.component';
-import { HeaderService } from './header.service';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { HeaderPopupState } from './types/header-popup-state.interface';
+import {B2bNgxInputThemeEnum} from '@b2b/ngx-input';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
+import {filter, first, skip, startWith} from 'rxjs/operators';
+import {B2bNgxButtonThemeEnum} from '@b2b/ngx-button';
+import {PopupTypeEnum} from './types/popup-type.emun';
+import {HeaderPopupComponent} from './components/header-popup/header-popup.component';
+import {HeaderService} from './header.service';
+import {BehaviorSubject, combineLatest, map, Observable} from 'rxjs';
+import {HeaderPopupState} from './types/header-popup-state.interface';
+import {HeaderMainOption, HeaderSearchOption,} from './types/header-main-option.interface';
+import {User} from '../../../core/models/user/user.model';
+import {UserService} from '../../pages/client-profile/services/user/user.service';
+import {SocketService} from '../../services/socket/socket.service';
+import {ActivatedRoute, NavigationEnd, Params, Router} from '@angular/router';
+import {TooltipTypeEnum} from './types/tooltip-type.enum';
+import {MatDialog} from '@angular/material/dialog';
+import {TooltipService} from './tooltip.service';
+import {PlatformService} from '../../services/platform/platform.service';
 import {
-	HeaderMainOption,
-	HeaderSearchOption,
-} from './types/header-main-option.interface';
-import { User } from '../../../core/models/user/user.model';
-import { UserService } from '../../pages/client-profile/services/user/user.service';
-import { SocketService } from '../../services/socket/socket.service';
-import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { TooltipTypeEnum } from './types/tooltip-type.enum';
-import { ClientContactUsModalComponent } from '../client-contact-us-modal/client-contact-us-modal.component';
-import { MatDialog } from '@angular/material/dialog';
-import { TooltipService } from './tooltip.service';
-import { DOCUMENT } from '@angular/common';
-import { head } from 'lodash';
-import { PlatformService } from '../../services/platform/platform.service';
-import { ParentCategoriesMobileListComponent } from '../../shared/components/parent-categories-mobile-list/parent-categories-mobile-list.component';
-import { CategoriesService } from '../../services/categories/categories.service';
+	ParentCategoriesMobileListComponent
+} from '../../shared/components/parent-categories-mobile-list/parent-categories-mobile-list.component';
+import {CategoriesService} from '../../services/categories/categories.service';
 
 @UntilDestroy()
 @Component({
@@ -50,12 +41,10 @@ import { CategoriesService } from '../../services/categories/categories.service'
 })
 export class HeaderComponent implements OnInit {
 	@Input() mobileSideNavState: 'in' | 'out';
-	@ViewChild('dynamicHostContainer', { read: ViewContainerRef })
+	@ViewChild('dynamicHostContainer', {read: ViewContainerRef})
 	dynamicHostContainer: ViewContainerRef;
-	@ViewChild('profileToolTip', { read: ViewContainerRef })
+	@ViewChild('profileToolTip', {read: ViewContainerRef})
 	profileToolTipContainer: ViewContainerRef;
-	// @ViewChild('searchOptionsToolTip', { read: ViewContainerRef })
-	// searchOptionsToolTipContainer: ViewContainerRef;
 	@Output() searchValue: EventEmitter<string> = new EventEmitter<string>();
 	@Output() public burgerClicked: EventEmitter<void> = new EventEmitter<void>();
 	public readonly b2bNgxInputThemeEnum: typeof B2bNgxInputThemeEnum;
@@ -63,7 +52,7 @@ export class HeaderComponent implements OnInit {
 	public readonly popupTypeEnum: typeof PopupTypeEnum = PopupTypeEnum;
 	public readonly tooltipTypeEnum: typeof TooltipTypeEnum = TooltipTypeEnum;
 	public control = this.headerService.searchFormControl;
-	public queryParams: Params = { tab: 'Chats' };
+	public queryParams: Params = {tab: 'Chats'};
 	public popUpIsOpened = false;
 	public headerMainOptions: Array<HeaderMainOption> =
 		this.getHeaderMainOptions();
@@ -78,26 +67,27 @@ export class HeaderComponent implements OnInit {
 	public user$: Observable<User>;
 	public userUnreadMessages$: Observable<number>;
 	public isMobile: boolean = window.innerWidth <= 768;
+	public showSearch = false;
+	public showBurger = false;
+	protected readonly window = window;
 	private userUnreadMessagesSource: BehaviorSubject<number> =
 		new BehaviorSubject<number>(0);
 	private isAuthPageSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
+	public isAuthPage$: Observable<boolean> =
+		this.isAuthPageSource.asObservable();
 	private isMainPageSource: BehaviorSubject<boolean> =
-		new BehaviorSubject<boolean>(false);
-	private isMarketPageSource: BehaviorSubject<boolean> =
-		new BehaviorSubject<boolean>(false);
-	private isHeaderHiddenSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
 	public isMainPage$: Observable<boolean> =
 		this.isMainPageSource.asObservable();
-	public isAuthPage$: Observable<boolean> =
-		this.isAuthPageSource.asObservable();
+	private isMarketPageSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 	public isMarketPage$: Observable<boolean> =
 		this.isMarketPageSource.asObservable();
+	private isHeaderHiddenSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 	public isHeaderHidden$: Observable<boolean> =
 		this.isHeaderHiddenSource.asObservable();
-	public showSearch = false;
-	public showBurger = false;
 
 	constructor(
 		public readonly platformService: PlatformService,
@@ -108,15 +98,17 @@ export class HeaderComponent implements OnInit {
 		private readonly dialog: MatDialog,
 		private readonly toolTipService: TooltipService,
 		private readonly categoriesService: CategoriesService,
-		private renderer: Renderer2,
-		private readonly cdr: ChangeDetectorRef,
-		@Inject(DOCUMENT) private document: Document,
 		private route: ActivatedRoute
 	) {
 		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 		this.user$ = this.userService.getUser$();
 		this.userUnreadMessages$ = this.userUnreadMessagesSource.asObservable();
+		this.headerService.openWorkSpace$.pipe(untilDestroyed(this)).subscribe(res => {
+			if (res) {
+				this.openProfileMobilePopup()
+			}
+		})
 	}
 
 	ngOnInit(): void {
@@ -135,10 +127,10 @@ export class HeaderComponent implements OnInit {
 	}
 
 	handleMouseEnter(event: MouseEvent, type: PopupTypeEnum): void {
-		const { popupIsOpened, popupType } =
+		const {popupIsOpened, popupType} =
 			this.headerService.getPopupStateValue();
 		if (type !== popupType || !popupIsOpened) {
-			this.toggleHeaderPopUp({ popupType: type });
+			this.toggleHeaderPopUp({popupType: type});
 		}
 	}
 
@@ -169,9 +161,9 @@ export class HeaderComponent implements OnInit {
 
 	openBurgerPopup(type: PopupTypeEnum): void {
 		if (window.innerWidth < 768) {
-			this.toggleHeaderPopUp({ popupType: type });
+			this.toggleHeaderPopUp({popupType: type});
 		} else {
-			this.toggleHeaderPopUp({ burgerPopup: true, popupType: type });
+			this.toggleHeaderPopUp({burgerPopup: true, popupType: type});
 		}
 	}
 
@@ -192,7 +184,7 @@ export class HeaderComponent implements OnInit {
 	toggleHeaderPopUp(
 		dynamicComponentProperties: { [key: string]: any } | null
 	): void {
-		const { popupIsOpened, popupType } =
+		const {popupIsOpened, popupType} =
 			this.headerService.getPopupStateValue();
 		const sameButtonWasClicked =
 			dynamicComponentProperties['popupType'] === popupType;
@@ -224,14 +216,14 @@ export class HeaderComponent implements OnInit {
 
 	public setSearchControlValue(): void {
 		if (this.control.value.trim()) {
-			if (this.checkIsB2bMarketListingPage(this.router.url)) {
+			if (this.checkIsB2bMarketListingPage(this.router.url.split('?')[0])) {
 				this.router.navigate([], {
-					queryParams: { q: this.control.value.trim() },
+					queryParams: {q: this.control.value.trim()},
 					relativeTo: this.route,
 				});
 			} else {
 				this.router.navigate(['/b2bmarket/listing'], {
-					queryParams: { q: this.control.value.trim() },
+					queryParams: {q: this.control.value.trim()},
 				});
 			}
 			this.headerService.formControlValue = this.control.value.trim();
@@ -248,7 +240,7 @@ export class HeaderComponent implements OnInit {
 		if (this.isMainPageHeader() && !this.headerService.profileNavIsOpened) {
 			this.headerService.updateHeaderTransparent(
 				window.scrollY < 100 &&
-					!this.headerService.getPopupStateValue().popupIsOpened
+				!this.headerService.getPopupStateValue().popupIsOpened
 			);
 		}
 	}
@@ -266,22 +258,22 @@ export class HeaderComponent implements OnInit {
 	}
 
 	private clearContainerOnStateChange(): void {
-		this.headerService.popupState$().subscribe(({ popupIsOpened }) => {
+		this.headerService.popupState$().subscribe(({popupIsOpened}) => {
 			this.dynamicHostContainer?.clear();
 		});
 	}
 
 	private getHeaderMainOptions(): HeaderMainOption[] {
 		return [
-			{ name: 'Our Solutions', type: PopupTypeEnum.SOLUTIONS },
-			{ name: 'Resources', type: PopupTypeEnum.RESOURCES },
+			{name: 'Our Solutions', type: PopupTypeEnum.SOLUTIONS},
+			{name: 'Resources', type: PopupTypeEnum.RESOURCES},
 		];
 	}
 
 	private getHeaderSearchOptions(): HeaderSearchOption[] {
 		return [
-			{ name: 'For Buyer', type: TooltipTypeEnum.FOR_BUYER },
-			{ name: 'Become a supplier', type: TooltipTypeEnum.BECOME_SUPPLIER },
+			{name: 'For Buyer', type: TooltipTypeEnum.FOR_BUYER},
+			{name: 'Become a supplier', type: TooltipTypeEnum.BECOME_SUPPLIER},
 		];
 	}
 
@@ -349,7 +341,7 @@ export class HeaderComponent implements OnInit {
 	}
 
 	private checkIsB2bMarketListingPage(url: string): boolean {
-		return url.includes('b2bmarket/listing');
+		return url === 'b2bmarket/listing';
 	}
 
 	private checkIsAuthPage(): void {
@@ -433,6 +425,4 @@ export class HeaderComponent implements OnInit {
 	private patchValueToSearch(value: string): void {
 		this.control.patchValue(value);
 	}
-
-	protected readonly window = window;
 }

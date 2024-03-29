@@ -3,12 +3,21 @@ import { Amount } from '../../../../core/models/amount.model';
 import { Photo } from '../../../../core/models/photo.model';
 import { Contact } from '../../../../core/models/contact.model';
 import { Visibility } from '../../../../core/models/visibility.model';
+import { Unit } from '../../../../core/models/unit.model';
+import { CertificatesModel } from './certificates.model';
+import { PublicCompanyInfoModel } from '../../../../core/models/public-company-info.model';
 
 export interface MarketProductModel {
 	chatStarted: string[];
 	reasonForDeletion: string;
 	deleted?: boolean;
 	price: Price;
+	priceRange: {
+		minimum: number;
+		maximum: number;
+		unit: Unit;
+	};
+	certificates: CertificatesModel[];
 	amount: Amount;
 	contact: Contact;
 	visibility: Visibility;
@@ -27,6 +36,7 @@ export interface MarketProductModel {
 	savedCount: number;
 	views: number;
 	path: string;
+	company: PublicCompanyInfoModel[];
 	viewedBy: string[];
 	openedFor: any[];
 	status: string;
@@ -37,7 +47,7 @@ export interface MarketProductModel {
 	title: string;
 	specifications: string;
 	country: string;
-	category: Category | Category[];
+	category: Category;
 	suppliersType: string;
 	user: string;
 	photos: Photo[];
@@ -49,6 +59,16 @@ export interface MarketProductModel {
 	productOrigin: string;
 	brandName?: string;
 	unit?: string;
+	productCapacity?: {
+		count: number;
+		timeSpan: string;
+		unit: Unit;
+	};
+	samplesInfo?: {
+		maximumOrderQuantity: number;
+		measure: string;
+		samplePrice: number;
+	};
 	specificationList?: {
 		item: string;
 		specification: string;
@@ -57,5 +77,6 @@ export interface MarketProductModel {
 }
 
 export interface Price {
-	old: number;
+	old: number | string;
+	unit?: Unit;
 }

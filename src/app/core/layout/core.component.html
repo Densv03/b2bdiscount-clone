@@ -40,36 +40,60 @@
 	<div class="backdrop" #backdrop>
 		<div class="content">
 			<div class="sidenav">
-				<div *ngIf="user$ | async as user" class="user">
-					<div class="user__name bold-title">{{ user.fullName }}</div>
-					<div class="user__company">{{ user.company }}</div>
+				@if (activeHeaderTab === 'Settings') {
+					<div class="settings">
+						<div class="settings__header"
+								 (click)="toggleShowPopUp('', {redirect: false, activeSection: 'None'})">
+							<- Back to workspace
+						</div>
 
-					<div class="divider"></div>
+						<div class="settings__title">
+							Settings
+						</div>
 
-					<b2b-role-switcher [user]="user"></b2b-role-switcher>
+						<div class="divider"></div>
+						<div class="settings__links">
+							@for (option of settingsOptions; track $index) {
+								<div class="settings__links__link" (click)="toggleShowPopUp(option.link)">
+									<svg-icon [src]="option.icon" svgClass="icon"></svg-icon>
+									<div class="text">{{ option.label }}</div>
+								</div>
+							}
+						</div>
+					</div>
+				} @else {
+					<div *ngIf="user$ | async as user" class="user">
+						<div class="user__name bold-title">{{ user.fullName }}</div>
+						<div class="user__company">{{ user.company }}</div>
 
-					<div class="divider"></div>
-					<div class="user__workspace">
-						<div class="user__workspace-title">Workspace</div>
-						<div class="user__workspace-list">
-							<div
-								*ngFor="let item of mobileProfileOptions"
-								(click)="toggleShowPopUp(item.link)"
-								class="user__workspace-item">
-								<div class="item-content">
-									<svg-icon [src]="item.icon"></svg-icon>
-									<div class="text">{{ item.name }}</div>
+						<div class="divider"></div>
+
+						<b2b-role-switcher [user]="user"></b2b-role-switcher>
+
+						<div class="divider"></div>
+						<div class="user__workspace">
+							<div class="user__workspace-title">Workspace</div>
+							<div class="user__workspace-list">
+								<div
+									*ngFor="let item of mobileProfileOptions"
+									(click)="toggleShowPopUp(item.link, {activeSection: item.name === 'Settings' ? 'Settings' : 'None',
+																															redirect: item.name !== 'Settings'})"
+									class="user__workspace-item">
+									<div class="item-content">
+										<svg-icon [src]="item.icon"></svg-icon>
+										<div class="text">{{ item.name }}</div>
+									</div>
 								</div>
 							</div>
 						</div>
+						<div class="divider"></div>
+						<div (click)="toggleShowPopUp(); logOut()" class="logout">
+							<svg-icon
+								src="assets/icons/header/profile/log-out-profile.svg"></svg-icon>
+							<div class="text">Log Out</div>
+						</div>
 					</div>
-					<div class="divider"></div>
-					<div (click)="toggleShowPopUp(); logOut()" class="logout">
-						<svg-icon
-							src="assets/icons/header/profile/log-out-profile.svg"></svg-icon>
-						<div class="text">Log Out</div>
-					</div>
-				</div>
+				}
 			</div>
 
 			<ng-template #content let-option>
@@ -81,7 +105,7 @@
 						*ngIf="
 							option.label === 'Unclaimed cargo' && unreadMessagesCount > 0
 						"
-						>{{ unreadMessagesCount }}</span
+					>{{ unreadMessagesCount }}</span
 					>
 				</ng-container>
 
@@ -92,7 +116,7 @@
 						*ngIf="
 							option.label === 'Sourcing Request' && unreadMessagesCount > 0
 						"
-						>{{ unreadMessagesCount }}</span
+					>{{ unreadMessagesCount }}</span
 					>
 				</ng-container>
 
@@ -103,7 +127,7 @@
 					<span
 						class="unread-messages"
 						*ngIf="option.label === 'B2B Market' && unreadMessagesCount > 0"
-						>{{ unreadMessagesCount }}</span
+					>{{ unreadMessagesCount }}</span
 					>
 				</ng-container>
 			</ng-template>
@@ -115,7 +139,7 @@
 						(click)="toggleShowPopUp()"
 						class="nav__sign-in"
 						[theme]="b2bNgxLinkThemeEnum.BACKGROUND_TRANSPARENT">
-						<img b2bNgxIcon name="user-filled" class="nav__sign-in-icon" />
+						<img b2bNgxIcon name="user-filled" class="nav__sign-in-icon"/>
 						<span>Log In</span>
 					</a>
 					<a
@@ -126,7 +150,7 @@
 						(click)="toggleShowPopUp()"
 						class="nav__sign-up"
 						[theme]="b2bNgxLinkThemeEnum.BACKGROUND_BLACK"
-						>Sign up</a
+					>Sign up</a
 					>
 				</div>
 			</ng-template>

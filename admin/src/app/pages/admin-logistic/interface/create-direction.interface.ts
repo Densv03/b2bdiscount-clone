@@ -4,4 +4,5 @@ export interface CreateDirectionInterface {
 	countryId?: string;
 	cityId?: string;
 	active: boolean;
+	countryNames?: string[];
 }

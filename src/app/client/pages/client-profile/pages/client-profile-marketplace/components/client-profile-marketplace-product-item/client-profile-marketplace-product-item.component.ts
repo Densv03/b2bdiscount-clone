@@ -13,6 +13,7 @@ import { Photo } from '../../../../../../../core/models/photo.model';
 import { PublicCompanyInfoModel } from '../../../../../../../core/models/public-company-info.model';
 import { AuthService } from '../../../../../../../auth/services/auth/auth.service';
 import { firstValueFrom } from 'rxjs';
+import { ProductDetailsModel } from '../../../../../client-marketplace/models/product-details.model';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace-product-item',
@@ -23,12 +24,11 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 	@Input() product: MarketProductModel;
 	@Input() public itemsForDropdown: any[] = [];
 	@Input() public sortType?: string | null;
-	@Input() private company: PublicCompanyInfoModel;
-
 	public productPhoto: string[];
 	public readonly isMobile = this.platformService.isServer
 		? false
 		: window.innerWidth < 576;
+	@Input() private company: PublicCompanyInfoModel;
 
 	constructor(
 		private clientMarketplaceService: ClientMarketplaceService,
@@ -49,6 +49,21 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 					}, [])
 				: this.product.photos.filter((el) => el.sm).map((el: Photo) => el.sm);
 		this.updateItemsForDropDown();
+	}
+
+	public restoreProduct(id: string): void {
+		this.clientMarketplaceService
+			.restoreProduct(id)
+			.pipe(
+				this.hotToastService.observe({
+					loading: 'Restoring product...',
+					success: 'Product restored',
+					error: 'Error restoring product',
+				})
+			)
+			.subscribe(() => {
+				this.clientMarketplaceService.updateManageProducts();
+			});
 	}
 
 	private updateItemsForDropDown(): void {
@@ -82,13 +97,13 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 								})
 							)
 							.subscribe(async () => {
+								const productCount = (
+									await firstValueFrom(this.authService.getUser())
+								)?.statistics?.products?.approved;
 								this.mixpanelService.track('Archived product posted', {
 									'Product Category': product.category[0]?.name,
 									"Supplier's Country": getName(product.company[0].country),
-									'Product Count':
-										(await firstValueFrom(
-											this.clientMarketplaceService.getTotalProductsCount()
-										)) || 1,
+									'Product Count': productCount,
 									'Posting Date': Date(),
 								});
 								this.clientMarketplaceService.updateManageProducts();
@@ -129,16 +144,25 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 				})
 			)
 			.subscribe(async (res: any) => {
-				this.mixpanelService.track('Product deleted', {
-					'Product Category': product.category[0]?.name,
-					"Supplier's Country": getName(product.company[0].country),
-					'Product Count': await firstValueFrom(
-						this.clientMarketplaceService.getTotalProductsCount()
-					),
-					'Deletion Date': new Date(),
-				});
+				await this.trackDeleteEvent(product);
 				this.clientMarketplaceService.updateManageProducts(0, this.sortType);
 			});
+	}
+
+	private async trackDeleteEvent(product: any) {
+		const productCount = (await firstValueFrom(this.authService.getUser()))
+			.statistics.products.approved;
+		this.mixpanelService.track('Product deleted', {
+			'Product Category': product.category[0]?.name,
+			"Supplier's Country": getName(product.company[0].country),
+			'Product Count': productCount > 0 ? productCount - 1 : 0,
+			'Deletion Date': new Date(),
+		});
+		this.mixpanelService.set({
+			properties: {
+				'Product Count': productCount,
+			},
+		});
 	}
 
 	private getItemsForProductsDropdown(): any[] {
@@ -169,14 +193,7 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 							})
 						)
 						.subscribe(async () => {
-							this.mixpanelService.track('Product archived', {
-								'Product Category': product.category[0]?.name,
-								"Supplier's Country": getName(product.company[0].country),
-								'Product Count': await firstValueFrom(
-									this.clientMarketplaceService.getTotalProductsCount()
-								),
-								'Archivation Date': new Date(),
-							});
+							await this.trackEvent(product);
 							this.clientMarketplaceService.updateManageProducts();
 						});
 				},
@@ -184,18 +201,19 @@ export class ClientProfileMarketplaceProductItemComponent implements OnInit {
 		];
 	}
 
-	public restoreProduct(id: string): void {
-		this.clientMarketplaceService
-			.restoreProduct(id)
-			.pipe(
-				this.hotToastService.observe({
-					loading: 'Restoring product...',
-					success: 'Product restored',
-					error: 'Error restoring product',
-				})
-			)
-			.subscribe(() => {
-				this.clientMarketplaceService.updateManageProducts();
-			});
+	private async trackEvent(product: any) {
+		const productCount = (await firstValueFrom(this.authService.getUser()))
+			.statistics.products.approved;
+		this.mixpanelService.track('Product archived', {
+			'Product Category': product.category[0]?.name,
+			"Supplier's Country": getName(product.company[0].country),
+			'Product Count': productCount,
+			'Archivation Date': new Date(),
+		});
+		this.mixpanelService.set({
+			properties: {
+				'Product Count': productCount,
+			},
+		});
 	}
 }

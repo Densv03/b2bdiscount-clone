@@ -1,5 +1,7 @@
 import {
-	ChangeDetectionStrategy, ChangeDetectorRef,
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	EventEmitter,
 	forwardRef,
@@ -7,18 +9,18 @@ import {
 	OnChanges,
 	OnInit,
 	Output,
-	SimpleChanges,
+	SimpleChanges
 } from "@angular/core";
-import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from "@angular/forms";
+import { ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from "@angular/forms";
 // TODO: uncomment code below when libs will be inserted in b2b
-// import { FormControl } from "@ngneat/reactive-forms";
-// import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 // @ts-ignore
-import {getName} from 'country-list'
-import {COUNTRIES} from "../data";
-import {B2bNgxSelectThemeEnum} from "@b2b/ngx-select";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
-import {PortsService} from "../../../../../src/app/client/services/ports/ports.service";
+import { getName } from 'country-list'
+import { COUNTRIES } from "../data";
+import { B2bNgxSelectThemeEnum } from "@b2b/ngx-select";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { PortsService } from "../../../../../src/app/client/services/ports/ports.service";
+import { NgxSelectVariantEnum } from "projects/ngx-select/src/lib/enums/ngx-select-variant.enum";
+import {BehaviorSubject, map, Observable, of} from "rxjs";
 
 @UntilDestroy()
 @Component({
@@ -39,9 +41,10 @@ import {PortsService} from "../../../../../src/app/client/services/ports/ports.s
 		},
 	],
 })
-export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class B2bNgxCountrySelectComponent implements ControlValueAccessor, AfterViewInit, OnChanges {
 	@Input() errors: ValidationErrors = {};
 
+	@Input() public customParentClass: string = '';
 	@Input() public invalid: boolean = false;
 	@Input() showInTransit?: boolean;
 	@Input() hideCountriesWithoutPorts: boolean;
@@ -50,20 +53,25 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 	@Input() public placeholder: string;
 	@Input() public multiple: boolean = false;
 	@Input() public touched: boolean = false;
+	@Input() public version: NgxSelectVariantEnum = NgxSelectVariantEnum.B2B;
 
 	@Input()
-	public set customOptions(value: any[]) {
-		if (value && value?.length > 0) {
-			this.options = value;
+	public set customOptions(options: {value: Observable<any[]>, length: number}) {
+		if (options?.length > 0) {
+			this.options$ = options?.value;
+			this.optionLength = options?.length;
 		}
 	};
+
+	@Input() hideSelectedCountries: string[] = [];
 
 	@Output() openSelect: EventEmitter<void> = new EventEmitter<void>();
 	@Output() closeSelect: EventEmitter<void> = new EventEmitter<void>();
 	public readonly formControl: FormControl<string | null>;
-	public options: any[] = [];
+	public options$: Observable<any[]>;
 	private onChange: (value: string | null) => void;
 	private onTouched: () => void;
+	private optionLength: number = 0;
 
 	constructor(private readonly portsService: PortsService,
 							private readonly cdr: ChangeDetectorRef) {
@@ -75,34 +83,14 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 		this.formControl = new FormControl<string | null>(null);
 	}
 
+	get selectLabelClass() {
+	    return 	this.version === NgxSelectVariantEnum.B2B ? 'ngx-country-label' : 'globy-ngx-select-label'
+	}
+
 	public get selectClassName() {
 		const defaultClassName = ``;
 
-		return `${defaultClassName} ${this.theme} ${this.className}`;
-	}
-
-	public async getOptions() {
-		let countriesArr = COUNTRIES.map((country) => ({
-			label: getName(country),
-			icon: country,
-			code: country.toLowerCase(),
-		})).sort((a, b): number => a.label.localeCompare(b.label));
-
-		if (this.hideCountriesWithoutPorts) {
-			const countriesWithPorts = await this.portsService.getCountriesWithPorts();
-
-			countriesArr = countriesArr.filter(item => countriesWithPorts.includes(item.code));
-		}
-
-		if (this.showInTransit) {
-			countriesArr.unshift({
-				label: 'In transit',
-				icon: "ship-in-transit",
-				code: "In transit"
-			})
-		}
-
-		return countriesArr;
+		return `${defaultClassName} ${this.theme} ${this.selectClass}`;
 	}
 
 	public get error(): string {
@@ -115,12 +103,11 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 		return this.errors[firstErrorKey] as string;
 	}
 
-	public async ngOnInit() {
-		if (this.options.length === 0) {
-			this.options = await this.getOptions();
+	public ngAfterViewInit(): void {
+		if (this.optionLength === 0) {
+			this.options$ = this.getOptions();
 			this.cdr.detectChanges();
 		}
-
 		this.subscribeOnValueChanges();
 	}
 
@@ -143,7 +130,7 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 	}
 
 	public writeValue(value: string): void {
-		this.formControl.setValue(value);
+		this.formControl.setValue(value, {onlySelf: true});
 	}
 
 	public setDisabledState(isDisabled: boolean): void {
@@ -166,5 +153,39 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnIni
 		this.formControl.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => {
 			this.onChange(value);
 		});
+	}
+
+	private getOptions(): Observable<{ label: string, icon: string, code: string }[]> {
+		let countriesArr = COUNTRIES.map((country) => ({
+			label: getName(country),
+			icon: country,
+			code: country.toLowerCase(),
+		})).sort((a, b): number => a.label.localeCompare(b.label));
+
+		if (this.hideCountriesWithoutPorts) {
+			return this.portsService.getCountriesWithPorts().pipe(map(code => {
+				if (this.hideSelectedCountries?.length > 0) {
+					countriesArr = countriesArr.filter(item => !this.hideSelectedCountries.includes(item.code))
+				}
+				const updatedList = countriesArr.filter(item => code.includes(item.code));
+
+				if (this.showInTransit) {
+					updatedList.unshift({
+						label: 'In transit',
+						icon: "ship-in-transit",
+						code: "In transit"
+					})
+				}
+
+				return updatedList;
+			}));
+		} else {
+			return of(countriesArr)
+		}
+	}
+
+
+	get selectClass() {
+		return this.version === NgxSelectVariantEnum.B2B ? this.className : 'globy-ngx-select';
 	}
 }

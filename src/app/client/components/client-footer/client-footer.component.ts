@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Input,
+	OnInit,
+} from '@angular/core';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { User } from '../../../core/models/user/user.model';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ClientContactUsModalComponent } from '../client-contact-us-modal/client-contact-us-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PlatformService } from '../../services/platform/platform.service';
+import { filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
 	selector: 'b2b-client-footer',
@@ -12,13 +19,16 @@ import { PlatformService } from '../../services/platform/platform.service';
 	styleUrls: ['./client-footer.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientFooterComponent {
+export class ClientFooterComponent implements OnInit {
 	@Input() public user: User;
 	public socialMedias: any[];
 	public footerOptions: any[];
 	public privacyOptions: any[];
 	public readonly currentYear = new Date(Date.now()).getFullYear();
 	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum;
+	public isProfilePage$: Observable<boolean>;
+	private isProfilePageSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
 
 	constructor(
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
@@ -29,7 +39,12 @@ export class ClientFooterComponent {
 		this.b2bNgxLinkThemeEnum = B2bNgxLinkThemeEnum;
 		this.socialMedias = this.getSocialMedias();
 		this.footerOptions = this.getFooterOptions();
+		this.isProfilePage$ = this.isProfilePageSource.asObservable();
 		this.privacyOptions = this.getPrivacyOptions();
+	}
+
+	ngOnInit() {
+		this.checkPageIsProfile();
 	}
 	public processItemClick(item: any): void {
 		if (item.link) {
@@ -37,6 +52,15 @@ export class ClientFooterComponent {
 		} else {
 			item.callback();
 		}
+	}
+	private checkPageIsProfile(): void {
+		this.router.events
+			.pipe(filter((event) => event instanceof NavigationEnd))
+			.subscribe((event) => {
+				this.isProfilePageSource.next(
+					(event as NavigationEnd).url.includes('/profile')
+				);
+			});
 	}
 	private getOptions() {
 		return [

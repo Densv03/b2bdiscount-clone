@@ -22,7 +22,7 @@ import { Phone } from 'src/app/core/models/user/phone.model';
 import { LogisticSearch } from 'src/app/client/pages/client-logistic/models/logistic-search/logistic-search.model';
 import { CreateInquiryRequest } from 'src/app/client/pages/client-logistic/models/create-inquiry/create-inquiry-request.model';
 import { HotToastService } from '@ngneat/hot-toast';
-import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { onlyLatin } from 'src/app/core/helpers/validator/only-latin';
 import { UserService } from '../../../client-profile/services/user/user.service';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
@@ -92,11 +92,12 @@ export class CreateInquiryComponent implements OnInit {
 		this.trackRequestEvent(state);
 	}
 
-	private createInquiry(pick: Partial<BaseLogisticState>) {
+	private createInquiry(pick: Partial<BaseLogisticState | LogisticSeaState>) {
 		this.clientLogisticService
 			.createInquiry({
 				...this.logisticSearch,
 				...this.createInquiryForm.value,
+				...pick,
 				transportType: this.clientLogisticService.getActiveDeliveryType(),
 				countryFrom: pick.countryFrom,
 				countryTo: pick.countryTo,
@@ -122,21 +123,30 @@ export class CreateInquiryComponent implements OnInit {
 		});
 	}
 
-	private handleDeliveryState(): Partial<BaseLogisticState> {
+	private handleDeliveryState(): Partial<BaseLogisticState | LogisticSeaState> {
 		const isAirType =
 			this.clientLogisticService.getActiveDeliveryType() === 'air';
 		const state = isAirType
 			? this.clientLogisticService.getAirState()
 			: this.clientLogisticService.getSeaState();
 		const date = new Date(state.date);
-		return {
+		let stateModel: Partial<BaseLogisticState | LogisticSeaState> = {
 			countryTo: state.countryTo,
 			countryFrom: state.countryFrom,
 			countryFromName: state.countryFromName,
 			countryToName: state.countryToName,
-			readyToLoad: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`,
-			date,
-		} as Partial<BaseLogisticState>;
+			readyToLoad: date.toISOString(),
+			date
+		}
+		if (!isAirType) {
+				stateModel = {
+					...stateModel,
+					portFrom: (state as LogisticSeaState).portFrom,
+					portTo: (state as LogisticSeaState).portTo,
+					containerType: (state as LogisticSeaState).containerType
+				};
+		}
+		return stateModel;
 	}
 
 	private patchForm(): void {

@@ -108,6 +108,10 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 				return this._chatInfo$.pipe(
 					filter((chatInfo) => !!chatInfo),
 					map((chatInfo) => {
+						this._socketService.decreaseUnreadMessagesCount(
+							'rfq',
+							chatInfo.unreadMessagesCount
+						);
 						this.buyerContacts = chatInfo.buyer;
 						this.rfqInfo = chatInfo;
 						this.buyerStatus = chatInfo.isActive;

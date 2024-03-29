@@ -23,26 +23,6 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { capitalizeFirstLetter } from '../../../../../../src/app/core/helpers/function/capitalize-first-letter';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-
-const EDITOR_CONFIG: AngularEditorConfig = {
-	editable: true,
-	spellcheck: true,
-	height: 'auto',
-	minHeight: '200px',
-	translate: 'yes',
-	enableToolbar: true,
-	showToolbar: true,
-	placeholder: 'Enter text here...',
-	fonts: [
-		{ class: 'arial', name: 'Arial' },
-		{ class: 'times-new-roman', name: 'Times New Roman' },
-		{ class: 'calibri', name: 'Calibri' },
-		{ class: 'comic-sans-ms', name: 'Comic Sans MS' },
-	],
-	sanitize: true,
-	toolbarPosition: 'top',
-};
 
 function setValuesToFormData(formData: FormData, values: any, prefix?: string) {
 	Object.entries(values).forEach(([key, value]: any) => {
@@ -89,7 +69,6 @@ function setValuesToFormData(formData: FormData, values: any, prefix?: string) {
 })
 export class AdminArticleComponent implements OnInit {
 	public readonly formGroup: FormGroup;
-	public readonly editorConfig: AngularEditorConfig;
 	public readonly b2bNgxSelectThemeEnum: typeof B2bNgxSelectThemeEnum;
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
 
@@ -109,7 +88,6 @@ export class AdminArticleComponent implements OnInit {
 		this.b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 
-		this.editorConfig = EDITOR_CONFIG;
 
 		this.formGroup = this.getFormGroup();
 		this.level1Categories = [];

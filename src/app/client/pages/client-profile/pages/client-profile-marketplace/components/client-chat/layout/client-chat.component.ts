@@ -295,6 +295,10 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 		combineLatest([chat$, token$, user$])
 			.pipe(untilDestroyed(this))
 			.subscribe(([chat, token, user]: any) => {
+				this._socketService.decreaseUnreadMessagesCount(
+					'market',
+					chat.unreadMessagesCount
+				);
 				const buyer = Array.isArray(chat.buyer) ? chat.buyer[0] : chat.buyer;
 				const seller = Array.isArray(chat.seller)
 					? chat.seller[0]
@@ -302,7 +306,7 @@ export class ClientChatComponent implements OnInit, OnDestroy {
 
 				this.openConnection(token);
 
-				const role = user._id === buyer?._id ? 'buyer' : 'seller';
+				const role = user?._id === buyer?._id ? 'buyer' : 'seller';
 				const contactTo = role === 'seller' ? buyer : seller;
 
 				this.displayContactsRequested =

@@ -1,0 +1,82 @@
+<!-- DESKTOP -->
+<!-- Future me will be angry for such structure but current me is happy :) -->
+@switch (mode) {
+	@case ('mobile') {
+		<div [ngClass]="{'flex-row': orientation === 'horizontal'}"
+				 class="bg-cover bg-center flex flex-col gap-3">
+			<div [ngClass]="{'aspect-square': aspectRatio === 'square'}"
+					 class="w-2/5 grid min-h-28 max-h-56 bg-white border bg-cover border-[#C6D1E2] rounded-md p-2"
+					 [style.background-image]="url">
+				<div class="flex col-start-3 self-start justify-self-end col-end-4 row-start-1 justify-end w-full">
+					<div [ngClass]="{'hidden': hideButtons}" class="flex flex-row gap-2 right-2 top-2 z-50">
+						@if (showEditButton) {
+							<button (click)="edit()" b2bNgxButton>
+								<img b2bNgxIcon [name]="'edit'" alt="edit">
+							</button>
+						}
+						<button (click)="delete()" b2bNgxButton>
+							<img b2bNgxIcon [name]="'delete'" alt="edit">
+						</button>
+					</div>
+				</div>
+				<div class=" col-start-1 col-end-4 row-span-1 row-end-2 flex flex-col items-center justify-center">
+					{{ url ? '' : 'Logo' }}
+				</div>
+			</div>
+			<div class="w-3/5 flex flex-col gap-2">
+				<div class="flex flex-col gap-1">
+					@if (showUploadButton) {
+						<button (click)="openModal()" mat-flat-button
+										class="!bg-[#EEEEEE] cursor-pointer hover:opacity-80 px-3 w-fit !text-xs">
+							<mat-icon>add</mat-icon>
+							<span>{{ buttonLabel ?? 'Upload logo' }}</span>
+						</button>
+					}
+				</div>
+				@if (label) {
+					<span class="label">{{ label }}</span>
+				}
+			</div>
+		</div>
+	}
+	@case ('desktop') {
+		<div [style.background-image]="url"
+				 class="w-full h-full min-h-40 bg-cover grid grid-cols-2 md:grid-cols-3 items-center justify-center p-2 bg-white rounded-md border border-[#C6D1E2]">
+			<div class="flex col-start-3 self-start justify-self-end col-end-4 row-start-1 justify-end w-full">
+				<div [ngClass]="{'hidden': hideButtons}" class="flex flex-row gap-2 right-2 top-2">
+					@if (showEditButton) {
+						<button (click)="edit()" b2bNgxButton>
+							<img b2bNgxIcon [name]="'edit'" alt="edit">
+						</button>
+					}
+					<button (click)="delete()" b2bNgxButton class="top__buttons-button">
+						<img b2bNgxIcon [name]="'delete'" alt="edit">
+					</button>
+				</div>
+			</div>
+			<div class="flex items-center justify-center flex-col gap-1 col-start-1 col-end-4 row-start-1 row-end-3">
+				@if (!this.url) {
+					<img b2bNgxIcon
+							 class="!h-[32px] !w-[32px]"
+							 name="image-plus"
+							 alt="image"/>
+				}
+				@if (showUploadButton && !this.url) {
+					<button (click)="openModal()" mat-flat-button
+									class="!bg-[#EEEEEE] cursor-pointer hover:opacity-80 px-3 !text-xs">
+						<mat-icon>add</mat-icon>
+						<span>{{ buttonLabel ?? 'Upload banner' }}</span>
+					</button>
+				}
+			</div>
+			<div class="flex row-start-2 row-end-3 col-start-1 col-end-2 justify-start w-full">
+				<div class="mt-10 flex bottom-3 left-3 aspect-square">
+					<ng-content></ng-content>
+				</div>
+			</div>
+		</div>
+		@if (label) {
+			<span class="label">{{ label }}</span>
+		}
+	}
+}

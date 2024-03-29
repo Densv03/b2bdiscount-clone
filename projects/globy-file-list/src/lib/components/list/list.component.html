@@ -1,0 +1,7 @@
+<div [ngClass]="customClass" class="grid grid-flow-col gap-3">
+	@for (item of items; track $index) {
+		@if (item) {
+			<lib-card (deleteItem)="delete($event)" [handleItem]="handleItem" [data]="item" [index]="$index"/>
+		}
+	}
+</div>

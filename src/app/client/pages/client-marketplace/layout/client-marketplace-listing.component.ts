@@ -404,6 +404,52 @@ export class ClientMarketplaceListingComponent
 		}
 	}
 
+	public getNavigationForDeleteMode(hiddenLabel: string): NavigationOption {
+		const queryParams = { ...this.route.snapshot.queryParams };
+		switch (hiddenLabel) {
+			case 'rootCategory':
+				return {
+					routerLink: ['/b2bmarket/listing'],
+				};
+			case 'categories':
+				if (!this.childrenCategories.length) {
+					return {
+						routerLink: ['../'],
+						queryParamsHandling: null,
+						queryParams,
+						relativeTo: this.route,
+					};
+				}
+				return {
+					routerLink: [],
+					queryParamsHandling: 'merge',
+					queryParams,
+					relativeTo: this.route,
+				};
+			case 'type':
+				delete queryParams['type'];
+				return {
+					routerLink: [],
+					queryParams: queryParams,
+					relativeTo: this.route,
+				};
+			case 'country[]':
+				delete queryParams['country[]'];
+				return {
+					routerLink: [],
+					queryParams: queryParams,
+					relativeTo: this.route,
+				};
+			default:
+				return {
+					routerLink: [],
+					queryParams: {},
+					queryParamsHandling: null,
+					relativeTo: null,
+				};
+		}
+	}
+
 	public isOptionSelected(
 		option: any,
 		filterIndex: number,
@@ -582,10 +628,6 @@ export class ClientMarketplaceListingComponent
 		});
 	}
 
-	ngOnDestroy() {
-		this.title.setTitle('Globy');
-	}
-
 	private initSeoParams() {
 		if (this.route.snapshot.params['childCategory']) {
 			this.seoService.setTitle(
@@ -610,5 +652,11 @@ export class ClientMarketplaceListingComponent
 			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 			.join(' ');
 		return `${capitalizedWords} Wholesale`;
+	}
+
+	ngOnDestroy() {
+		this.title.setTitle('Globy');
+		this.headerService.searchFormControl.setValue('');
+		this.headerService.searchFormControl.updateValueAndValidity();
 	}
 }

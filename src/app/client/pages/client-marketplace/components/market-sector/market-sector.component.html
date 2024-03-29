@@ -54,10 +54,12 @@
 		</div>
 	</div>
 
-	<b2b-categories-carousel
-		class="categories"
-		[showArrows]="(category$ | async)?.children?.length > 9"
-		[category]="category$ | async"></b2b-categories-carousel>
+	@if (category$ | async; as category) {
+		<b2b-categories-carousel
+			class="categories"
+			[showArrows]="category?.children?.length > 9"
+			[category]="category"></b2b-categories-carousel>
+	}
 
 	<ng-container *ngIf="popularProducts$ | async as popularProducts">
 		<b2b-categories-carousel
@@ -103,12 +105,19 @@
 							</div>
 						</div>
 
-						<img
-							class="logo"
-							b2bNgxImage
-							[name]="
-								supplier.logo?.path ? supplier?.logo.path : 'no-company-logo'
-							" />
+						@if (!!supplier?.logo?.path) {
+							<img
+								class="logo"
+								[src]="apiAddress + supplier?.logo?.path"
+								width="48"
+								height="48" />
+						} @else {
+							<img
+								class="logo"
+								[src]="'assets/icons/no-company-logo.svg'"
+								width="48"
+								height="48" />
+						}
 					</div>
 
 					<h4 class="supplier-categories">

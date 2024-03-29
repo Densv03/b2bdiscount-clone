@@ -1,4 +1,4 @@
-<div *ngIf="rfqItem" class="item" [routerLink]="rfqItem.path">
+<div *ngIf="rfqItem" class="item" [routerLink]="rfqItem?.path || rfqItem?._id">
 	<div class="item__column">
 		<div class="item__name">Product: {{ rfqItem.productName }}</div>
 		<div
@@ -34,7 +34,7 @@
 			class="item__quote"
 			b2bNgxButton
 			[theme]="b2bNgxButtonTheme.BACKGROUND_GRAY"
-			[routerLink]="rfqItem._id">
+			[routerLink]="rfqItem?.path || rfqItem._id">
 			{{ (user$ | async)?._id === rfqItem?.user ? 'View my rfq' : 'Quote now' }}
 		</button>
 	</div>

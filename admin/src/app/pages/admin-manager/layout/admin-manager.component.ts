@@ -16,11 +16,14 @@ import { getName } from 'country-list';
 	styleUrls: ['./admin-manager.component.scss'],
 })
 export class AdminManagerComponent implements OnInit {
+	public readonly pageSize = 25;
+	public currentPage = 1;
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 
 	public managersList: any[] = [];
 	public userList: any[] = [];
+	public userListByPage: any[] = [];
 	public displayedColumnsManagers: string[] = [
 		'refId',
 		'firstName',
@@ -101,6 +104,7 @@ export class AdminManagerComponent implements OnInit {
 				}
 
 				this.userList = data[0].users;
+				this.togglePage(1);
 				this.changeDetectionRef.detectChanges();
 			});
 	}
@@ -128,6 +132,11 @@ export class AdminManagerComponent implements OnInit {
 
 	public getCountryNameByCode(countryCode: string): string {
 		return countryCode ? getName(countryCode) : '';
+	}
+
+	public togglePage(page: number): void {
+		this.currentPage = page;
+		this.userListByPage = this.userList.slice((this.currentPage - 1) * this.pageSize, this.pageSize * this.currentPage);
 	}
 
 	private updateManagerList(): void {

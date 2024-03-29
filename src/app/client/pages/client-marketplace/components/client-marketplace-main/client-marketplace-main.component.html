@@ -3,14 +3,16 @@
 		<h1 class="title">B2B Marketplace for Global Trade</h1>
 
 		<div class="search-wrapper">
-			<input
-				#searchInput
-				b2bNgxInput
-				(keydown.enter)="setSearch(formGroup.value['q'])"
-				formControlName="q"
-				[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
-				class="subheader-search"
-				placeholder="Search products" />
+			<div class="grid w-full">
+				<input
+					#searchInput
+					b2bNgxInput
+					(keydown.enter)="setSearch(formGroup.value['q'])"
+					formControlName="q"
+					[theme]="b2bNgxInputThemeEnum.BACKGROUND_WHITE"
+					class="subheader-search !w-full"
+					placeholder="Search products"/>
+			</div>
 
 			<button
 				(click)="setSearch(formGroup.value['q'])"
@@ -65,7 +67,7 @@
 								selectedCategory.path || selectedCategory._id,
 								childCategory.path || childCategory._id
 							]">
-							<img b2bNgxImage [name]="getCategoryImage(childCategory.image)" />
+							<img b2bNgxImage [name]="getCategoryImage(childCategory.image)"/>
 
 							<p>{{ childCategory.name }}</p>
 						</a>
@@ -125,12 +127,12 @@
 
 		<div class="logistic-block">
 			<div class="image-block">
-				<img b2bNgxImage class="first-img" [name]="'logistic-mock-img'" />
+				<img b2bNgxImage class="first-img" [name]="'logistic-mock-img'"/>
 
 				<img
 					b2bNgxImage
 					class="second-img"
-					[name]="'logistic-calculator-by-sea'" />
+					[name]="'logistic-calculator-by-sea'"/>
 			</div>
 
 			<div class="logistic-text">

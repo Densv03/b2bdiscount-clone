@@ -1,7 +1,8 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { ClientProfileYourAccountComponent } from './layout/client-profile-your-account.component';
-import { DefaultRoleGuard } from '../../../../../auth/guards/defaultRole/deafult-role.guard';
+import {RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {ClientProfileYourAccountComponent} from './layout/client-profile-your-account.component';
+import {DefaultRoleGuard} from '../../../../../auth/guards/defaultRole/deafult-role.guard';
+import {CanDeactivateGuard} from "../client-profile-settings-new/guard/form-save.guard";
 
 const routes: Routes = [
 	{
@@ -15,18 +16,32 @@ const routes: Routes = [
 			},
 			{
 				path: 'settings',
+				canDeactivate: [CanDeactivateGuard],
 				canActivate: [DefaultRoleGuard],
-				loadChildren: () =>
+				loadComponent: () =>
 					import(
-						'../client-profile-settings/client-profile-settings.module'
-					).then((m) => m.ClientProfileSettingsModule),
+						'../client-profile-settings-new/layout/client-profile-settings-new.component'
+						).then((m) => m.ClientProfileSettingsNewComponent),
+			},
+			{
+				path: 'settings/profile',
+				canActivate: [DefaultRoleGuard],
+				loadComponent: () =>
+					import(
+						'../client-profile-settings/layout/client-profile-settings.component'
+						).then(m => m.ClientProfileSettingsComponent)
+			},
+			{
+				path: 'settings/following-products',
+				canActivate: [DefaultRoleGuard],
+				loadComponent: () =>
+					import(
+						'../client-profile-following-products/client-profile-following-products.component'
+						).then((m) => m.ClientProfileFollowingProductsComponent),
 			},
 			{
 				path: 'company-information',
-				loadChildren: () =>
-					import(
-						'../client-company-information/client-company-information.module'
-					).then((m) => m.ClientCompanyInformationModule),
+				redirectTo: 'settings',
 			},
 			{
 				path: 'billing',
@@ -34,7 +49,7 @@ const routes: Routes = [
 				loadChildren: () =>
 					import(
 						'../client-profile-billing/client-profile-billing.module'
-					).then((m) => m.ClientProfileBillingModule),
+						).then((m) => m.ClientProfileBillingModule),
 			},
 		],
 	},
@@ -44,4 +59,5 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class ClientProfileYourAccountRoutingModule {}
+export class ClientProfileYourAccountRoutingModule {
+}

@@ -42,7 +42,7 @@ export class MixpanelRepository {
                     return this.unset(body);
             }
         } catch (e) {
-            console.error(e);
+            console.error(JSON.stringify(e));
             throw e;
         }
     }
@@ -53,7 +53,7 @@ export class MixpanelRepository {
                                 body.properties,
                                 this.handleError);
         } catch (e) {
-            console.error(e);
+            console.error(JSON.stringify(e));
             throw e;
         }
     }

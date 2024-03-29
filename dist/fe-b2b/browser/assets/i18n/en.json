@@ -436,7 +436,7 @@
 		"MAX_LENGTH": "`This field have to be less than ",
 		"1000": "There is no user with this credentials",
 		"1001": "There is no user with this credentials",
-		"1002": "This email already exist",
+		"1002": "This email already exists",
 		"1012": "Invalid token",
 		"1014": "There is no user with this credentials",
 		"MASK": "The phone number entered incorrectly",

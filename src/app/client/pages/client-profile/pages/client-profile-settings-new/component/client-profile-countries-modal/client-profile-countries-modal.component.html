@@ -1,0 +1,25 @@
+<b2b-client-profile-modal-container [label]="'Add target country'" (close)="onDismiss(false)" class="">
+	<div class="flex flex-col gap-4">
+		<b2b-ngx-country-select [multiple]="true" [theme]="B2bNgxSelectThemeEnum.BACKGROUND_WHITE" [formControl]="control" [version]="NgxSelectVariantEnum.GLOBY">
+			Target country
+		</b2b-ngx-country-select>
+		@if (countries.length) {
+			<div class="flex flex-row flex-wrap gap-3">
+				@for (country of countries; track $index) {
+					<div class="border__chip curs rounded-md bg-white flex flex-row gap-1 justify-between px-3 py-2">
+						<span>{{ getCountryName(country) }}</span>
+						<mat-icon (click)="deleteCountry(country)"  class="text-[#9FA4BB] scale-75">close</mat-icon>
+					</div>
+				}
+			</div>
+		}
+		<div class="flex flex-row justify-center items-center">
+			<button
+				(click)="onDismiss(countries)"
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				b2bNgxButton>
+				Save changes
+			</button>
+		</div>
+	</div>
+</b2b-client-profile-modal-container>

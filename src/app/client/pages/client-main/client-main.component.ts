@@ -50,6 +50,8 @@ export class ClientMainComponent implements AfterViewInit, OnInit {
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 	public control: FormControl = new FormControl<string>('');
+	public showVideo = false;
+
 	constructor(
 		public platformService: PlatformService,
 		private categoriesService: CategoriesService,
@@ -68,6 +70,7 @@ export class ClientMainComponent implements AfterViewInit, OnInit {
 		this.seoService.setDescription(
 			'B2B Marketplace for sourcing and connecting with trusted manufacturers and wholesalers. Unclaimed cargo directory. News and the industry’s insights.'
 		);
+		this.initVideo();
 	}
 
 	ngAfterViewInit() {
@@ -191,5 +194,12 @@ export class ClientMainComponent implements AfterViewInit, OnInit {
 					'for any destination and save your time managing logistics.',
 			},
 		];
+	}
+
+	private initVideo() {
+		if (this.platformService.isServer) {
+			return;
+		}
+		this.showVideo = true;
 	}
 }

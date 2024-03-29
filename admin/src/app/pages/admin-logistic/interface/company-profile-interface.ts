@@ -5,7 +5,7 @@ export interface CompanyProfileInterface {
 	country: string;
 	createdAt: Date;
 	destinationsList: string[];
-	email: string;
+	email: string | string[];
 	name: string;
 	phone: Phone;
 	transportType: string[];

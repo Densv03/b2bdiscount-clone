@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
 import { first } from 'rxjs/operators';
+import {
+	BlogArticle,
+	BlogAuthor, CreateBlogRequest,
+	Tag, TypeArticle
+} from "../../../../../admin/src/app/pages/admin-blog-post/types/admin-blog-post.type";
+import { getFormData } from "../../../core/helpers/function/get-form-data";
 
 @Injectable({
 	providedIn: 'root',
@@ -20,7 +26,7 @@ export class BlogService {
 		this._endpoint = 'blogs/';
 	}
 
-	public getTags(str: any) {
+	public getTags(str: any): Observable<Tag[]> {
 		return this.apiService.get(`tags?q=${str}`);
 	}
 
@@ -56,13 +62,6 @@ export class BlogService {
 	}
 
 	public getArticleById(id: string): Observable<any> {
-		// const artiecles = this._articlesBehaviourSubject.getValue();
-		// const findedArticle = artiecles.find((articleToFind) => articleToFind.id === id);
-		//
-		// if (findedArticle) {
-		// 	return of(findedArticle);
-		// }
-
 		return this.apiService.get(`blog/${id}`);
 	}
 
@@ -89,5 +88,31 @@ export class BlogService {
 
 	public deleteArticleById(id: any) {
 		return this.apiService.delete(`blog/${id}/delete`);
+	}
+
+	public getAuthorList$(limit = 10, offset = 0): Observable<{ data: BlogAuthor[], count: number }> {
+		return this.apiService.get('new-blog/authors', {
+			params: {
+				limit,
+				offset
+			}
+		})
+	}
+
+	public createNewBlog(data: CreateBlogRequest): Observable<any> {
+		return this.apiService.post('new-blog/create', getFormData(data));
+	}
+
+	public getNewArticles(limit = 10, offset = 0, type: TypeArticle = 'News'): Observable<{
+		data: BlogArticle[],
+		count: number
+	}> {
+		return this.apiService.get('new-blogs', {
+			params: {
+				limit,
+				offset,
+				type
+			}
+		})
 	}
 }

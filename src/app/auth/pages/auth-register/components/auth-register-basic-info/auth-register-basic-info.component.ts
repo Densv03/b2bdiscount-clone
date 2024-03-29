@@ -4,7 +4,7 @@ import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { onlyLatin } from '../../../../../core/helpers/validator/only-latin';
-import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { fullName } from '../../../../../core/helpers/validator/full-name';
 import { BasicInfoInterface } from '../../models/basic-info.interface';
 import { User } from '../../../../../core/models/user/user.model';

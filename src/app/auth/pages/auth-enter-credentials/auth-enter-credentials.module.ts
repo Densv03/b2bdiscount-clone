@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { AuthEnterCredentialsComponent } from './auth-enter-credentials.component';
 import { RouterModule, Routes } from '@angular/router';
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
@@ -35,6 +35,7 @@ const routes: Routes = [{ path: '', component: AuthEnterCredentialsComponent }];
 		NgxPasswordModule,
 		B2bNgxDividerModule,
 		AngularSvgIconModule,
+		NgOptimizedImage,
 		// NgxPasswordModule
 	],
 })

@@ -5,6 +5,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '../../../services/auth/auth.service';
 import { AuthRecoverAccountComponent } from '../../auth-recover-account/auth-recover-account.component';
 import { MixpanelService } from '../../../../core/services/mixpanel/mixpanel.service';
+import { firstValueFrom } from 'rxjs';
+import { User } from '../../../../core/models/user/user.model';
 
 @UntilDestroy()
 @Component({
@@ -27,34 +29,7 @@ export class AuthGoogleSignInSuccessComponent implements OnInit {
 		private readonly _authService: AuthService,
 		private readonly _router: Router,
 		private readonly mixpanelService: MixpanelService // private readonly _dialogService: DialogService
-	) {
-		// this._activatedRoute.queryParams.pipe(untilDestroyed(this)).subscribe((params) => {
-		// 	const { token, recovered } = params;
-		// 	const updatedToken = token.endsWith('/') ? token.slice(0, -1) : token;
-		// 	this._authService.updateToken(updatedToken);
-		// 	this._authService.initUser();
-		// 	this._authService
-		// 		.getUser()
-		// 		.pipe(untilDestroyed(this))
-		// 		.subscribe((user) => {
-		// 			if (recovered) {
-		// 				// this._dialogService
-		// 				// 	.open(AuthRecoverAccountComponent, {
-		// 				// 		width: "40vw",
-		// 				// 		height: "auto",
-		// 				// 		minHeight: "0",
-		// 				// 		windowClass: "report-dialog",
-		// 				// 	})
-		// 				// 	.afterClosed$.pipe(untilDestroyed(this))
-		// 				// 	.subscribe();
-		// 			}
-		//
-		// 			this._authService.updateToken(updatedToken);
-		// 			this._authService.updateRole(user?.role);
-		// 			this._router.navigateByUrl("/");
-		// 		});
-		// });
-	}
+	) {}
 
 	ngOnInit() {
 		this._activatedRoute.queryParams
@@ -68,32 +43,25 @@ export class AuthGoogleSignInSuccessComponent implements OnInit {
 					.getUser()
 					.pipe(untilDestroyed(this))
 					.subscribe((user) => {
-						if (recovered) {
-							// this._dialogService
-							// 	.open(AuthRecoverAccountComponent, {
-							// 		width: "40vw",
-							// 		height: "auto",
-							// 		minHeight: "0",
-							// 		windowClass: "report-dialog",
-							// 	})
-							// 	.afterClosed$.pipe(untilDestroyed(this))
-							// 	.subscribe();
-						}
-
 						console.log('AUTH SERVICE GOOGLE SIGN IN');
-						const mixpanel = {
-							User_id: user?._id,
-							'Account type': user?.rootRole?.displayName,
-							'Company Name': user?.company,
-							'Auth Method': user?.socialAuthType,
-						};
-						this.mixpanelService.logIn(mixpanel);
-						this.mixpanelService.track('Login completed', mixpanel);
+						this.trackLogin(user);
 						this._authService.updateToken(updatedToken);
 						this._authService.updateRole(user?.role);
-
 						this._router.navigateByUrl('/');
 					});
 			});
+	}
+
+	async trackLogin(user: User) {
+		if (!user) {
+			return;
+		}
+		const mixpanel = {
+			User_id: user?._id,
+			'Account Type': user?.rootRole?.displayName,
+			'Company Name': user?.company,
+			'Auth Method': user?.socialAuthType,
+		};
+		this.mixpanelService.logIn(mixpanel);
 	}
 }

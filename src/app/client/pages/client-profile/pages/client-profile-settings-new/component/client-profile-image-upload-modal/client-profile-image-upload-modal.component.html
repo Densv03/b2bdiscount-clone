@@ -1,0 +1,40 @@
+<b2b-client-profile-modal-container [label]="'Add ' + data.mode"
+																		(close)="onDismiss()"
+																		class="flex flex-col gap-5 md:max-w-[50vw] md:h-auto h-[100vh]">
+	<div class="flex flex-col gap-3"
+			 [ngClass]="{'flex-row': data.device === 'desktop' && data.mode === 'logo'}">
+		<div [style.background-image]="url"
+				 [ngClass]="{'aspect-square max-w-40': data.mode === 'logo'}"
+				 class="w-full h-full min-h-40 bg-center bg-cover grid grid-cols-3 grid-rows-3 items-center justify-center p-1 bg-white rounded-md border border-[#C6D1E2]">
+			@if (!url) {
+				<img b2bNgxIcon
+						 class="!h-[32px] !w-[32px] self-center justify-self-center col-start-2 col-end-3 row-start-2 row-end-3"
+						 name="image-plus"
+						 alt="image"/>
+			}
+			<div class="flex !self-baseline items-baseline justify-end col-start-3 col-end-4 row-start-1 row-end-2">
+				<button class="border-[#C6D1E2] border-[1.5px] bg-[rgba(255,255,255,0.8)] hover:bg-[rgba(0,0,0,0.1)] rounded-md p-1.5" (click)="delete()" b2bNgxButton>
+					<img b2bNgxIcon [name]="'close'" class="text-black" alt="close">
+				</button>
+			</div>
+		</div>
+		<div class="flex flex-col gap-3">
+			<b2b-ngx-file [isPhoto]="true"
+										[maxAllowedSize]="20"
+										[showFilesList]="false"
+										[acceptSingle]="true"
+										class="!text-xs"
+										[label]="'Upload photo'"
+										[formControl]="control"/>
+			<span class="text-black font-secondary text-sm md:text-base">{{ label }}</span>
+		</div>
+	</div>
+	<div class="flex flex-row justify-center">
+		<button (click)="onDismiss(dismissObj)"
+						[disabled]="control.errors"
+						type="submit"
+						class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+						b2bNgxButton>Save changes
+		</button>
+	</div>
+</b2b-client-profile-modal-container>

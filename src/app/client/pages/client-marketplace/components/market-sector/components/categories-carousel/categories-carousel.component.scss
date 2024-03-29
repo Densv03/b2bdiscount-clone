@@ -7,16 +7,65 @@
 	width: 1264px;
 	max-width: 1264px;
 
+	&.w-100 {
+		width: 100%;
+
+		@include breakpoint('3') {
+			padding-bottom: 16px;
+
+			.categories-carousel-wrapper {
+				position: relative;
+
+				.dots-container {
+					bottom: -120px;
+				}
+			}
+		}
+
+		.categories-carousel-wrapper .categories-wrapper {
+			margin-bottom: 0;
+			max-width: 673px;
+			gap: 22px;
+		}
+	}
+
+	&.product-details-page {
+		.title h2 {
+			padding: 0;
+		}
+
+		.categories-carousel-wrapper {
+			justify-content: start !important;
+
+			.dots-container {
+				display: flex;
+				top: 150px;
+			}
+
+			.categories-wrapper {
+				min-width: 100%;
+				margin-bottom: 24px;
+				justify-content: start !important;
+			}
+		}
+	}
+
+	&.flex-start {
+		.categories-carousel-wrapper .categories-wrapper {
+			justify-content: flex-start !important;
+		}
+	}
+
 	@include breakpoint('3') {
 		max-width: 100vw;
-		padding: 0 18px 72px 17px;
+		padding: 0 18px 72px 0;
 	}
 
 	.title {
 		width: 100%;
 
 		h2 {
-			padding: 0 50px;
+			padding: 0 30px;
 			font-size: 24px;
 			font-weight: 700;
 			line-height: 32px;
@@ -52,10 +101,10 @@
 			display: flex;
 			gap: 24px;
 			width: 100%;
-			max-width: 1166px;
-			overflow-x: auto;
 			scroll-behavior: smooth;
+			overflow: scroll;
 			margin-bottom: 80px;
+			max-width: 1166px;
 
 			@include breakpoint('3') {
 				padding: 0;
@@ -104,7 +153,7 @@
 
 			@include breakpoint('3') {
 				position: absolute;
-				top: 150px;
+				top: 230px;
 				left: 50%;
 				display: flex;
 				align-items: center;
@@ -130,6 +179,7 @@
 
 		.custom-carousel-arrow {
 			margin-bottom: 15px;
+			z-index: 11;
 
 			&.product-arrow {
 				margin-bottom: 100px;

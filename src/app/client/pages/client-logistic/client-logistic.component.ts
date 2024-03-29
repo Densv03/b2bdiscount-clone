@@ -119,7 +119,7 @@ export class ClientLogisticComponent implements OnDestroy, OnInit {
 				readyToLoad,
 			};
 		} else if (this.logisticService.getActiveDeliveryType() === 'sea') {
-			let { countryFrom, countryTo, date, portTo, portFrom, seaLine, _id } = {
+			let { countryFrom, countryTo, date, portTo, portFrom, seaLine, _id, containerType } = {
 				...this.logisticService.getSeaState(),
 				...tariff,
 			} as any;
@@ -133,6 +133,7 @@ export class ClientLogisticComponent implements OnDestroy, OnInit {
 				portTo,
 				portFrom,
 				seaLine,
+				containerType,
 				tariffSeaId: _id,
 			};
 		}

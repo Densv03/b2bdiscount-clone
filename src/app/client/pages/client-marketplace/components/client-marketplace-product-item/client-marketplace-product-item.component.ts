@@ -17,6 +17,7 @@ import { SupplierContactSuccessDialogComponent } from '../supplier-contact-succe
 import { checkSerialNumber } from '../../../../../core/helpers/function/check-serial-number';
 import { Photo } from '../../../../../core/models/photo.model';
 import { DialogService } from '../../../../../core/services/dialog-service/dialog.service';
+import { result } from 'lodash';
 
 const URLS_WITHOUT_CHATS = ['supplier-listing', '/products'];
 
@@ -91,6 +92,15 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		});
 
 		this.checkCardForOpenChatPossibility();
+	}
+
+	public getImgUrl(): string | null {
+		const apiUrl = environment.apiUrl.includes('staging')
+			? 'https://api.globy.com/'
+			: environment.apiUrl;
+		return this.product.photos[0]
+			? `${apiUrl}${this.product.photos[0].lg}`
+			: null;
 	}
 
 	public getCompanyLogo(): string {
@@ -194,14 +204,7 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 						})
 					)
 					.subscribe(({ openChat }) => {
-						this.chatStart(openChat);
-						this._socket.emit('message', {
-							type: 'text',
-							body: contactSupplierResult['moreInformation'],
-							userId: this.product.user,
-							productId: this.product._id,
-							typeRoom: 'product',
-						});
+						this.chatStart(openChat, contactSupplierResult);
 					});
 			}
 		}
@@ -210,7 +213,6 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 	private checkCardForOpenChatPossibility(): void {
 		URLS_WITHOUT_CHATS.forEach((url) => {
 			if (this.router.url.includes(url)) {
-				console.log(this.router.url, url);
 				this.chatPossibilityIsHidden = true;
 			}
 		});
@@ -229,11 +231,12 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		});
 	}
 
-	private chatStart(redirectToChat?: boolean): void {
+	private chatStart(redirectToChat?: boolean, contactSupplierResult?: any): void {
 		this.openConnection(this.token);
 		this._socket.emit('start_chat', {
+			body: contactSupplierResult ? contactSupplierResult['moreInformation'] : null,
 			userId: this.product.user,
-			productId: this.product._id,
+			productId: contactSupplierResult ? contactSupplierResult['productName'] : this.product._id,
 			typeRoom: 'product',
 		});
 

@@ -1,11 +1,42 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { getName, overwrite } from 'country-list';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { overwrite } from 'country-list';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './admin.component.html',
 })
-export class AdminComponent implements AfterViewInit {
+export class AdminComponent implements OnInit, AfterViewInit {
+	constructor(
+		private readonly matIconRegistry: MatIconRegistry,
+		private readonly domSanitizer: DomSanitizer
+	) {}
+
+	public ngOnInit(): void {
+		const icons = [
+			{ name: 'add', path: '../assets/icons/add.svg' },
+			{ name: 'container-solid', path: '../assets/icons/container-solid.svg' },
+			{ name: 'arrow-left', path: '../assets/icons/arrow-third-left.svg' },
+			{ name: 'arrow-right', path: '../assets/icons/arrow-third-right.svg' },
+			{ name: 'open-chat', path: '../assets/icons/open-chat.svg' },
+			{ name: 'arrow-r-blue', path: '../assets/icons/arrow-r-blue.svg' },
+			{ name: 'arrow-r-2', path: '../assets/icons/arrow-r-2.svg' },
+			{ name: 'second-note', path: '../assets/icons/second-note.svg' },
+			{ name: 'second-search', path: '../assets/icons/search-16-icon.svg' },
+			{ name: 'aim', path: '../assets/icons/aim.svg' },
+			{ name: 'comment-text', path: '../assets/icons/comment-text.svg' },
+			{ name: 'arrow-right-2', path: '../assets/icons/arrow-right-2.svg' },
+		];
+
+		icons.forEach((icon) => {
+			this.matIconRegistry.addSvgIcon(
+				icon.name,
+				this.domSanitizer.bypassSecurityTrustResourceUrl(icon.path)
+			);
+		});
+	}
+
 	public ngAfterViewInit(): void {
 		this.renameCountries();
 	}

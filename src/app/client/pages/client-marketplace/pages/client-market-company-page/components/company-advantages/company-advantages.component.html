@@ -1,0 +1,17 @@
+@if (advantageArrIncludesContent(advantages)) {
+	<div class="advantages">
+		<div class="advantages__title">Our advantages</div>
+		<div class="advantages__list">
+			@for (advantage of filterEmptyAdvantages(advantages); track advantage; let i = $index) {
+				<div class="advantages__item">
+					<div class="advantages__item-header">
+						{{ i + 1 }}. {{advantage.title}}
+					</div>
+					@if (advantage.content.length) {
+						<div class="advantages__item-body">{{advantage.content}}</div>
+					}
+				</div>
+			}
+		</div>
+	</div>
+}

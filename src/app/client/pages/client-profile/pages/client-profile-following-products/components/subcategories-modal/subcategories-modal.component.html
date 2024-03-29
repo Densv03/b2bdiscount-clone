@@ -1,0 +1,80 @@
+<div class="subcategory">
+	<div class="subcategory__title">Product subcategory</div>
+	<div mat-dialog-close class="subcategory__close">
+		<svg
+			width="14"
+			height="14"
+			viewBox="0 0 14 14"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				d="M0.292893 0.292893C-0.0976311 0.683418 -0.0976311 1.31658 0.292893 1.70711L5.58579 7L0.292893 12.2929C-0.0976309 12.6834 -0.0976309 13.3166 0.292893 13.7071C0.683418 14.0976 1.31658 14.0976 1.70711 13.7071L7 8.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L8.41421 7L13.7071 1.70711C14.0976 1.31658 14.0976 0.683418 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L7 5.58579L1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893Z"
+				fill="#0F0F11" />
+		</svg>
+	</div>
+
+	<div (click)="closeModal()" class="subcategory__parent">
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M5.43431 12.8157C5.12189 12.5033 5.12189 11.9967 5.43431 11.6843L10.5255 6.59315C10.8379 6.28073 11.3444 6.28073 11.6569 6.59315C11.9693 6.90557 11.9693 7.4121 11.6569 7.72452L7.13137 12.25L11.6569 16.7755C11.9693 17.0879 11.9693 17.5944 11.6569 17.9069C11.3444 18.2193 10.8379 18.2193 10.5255 17.9069L5.43431 12.8157ZM18.75 13.05L6 13.05V11.45L18.75 11.45V13.05Z"
+				fill="#556274" />
+		</svg>
+
+		@if (isBrowser) {
+			<svg-icon
+				class="subcategory__parent-icon"
+				[src]="generateSectorIconPath(parentSector.path)"></svg-icon>
+		}
+		<div class="subcategory__parent-name">{{ parentSector.name }}</div>
+	</div>
+
+	<form [formGroup]="sectorFormGroup">
+		<div class="subcategory__list">
+			<div
+				class="subcategory__item">
+				<input
+					id="select-all"
+					[checked]="allValuesAreSelected$ | async"
+					(change)="changeSelectAllState()"
+					type="checkbox"/>
+				<label (click)="$event.preventDefault();changeSelectAllState()" for="select-all" class="subcategory__name select-all">Select all</label>
+			</div>
+			@for (
+				sector of parentSector.children;
+				track sector.name;
+				let i = $index
+			) {
+				<div class="subcategory__item">
+					<input
+						[id]="sector._id"
+						type="checkbox"
+						[formControl]="$any(sectorFormGroup?.controls[sector._id])" />
+					<label [for]="sector._id" class="subcategory__name">{{
+						sector.name
+					}}</label>
+				</div>
+			}
+		</div>
+	</form>
+	<div class="subcategory__footer">
+		<div class="buttons">
+			<button
+				(click)="closeModal()"
+				class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+				Cancel
+			</button>
+			<button
+				(click)="submitForm()"
+				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+				Apply
+			</button>
+		</div>
+	</div>
+</div>

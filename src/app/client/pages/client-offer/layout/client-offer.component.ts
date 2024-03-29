@@ -51,6 +51,10 @@ export class ClientOfferComponent implements OnInit {
 	public isAuth: string;
 	public user;
 
+	public assetsApiUrl = environment.apiUrl.includes('staging')
+		? 'https://api.globy.com/'
+		: environment.apiUrl;
+
 	constructor(
 		private readonly _activatedRouter: ActivatedRoute,
 		private readonly _offersService: OffersService,
@@ -197,7 +201,7 @@ export class ClientOfferComponent implements OnInit {
 				documents: Array.isArray(offer.documents)
 					? offer.documents.map((document: any) => ({
 							...document,
-							fullPath: environment.apiUrl + document.path,
+							fullPath: this.assetsApiUrl + document.path,
 							extension: GetUrlExtension(document.path),
 							isImage: ImageExtensions.includes(GetUrlExtension(document.path)),
 							isDocument: DocumentExtensions.includes(

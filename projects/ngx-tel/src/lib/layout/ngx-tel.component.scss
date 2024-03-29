@@ -26,6 +26,15 @@
 }
 
 ::ng-deep {
+	#country-search-box {
+		height: 44px;
+		outline: none;
+		border: 1px solid #c7cace;
+		border-radius: 5px;
+	}
+	.iti__country-list {
+		max-height: 300px;
+	}
   .ngx-tel-wrapper {
     //color: #556274;
     //background-color: $color-gray-100;

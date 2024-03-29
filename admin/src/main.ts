@@ -6,7 +6,7 @@ import { AdminModule } from './app/admin.module';
 function bootstrap() {
 	platformBrowserDynamic()
 		.bootstrapModule(AdminModule)
-		.catch((err) => console.error(err));
+		.catch((err) => console.error('[AdminModule Bootstrap]:', err));
 }
 
 bootstrap();

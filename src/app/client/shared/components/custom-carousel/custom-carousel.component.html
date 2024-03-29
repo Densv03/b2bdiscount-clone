@@ -20,4 +20,52 @@
 	<mat-icon (click)="nextSlide()" *ngIf="slider.length > 1"
 		>keyboard_arrow_right</mat-icon
 	>
+
+	<div class="dots-container" *ngIf="slider.length > 1">
+		<span
+			*ngFor="let dot of slider; let i = index"
+			class="dot"
+			[class.active-dot]="(activeProduct | async) === i"
+			(click)="showSlide(i)">
+		</span>
+	</div>
+</div>
+
+<div
+	class="desktop-slider"
+	[class.single]="isSingleImage"
+	[class.multiple]="hasMoreThanTwoImages">
+	<img *ngIf="isSingleImage" [src]="slider[0]" alt="Image" />
+
+	<div *ngIf="hasMoreThanTwoImages" class="left-column">
+		<img [src]="slider[0]" (click)="showMore(0)" alt="Image" />
+	</div>
+	<div
+		*ngIf="hasMoreThanTwoImages"
+		class="right-column"
+		[class.fl-column]="this.slider.length < 4">
+		@for (
+			image of slider.slice(1, hasMoreThanFiveImages ? 5 : slider.length);
+			let i = $index;
+			track image
+		) {
+			<img [src]="image" (click)="showMore(i + 1)" alt="Image {{ i }}" />
+		}
+	</div>
+
+	<button
+		*ngIf="hasMoreThanFiveImages"
+		class="show-more-btn"
+		type="button"
+		(click)="showMore()">
+		+ {{ slider.length - 5 }}
+	</button>
+</div>
+
+<div
+	class="desktop-slider"
+	*ngIf="hasTwoImages && !hasMoreThanTwoImages && !isSingleImage">
+	@for (image of slider; track image; let i = $index) {
+		<img (click)="showMore(i)" [src]="image" alt="Image" />
+	}
 </div>

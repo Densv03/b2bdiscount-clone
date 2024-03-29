@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 // import { B2bNgxImagesCarouselModule } from "@b2b/ngx-images-carousel";
 import { B2bNgxLinkModule } from '@b2b/ngx-link';
@@ -55,6 +55,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		B2bNgxImagesCarouselModule,
 		MatDialogModule,
 		TranslateModule,
+		NgOptimizedImage,
 	],
 	providers: [Meta],
 })

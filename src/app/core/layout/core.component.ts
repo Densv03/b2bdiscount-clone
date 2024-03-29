@@ -4,6 +4,7 @@ import {
 	ChangeDetectorRef,
 	Component,
 	ElementRef,
+	Inject,
 	OnInit,
 	ViewChild,
 } from '@angular/core';
@@ -26,6 +27,10 @@ import { PlatformService } from '../../client/services/platform/platform.service
 import { overwrite } from 'country-list';
 import { HeaderService } from '../../client/components/header/header.service';
 import { HeaderPopupState } from '../../client/components/header/types/header-popup-state.interface';
+import { COUNTRIES_OVERRIDE } from '../constants/countries-override';
+import { DOCUMENT } from '@angular/common';
+
+type ActiveHeaderTab = 'Settings' | 'None';
 
 @UntilDestroy()
 @Component({
@@ -52,12 +57,14 @@ export class CoreComponent implements OnInit, AfterViewInit {
 	public readonly sidenavOptions: any;
 	public isUserLoading$: Observable<boolean> =
 		this.authService.isUserLoading$.pipe(startWith(true));
-	public headerIsTransparent = true;
+
+	public activeHeaderTab: ActiveHeaderTab = 'None';
+	public settingsOptions: any[] = this.getSettingsOptions();
 
 	public isMobileView = false;
 	public animationState: 'in' | 'out' = 'out';
 	public mobileProfileOptions: any[] = this.getMobileProfileOptions();
-	@ViewChild('backdrop', { static: true }) backdrop?: ElementRef;
+	@ViewChild('backdrop', {static: true}) backdrop?: ElementRef;
 
 	constructor(
 		private readonly _router: Router,
@@ -69,7 +76,8 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
 		private readonly ccService: NgcCookieConsentService,
 		private readonly platformService: PlatformService,
-		private readonly headerService: HeaderService
+		private readonly headerService: HeaderService,
+		@Inject(DOCUMENT) private document: Document
 	) {
 		if (this.platformService.isBrowser) {
 			this.initSession();
@@ -98,9 +106,9 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		this.userService
 			.getUser$()
 			.pipe(filter((user) => !!user))
-			.subscribe((user: any) => {
+			.subscribe((user) => {
 				if (user.socialAuth) {
-					this.ccService?.destroy();
+					this?.ccService?.destroy();
 				}
 			});
 
@@ -125,8 +133,17 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		return this.platformService.isBrowser;
 	}
 
-	public toggleShowPopUp(link?: string): void {
-		const popupWasHidden = this.animationState === 'out';
+	public toggleShowPopUp(link?: string,
+												 options?: { redirect: boolean, activeSection: ActiveHeaderTab }): void {
+		if (options?.activeSection === 'Settings') {
+			this.updateActiveHeaderTab(options.activeSection);
+			return;
+		} else if (options?.activeSection === 'None') {
+			this.updateActiveHeaderTab(options.activeSection);
+			if (!link) {
+				return;
+			}
+		}
 
 		if (link) this._router.navigate([link]);
 		this.animationState = this.animationState === 'in' ? 'out' : 'in';
@@ -141,6 +158,10 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			}
 			this.headerService.updateProfileNavIsOpened(false);
 		}
+	}
+
+	public updateActiveHeaderTab(activeHeaderTab: ActiveHeaderTab): void {
+		this.activeHeaderTab = activeHeaderTab;
 	}
 
 	public openInDevelopmentPopUp(option: MobileSidenavLinkModel): void {
@@ -205,7 +226,7 @@ export class CoreComponent implements OnInit, AfterViewInit {
 								},
 								{}
 							);
-							queryParams.params = { ...removedContactUs };
+							queryParams.params = {...removedContactUs};
 						}
 						return queryParams;
 					})
@@ -215,8 +236,8 @@ export class CoreComponent implements OnInit, AfterViewInit {
 					const source =
 						params.keys.length > 0
 							? params.keys
-									.map((key: any) => `${key}=${params.get(key)}`)
-									.join('&')
+								.map((key: any) => `${key}=${params.get(key)}`)
+								.join('&')
 							: 'google.organic';
 					localStorage.setItem('session', date.getTime().toString());
 					localStorage.setItem('source', source);
@@ -474,67 +495,9 @@ export class CoreComponent implements OnInit, AfterViewInit {
 			},
 		];
 	}
+
 	private renameCountries(): void {
-		overwrite([
-			{ code: 'FR', name: 'Mayotte' },
-			{ code: 'IN', name: 'India' },
-			{ code: 'VN', name: 'Vietnam' },
-			{ code: 'VI', name: 'U.S. Virgin Islands' },
-			{ code: 'US', name: 'United States Minor Outlying Islands' },
-			{ code: 'TV', name: 'Tuvalu' },
-			{ code: 'SY', name: 'Syria' },
-			{ code: 'GS', name: 'South Georgia and the South Sandwich Islands' },
-			{ code: 'SO', name: 'Somaliland' },
-			{ code: 'SO', name: 'Somali' },
-			{ code: 'SX', name: 'Sint Maarten' },
-			{ code: 'FR', name: 'Saint Pierre and Miquelon' },
-			{ code: 'SH', name: 'Saint Helena' },
-			{ code: 'BL', name: 'Saint Barthelemy' },
-			{ code: 'RE', name: 'Reunion' },
-			{ code: 'CG', name: 'Republic of the Congo' },
-			{ code: 'NF', name: 'Norfolk Island' },
-			{ code: 'NU', name: 'Niue' },
-			{ code: 'NC', name: 'New Caledonia' },
-			{ code: 'AN', name: 'Netherlands Antilles' },
-			{ code: 'NR', name: 'Nauru' },
-			{ code: 'FM', name: 'Micronesia' },
-			{ code: 'MQ', name: 'Martinique' },
-			{ code: 'MH', name: 'Marshall Islands' },
-			{ code: 'KI', name: 'Kiribati' },
-			{ code: 'CI', name: 'Ivory Coast' },
-			{ code: 'IR', name: 'Iran' },
-			{ code: 'GU', name: 'Guam' },
-			{ code: 'GP', name: 'Guadeloupe' },
-			{ code: 'GL', name: 'Greenland' },
-			{ code: 'GF', name: 'French Guiana' },
-			{ code: 'FO', name: 'Faroe Islands' },
-			{ code: 'FK', name: 'Falkland Islands' },
-			{ code: 'CZ', name: 'Czech Republic' },
-			{ code: 'CW', name: 'Curacao' },
-			{ code: 'CK', name: 'Cook Islands' },
-			{ code: 'CX', name: 'Christmas Island' },
-			{ code: 'CV', name: 'Cape Verde' },
-			{ code: 'VG', name: 'British Virgin Islands' },
-			{ code: 'AS', name: 'American Samoa' },
-			{ code: 'SZ', name: 'Swaziland' },
-			{ code: 'EH', name: 'Western Sahara' },
-			{ code: 'CD', name: 'Democratic Republic of the Congo' },
-			{ code: 'SS', name: 'South Sudan' },
-			{ code: 'GB', name: 'United Kingdom' },
-			{ code: 'MD', name: 'Moldova' },
-			{ code: 'TZ', name: 'Tanzania' },
-			{ code: 'VE', name: 'Venezuela' },
-			{ code: 'US', name: 'United States' },
-			{ code: 'US', name: 'USA' },
-			{ code: 'BO', name: 'Bolivia' },
-			{ code: 'KP', name: 'Korea' },
-			{ code: 'SH', name: 'St. Helena Island' },
-			{ code: 'VC', name: 'St. Vincent Island' },
-			{ code: 'TR', name: 'Turkey' },
-			{ code: 'TW', name: 'Taiwan' },
-			{ code: 'KP', name: 'North Korea' },
-			{ code: 'KR', name: 'South Korea' },
-		]);
+		overwrite(COUNTRIES_OVERRIDE);
 	}
 
 	closeHeaderPopup(): void {
@@ -570,6 +533,31 @@ export class CoreComponent implements OnInit, AfterViewInit {
 		const d = new Date();
 		d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
 		const expires = 'expires=' + d.toUTCString();
-		document.cookie = name + '=' + value + ';' + expires + ';path=/';
+		this.document.cookie = name + '=' + value + ';' + expires + ';path=/';
+	}
+
+	private getSettingsOptions() {
+		return [
+			{
+				label: 'My account',
+				link: '/profile/your-account/settings',
+				icon: 'assets/icons/header/profile/my-account.svg'
+			},
+			{
+				label: 'Company Information',
+				link: '/profile/your-account/settings',
+				icon: 'assets/icons/header/profile/company-information.svg'
+			},
+			{
+				label: "Following Products",
+				link: "/profile/your-account/settings/following-products",
+				icon: 'assets/icons/header/profile/following-products.svg'
+			},
+			// {
+			// 	label: "Notification",
+			// 	link: "/profile/your-account/notification",
+			// 	icon: 'assets/icons/header/profile/notification.svg'
+			// }
+		]
 	}
 }

@@ -31,7 +31,7 @@ import { capitalizeFirstLetter } from 'src/app/core/helpers/function/capitalize-
 import { SourcingRequestService } from '../../sourcing-request.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { UserService } from 'src/app/client/pages/client-profile/services/user/user.service';
-import { onlyLatinAndNumberAndSymbols } from 'src/app/core/helpers/validator/only -latin-numbers-symbols';
+import { onlyLatinAndNumberAndSymbols } from '../../../../../core/helpers/validator/only-latin-numbers-symbols';
 import { onlyLatinAndSymbols } from 'src/app/core/helpers/validator/only-latin-symbols';
 import { onlyNumberandSymbols } from 'src/app/core/helpers/validator/only-number-symbols';
 import { MatDialog } from '@angular/material/dialog';

@@ -1,6 +1,6 @@
 import {
 	ChangeDetectionStrategy,
-	Component,
+	Component, Inject,
 	Input,
 	OnInit,
 } from '@angular/core';
@@ -8,6 +8,9 @@ import { ClientMarketplaceService } from '../../../../client-marketplace.service
 import { Observable } from 'rxjs';
 import { MarketProductModel } from '../../../../models/market-product.model';
 import { PaginationParamsModel } from '../../../../../../../core/models/pagination-params.model';
+import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
+import {DeviceExtension} from "../../../../../../../core/helpers/function/deviceExtension";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
 	selector: 'b2b-company-products',
@@ -22,13 +25,15 @@ export class CompanyProductsComponent implements OnInit {
 	public totalProductsLength$: Observable<number> =
 		this.marketService.supplierListingLength$;
 	public PRODUCTS_LIMIT = 6;
+	public isMobile: boolean = this.checkIsMobile();
 
 	private filteredQueryObj: PaginationParamsModel = {
 		limit: this.PRODUCTS_LIMIT,
 		offset: 0,
 	};
 
-	constructor(private marketService: ClientMarketplaceService) {}
+	constructor(private marketService: ClientMarketplaceService,
+							@Inject(DOCUMENT) private readonly document: Document) {}
 
 	ngOnInit(): void {
 		this.marketService.updateSupplierProducts(
@@ -36,15 +41,7 @@ export class CompanyProductsComponent implements OnInit {
 			this.filteredQueryObj
 		);
 	}
-
-	togglePage(pageNumber: number) {
-		this.filteredQueryObj = {
-			...this.filteredQueryObj,
-			offset: (pageNumber - 1) * this.PRODUCTS_LIMIT,
-		};
-		this.marketService.updateSupplierProducts(
-			this.userId,
-			this.filteredQueryObj
-		);
+	private checkIsMobile(): boolean {
+		return this.document.defaultView.innerWidth < 576;
 	}
 }

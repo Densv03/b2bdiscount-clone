@@ -1,14 +1,10 @@
-import {
-	ChangeDetectionStrategy,
-	ChangeDetectorRef,
-	Component,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { HotToastService } from '@ngneat/hot-toast';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, Subject } from 'rxjs';
-import { tap, switchMap, startWith, filter } from 'rxjs/operators';
+import { firstValueFrom, Observable, Subject } from 'rxjs';
+import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { ClientProfileMyOfferDeleteComponent } from '../components/client-profile-my-offer-delete/client-profile-my-offer-delete.component';
 import { ClientProfileMyOfferMarkAsSoldComponent } from '../components/client-profile-my-offer-mark-as-sold/client-profile-my-offer-mark-as-sold.component';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
@@ -100,21 +96,16 @@ export class ClientProfileMyOffersComponent {
 			{
 				label: this.translateService.instant('OFFERS.MARK_AS_SOLD'),
 				icon: 'check',
-				onClick: (offer: any) => {
-					this.categoriesService
-						.getCategoryNameById(offer.category)
-						.pipe(untilDestroyed(this))
-						.subscribe((name) => {
-							this.mixpanelService.track('Unclaimed cargo marked as Sold', {
-								'Product Sector': name,
-								Destination: [
-									getName(offer.destination.from),
-									getName(offer.destination.to),
-								],
-							});
-						});
+				onClick: async (offer: any) => {
+					const category = await this.getCategories(offer);
+					this.mixpanelService.track('Unclaimed cargo marked as Sold', {
+						'Product Sector': category,
+						Destination: [
+							getName(offer.destination.from),
+							getName(offer.destination.to),
+						],
+					});
 					this.markAsSold(offer._id);
-					// this._offersService.markAsSold(offer._id);
 				},
 			},
 			{
@@ -164,24 +155,25 @@ export class ClientProfileMyOffersComponent {
 			{
 				label: this.translateService.instant('OFFERS.DELETE'),
 				icon: 'delete-red',
-				onClick: (offer: any) => {
+				onClick: async (offer: any) => {
 					this.deleteOffer(offer._id);
-					this.categoriesService
-						.getCategoryNameById(offer.category)
-						.pipe(untilDestroyed(this))
-						.subscribe((name) => {
-							this.mixpanelService.track('Unclaimed cargo deleted', {
-								'Product Sector': name,
-								Destination: [
-									getName(offer.destination.from),
-									getName(offer.destination.to),
-								],
-							});
-						});
-					// this._offersService.deleteOfferById(offer._id);
+					const category = await this.getCategories(offer);
+					this.mixpanelService.track('Unclaimed cargo deleted', {
+						'Product Sector': category,
+						Destination: [
+							getName(offer.destination.from),
+							getName(offer.destination.to),
+						],
+					});
 				},
 			},
 		];
+	}
+
+	async getCategories(offer: any) {
+		return firstValueFrom(
+			this.categoriesService.getCategoryNameById(offer?.category)
+		);
 	}
 
 	public markAsSold(id: string) {

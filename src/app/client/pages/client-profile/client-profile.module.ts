@@ -22,6 +22,10 @@ import { B2bNgxRadioModule } from '@b2b/ngx-radio';
 import { ClientProfileAddPaymentMethodComponent } from './components/client-profile-add-payment-method/client-profile-add-payment-method.component';
 import { ClientProfileDeletePaymentMethodComponent } from './components/client-profile-delete-payment-method/client-profile-delete-payment-method.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ProfileSidebarComponent } from './components/client-profile-sidebar/profile-sidebar.component';
+import {
+	ClientProfileSettingsTabsService
+} from "./pages/client-profile-settings-new/component/client-profile-settings-tabs/client-profile-settings-tabs.service";
 
 @NgModule({
 	declarations: [
@@ -35,6 +39,9 @@ import { TranslateModule } from '@ngx-translate/core';
 		ClientProfileBillingDialogComponent,
 		ClientProfileAddPaymentDialogComponent,
 		ClientProfileDeletePaymentMethodDialogComponent,
+	],
+	providers:[
+		ClientProfileSettingsTabsService
 	],
 	imports: [
 		CommonModule,
@@ -52,6 +59,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		MatDialogModule,
 		B2bNgxRadioModule,
 		TranslateModule,
+		ProfileSidebarComponent,
 	],
 })
 export class ClientProfileModule {}

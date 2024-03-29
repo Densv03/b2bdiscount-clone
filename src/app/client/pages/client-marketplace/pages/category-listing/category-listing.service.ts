@@ -76,4 +76,18 @@ export class CategoryListingService {
 			})
 		);
 	}
+	public getSectorsNamesArr(categoryIds: string[]): Observable<string[]> {
+		return this.getPresentCategories().pipe(
+			map(({ categories }) => {
+				return categories.reduce((acum, parent) => {
+					parent.children.forEach((item) => {
+						if (categoryIds.includes(item._id) && !acum.includes(parent.name)) {
+							acum.push(parent.name)
+						}
+					});
+					return acum;
+				}, []);
+			})
+		);
+	}
 }

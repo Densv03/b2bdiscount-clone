@@ -7,6 +7,9 @@ import { ProductDetailsModel } from './models/product-details.model';
 import { MarketProductModel } from './models/market-product.model';
 import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
 import { environment } from '../../../../environments/environment';
+import { HeaderService } from '../../components/header/header.service';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Injectable({
 	providedIn: 'root',
@@ -57,7 +60,12 @@ export class ClientMarketplaceService {
 	public marketplaceProductView$: Observable<'list' | 'grid'> =
 		this.marketplaceProductViewSource.asObservable();
 
-	constructor(private apiService: ApiService) {}
+	constructor(
+		private apiService: ApiService,
+		private router: Router,
+		private headerService: HeaderService,
+		private hotToastService: HotToastService
+	) {}
 
 	public get marketplaceProducts$(): Observable<any> {
 		return this.marketplaceProductsSource.asObservable();
@@ -147,6 +155,17 @@ export class ClientMarketplaceService {
 				first()
 			)
 			.subscribe(({ filters, result: { products, totalCount } }) => {
+				if (
+					products.length === 0 &&
+					this.headerService.searchFormControl.value.length
+				) {
+					this.headerService.searchFormControl.setValue('');
+					this.headerService.searchFormControl.updateValueAndValidity();
+					this.router.navigate([], { queryParams: { q: '' } });
+					this.hotToastService.error(
+						'No products was found with provided search'
+					);
+				}
 				this.completeLoading();
 				// TODO: remove this condition before deploy
 				this.marketplaceProductsLengthSource.next(
@@ -381,7 +400,7 @@ export class ClientMarketplaceService {
 		this.marketplaceProductViewSource.next(view);
 	}
 
-	private getSupplierProducts(
+	public getSupplierProducts(
 		supplierId: string,
 		{ offset, limit }: PaginationParamsModel
 	): Observable<any> {

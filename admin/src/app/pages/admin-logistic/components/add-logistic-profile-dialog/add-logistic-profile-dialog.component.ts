@@ -17,6 +17,7 @@ export class AddLogisticProfileDialogComponent implements OnInit {
 		checked: false,
 	}));
 	public selectedTransportTypes: any[] = [];
+	public emailsList: string[] = [];
 	constructor(
 		@Inject(MAT_DIALOG_DATA)
 		public readonly dialogData: CompanyProfileInterface,
@@ -25,15 +26,27 @@ export class AddLogisticProfileDialogComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.setFormGroup();
+		this.emailsList = this.dialogData.email instanceof Array ? this.dialogData.email : [this.dialogData.email]
+	}
+
+	public addEmail(): void {
+		if (this.profileForm.get('email').valid && this.profileForm.get('email').value.trim()) {
+			this.emailsList.push(this.profileForm.value.email);
+			this.profileForm.get('email').reset();
+		}
+	}
+
+	public removeEmail(email: string): void {
+		this.emailsList = this.emailsList.filter(item => item !== email);
 	}
 
 	public save(): void {
-		if (this.profileForm.invalid) {
-			this.profileForm.markAsTouched();
-			return;
-		}
+		// if (this.profileForm.invalid) {
+		// 	this.profileForm.markAsTouched();
+		// 	return;
+		// }
 
-		this.dialogRef.close(this.profileForm.value);
+		this.dialogRef.close({...this.profileForm.value, email: this.emailsList});
 	}
 
 	public setTransportType(event: Event, value: string): void {
@@ -56,7 +69,7 @@ export class AddLogisticProfileDialogComponent implements OnInit {
 				this.dialogData?.country?.toLowerCase() || null,
 				Validators.required
 			),
-			email: new FormControl(this.dialogData?.email || null, [
+			email: new FormControl(null, [
 				Validators.required,
 				Validators.email,
 			]),

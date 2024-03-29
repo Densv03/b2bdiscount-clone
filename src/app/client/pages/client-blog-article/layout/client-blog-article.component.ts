@@ -9,10 +9,9 @@ import {
 	PLATFORM_ID,
 	Renderer2,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { HotToastService } from '@ngneat/hot-toast';
-import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { catchError, Observable, of, Subject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { BlogService } from '../../../services/blog/blog.service';
@@ -23,8 +22,7 @@ import { environment } from '../../../../../environments/environment';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { REQUEST } from '../../../../../express.tokens';
 import { Request } from 'express';
-import { Meta, Title } from '@angular/platform-browser';
-import { PlatformService } from '../../../services/platform/platform.service';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'b2b-client-blog-article',
@@ -52,15 +50,14 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 		private readonly _activatedRoute: ActivatedRoute,
 		private readonly _blogService: BlogService,
 		private readonly _hotToastService: HotToastService,
-		private readonly _authService: AuthService,
-		private readonly _router: Router,
 		private readonly changeDetectorRef: ChangeDetectorRef,
 		@Inject(DOCUMENT) private readonly _document: Document,
 		@Inject(PLATFORM_ID) private platformId: any,
 		@Optional() @Inject(REQUEST) private request: Request,
 		private renderer2: Renderer2,
 		private readonly seoService: SeoService,
-		private readonly title: Title
+		private readonly title: Title,
+		public sanitizer: DomSanitizer
 	) {
 		this.getNewComments = new Subject();
 		this.socialMedias = this.getSocialMedias();
@@ -101,12 +98,11 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 						description,
 					},
 				}) => {
+					console.log(description)
 					this.comments$ = this.getComments(_id);
 					this.changeDetectorRef.markForCheck();
 					this.addSubscriptionForm();
-					const images = Object.values(image);
-					images.shift();
-					const imgArray = images.map((el) => environment.apiUrl + el);
+					const images = image ? Object.values(image).slice(1).map(el => environment.apiUrl + el) : [];
 					description = description.replace(/<[^>]*>/g, '');
 					this.seoService.addBlogMicroMarkup(
 						this._document,
@@ -114,7 +110,7 @@ export class ClientBlogArticleComponent implements AfterViewInit, OnDestroy {
 						title,
 						new Date(createdAt),
 						new Date(updatedAt),
-						imgArray,
+						images,
 						author,
 						description
 					);

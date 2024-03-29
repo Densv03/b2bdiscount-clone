@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 import { AuthLogInRoutingModule } from './auth-log-in-routing.module';
 import { AuthLogInComponent } from './layout/auth-log-in.component';
@@ -35,6 +35,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 		MatDialogModule,
 		B2bNgxDividerModule,
 		AngularSvgIconModule,
+		NgOptimizedImage,
 	],
 	exports: [AuthResetPasswordModalComponent],
 })

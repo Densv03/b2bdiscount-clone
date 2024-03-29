@@ -33,7 +33,7 @@ export class B2bNgxRadioComponent implements ControlValueAccessor, OnInit, OnCha
 	public readonly type: string;
 	public readonly formControl: FormControl<string>;
 	public readonly id: string;
-
+	public showInProductPlacementPage: boolean = false;
 	private onChange: (value: string) => void;
 	private onTouched: () => void;
 
@@ -58,6 +58,7 @@ export class B2bNgxRadioComponent implements ControlValueAccessor, OnInit, OnCha
 	}
 
 	ngOnInit(): void {
+		this.showInProductPlacementPage = this.customClass === 'product-placement';
 		this.subscribeOnValueChanges();
 	}
 

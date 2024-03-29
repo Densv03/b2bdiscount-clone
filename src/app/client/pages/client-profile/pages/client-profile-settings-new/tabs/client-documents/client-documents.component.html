@@ -1,0 +1,42 @@
+<div class="flex flex-col gap-14">
+	<div class="flex flex-col gap-2">
+		<span class="text-lg font-secondary font-medium">Documents</span>
+		<span class="text-sm text-[#556274] md:w-2/3"
+		>Upload any document you want to share with your customers, such as
+			catalogs, licenses, presentations, etc. Supported file formats: PDF, PNG,
+			JPG, DOC. Maximum of 6 files with a total size of 20 MB.</span
+		>
+		@if (!loading()) {
+			<b2b-ngx-file
+				class="cursor-pointer"
+				(change)="formChange($event)"
+				[emptyFileLabel]="'Supported file types: PDF, PNG, JPG and DOC files. Maximum size: 20 MB (total)'"
+				[version]="NgxInputVersionEnum.GLOBY"
+				[maxAllowedSize]="20"
+				[showIcon]="false"
+				[theme]="null"
+				[label]="'Upload document'"></b2b-ngx-file>
+		} @else {
+			<mat-spinner diameter="24"></mat-spinner>
+		}
+	</div>
+
+	@if (documents?.length > 0) {
+		<div class="flex flex-col gap-3 flex-wrap">
+			<span class="text-lg font-secondary font-medium">Uploaded files</span>
+			<div class="flex flex-row flex-wrap gap-4">
+				@for (doc of documents; track $index) {
+					<div class="flex flex-row items-center justify-center gap-3 rounded-xl border !border-[#CFDEFF] p-3">
+						<a href="" class="flex flex-row items-center justify-center gap-2">
+							<mat-icon [svgIcon]="'document-blue'">add</mat-icon>
+							<span class="font-semibold text-sm font-secondary">{{ doc.name }}</span>
+						</a>
+						<button b2bNgxButton class="flex items-center" (click)="openDeletePopup($index)">
+							<mat-icon>close</mat-icon>
+						</button>
+					</div>
+				}
+			</div>
+		</div>
+	}
+</div>

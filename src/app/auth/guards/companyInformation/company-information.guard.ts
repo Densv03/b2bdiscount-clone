@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { SourcingRequestService } from '../../../client/pages/client-sourcing-request/sourcing-request.service';
 import { catchError, map } from 'rxjs/operators';
+import { PlatformService } from '../../../client/services/platform/platform.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -17,7 +18,8 @@ export class CompanyInformationGuard {
 
 	constructor(
 		private sourcingRequestService: SourcingRequestService,
-		private router: Router
+		private router: Router,
+		private platformService: PlatformService
 	) {
 		this.queryParams = ['add-rfq', 'quotation', 'offer', 'b2bmarket'];
 	}
@@ -39,7 +41,9 @@ export class CompanyInformationGuard {
 				blockedURL = item;
 			}
 		});
-
+		if (this.platformService.isServer) {
+			return true;
+		}
 		return this.sourcingRequestService.getCompanyData().pipe(
 			catchError(() => {
 				this.sourcingRequestService
@@ -57,7 +61,6 @@ export class CompanyInformationGuard {
 					'email',
 					'employeesNumber',
 					'phone',
-					'position',
 					'user',
 					'yearOfFoundation',
 				];

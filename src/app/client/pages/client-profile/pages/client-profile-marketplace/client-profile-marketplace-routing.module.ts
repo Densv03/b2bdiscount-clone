@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientProfileMarketplaceComponent } from './layout/client-profile-marketplace.component';
-import { ClientProfileMarketplaceEditProductComponent } from './components/client-profile-marketplace-edit-product/client-profile-marketplace-edit-product.component';
 import { AuthGuard } from '../../../../../auth/guards/auth/auth.guard';
 import { CompanyInformationGuard } from '../../../../../auth/guards/companyInformation/company-information.guard';
 
@@ -12,7 +11,10 @@ const routes: Routes = [
 	},
 	{
 		path: 'edit/:id',
-		component: ClientProfileMarketplaceEditProductComponent,
+		loadChildren: () =>
+			import(
+				'./components/client-profile-marketplace-edit-product/client-profile-marketplace-edit-product.module'
+			).then((m) => m.ClientProfileMarketplaceEditProductModule),
 		canActivate: [CompanyInformationGuard],
 	},
 	{

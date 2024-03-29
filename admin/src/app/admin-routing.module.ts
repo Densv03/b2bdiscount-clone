@@ -92,9 +92,7 @@ const routes: Routes = [
 			{
 				path: 'users/:id',
 				loadChildren: () =>
-					import(
-						'../../../src/app/client/pages/client-profile/pages/client-profile-settings/client-profile-settings.module'
-					).then((m) => m.ClientProfileSettingsModule),
+					import('../../../src/app/client/pages/client-profile/pages/client-profile-settings/layout/client-profile-settings.component').then(m => m.ClientProfileSettingsComponent),
 			},
 			{
 				path: 'offers',

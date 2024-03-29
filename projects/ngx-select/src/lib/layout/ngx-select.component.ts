@@ -13,6 +13,7 @@ import {
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from "@angular/forms";
 import {B2bNgxSelectThemeEnum} from "../enums";
 import {NgSelectComponent} from "@ng-select/ng-select";
+import { NgxSelectVariantEnum } from "../enums/ngx-select-variant.enum";
 
 @Component({
 	selector: "b2b-ngx-select",
@@ -35,7 +36,10 @@ import {NgSelectComponent} from "@ng-select/ng-select";
 export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnChanges, AfterViewInit {
 	@Output() public searched: EventEmitter<string>;
 	@Output() public changed: EventEmitter<any>;
+	@Output() public emitBtnEvent: EventEmitter<void> = new EventEmitter<void>();
 
+	@Input() public customParentClass: string = '';
+	@Input() public buttonInDropdownLabel: string;
 	@Input() public invalid: boolean = false;
 	@Input() public label: string = '';
 	@Input() public options: any = [];
@@ -59,6 +63,7 @@ export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnCh
 	@Input() errors?: ValidationErrors;
 	@Input() touched?: boolean;
 	@Input() multipleCheckbox: boolean = false;
+	@Input() version?: NgxSelectVariantEnum = NgxSelectVariantEnum.B2B;
 	@ViewChild(NgSelectComponent)
 	private ngSelectComponent!: NgSelectComponent;
 	public multipleCheckboxArray: any = [];
@@ -82,7 +87,7 @@ export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnCh
 	public get selectClassName() {
 		const defaultClassName = ``;
 
-		return `${defaultClassName} ${this.theme} ${this.className}`;
+		return `${defaultClassName} ${this.theme} ${this.selectClass}`;
 	}
 
 	public get error(): string {
@@ -185,5 +190,13 @@ export class B2bNgxSelectComponent implements ControlValueAccessor, OnInit, OnCh
 		this.formControl.valueChanges.subscribe((value) => {
 			this.onChange(value);
 		});
+	}
+
+	get selectLabelClass() {
+		return this.version === NgxSelectVariantEnum.B2B ? 'ngx-select-label' : 'globy-ngx-select-label';
+	}
+
+	get selectClass() {
+		return this.version === NgxSelectVariantEnum.B2B ? this.className : 'globy-ngx-select';
 	}
 }

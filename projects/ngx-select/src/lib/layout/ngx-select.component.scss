@@ -14,6 +14,36 @@
 	}
 }
 
+.globy-ngx-select-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+
+	&.no-gap {
+		gap: 0;
+	}
+}
+
+.globy-ngx-select {
+	border: 1px solid #C6D1E2;
+	background: white !important;
+	border-radius: 0.25rem;
+}
+
+.globy-ngx-select-label {
+	display: block;
+	font-size: 14px;
+	color: #556274;
+
+	&:empty {
+		display: none;
+	}
+
+	&.margin-0 {
+		margin-bottom: 0;
+	}
+}
+
 .checkbox-row {
 	width: 100%;
 }

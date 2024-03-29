@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 import { ClientNotFoundRoutingModule } from './client-not-found-routing.module';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
@@ -17,6 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
 		B2bNgxButtonModule,
 		B2bNgxLinkModule,
 		TranslateModule,
+		NgOptimizedImage,
 	],
 })
 export class ClientNotFoundModule {}

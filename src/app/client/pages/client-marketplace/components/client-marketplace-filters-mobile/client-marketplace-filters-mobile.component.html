@@ -131,20 +131,28 @@
 										"
 										class="item"
 										[routerLink]="
-											getNavigationByOption(option, filter.hiddenLabel)
-												.routerLink
+											filterType === 'b2bmarket'
+												? getNavigationByOption(option, filter.hiddenLabel)
+														.routerLink
+												: null
 										"
 										[queryParams]="
-											getNavigationByOption(option, filter.hiddenLabel)
-												.queryParams
+											filterType === 'b2bmarket'
+												? getNavigationByOption(option, filter.hiddenLabel)
+														.queryParams
+												: null
 										"
 										[queryParamsHandling]="
-											getNavigationByOption(option, filter.hiddenLabel)
-												.queryParamsHandling
+											filterType === 'b2bmarket'
+												? getNavigationByOption(option, filter.hiddenLabel)
+														.queryParamsHandling
+												: ''
 										"
 										[relativeTo]="
-											getNavigationByOption(option, filter.hiddenLabel)
-												.relativeTo
+											filterType === 'b2bmarket'
+												? getNavigationByOption(option, filter.hiddenLabel)
+														.relativeTo
+												: null
 										">
 										<div class="circle">
 											<div

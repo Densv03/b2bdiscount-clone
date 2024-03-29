@@ -13,6 +13,7 @@
 			color: #6c7077;
 		}
 	}
+
 	.admin-article__image {
 		display: block;
 		margin-top: 30px;
@@ -53,9 +54,11 @@
 		display: flex;
 		justify-content: space-between;
 		margin-top: 30px;
+
 		.admin-article__category {
 			width: 49%;
 		}
+
 		.admin-article__sub-category {
 			width: 49%;
 		}
@@ -72,6 +75,7 @@
 		img {
 			max-width: 100%;
 		}
+
 		p {
 			line-height: 24px;
 		}
@@ -79,6 +83,20 @@
 }
 
 ::ng-deep {
+	::ng-deep {
+		input.datepicker {
+			height: 64px;
+			border: none;
+			border-radius: 14px;
+			padding: 0 16px;
+			width: 100%;
+
+			&::placeholder {
+				padding-left: 20px;
+			}
+		}
+	}
+
 	.ngx-files-list-item {
 		margin-top: 0 !important;
 	}
@@ -112,5 +130,55 @@
 		img {
 			width: 100%;
 		}
+	}
+
+	h2 {
+		font-size: 24px;
+	}
+
+	h3 {
+		font-size: 22px;
+	}
+
+	h4 {
+		font-size: 20px;
+	}
+
+	.ck-content blockquote {
+		position: relative;
+		border-left: 3px solid #000;
+		font-size: 18px;
+		font-weight: 400;
+		font-style: normal;
+
+		&::before,
+		&::after {
+			display: block;
+			position: absolute;
+			width: 15px;
+			height: 15px;
+			content: "";
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+
+		&::before {
+			background-image: url("../../../../../assets/icons/open-quote.svg");
+			left: 5px;
+			top: 15px;
+		}
+
+		&::after {
+			background-image: url("../../../../../assets/icons/close-quote.svg");
+
+
+			right: 5px;
+			bottom: 15px;
+		}
+	}
+
+	.ck-content ol,
+	.ck-content ul {
+		padding-left: 10px;
 	}
 }

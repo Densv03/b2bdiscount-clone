@@ -1,0 +1,57 @@
+:host {
+	.documents {
+		margin-top: 48px;
+		&__title {
+			color: #000;
+			font-size: 20px;
+			font-weight: 600;
+			letter-spacing: 0.2px;
+		}
+		&__list {
+			margin-top: 16px;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 16px;
+		}
+		&__item {
+			padding: 15px 16px;
+			display: flex;
+			align-items: center;
+			width: 258px;
+			gap: 10px;
+			border-radius: 8px;
+			border: 1px solid #cfdeff;
+			cursor: pointer;
+			transition: .3s box-shadow;
+			&:hover {
+				box-shadow: 0px 0px 15px 0px #0000001A;
+			}
+			@media (max-width: 1200px) {
+				width: 200px;
+			}
+			@media (max-width: 992px) {
+				width: 48%;
+			}
+			@media (max-width: 576px) {
+				width: 100%;
+			}
+			&-label {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+		.view-more-button {
+			border-radius: 4px;
+			background: #eee;
+			padding: 7px 22px;
+			margin-top: 16px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			.rotated-arrow {
+				transform: rotate(180deg);
+			}
+		}
+	}
+}

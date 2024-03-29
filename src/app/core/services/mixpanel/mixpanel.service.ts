@@ -3,27 +3,21 @@ import * as mixpanel from 'mixpanel-browser';
 import { PlatformService } from '../../../client/services/platform/platform.service';
 import { MixpanelRepository } from './mixpanel.repository';
 import { MixpanelProvider } from '../../providers/mixpanel/mixpanel.provider';
+import { MixpanelActionBase } from '../../../../../ssr/models/mixpanel.model';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class MixpanelService {
 	private readonly token = this.mixpanelProvider.token;
-	private readonly distinctId: string;
+	private distinctId: string;
 
 	constructor(
 		private readonly platformService: PlatformService,
 		private readonly mixpanelRepository: MixpanelRepository,
 		private readonly mixpanelProvider: MixpanelProvider
 	) {
-		if (this.platformService.isBrowser) {
-			this.init();
-			this.distinctId = mixpanel.get_distinct_id();
-		}
-	}
-
-	init() {
-		mixpanel.init(this.token, { debug: !this.mixpanelProvider.isProd });
+		this.init();
 	}
 
 	public track(eventName: string, properties?: any): void {
@@ -38,21 +32,21 @@ export class MixpanelService {
 		);
 	}
 
-	public logIn(user: any, track?: string): void {
+	public logIn(user: any): void {
 		if (this.platformService.isServer) {
 			return;
 		}
 		if (!this.distinctId) {
-			this.signUp(user, track);
+			this.signUp(user);
 		}
 		const distinctId = user['User_id'];
 		mixpanel.identify(distinctId);
 		const properties = this.handleUserProperties(user);
-		const obj = {
+		this.track('Login completed', properties);
+		this.set({
 			distinctId,
 			properties,
-		};
-		this.mixpanelRepository.set(obj);
+		});
 	}
 
 	public signUp(user: any, track?: string): void {
@@ -60,9 +54,9 @@ export class MixpanelService {
 			return;
 		}
 		const distinctId = user['User_id'];
+		mixpanel.alias(distinctId, this.distinctId);
 		const properties = this.handleUserProperties(user);
-		mixpanel.alias(distinctId);
-		this.mixpanelRepository.set({
+		this.set({
 			distinctId,
 			properties,
 		});
@@ -71,19 +65,44 @@ export class MixpanelService {
 		}
 	}
 
+	identify(id: string) {
+		mixpanel.identify(id);
+	}
+
+	set(body: Partial<MixpanelActionBase>) {
+		if (!body.distinctId) {
+			body.distinctId = this.distinctId;
+		}
+		this.mixpanelRepository.set(body as MixpanelActionBase);
+	}
+
 	public logout(): void {
 		if (this.platformService.isServer) {
 			return;
 		}
 		this.track('Log Out');
 		mixpanel.reset();
+		this.changeDistinctId();
 	}
 
-	handleUserProperties(user: any) {
+	changeDistinctId() {
+		this.distinctId = mixpanel.get_distinct_id();
+		mixpanel.identify(this.distinctId);
+	}
+
+	private handleUserProperties(user: any) {
 		return this.mixpanelProvider.handleUser(
 			user,
 			user['User_id'],
 			this.distinctId
 		);
+	}
+
+	private init() {
+		if (this.platformService.isServer) {
+			return;
+		}
+		mixpanel.init(this.token, { debug: !this.mixpanelProvider.isProd });
+		this.distinctId = mixpanel.get_distinct_id();
 	}
 }

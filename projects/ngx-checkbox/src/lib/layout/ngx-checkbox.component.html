@@ -1,14 +1,19 @@
-<label class="ngx-checkbox" [ngClass]="customClass">
-	<div class="ngx-checkbox__label"><ng-content></ng-content></div>
-	<input
-		class="ngx-checkbox__input"
-		type="checkbox"
-		[ngClass]="customClass"
-		[(ngModel)]="checked"
-		[checked]="checked"
-		[formControl]="formControl"
-		(change)="onCheckboxChange($event)"/>
-	<span [ngClass]="customIconClass" class="ngx-checkbox__icon">
-		<img b2bNgxIcon name="check-white"/>
+<label [class]="checkboxClass('ngx-checkbox')"
+       [ngClass]="customClass">
+        <div [class]="checkboxClass('ngx-checkbox__label')">
+                <ng-content></ng-content>
+        </div>
+        <input
+                [class]="checkboxClass('ngx-checkbox__input')"
+                type="checkbox"
+                [ngClass]="customClass"
+                [(ngModel)]="checked"
+                [checked]="checked"
+                [formControl]="formControl"
+                (change)="onCheckboxChange($event)"/>
+        <span [ngClass]="customIconClass"
+              [class]="checkboxClass('ngx-checkbox__icon')">
+		<img b2bNgxIcon
+                     name="check-white"/>
 	</span>
 </label>

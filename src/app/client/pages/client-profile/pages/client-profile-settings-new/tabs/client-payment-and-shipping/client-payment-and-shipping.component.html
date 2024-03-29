@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-6 mb-10 md:mb-0">
+	@for (section of checkBoxes; track i; let i = $index) {
+		<div class="block">
+			<span class="title"
+			>{{ section.label }}<span>*</span></span>
+			<div [ngClass]="{'grid-cols-2': i == 2}"
+					 class="grid grid-cols-1 md:flex flex-row col-span-2 md:flex-row gap-4 flex-wrap">
+				@for (checkbox of section.value; track $index) {
+					<b2b-ngx-checkbox
+						(checkboxChange)="changeCheckbox(section.property, checkbox.value)"
+						[version]="NgxInputVersionEnum.GLOBY"
+						[checked]="check(section.property, checkbox.value)"
+						class="font-secondary"
+					>{{ checkbox.value }}
+					</b2b-ngx-checkbox>
+				}
+			</div>
+		</div>
+		<div class="border"></div>
+	}
+	<div class="block gap-4">
+		<div class="flex flex-col gap-3">
+			<span class="title">Export history</span>
+			<span class="font-secondary text-sm text-[#556274]">
+			Specify all the countries that you've exported your products in already
+			and the countries that you export in, in present.
+		</span>
+		</div>
+
+		<div class="flex flex-col gap-3">
+
+			@if (paymentAndShipping?.countries) {
+				<div class="flex flex-row gap-3 flex-wrap">
+					@for (country of paymentAndShipping.countries; track $index) {
+						<div
+							class="border__chip cursor font-semibold  rounded-md bg-white flex flex-row gap-1 justify-between px-3 py-2">
+							<span class="text-sm">{{ getCountryName(country) }}</span>
+						</div>
+					}
+				</div>
+			}
+			<div class="flex flex-row items-start">
+				<button (click)="openCountrySelect()" b2bNgxButton
+								class="px-4 py-1 min-h-[38px] flex gap-2 bg-[#EEEEEE] flex-row items-center justify-between">
+					@if (!paymentAndShipping?.countries?.length) {
+						<mat-icon>add</mat-icon>
+					}
+					<span
+						class="text-sm font-secondary">{{ paymentAndShipping.countries.length > 0 ? 'Edit' : 'Add countries' }}</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="hidden md:flex flex-row justify-center items-center">
+		<button
+			[disabled]="disabled"
+			(click)="onSubmit()"
+			class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+			b2bNgxButton>
+			Save changes
+		</button>
+	</div>
+</div>
+
+<b2b-client-profile-mobile-toolbar (initSave)="onSubmit()"
+																	 class="fixed md:hidden left-0 bottom-0 w-full"></b2b-client-profile-mobile-toolbar>

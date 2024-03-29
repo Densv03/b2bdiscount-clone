@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DialogRef } from '@angular/cdk/dialog';
 import {
 	MAT_DIALOG_DATA,
 	MatDialogModule,
@@ -9,7 +8,7 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { CommonModule, UpperCasePipe } from '@angular/common';
 import { getName } from 'country-list';
 import { B2bNgxSelectModule, B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
-import { BehaviorSubject, Observable, of, map, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import {
 	FormControl,
 	FormGroup,
@@ -21,19 +20,20 @@ import { B2bNgxInputModule, B2bNgxInputThemeEnum } from '@b2b/ngx-input';
 import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
 import { B2bNgxButtonModule, B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
-import { MarketProductModel } from '../../models/market-product.model';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
 import { PaginationParamsModel } from '../../../../../core/models/pagination-params.model';
-import { values } from 'lodash';
 import { UnitsService } from '../../../../services/units/units.service';
-import { SelectItem } from '../../../client-profile/pages/client-company-information/layout/client-company-information.component';
 import { SourcingRequestService } from '../../../client-sourcing-request/sourcing-request.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { HotToastService } from '@ngneat/hot-toast';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import { Category } from '../../shared/models/category.model';
-import { first, take } from 'rxjs/operators';
 import { MixpanelService } from '../../../../../core/services/mixpanel/mixpanel.service';
+import { first, tap } from 'rxjs/operators';
+import {
+	SelectItem
+} from "../../../client-profile/pages/client-profile-settings-new/tabs/client-company-information/client-company-information.interface";
+import { MarketProductModel } from '../../models/market-product.model';
 
 @UntilDestroy()
 @Component({
@@ -62,20 +62,24 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 	public supplierForm: FormGroup = new FormGroup({
 		baseForm: this.getBaseForm(),
 	});
-
-	private isFormValidSource: BehaviorSubject<boolean> =
-		new BehaviorSubject<boolean>(false);
-	public isFormValid$: Observable<boolean> =
-		this.isFormValidSource.asObservable();
 	public products$: Observable<any[]> = this.suppliersProducts();
 	public tradeTerms$: Observable<any[]> = this.getTradeTerms();
-	public units$: Observable<any> = this.setUnitsValue();
+	public units$: Observable<any>;
+	private isFormValidSource: BehaviorSubject<boolean> =
+		new BehaviorSubject<boolean>(false);
+	private unitsSource: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+	public isFormValid$: Observable<boolean> =
+		this.isFormValidSource.asObservable();
 	private isFormExpandedSource: BehaviorSubject<boolean> =
 		new BehaviorSubject<boolean>(false);
 	public isFormExpanded$: Observable<boolean> =
 		this.isFormExpandedSource.asObservable();
 
-	private filteredQueryObj: PaginationParamsModel = { limit: 6, offset: 0 };
+	private supplierProductsSource: BehaviorSubject<{ label: string, value: string }[]> = new BehaviorSubject<{label: string; value: string}[]>(null);
+	private filteredQueryObj: PaginationParamsModel = {
+		limit: 6,
+		offset: 0,
+	};
 	private sectorCategories: Category[];
 
 	constructor(
@@ -90,6 +94,9 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
+		this.units$ = this.unitsSource.asObservable();
+
+		this.setUnitsValue();
 		this.categoriesService
 			.getCategories$()
 			.pipe(
@@ -122,6 +129,12 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 		if (this.getIsFormExpanded()) {
 			this.supplierForm.addControl('expandedForm', this.getExpandedForm());
 			this.supplierForm.updateValueAndValidity();
+			this.supplierForm
+				.get('expandedForm')
+				.get('quantity')
+				.valueChanges.subscribe((value) => {
+					this.setUnitsValue(value);
+				});
 		} else {
 			this.supplierForm.removeControl('expandedForm');
 			this.supplierForm.updateValueAndValidity();
@@ -136,6 +149,7 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 			formValue = {
 				...formValue,
 				...this.supplierForm.value?.expandedForm,
+				productName: this.supplierProductsSource.getValue().find(product => this.supplierForm.value.baseForm.productName === product.value).label,
 				category: category instanceof Array ? category[0]._id : category._id,
 			};
 			this.sourcingRequestService
@@ -143,14 +157,18 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 				.pipe(untilDestroyed(this))
 				.subscribe((el) => {
 					const selectedSector = this.sectorCategories.find(
-						(category: Category) =>
-							category?.children.find(
-								(childCategory: Category) =>
-									childCategory._id === this.data?.product?.category?._id
-							)
+						(category: Category) => {
+							if (category?.children) {
+								return category?.children.find(
+									(childCategory: Category) =>
+										childCategory._id === this.data?.product?.category[0]?._id
+								);
+							}
+							return category._id;
+						}
 					)?.name;
 					this.mixpanelService.track('New RFQ posted', {
-						'Product Sector': selectedSector,
+						'Product Category': selectedSector,
 						Destination: getName(el.destination.to),
 						Source: 'Message Form',
 					});
@@ -165,21 +183,42 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 	private suppliersProducts(): Observable<any> {
 		return this.marketplaceService.supplierListing$.pipe(
 			map((products) => {
-				return products.map((product) => {
-					return { label: product.title, value: product.title };
+				const suppliersProducts = products.map((product) => {
+					return {
+						label: product.title,
+						value: product._id,
+					};
 				});
+
+				this.supplierProductsSource.next(suppliersProducts);
+
+				return suppliersProducts;
 			})
 		);
 	}
 
-	private setUnitsValue(): Observable<any> {
-		return this.unitsService.getUnits().pipe(
-			map((units) => {
-				return units.map((unit: { displayName: any; _id: any }) => {
-					return { label: unit.displayName, value: unit._id };
-				});
-			})
-		);
+	private setUnitsValue(amount: number = 0): void {
+		this.unitsService
+			.getUnits()
+			.pipe(
+				map((units) => {
+					return units.map(
+						(unit: {
+							displayName: string;
+							_id: any;
+							pluralDisplayName: string;
+						}) => {
+							return {
+								label: amount > 1 ? unit.pluralDisplayName : unit.displayName,
+								value: unit._id,
+							};
+						}
+					);
+				})
+			)
+			.subscribe((units) => {
+				this.unitsSource.next(units);
+			});
 	}
 
 	private getTradeTerms(): Observable<SelectItem[]> {
@@ -202,7 +241,7 @@ export class ContactSupplierFormDialogComponent implements OnInit {
 	private getBaseForm(): FormGroup {
 		return new FormGroup({
 			productName: new FormControl(
-				this.data.product.title || null,
+				this.data.product._id || null,
 				Validators.required
 			),
 			moreInformation: new FormControl(null, Validators.required),

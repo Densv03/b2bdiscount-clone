@@ -15,4 +15,6 @@ export interface PublicUserInfo {
 	dialCode: string;
 	suppliersType: string;
 	website?: string;
+	logo?: string;
+	companyPath?: string;
 }

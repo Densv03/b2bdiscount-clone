@@ -1,0 +1,57 @@
+.certificates {
+	margin-top: 48px;
+	&__title {
+		color: #000;
+		font-size: 20px;
+		font-weight: 600;
+		line-height: 148%;
+		letter-spacing: 0.2px;
+	}
+
+	&__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+		padding: 16px 0;
+	}
+
+	&__item {
+		border: 1px solid #d9d9d9;
+		border-radius: 4px;
+		display: flex;
+		flex-direction: column;
+		width: 48%;
+	}
+
+	&__header {
+		padding: 8px 16px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		height: 64px;
+		border-bottom: 1px solid #d9d9d9;
+	}
+
+	&__body {
+		padding: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		&-item {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+	}
+
+	.view-more-button {
+		border-radius: 4px;
+		background: #eee;
+		padding: 7px 22px;
+		margin-top: 16px;
+		.rotated-arrow {
+			transform: rotate(180deg);
+		}
+	}
+}

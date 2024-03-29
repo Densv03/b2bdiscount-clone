@@ -1,0 +1,33 @@
+<ng-container [formGroup]="form">
+
+	<div class="hidden md:flex w-full">
+		<b2b-client-profile-image-container class="w-full"
+																				[buttonLabel]="'Upload Banner'"
+																				(file)="patchBanner($event)"
+																				[mode]="'desktop'"
+																				[path]="company?.banner?.path">
+			<b2b-client-profile-image-container class="aspect-square !h-52"
+																					(file)="patchLogo($event)"
+																					[buttonLabel]="'Upload Logo'"
+																					[mode]="'desktop'"
+																					[modalMode]="'logo'"
+																					[path]="company?.logo?.path"/>
+		</b2b-client-profile-image-container>
+	</div>
+
+
+	<div class="flex flex-col md:hidden gap-4">
+		<b2b-client-profile-image-container [label]="'Supported file types: PDF, PNG and JPG files. Maximum size: 5 MB'"
+																				class="md:hidden"
+																				[mode]="'mobile'"
+																				[modalMode]="'logo'"
+																				[orientation]="'horizontal'"
+																				(file)="patchLogo($event)"
+																				[buttonLabel]="'Upload Logo'"
+																				[path]="company?.logo?.path"/>
+		<b2b-client-profile-image-container [buttonLabel]="'Upload Banner'"
+																				[label]="'Supported file types: PDF, PNG and JPG files. Maximum size: 5 MB'"
+																				(file)="patchBanner($event)"
+																				[path]="company?.banner?.path"/>
+	</div>
+</ng-container>

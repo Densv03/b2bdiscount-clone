@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { B2bNgxCountrySelectComponent } from "../lib/layout/ngx-country-select.component";
+import {B2bNgxCountrySelectComponent} from './layout/ngx-country-select.component'
 import { NgSelectModule } from "@ng-select/ng-select";
 import { B2bNgxIconModule } from "@b2b/ngx-icon";
 import { ReactiveFormsModule } from "@angular/forms";

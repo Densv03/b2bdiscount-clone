@@ -1,0 +1,72 @@
+@import 'projects/shared/src/styles';
+:host {
+	.sectors {
+		position: relative;
+		padding: 16px 16px 0 16px;
+		&__close {
+			position: absolute;
+			right: 35px;
+			top: 20px;
+		}
+		&__title {
+			font-family: Helvetica Neue;
+			font-size: 18px;
+			font-weight: 700;
+			line-height: 25px;
+			letter-spacing: 0.01em;
+		}
+		&__list {
+			overflow-y: auto;
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			padding-right: 15px;
+			margin-top: 16px;
+			padding-bottom: 10px;
+			width: 650px;
+			max-height: 573px;
+			@include breakpoint('3') {
+				width: 450px;
+			}
+			@include breakpoint('1') {
+				width: auto;
+			}
+		}
+		&__item {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+		}
+		&__name {
+			margin-left: 8px;
+			font-family: Helvetica Neue;
+			font-size: 18px;
+			font-weight: 400;
+			line-height: 18px;
+			letter-spacing: 0.01em;
+			text-align: center;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		&__arrow {
+			margin-left: auto;
+		}
+	}
+}
+
+:host::ng-deep {
+	mat-icon {
+		background: #d9d9d94d;
+		border-radius: 4px;
+		display: block;
+		color: #9fa4bb;
+		padding: 3px;
+	}
+
+}
+::ng-deep {
+	.outlet-wrapper {
+		filter: blur(2px);
+	}
+}

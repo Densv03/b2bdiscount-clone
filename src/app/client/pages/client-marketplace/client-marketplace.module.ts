@@ -48,6 +48,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../../shared/components/shared.module';
 import { MatInputModule } from '@angular/material/input';
 import { PageLoaderModule } from '../../../core/components/page-loader/page-loader.module';
+import { B2bNgxRadioModule } from '@b2b/ngx-radio';
+import { B2bDatepickerModule } from '@b2b/datepicker';
+import { MarketSectorModule } from './components/market-sector/market-sector.module';
+import { SvgIconComponent } from 'angular-svg-icon';
 
 @NgModule({
 	declarations: [
@@ -101,6 +105,10 @@ import { PageLoaderModule } from '../../../core/components/page-loader/page-load
 		SharedModule,
 		MatInputModule,
 		PageLoaderModule,
+		MarketSectorModule,
+		SvgIconComponent,
+		B2bNgxRadioModule,
+		B2bDatepickerModule,
 	],
 	exports: [
 		ClientMarketplaceFiltersMobileComponent,
