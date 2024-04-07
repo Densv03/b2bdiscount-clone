@@ -102,7 +102,7 @@ export interface BlogArticle {
 	readTime: string;
 	typeArticle: TypeArticle;
 	articleStatus: ArticleStatus;
-	images: Image[];
+	images: Photo[];
 	dateUpdate: string;
 	authorId: BlogAuthor;
 	path: string;

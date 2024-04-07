@@ -1,6 +1,6 @@
 <div class="blog-details-news bg-[#FFF]">
 	<div class="container md:w-[85%]">
-		<div class="header">
+		<div>
 			<div class="py-[50px]">
 				<a href="/blog/news"><- Back</a>
 			</div>
@@ -12,7 +12,35 @@
 			</div>
 			<div class="updated-at mb-[40px]">Updated {{blog.data.updatedAt | date}}</div>
 			<hr class="color-[#E3ECFF] mb-[40px]">
-			<div class="blog-details-news__content" [innerHTML]="blog.data.description"></div>
+			<div class="flex sm:flex-wrap xs:flex-wrap relative">
+				<div class="blog-details-news__content md:w-[65%] mb-[50px]" [innerHTML]="blog.data.description"></div>
+				<div class="blog-recommendation sticky top-[5rem] md:w-[25%] h-[max-content] pl-[30px]">
+					<div class="text-[16px] leading-[21.44px] text-[#222224] font-[600]">RECOMMENDATIONS:</div>
+					@for (rec of blog.blogRecommendations; track $index) {
+						<div class="mt-[20px]">
+							<div class="text-[12px] text-[#005DFF] font-[400] mt-[10px]">{{rec.typeArticle}}</div>
+							<div class="text-[14px] text-[#000000] font-[500] mt-[10px]">{{rec.title}}</div>
+							<div class="text-[14px] text-[#979797] font-[400] mt-[10px]">{{rec.datePublication | date}}</div>
+							<hr class="mt-[10px]">
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+		<hr class="mt-[45px]">
+		<div class="pt-[45px] pb-[45px]">
+			<div class="text-[16px] leading-[21.44px] text-[#222224] font-[600] mb-[20px]">RECOMMENDATIONS</div>
+			<div class="flex sm:flex-wrap xs:flex-wrap">
+				@for (rec of blog.blogRecommendations; track $index) {
+					<div class="w-[30%] sm:w-[100%] xs:w-[100%] mr-[40px] last:mr-0">
+						<img b2bNgxImage class="rounded-[8px]" [name]="rec.images[0].md">
+						<div class="text-[12px] text-[#005DFF] font-[400] mt-[10px]">{{rec.typeArticle}}</div>
+						<div class="text-[14px] text-[#000000] font-[500] mt-[10px]">{{rec.title}}</div>
+						<div class="text-[14px] text-[#979797] font-[400] mt-[10px]">{{rec.datePublication | date}}</div>
+						<hr class="block md:hidden lg:hidden xl:hidden">
+					</div>
+				}
+			</div>
 		</div>
 	</div>
 </div>
