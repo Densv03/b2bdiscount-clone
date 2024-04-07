@@ -3,8 +3,8 @@ import {
 	ClientProfileModalContainerComponent
 } from "../client-profile-modal-container/client-profile-modal-container.component";
 import {
-	ClientProfileModalContainerService
-} from "../client-profile-modal-container/client-profile-modal-container.service";
+	ModalContainerService
+} from "../client-profile-modal-container/modal-container.service";
 import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS} from "@angular/material/dialog";
 import {
 	ClientProfileImageContainerComponent
@@ -46,7 +46,7 @@ import {MAT_MENU_DEFAULT_OPTIONS} from "@angular/material/menu";
 	styleUrls: ['./client-profile-image-upload-modal.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientProfileImageUploadModalComponent extends ClientProfileModalContainerService<ClientProfileImageUploadModalComponent, ImageDismissData> implements OnInit {
+export class ClientProfileImageUploadModalComponent extends ModalContainerService<ClientProfileImageUploadModalComponent, ImageDismissData> implements OnInit {
 
 	public control = new FormControl();
 	public file: File;

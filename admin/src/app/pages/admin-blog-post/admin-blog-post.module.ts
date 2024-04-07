@@ -14,9 +14,10 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { B2bDatepickerModule } from "@b2b/datepicker";
 import { MatFormField, MatLabel } from "@angular/material/form-field";
 import { MatInput } from "@angular/material/input";
-import { MatIcon } from "@angular/material/icon";
+import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatButton, MatIconButton } from "@angular/material/button";
 import { MatCheckbox } from "@angular/material/checkbox";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
 	declarations: [AdminBlogPostComponent],
@@ -39,7 +40,9 @@ import { MatCheckbox } from "@angular/material/checkbox";
         MatIcon,
         MatIconButton,
         MatButton,
-        MatCheckbox
+        MatCheckbox,
+			MatDialogModule,
+			MatIconModule
     ],
 })
 export class AdminBlogPostModule {}

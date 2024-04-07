@@ -1,0 +1,66 @@
+@import 'projects/shared/src/styles';
+
+.blog-menu-wrapper {
+	padding: 16px 40px;
+	background: #F3F6F8;
+	max-width: 100%;
+
+	@include breakpoint('3') {
+		background: #ffffff;
+		justify-content: space-between;
+		padding:  48px 18px 0;
+		gap: 4px;
+	}
+
+	.link-wrapper {
+
+		@include breakpoint('3') {
+			width: 91%;
+			border-right: 1px solid #d9d9d9;
+			padding-right: 18px;
+		}
+
+		.link-list {
+			gap: 24px;
+
+			@include breakpoint('3') {
+				padding: 11px 4px 4px 0;
+				width: 100%;
+				overflow-x: scroll;
+
+				&::-webkit-scrollbar {
+					display: none;
+				}
+			}
+
+			> a {
+				font-size: 16px;
+				font-weight: 500;
+				line-height: 22.4px;
+				letter-spacing: 0.01em;
+				padding-bottom: 10px;
+				color: #292D32;
+
+				@include breakpoint('3') {
+					min-width: max-content;
+				}
+			}
+
+			.active {
+				font-weight: 600;
+				border-bottom: 1.5px solid #292D32;
+			}
+		}
+	}
+
+	.popup-icon {
+		display: none;
+
+		@include breakpoint('3') {
+			display: initial;
+			color: #005dff;
+			transform: rotate(90deg);
+			cursor: pointer;
+		}
+	}
+}

@@ -78,7 +78,7 @@
 							<h2 class="product-price">
 								<span
 									*ngIf="product?.price?.old && !product?.priceRange?.minimum"
-								>{{ product.price.old }}
+								>{{ getPrice(product.price.old) }}
 									<span
 										*ngIf="product.price.old !== PriceTypeEnum.PriceUponRequest"
 									>USD</span

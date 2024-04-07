@@ -1,0 +1,15 @@
+<div class="d-flex align-items-center blog-menu-wrapper">
+	<div class="link-wrapper">
+		<div class="link-list d-flex" #menuList>
+			@for (item of menuLinks; track item.link) {
+				<a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" #listItem>{{ item.displayName }}</a>
+			}
+		</div>
+	</div>
+
+	<mat-icon
+		class="popup-icon"
+		*ngIf="platformService.isBrowser"
+		(click)="openPopUp()"
+		[svgIcon]="'arrow-right'"></mat-icon>
+</div>

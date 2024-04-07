@@ -9,7 +9,6 @@ import moment from "moment";
 })
 export class CalendarHeaderComponent<D> {
 	public currentView: string;
-
   constructor(
     private readonly _calendar: MatCalendar<D>,
     private readonly _dateAdapter: DateAdapter<D>,

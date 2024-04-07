@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ApiService } from '../../../core/services/api/api.service';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
+import { BlogResponseModel } from '../../../core/models/blog/blog-response.model';
+import { BlogQuery } from '../../state/blog/blog.query';
+import { BlogHomepageModel } from '../../../core/models/blog/blog-homepage.model';
+import { BlogStore } from '../../state/blog/blog.store';
+import { BlogCategoriesEnum } from '../../../core/enums/blog-categories.enum';
+import { HttpParams } from '@angular/common/http';
+import { NewArticleModel } from '../../../core/models/blog/new-article.model';
 import {
+	ArticleStatus,
 	BlogArticle,
-	BlogAuthor, CreateBlogRequest,
+	BlogAuthor, CreateAuthorRequest, CreateBlogRequest, GetNewBlogResponse,
 	Tag, TypeArticle
 } from "../../../../../admin/src/app/pages/admin-blog-post/types/admin-blog-post.type";
 import { getFormData } from "../../../core/helpers/function/get-form-data";
@@ -20,7 +28,9 @@ export class BlogService {
 	private blogSource$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 	private blogLength: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-	constructor(private readonly apiService: ApiService) {
+	constructor(private readonly apiService: ApiService,
+							private readonly blogQuery: BlogQuery,
+							private readonly blogStore: BlogStore) {
 		this._articlesBehaviourSubject = new BehaviorSubject<any[]>([]);
 		this._articles$ = this._articlesBehaviourSubject.asObservable();
 		this._endpoint = 'blogs/';
@@ -65,6 +75,14 @@ export class BlogService {
 		return this.apiService.get(`blog/${id}`);
 	}
 
+	public getNewArticleById(id: string): Observable<GetNewBlogResponse> {
+		return this.apiService.get(`new-blog/${id}`);
+	}
+
+	public updateNewArticle(id: string, body: CreateBlogRequest) {
+		return this.apiService.put(`new-blog/update/${id}`, getFormData(body));
+	}
+
 	get blog$(): Observable<any> {
 		return this.blogSource$.asObservable();
 	}
@@ -73,8 +91,8 @@ export class BlogService {
 		return this.blogLength.asObservable();
 	}
 
-	public getArticles(queryString: string): Observable<any> {
-		return this.apiService.get(`blogs${queryString}`);
+	public getArticles(queryString: string): Observable<BlogResponseModel> {
+		return this.apiService.get<BlogResponseModel>(`blogs${queryString}`);
 	}
 
 	public updateBlogList(queryString: string = '&limit=7&'): void {
@@ -86,24 +104,35 @@ export class BlogService {
 			});
 	}
 
+	public getHomePage(): Observable<BlogHomepageModel> {
+		const { homepage } = this.blogQuery.getValue();
+
+		if (homepage) {
+			return of(homepage);
+		} else {
+			return this.apiService.get<BlogHomepageModel>('new-blogs/homepage')
+				.pipe(tap(homepage => this.updateHomepage(homepage)));
+		}
+	}
+
 	public deleteArticleById(id: any) {
 		return this.apiService.delete(`blog/${id}/delete`);
 	}
 
-	public getAuthorList$(limit = 10, offset = 0): Observable<{ data: BlogAuthor[], count: number }> {
+	public getAuthorList$(limit = 20, offset = 0): Observable<{ data: BlogAuthor[], count: number }> {
 		return this.apiService.get('new-blog/authors', {
 			params: {
 				limit,
 				offset
 			}
-		})
+		});
 	}
 
 	public createNewBlog(data: CreateBlogRequest): Observable<any> {
 		return this.apiService.post('new-blog/create', getFormData(data));
 	}
 
-	public getNewArticles(limit = 10, offset = 0, type: TypeArticle = 'News'): Observable<{
+	public getNewArticles(offset = 0, type: TypeArticle | TypeArticle[] = 'News', status: ArticleStatus | ArticleStatus[] = 'published', limit = 10): Observable<{
 		data: BlogArticle[],
 		count: number
 	}> {
@@ -111,8 +140,50 @@ export class BlogService {
 			params: {
 				limit,
 				offset,
-				type
+				type,
+				status
 			}
 		})
+	}
+
+	public deleteNewArticle(id: string): Observable<any> {
+		return this.apiService.delete(`new-blog/delete/${id}`);
+	}
+
+	public createAuthor(data: CreateAuthorRequest): Observable<any> {
+		return this.apiService.post('new-blog/author/create', getFormData(data));
+	}
+
+	public updateAuthor(data: CreateAuthorRequest, id: string): Observable<any> {
+		return this.apiService.put(`new-blog/author/${id}`, getFormData(data));
+	}
+
+	public deleteAuthor(id: string): Observable<any> {
+		return this.apiService.delete(`new-blog/author/${id}`);
+	}
+
+	public getArticlesByType(
+		offset: number,
+		limit: number,
+		type: BlogCategoriesEnum,
+		status?: string,
+		tags?: string[]
+	): Observable<{count: number, data: NewArticleModel[]}> {
+		let params = new HttpParams();
+		params = params.append('limit', limit)
+			.append('offset', offset)
+			.append('type', type);
+		if (status) {
+			params.append('status', status);
+		}
+		if (tags?.length > 0) {
+			tags.forEach(tag => params.append('tags', tag));
+		}
+
+		return this.apiService.get('new-blogs', {params});
+	}
+
+	private updateHomepage(homepage: BlogHomepageModel): void {
+		this.blogStore.update({ homepage });
 	}
 }

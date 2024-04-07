@@ -99,6 +99,12 @@ export const B2B_ROUTES: PathObject = {
 	},
 	'blog': {
 		nestedPaths: {
+			'news': {},
+			'trade-guide': {},
+			'analysis': {},
+			'market-experts': {},
+			'market-updates': {},
+			'logistics-and-supply-chain': {},
 			':id': {
 				hasValidator: true,
 				validator: isValidBlogArticle,

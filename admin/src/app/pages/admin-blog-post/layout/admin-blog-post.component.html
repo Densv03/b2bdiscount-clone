@@ -1,7 +1,6 @@
 <form
 	[formGroup]="formGroup"
-	class="admin-article"
-	(ngSubmit)="onSubmit(formGroup.value)">
+	class="admin-article">
 	<p class="admin-article__label">
 		{{ blogAction === blogActionEnum.EDIT ? 'Edit an post' : 'Add an post' }}
 	</p>
@@ -13,13 +12,19 @@
 		class="admin-article__image">
 		Image
 	</b2b-ngx-file>
+	@if (formGroup.get('images').hasError('required') && formGroup.get('images').touched) {
+		<p class="error">Image is required</p>
+	}
 
-	<div class="admin-article__main">
+	<div class="mb-3">
 		<b2b-ngx-input
 			formControlName="title"
 			class="admin-article__input"
 			[label]="'LABELS.ARTICLE_LABEL' | translate"
 			placeholder="Enter post label"></b2b-ngx-input>
+		@if (formGroup.get('title').hasError('required') && formGroup.get('title').touched) {
+			<p class="error">Title is required</p>
+		}
 	</div>
 
 	<b2b-ngx-select [options]="articleTypes$ | async"
@@ -30,26 +35,49 @@
 									[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
 									formControlName="typeArticle"
 	></b2b-ngx-select>
+	@if (formGroup.get('typeArticle').hasError('required') && formGroup.get('typeArticle').touched) {
+		<p class="error">Article type is required</p>
+	}
 
-	<b2b-datepicker
-		formControlName="datePublication"
-		inputClassName="datepicker"
-		iconName="filled-calendar"
-		[iconPosition]="{ left: '10px', top: '20px' }"></b2b-datepicker>
+	<div class="mb-3">
+		@if (blogAction === blogActionEnum.EDIT && (currentArticle$ | async)) {
+			<b2b-datepicker
+				[today]="(currentArticle$ | async)?.data?.datePublication"
+				formControlName="datePublication"
+				inputClassName="datepicker"
+				iconName="filled-calendar"
+				[iconPosition]="{ left: '10px', top: '20px' }"></b2b-datepicker>
+		} @else if (blogAction === blogActionEnum.CREATE) {
+			<b2b-datepicker
+				formControlName="datePublication"
+				inputClassName="datepicker"
+				iconName="filled-calendar"
+				[iconPosition]="{ left: '10px', top: '20px' }"></b2b-datepicker>
+		}
+
+
+	</div>
 
 	<mat-form-field appearance="outline">
 		<mat-label>Enter publication date</mat-label>
 		<input type="time" matInput formControlName="timePublication" name="week">
 	</mat-form-field>
 
-	<b2b-ngx-select [options]="blogAuthors$ | async"
-									bindLabel="fullName"
-									bindValue="_id"
-									placeholder="Select author"
-									className="w-100"
-									[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
-									formControlName="authorId"
-	></b2b-ngx-select>
+	<div class="mb-2">
+		<b2b-ngx-select [options]="blogAuthors$ | async"
+										bindLabel="fullName"
+										bindValue="_id"
+										placeholder="Select author"
+										className="w-100"
+										[theme]="b2bNgxSelectThemeEnum.BACKGROUND_GRAY"
+										formControlName="authorId"
+		></b2b-ngx-select>
+	</div>
+
+	<button mat-flat-button color="primary" class="mb-3" (click)="addAuthorDialog()">Add author</button>
+	@if (isEditAuthorButtonVisible$ | async) {
+		<button mat-flat-button color="primary" class="mb-3" (click)="editAuthorDialog()">Edit author</button>
+	}
 
 	<div formArrayName="recommendations">
 		@for (recommendation of recommendationsFormArray().controls; track $index) {
@@ -66,16 +94,11 @@
 		}
 	</div>
 
-	<div>
+	<div class="mb-3">
 		<button (click)="addRecommendation()" mat-flat-button color="primary">Add recommendation link</button>
 	</div>
 
-	<div>
-		<mat-checkbox formControlName="isDraft">Save as draft</mat-checkbox>
-	</div>
-
-
-	<div class="admin-article__main w-100">
+	<div class="admin-article__main w-100 mb-3">
 		<textarea
 			type="text"
 			b2bNgxInput
@@ -95,10 +118,18 @@
 		[editor]="Editor"
 		formControlName="description"
 	></ckeditor>
+	@if (formGroup.get('description').hasError('required') && formGroup.get('description').touched) {
+		<p class="error">Description is required</p>
+	}
+
+	<div class="mt-2">
+		<mat-checkbox formControlName="isDraft">Save as draft</mat-checkbox>
+	</div>
 
 	<button
 		b2bNgxButton
 		class="admin-article__button"
+		(click)="onSubmit(formGroup.value)"
 		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
 		{{ formGroup.get('_id').value ? 'Update an post' : 'Create an post' }}
 	</button>

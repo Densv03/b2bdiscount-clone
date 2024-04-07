@@ -1,14 +1,14 @@
-import {ClientTradeShowSection} from "./client-trade-shows.interface";
+import {ClientTradeShowSection} from "../../../../../../../core/models/trade-show.interface";
 
 export const TradeShowsSections: ClientTradeShowSection[] = [
 	{
 		type: 'participated',
 		label: 'Participated',
-		button: 'Add folder'
+		button: 'Add event'
 	},
 	{
 		type: 'upcoming',
 		label: 'Upcoming',
-		button: 'Add folder'
+		button: 'Add event'
 	},
 ]

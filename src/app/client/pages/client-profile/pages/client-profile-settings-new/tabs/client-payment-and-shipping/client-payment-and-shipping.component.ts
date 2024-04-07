@@ -9,9 +9,9 @@ import {
 	Output
 } from '@angular/core';
 import {B2bNgxCheckboxModule} from '@b2b/ngx-checkbox';
-import {basePaymentAndShipping, checkBoxes,} from './client-payment-and-shipment.constant';
+import {basePaymentAndShipping, checkBoxes,} from './client-payment-and-shipping.constant';
 import {NgxInputVersionEnum} from '../../../../../../../../../projects/ngx-input/src/lib/enum/ngx-input-version.enum';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {
 	ClientProfileCountriesModalComponent
 } from "../../component/client-profile-countries-modal/client-profile-countries-modal.component";
@@ -36,6 +36,10 @@ import {
 	ClientProfileSettingsTabsService
 } from "../../component/client-profile-settings-tabs/client-profile-settings-tabs.service";
 import {TabLabel} from "../../client-profile-settings.type";
+import {
+	ClientProfileDefaultModalComponent
+} from "../../component/client-profile-default-modal/client-profile-default-modal.component";
+import {DefaultModalData} from "../../component/client-profile-default-modal/client-profile-default-modal.interface";
 
 @UntilDestroy()
 @Component({
@@ -138,6 +142,23 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 			first: this.paymentAndShipping,
 			second: this.company.paymentAndShipping
 		});
+	}
+
+	updateProductsModal() {
+		this.matDialog.open(ClientProfileDefaultModalComponent, {
+			data: {
+				title: 'Update products',
+				label: 'Would you like to update this information for all your products?',
+				buttons: [
+					{
+						label: 'Discard'
+					},
+					{
+						label: 'Apply changes'
+					}
+				]
+			}
+		} as MatDialogConfig<DefaultModalData<boolean>>);
 	}
 
 	private add(property: keyof PaymentAndShipping, value: string) {

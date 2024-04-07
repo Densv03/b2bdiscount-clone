@@ -1,0 +1,100 @@
+<div class="recently-published-wrapper">
+	@if (isRecentlyPublished) {
+		<h3 class="blog-section-title">
+			{{ sectionTitle }}
+		</h3>
+	} @else {
+		<a class="d-flex align-items-center article-section-header" [routerLink]="'/blog/market-experts'">
+			<h3 class="blog-section-title">
+				{{ sectionTitle }}
+			</h3>
+
+			<div class="article-section-header-icon-block">
+				<svg-icon class="article-section-header-icon" src="assets/icons/arrow-right-2.svg"></svg-icon>
+			</div>
+		</a>
+	}
+
+	@if (posts?.length > 0) {
+		<a class="first-article d-flex justify-between pointer"
+			 [class.flex-row-reverse]="!isRecentlyPublished"
+			 [routerLink]="['/blog', (posts[0]?.path || posts[0]._id)]">
+			@if (posts[0]?.images?.length > 0) {
+				<img
+					class="large-article-image w50"
+					b2bNgxImage
+					[name]="posts[0]?.images[0]?.lg" alt="" />
+
+			} @else {
+				<svg-icon class="large-article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+			}
+
+			<div class="d-flex flex-column justify-between w50" [class.justify-content-center]="!isRecentlyPublished">
+				<div>
+					@if (isRecentlyPublished) {
+						<a class="article-category-link"> {{ posts[0].typeArticle }}</a>
+					}
+
+					<h3 class="first-article-title">{{ posts[0].title }}</h3>
+
+					@if (isRecentlyPublished) {
+						<p class="first-article-description">{{ posts[0].shortDescription }}</p>
+					}
+				</div>
+
+				<div class="d-flex align-items-center w-100">
+					@if (!isRecentlyPublished) {
+						@if (posts[0]?.authorId?.photo) {
+							<img class="author-img mr-7" b2bNgxImage [name]="posts[0]?.authorId?.photo?.sm" alt="" width="32" height="32">
+						} @else {
+							<svg-icon class="author-img" src="/assets/icons/user.svg"></svg-icon>
+						}
+					}
+					<span
+						class="large-article-author-and-date" [class.w-100]="!isRecentlyPublished">
+						<a>{{ posts[0]?.authorId?.fullName }}</a> · {{ posts[0].updatedAt | date: 'MMM dd, yyyy' }}
+					</span>
+				</div>
+			</div>
+		</a>
+
+		<div class="articles d-flex blog-lg-gap">
+			@for (article of posts.slice(1); track article._id) {
+				<a class="article w33 d-flex flex-column justify-between pointer"
+					 [routerLink]="['/blog', (article?.path || article._id)]">
+					<div>
+						@if (article?.images?.length > 0) {
+							<img
+								class="article-image"
+								b2bNgxImage
+								[name]="article?.images[0]?.lg" alt="" />
+
+						} @else {
+							<svg-icon class="article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+						}
+
+						@if (isRecentlyPublished) {
+							<a class="article-category-link">{{ article.typeArticle }}</a>
+						}
+
+						<h3 class="article-title-in-section article-title">{{ article.title }}</h3>
+					</div>
+
+					<div class="d-flex align-items-center">
+						@if (!isRecentlyPublished) {
+							@if (article?.authorId?.photo) {
+								<img class="author-img mr-7" b2bNgxImage [name]="article?.authorId?.photo?.sm" alt="" width="32" height="32">
+							} @else {
+								<svg-icon class="author-img" src="/assets/icons/user.svg"></svg-icon>
+							}
+						}
+
+						<span
+							class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+					</div>
+
+				</a>
+			}
+		</div>
+	}
+</div>

@@ -1,0 +1,129 @@
+@import 'projects/shared/src/styles';
+.exhibitions {
+	margin-top: 48px;
+	padding-bottom: 50px;
+	&__title {
+		font-size: 20px;
+		font-weight: 600;
+		line-height: 18px;
+		letter-spacing: 0.01em;
+	}
+	&__subtitle {
+		font-size: 18px;
+		font-weight: 600;
+		line-height: 25.2px;
+		letter-spacing: 0.01em;
+		color: #535E6D;
+	}
+	&__section {
+		margin-top: 32px;
+		@media (max-width: 996px) {
+			margin-top: 24px;
+		}
+	}
+	.divider {
+		width: 767px;
+		background: #D9D9D9;
+		height: 1px;
+		margin-top: 32px;
+		@include breakpoint('4') {
+			width: 100%;
+			margin-top: 82px;
+		}
+		@include breakpoint('2') {
+			margin-top: 32px;
+		}
+	}
+	&__list {
+		margin-top: 16px;
+		position: relative;
+	}
+	&__item {
+		width: 176px;
+		height: 258px;
+		//border: 1px solid;
+		border-radius: 4px;
+		overflow: hidden;
+		&-image {
+			width: 176px;
+			height: 176px;
+			border-radius: 4px;
+		}
+		&-title {
+			font-size: 14px;
+			font-weight: 600;
+			line-height: 18px;
+			letter-spacing: 0.01em;
+			margin-top: 16px;
+		}
+		&-dates {
+			font-size: 12px;
+			margin-top: 4px;
+		}
+		&-details {
+			font-size: 16px;
+			font-weight: 400;
+			line-height: 18px;
+			letter-spacing: 0.01em;
+			color: #979797;
+			margin-top: 8px;
+			cursor: pointer;
+		}
+	}
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+	position: absolute;
+	top: 40%;
+	transform: translateY(-50%);
+	@media (max-width: 996px) {
+		display: none !important;
+	}
+}
+.swiper-button-next {
+	right: -25px;
+}
+.swiper-button-prev {
+	left: -30px;
+}
+.swiper-pagination {
+	transform: translate(-50%, 15px) !important;
+	display: none;
+	z-index: 9 !important;
+	@media (max-width: 996px) {
+		display: block;
+	}
+}
+
+:host::ng-deep {
+	swiper-container {
+		margin: 0;
+		@media (max-width: 1200px) {
+			width: 560px;
+			swiper-slide {
+			}
+		}
+		@media (max-width: 995px) {
+			width: 470px;
+			.exhibitions__item {
+				width: 146px;
+			}
+		}
+		@media (max-width: 768px) {
+			width: auto;
+			.exhibitions__item {
+				width: auto;
+			}
+		}
+		@media (max-width: 576px) {
+			.exhibitions__item {
+				width: 146px;
+				&-image {
+					height: 146px;
+
+				}
+			}
+		}
+	}
+}

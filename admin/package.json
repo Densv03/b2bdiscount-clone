@@ -1,5 +1,8 @@
 {
 	"name": "admin",
 	"version": "0.0.1",
-	"sideEffects": false
+	"sideEffects": false,
+	"dependencies": {
+		"@ckeditor/ckeditor5-image": "^41.2.1"
+	}
 }

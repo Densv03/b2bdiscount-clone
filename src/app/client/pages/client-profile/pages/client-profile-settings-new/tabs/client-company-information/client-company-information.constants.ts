@@ -1,14 +1,5 @@
 import {SelectItem} from "./client-company-information.interface";
 
-export const POSITIONS_LIST: string[] = [
-	'Purchase manager',
-	'Office manager',
-	'Sales manager',
-	'FEA Manager',
-	'CEO ',
-	'Company owner',
-];
-
 export const ANNUAL_REVENUE_LIST: string[] = [
 	'1-5M',
 	'5-10M',

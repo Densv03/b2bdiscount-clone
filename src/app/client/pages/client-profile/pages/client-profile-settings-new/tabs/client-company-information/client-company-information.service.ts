@@ -148,7 +148,11 @@ export class ClientCompanyInformationService {
 			)
 			.subscribe((res) => {
 				this.rootRoles$.next(res);
-				this.subRoles = res.flatMap((x) => x.subRoles);
+				if (this.authService.user.rootRole.name === 'supplier') {
+					this.subRoles = res.find(x => x.name === 'supplier').subRoles;
+				} else {
+					this.subRoles = res.find(x => x.name === 'buyer').subRoles;
+				}
 			});
 	}
 

@@ -31,6 +31,9 @@ import _ from "lodash";
 import {AuthService} from "../../../../../../auth/services/auth/auth.service";
 import {PublicCompanyInfoModel} from "../../../../../../core/models/public-company-info.model";
 import {environment} from "../../../../../../../environments/environment";
+import {ClientMediaComponent} from "../tabs/client-media/client-media.component";
+import {ActivatedRoute} from "@angular/router";
+import {defaultTab, tabs} from "../component/client-profile-settings-tabs/client-profile-settings-tabs.constant";
 
 @Component({
 	selector: 'b2b-client-profile-settings-new',
@@ -47,6 +50,7 @@ import {environment} from "../../../../../../../environments/environment";
 		B2bNgxButtonModule,
 		AsyncPipe,
 		NgClass,
+		ClientMediaComponent,
 	],
 	providers: [
 		ClientProfileSettingsTabsService,
@@ -139,4 +143,6 @@ export class ClientProfileSettingsNewComponent implements CanComponentDeactivate
 			localStorage.setItem('supplier-pop-up', 'true')
 		})
 	}
+
+	protected readonly tabs = tabs;
 }

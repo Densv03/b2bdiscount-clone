@@ -35,6 +35,7 @@ $fe-b2b-theme: mat.define-light-theme(
 @include mat.all-component-themes($fe-b2b-theme);
 
 @import 'projects/shared/src/styles/index';
+@import "src/styles/articles";
 @import 'src/styles/mat-select';
 @import 'src/styles/material-override';
 @import 'src/styles/fonts';
@@ -70,7 +71,7 @@ body {
 
 .modal__backdrop {
 	background: rgba(0, 0, 0, 0.4);
-	@apply backdrop-blur-[0.5px];
+	@apply backdrop-blur-[1.5px];
 }
 
 svg-icon {

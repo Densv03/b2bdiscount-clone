@@ -8,7 +8,7 @@
 		>
 		@if (!loading()) {
 			<b2b-ngx-file
-				class="cursor-pointer"
+				class="!cursor-pointer"
 				(change)="formChange($event)"
 				[emptyFileLabel]="'Supported file types: PDF, PNG, JPG and DOC files. Maximum size: 20 MB (total)'"
 				[version]="NgxInputVersionEnum.GLOBY"

@@ -47,7 +47,7 @@ export class B2bNgxInputDirective implements OnInit, OnChanges {
 			this._renderer2.addClass(this._elementRef.nativeElement, currentValue);
 		}
 
-		if (changes.label && this.version === NgxInputVersionEnum.B2B) {
+		if (changes?.label?.currentValue && this.version === NgxInputVersionEnum.B2B) {
 			const {nativeElement} = this._elementRef;
 			const {parentElement} = nativeElement;
 
@@ -67,9 +67,9 @@ export class B2bNgxInputDirective implements OnInit, OnChanges {
 	private handleClasses() {
 		if (this.platformService.isBrowser) {
 			if (this.version === NgxInputVersionEnum.B2B) {
-				this.handleB2bClasses()
+				return this.handleB2bClasses()
 			}
-			this.handleGlobyClasses();
+			return this.handleGlobyClasses();
 		}
 	}
 
@@ -81,10 +81,12 @@ export class B2bNgxInputDirective implements OnInit, OnChanges {
 		this._renderer2.insertBefore(parent, this.wrapper, this._elementRef.nativeElement)
 		this._renderer2.appendChild(this.wrapper, this._elementRef.nativeElement);
 		this._renderer2.addClass(this.wrapper, 'ngx-input-wrapper')
-		this._renderer2.addClass(this.wrapper, this.wrapperClass)
+		if (this.wrapperClass) {
+			this._renderer2.addClass(this.wrapper, this.wrapperClass)
+		}
 
-		// Creat label and insert it input wrapper;
-		if (this.label && this.version === NgxInputVersionEnum.GLOBY) {
+		// Create label and insert it;
+		if (this.label?.length > 0) {
 			const labelElement = this._renderer2.createElement("span");
 			const labelText = this._renderer2.createText(this.label);
 			this._renderer2.appendChild(labelElement, labelText);

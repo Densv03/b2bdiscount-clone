@@ -1,2 +1,2 @@
-export * from './lib/components/list/list.component'
-export * from './lib/components/card/card.component'
+export * from './lib/components/list/globy-list.component'
+export * from './lib/components/card/globy-file-card.component'

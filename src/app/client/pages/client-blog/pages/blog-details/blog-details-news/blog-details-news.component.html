@@ -1,0 +1,18 @@
+<div class="blog-details-news bg-[#FFF]">
+	<div class="container md:w-[85%]">
+		<div class="header">
+			<div class="py-[50px]">
+				<a href="/blog/news"><- Back</a>
+			</div>
+			<h1 class="title md:text-[32px] font-[800] mb-[30px]">{{blog.data.title}}</h1>
+			<div class="tags mb-[30px]">
+				@for(tag of blog.data.tags; track $index) {
+					<span class="tag rounded-[4px] py-[7px] px-[10px] mr-3 bg-[#F3F6F8]">{{tag.name}}</span>
+				}
+			</div>
+			<div class="updated-at mb-[40px]">Updated {{blog.data.updatedAt | date}}</div>
+			<hr class="color-[#E3ECFF] mb-[40px]">
+			<div class="blog-details-news__content" [innerHTML]="blog.data.description"></div>
+		</div>
+	</div>
+</div>

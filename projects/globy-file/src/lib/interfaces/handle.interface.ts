@@ -3,4 +3,4 @@ export interface HandleItem {
 	type: ItemType;
 }
 
-export type ItemType = 'video' | 'image' | 'doc';
+export type ItemType = 'video' | 'image';

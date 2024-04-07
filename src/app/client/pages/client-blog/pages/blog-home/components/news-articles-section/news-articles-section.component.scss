@@ -1,0 +1,13 @@
+@import 'projects/shared/src/styles';
+
+.news-section-wrapper {
+	margin-top: 32px;
+	flex: 1 0 33%;
+
+	 > a {
+		@include breakpoint('3') {
+			padding-bottom: 18px;
+			border-bottom: 1px solid #CFDEFF;
+		}
+	 }
+}

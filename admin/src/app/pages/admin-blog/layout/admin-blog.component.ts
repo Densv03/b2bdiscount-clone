@@ -1,14 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { WikiService } from '../../../../../../src/app/client/services/wiki/wiki.service';
-import { combineLatest, filter, mergeMap, Subject } from 'rxjs';
+import { combineLatest, filter, mergeMap, Subject, tap } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { B2bNgxLinkThemeEnum } from 'projects/ngx-link/src/public-api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BlogService } from '../../../../../../src/app/client/services/blog/blog.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../../../../../../src/app/client/shared/components/confirmation-dialog/confirmation-dialog.component';
+import {
+	ConfirmationDialogComponent
+} from '../../../../../../src/app/client/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { B2bNgxButtonThemeEnum } from 'projects/ngx-button/src/public-api';
+import { ArticleStatuses, ArticleTypes } from "../../admin-blog-post/types/admin-blog-post.type";
 
 @UntilDestroy()
 @Component({
@@ -19,7 +22,7 @@ import { B2bNgxButtonThemeEnum } from 'projects/ngx-button/src/public-api';
 })
 export class AdminBlogComponent {
 	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum;
-	public readonly articles$: any;
+	public articles$: any;
 	public readonly menuOptions: any;
 
 	public readonly pageSubject: Subject<any>;
@@ -45,15 +48,18 @@ export class AdminBlogComponent {
 
 	private _getArticles$() {
 		const page$ = this.pageSubject.asObservable().pipe(startWith(1));
-		const force$ = this.forceSubject.asObservable().pipe(startWith(true));
-
-		return combineLatest([page$, force$]).pipe(
-			map(([page]) => `?offset=${(page - 1) * 10}`),
-			switchMap((queryString) => this._blogService.getArticles(queryString)),
-			map((data: any) => {
-				this.totalCount = data.totalCount;
-				return data.posts;
-			})
+		return page$.pipe(
+			this.hotToastService.observe({
+				loading: 'Loading articles',
+				success: 'Articles loaded',
+				error: 'Articles loading failed',
+			}),
+			switchMap(page =>
+				this._blogService.getNewArticles((page - 1) * 10, ArticleTypes, ArticleStatuses)
+					.pipe(
+						tap(data => this.totalCount = data.count),
+						map(data => data.data))
+			)
 		);
 	}
 
@@ -82,7 +88,7 @@ export class AdminBlogComponent {
 						.pipe(
 							filter((data) => !!data),
 							mergeMap(() => {
-								return this._blogService.deleteArticleById(user._id).pipe(
+								return this._blogService.deleteNewArticle(user._id).pipe(
 									untilDestroyed(this),
 									this.hotToastService.observe({
 										loading: 'Post deleting',
@@ -94,6 +100,8 @@ export class AdminBlogComponent {
 						)
 						.subscribe(() => {
 							this.forceSubject.next(true);
+							this.articles$ = this._getArticles$();
+							this.pageSubject.next(1);
 						});
 				},
 			},

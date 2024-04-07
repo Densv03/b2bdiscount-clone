@@ -5,7 +5,7 @@ import {
 	ClientProfileDefaultModalComponent
 } from "../client-profile-default-modal/client-profile-default-modal.component";
 import {DefaultModalData} from "../client-profile-default-modal/client-profile-default-modal.interface";
-import {BehaviorSubject, firstValueFrom, Subject} from "rxjs";
+import {BehaviorSubject, firstValueFrom, Observable, Subject} from "rxjs";
 import {TabOutputData} from "./client-profile-settings-tabs.interface";
 import {PageTab} from "../../client-profile-settings.type";
 import {defaultTab} from "./client-profile-settings-tabs.constant";
@@ -19,6 +19,7 @@ export class ClientProfileSettingsTabsService<T> {
 		first: null,
 		second: null
 	})
+	currentTab = new Subject<PageTab>();
 	initSubmit$ = new Subject<PageTab | null>()
 	activeTab: PageTab = defaultTab;
 

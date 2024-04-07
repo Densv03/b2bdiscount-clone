@@ -31,11 +31,11 @@ export const tabs: PageTab[] = [
 		path: '',
 		active: false,
 	},
-	// {
-	// 	label: TabLabel.MEDIA,
-	// 	path: '',
-	// 	active: false,
-	// },
+	{
+		label: TabLabel.MEDIA,
+		path: '',
+		active: false,
+	},
 ];
 
 export const defaultTab: PageTab = tabs[0];

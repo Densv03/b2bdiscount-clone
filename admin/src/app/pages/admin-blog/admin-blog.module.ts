@@ -10,6 +10,9 @@ import { AdminBlogRoutingModule } from './admin-blog-routing.module';
 import { AdminBlogListComponent } from './components/admin-articles-list/admin-blog-list.component';
 import { AdminBlogComponent } from './layout/admin-blog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SvgIconComponent } from "angular-svg-icon";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
 
 @NgModule({
 	declarations: [AdminBlogComponent, AdminBlogListComponent],
@@ -23,6 +26,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 		B2bNgxIconModule,
 		B2bNgxButtonModule,
 		MatDialogModule,
+		SvgIconComponent,
+		MatIcon,
+		MatTooltip,
 	],
 })
 export class AdminBlogModule {}

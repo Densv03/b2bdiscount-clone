@@ -1,0 +1,109 @@
+:host {
+	.company-modal {
+		max-width: 750px;
+		@media (max-width: 576px) {
+			margin-top: 100px;
+			padding: 0 10px;
+		}
+		&__title {
+			font-size: 24px;
+			font-weight: 600;
+			line-height: 29.05px;
+			letter-spacing: 0.01em;
+			@media (max-width: 576px) {
+				max-width: 225px;
+			}
+		}
+		&__description {
+			user-select: none;
+		}
+
+		&__body {
+			max-height: 480px;
+			max-width: 800px;
+			width: 720px;
+			overflow: auto;
+			padding-right: 21px;
+			@media (max-width: 968px) {
+				width: auto;
+			}
+			@media (max-width: 576px) {
+				padding-right: 0;
+			}
+			.video {
+				margin-top: 24px;
+				border-radius: 4px;
+				overflow: hidden;
+				height: 300px;
+				video {
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
+
+		&__dates {
+			font-size: 18px;
+			font-weight: 400;
+			line-height: 21.78px;
+			letter-spacing: 0.01em;
+		}
+	}
+
+	.carousel {
+		position: relative;
+		height: 300px;
+		margin: auto;
+		margin-top: 32px;
+		overflow: hidden;
+		.swiper-slide {
+			height: 300px;
+			img {
+				height: 100%;
+				margin: auto;
+			}
+		}
+
+		.swiper-button-next,
+		.swiper-button-prev {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			z-index: 10;
+			stroke: #005DFF;
+			cursor: pointer;
+		}
+		.swiper-button-next {
+			right: 0;
+			@media (max-width: 576px) {
+				right: -8px;
+			}
+		}
+		.swiper-button-prev {
+			left: 0;
+			@media (max-width: 576px) {
+				left: -8px;
+			}
+		}
+		.disabled {
+			stroke: #2F384C;
+		}
+
+		.swiper-pagination {
+			transform: translate(-50%, 50px) !important;
+			display: none;
+			@media (max-width: 768px) {
+				display: block;
+			}
+		}
+	}
+}
+
+::ng-deep {
+	.header {
+		z-index: 785327 !important;
+	}
+	.cdk-overlay-dark-backdrop {
+		backdrop-filter: blur(1px);
+	}
+}

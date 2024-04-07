@@ -5,15 +5,14 @@ import {
 import {
 	ArticleStatus,
 	ArticleTypes,
+	BlogArticle,
 	CreateBlogFormGroupData,
 	CreateBlogRequest,
-	CreatingPostMessages,
 	Tag
 } from "../types/admin-blog-post.type";
 import { of } from 'rxjs';
 import _ from "lodash";
 import { BlogService } from "../../../../../../src/app/client/services/blog/blog.service";
-import { getFormData } from "../../../../../../src/app/core/helpers/function/get-form-data";
 import { HotToastService } from "@ngneat/hot-toast";
 
 @Injectable({
@@ -21,32 +20,24 @@ import { HotToastService } from "@ngneat/hot-toast";
 })
 export class AdminBlogPostService {
 
-	constructor(private blogService: BlogService,
-							private hotToastService: HotToastService) {
-	}
-
 	public articleTypes$() {
 		return of(transformToSelect(ArticleTypes));
 	}
 
-	public prepareBlogRequest(body: CreateBlogFormGroupData): void {
+	public prepareBlogRequest(body: CreateBlogFormGroupData, initialData?: BlogArticle): CreateBlogRequest {
 		const clone = _.cloneDeep(body);
-		const {datePublication, timePublication, description, ...rest} = clone;
-		const request: CreateBlogRequest = {
+		const {datePublication, timePublication, description, isDraft, ...rest} = clone;
+		return {
 			...rest, datePublication: this.getISOTime(datePublication, timePublication),
 			readTime: this.countReadingTime(clone.description) + ' min',
 			pullQuote: '',
-			articleStatus: this.getArticleStatus(body),
+			articleStatus: this.getArticleStatus(body, initialData),
 			tags: clone.tags.map((tag: Tag) => tag.name),
 			description: this.getUpdatedDescription(description)
 		};
-		console.log(request);
-		this.blogService.createNewBlog(request).pipe(this.hotToastService.observe(CreatingPostMessages)).subscribe(data => {
-			console.log(data);
-		})
 	}
 
-	private getISOTime(datePublication?: Date, timePublication?: string): string {
+	public getISOTime(datePublication?: Date, timePublication?: string): string {
 		if (!datePublication || !timePublication) {
 			return new Date().toISOString();
 		}
@@ -63,18 +54,23 @@ export class AdminBlogPostService {
 		return Math.ceil(readingTimeMinutes);
 	}
 
-	private getArticleStatus(body: CreateBlogFormGroupData): ArticleStatus {
-		const {isDraft, timePublication, datePublication} = body
-		if (timePublication && datePublication && !isDraft) {
+	private getArticleStatus(body: CreateBlogFormGroupData, initialData?: BlogArticle): ArticleStatus {
+		if (initialData) {
+			return initialData.articleStatus;
+		}
+		const {isDraft, timePublication, datePublication} = body;
+		if (!timePublication && !datePublication && !isDraft) {
 			return 'published';
-		} else if (!isDraft && !(timePublication || datePublication)) {
-			return 'planned'
-		} else {
+		} else if (isDraft) {
 			return 'draft';
+		} else {
+			return 'planned';
 		}
 	}
 
 	private getUpdatedDescription(description: string): string {
-		return ''
+		return description
+			.replaceAll('<a', '<a rel="nofollow"')
+			.replaceAll('<a', '<a target="_blank""');
 	}
 }

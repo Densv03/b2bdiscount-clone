@@ -6,7 +6,11 @@
     height: 1.5rem;
     display: block;
 
-    .ngx-checkbox__label {
+		@include breakpoint('3') {
+			height: max-content;
+		}
+
+		.ngx-checkbox__label {
       color: $color-gray-400;
       padding-left: 2rem;
     }

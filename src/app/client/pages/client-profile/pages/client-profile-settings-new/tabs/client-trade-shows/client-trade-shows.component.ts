@@ -7,13 +7,18 @@ import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {
 	ClientProfileTradeShowsModalComponent
 } from "../../component/client-profile-trade-shows-modal/client-profile-trade-shows-modal.component";
-import {TradeShow} from "./client-trade-shows.interface";
-import {ClientTradeShowsService} from "./client-trade-shows.service";
+import {TradeShow} from "../../../../../../../core/models/trade-show.interface";
+import {TradeShowService} from "../../../../../../services/trade-show/trade-show.service";
 import {
 	ClientProfileTradeShowCardComponent
 } from "../../component/client-profile-trade-show-card/client-profile-trade-show-card.component";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {ClientTradeShowsService} from "./client-trade-shows.service";
+import {
+	ClientProfileSettingsTabsService
+} from "../../component/client-profile-settings-tabs/client-profile-settings-tabs.service";
+import {TabLabel} from "../../client-profile-settings.type";
 
 @UntilDestroy()
 @Component({
@@ -37,25 +42,39 @@ export class ClientTradeShowsComponent implements OnInit {
 
 	public readonly tradeShowSections = TradeShowsSections;
 
-	constructor(public clientTradeShowService: ClientTradeShowsService,
-							private cdr: ChangeDetectorRef) {
+	constructor(public tradeShowService: TradeShowService,
+							public clientTradeShowService: ClientTradeShowsService,
+							private cdr: ChangeDetectorRef,
+							private tabService: ClientProfileSettingsTabsService<any>) {
 	}
 
 	ngOnInit() {
 		this.getList();
+		this.tabListen();
 	}
 
 	openModal(data: Partial<TradeShow>) {
-		this.matDialog.open(ClientProfileTradeShowsModalComponent, {data} as MatDialogConfig<Partial<TradeShow>>)
+		this.matDialog.open(ClientProfileTradeShowsModalComponent, {
+			data,
+			backdropClass: 'modal__backdrop'
+		} as MatDialogConfig<Partial<TradeShow>>)
 			.afterClosed()
 			.pipe(untilDestroyed(this))
 			.subscribe(() => {
 				this.getList();
-				this.cdr.detectChanges();
 			})
 	}
 
+	tabListen() {
+		this.tabService.currentTab.asObservable().subscribe(res => {
+			if (res.label == TabLabel.TRADE_SHOWS) {
+				this.getList();
+			}
+		})
+	}
+
 	getList() {
-		this.clientTradeShowService.getListByCompanyId().subscribe();
+		this.clientTradeShowService.getList();
+		this.cdr.detectChanges();
 	}
 }

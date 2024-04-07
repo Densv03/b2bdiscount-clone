@@ -1,0 +1,36 @@
+<div class="block-wrapper">
+	<a class="d-flex align-items-center article-section-header" [routerLink]="'/blog/analysis'">
+		<h2 class="blog-section-title">
+			Analysis
+		</h2>
+
+		<div class="article-section-header-icon-block">
+			<svg-icon class="article-section-header-icon" src="assets/icons/arrow-right-2.svg"></svg-icon>
+		</div>
+	</a>
+
+	<div class="articles d-flex blog-lg-gap">
+		@for (article of posts; track article._id) {
+			<a class="article d-flex flex-column justify-between pointer w33"
+					[routerLink]="['blog', (article?.path || article._id)]">
+				<div>
+					@if (article?.images?.length > 0) {
+						<img
+							class="article-image"
+							b2bNgxImage
+							[name]="article?.images[0]?.lg" alt="" />
+
+					} @else {
+						<svg-icon class="article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+					}
+
+					<a class="article-category-link">{{article?.typeArticle}}</a>
+
+					<h3 class="article-title-in-section article-title">{{article.title}}</h3>
+				</div>
+
+				<span class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+			</a>
+		}
+	</div>
+</div>

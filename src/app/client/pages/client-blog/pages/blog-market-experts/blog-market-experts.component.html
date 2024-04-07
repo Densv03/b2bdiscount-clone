@@ -1,0 +1,23 @@
+<div class="blog-container w-100 bg-white d-flex justify-center">
+	<div class="home-wrapper w-100 d-flex justify-between flex-column align-items-center">
+		<b2b-blog-section-header
+			class="w-100"
+			[sectionTitle]="blogCategoriesEnum.MarketExperts"
+			[sectionDescription]="description">
+		</b2b-blog-section-header>
+
+		@if ((articlesList$ | async)?.length > 0) {
+			<b2b-blog-category-grid
+				[isMarketExpertsPage]="true"
+				class="w-100"
+				[articleList]="articlesList$ | async">
+			</b2b-blog-category-grid>
+
+			<b2b-pagination
+				[currentPage]="currentPage"
+				[length]="countSource.getValue()"
+				[perPage]="limit"
+				(togglePageNumber)="togglePage($event)"></b2b-pagination>
+		}
+	</div>
+</div>

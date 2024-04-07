@@ -15,13 +15,11 @@ import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {NgClass} from "@angular/common";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {MatIcon} from "@angular/material/icon";
-import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialog} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {
 	ClientProfileImageUploadModalComponent
 } from "../client-profile-image-upload-modal/client-profile-image-upload-modal.component";
 import {MatButton} from "@angular/material/button";
-import {MAT_MENU_DEFAULT_OPTIONS} from "@angular/material/menu";
-import {ClientProfileSettingsTabsService} from "../client-profile-settings-tabs/client-profile-settings-tabs.service";
 
 @UntilDestroy()
 @Component({
@@ -102,6 +100,7 @@ export class ClientProfileImageContainerComponent implements OnInit {
 				device: this.mode,
 				image: this.image
 			},
+			backdropClass: 'modal__backdrop'
 		}).afterClosed()
 			.pipe(untilDestroyed(this))
 			.subscribe(res => {

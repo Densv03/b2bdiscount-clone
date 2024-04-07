@@ -229,6 +229,8 @@ export class ClientMarketplaceProductDetailsComponent
 		}
 	}
 
+
+
 	private getPublicUserInfo(id: string): Observable<PublicUserInfo> {
 		return this.userService.getPublicUserInfo(id).pipe(first());
 	}
@@ -454,4 +456,21 @@ export class ClientMarketplaceProductDetailsComponent
 
 	protected readonly Number = Number;
 	protected readonly PriceTypeEnum = PriceTypeEnum;
+
+	public getPrice(oldPrice: number | string) {
+		if (typeof oldPrice === 'string' && !isNaN(+oldPrice)) {
+			if (parseInt(oldPrice) === +oldPrice) {
+				return oldPrice;
+			} else {
+				return (+oldPrice).toFixed(2)
+			}
+		} else if (typeof oldPrice === 'number') {
+			if (parseInt(oldPrice.toString()) === oldPrice) {
+				return oldPrice;
+			}
+			return oldPrice.toFixed(2)
+		} else {
+			return oldPrice;
+		}
+	}
 }

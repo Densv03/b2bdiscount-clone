@@ -426,20 +426,6 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'blog/:id',
-				canActivate: [DefaultRoleGuard],
-				loadChildren: () =>
-					import('./pages/client-blog-article/client-blog-article.module').then(
-						(m) => m.ClientBlogWikiArticleModule
-					),
-				data: {
-					meta: {
-						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
-						description: 'Globy - Trading Wiki',
-					},
-				},
-			},
-			{
 				path: 'profile',
 				canActivate: [AuthGuard],
 				loadChildren: () =>

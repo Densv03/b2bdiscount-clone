@@ -7,8 +7,8 @@ import {B2bNgxButtonModule, B2bNgxButtonThemeEnum} from "@b2b/ngx-button";
 import {DefaultModalData} from "./client-profile-default-modal.interface";
 import {buttons, defaultLabel, defaultTitle} from "./client-profile-default-modal.constants";
 import {
-	ClientProfileModalContainerService
-} from "../client-profile-modal-container/client-profile-modal-container.service";
+	ModalContainerService
+} from "../client-profile-modal-container/modal-container.service";
 
 @Component({
 	selector: 'b2b-client-profile-default-modal',
@@ -21,7 +21,7 @@ import {
 	styleUrl: './client-profile-default-modal.component.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientProfileDefaultModalComponent<T = boolean> extends ClientProfileModalContainerService<ClientProfileDefaultModalComponent, T> {
+export class ClientProfileDefaultModalComponent<T = boolean> extends ModalContainerService<ClientProfileDefaultModalComponent, T> {
 
 	protected readonly B2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 

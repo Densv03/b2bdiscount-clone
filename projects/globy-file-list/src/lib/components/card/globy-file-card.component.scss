@@ -1,0 +1,14 @@
+.main-badge {
+	background: #EE3535;
+	font-size: 8px;
+	@apply rounded-r-sm
+}
+
+.top__button {
+	@apply z-10 w-[24px] flex p-1 items-center justify-center bg-white bg-opacity-95 cursor-pointer hover:bg-black hover:opacity-30;
+}
+
+.length {
+	background-color: rgba(255,255,255,0.4);
+	backdrop-filter: blur(2px);
+}

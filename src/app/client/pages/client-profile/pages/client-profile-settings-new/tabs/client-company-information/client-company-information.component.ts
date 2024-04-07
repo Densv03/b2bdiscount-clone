@@ -135,7 +135,8 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 				data: {
 					...socialMediaForm,
 					value: this.socialMedia.get(socialMediaForm.formControlName).value
-				}
+				},
+				backdropClass: 'modal__backdrop'
 			})
 			.afterClosed()
 			.pipe(first(), untilDestroyed(this))

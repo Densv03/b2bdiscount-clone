@@ -3,14 +3,14 @@
 		<div class="row-start-1 row-end-2 col-start-3 col-end-4 justify-self-end self-baseline z-10">
 			<div class="flex flex-row gap-2 p-2">
 				<button
-					class="w-[24px] flex items-center justify-center bg-white bg-opacity-70 cursor-pointer hover:bg-black hover:opacity-30"
+					class="w-[24px] flex items-center justify-center bg-white bg-opacity-70 p-1 cursor-pointer hover:bg-black hover:opacity-30"
 					(click)="edit()" b2bNgxButton>
 					<img b2bNgxIcon class="w-[14px]" [name]="'edit'" alt="edit">
 				</button>
 				<button
 					class="w-[24px] flex items-center justify-center bg-white bg-opacity-70 p-1 cursor-pointer hover:bg-black hover:opacity-30"
 					(click)="delete()" b2bNgxButton>
-					<img b2bNgxIcon class="w-[16px]" [name]="'delete'" alt="Delete">
+					<img b2bNgxIcon class="w-[16px]" [name]="'close'" alt="Delete">
 				</button>
 			</div>
 		</div>
@@ -19,6 +19,6 @@
 	</div>
 	<div class="flex flex-col gap-1">
 		<h6 class="font-secondary font-medium font-sm  truncate">{{ tradeShow?.title }}</h6>
-		<span class="font-secondary text-xs">{{ tradeShow.startedAt }}&nbsp;-&nbsp;{{ tradeShow.endedAt }}</span>
+		<span class="font-secondary text-xs">{{ tradeShow.startedAt | date: 'dd.MM.yyyy' }}&nbsp;-&nbsp;{{ tradeShow.endedAt | date: 'dd.MM.yyyy' }}</span>
 	</div>
 </div>

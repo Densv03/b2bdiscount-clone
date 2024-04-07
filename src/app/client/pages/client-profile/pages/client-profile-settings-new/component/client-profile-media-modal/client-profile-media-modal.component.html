@@ -1,0 +1,108 @@
+<b2b-client-profile-modal-container (close)="onDismiss()"
+																		[label]="'Add ' + (data.type === 'image' ? 'Folder' : 'Video')"
+																		class="md:max-w-[70vw] p-2 min-w-[50vw] max-h-screen md:max-h-[90vh] overflow-y-auto">
+	<form (ngSubmit)="onSubmit()"
+				[formGroup]="form"
+				class="flex flex-col gap-4 md:mb-0 mb-12">
+		<div class="flex flex-col">
+			<input [formControlName]="'title'"
+						 [label]="'Exhibition name'"
+						 [placeholder]="'Exhibition name'"
+						 [version]="NgxInputVersionEnum.GLOBY"
+						 b2bNgxInput
+						 type="text">
+			@if (form.touched) {
+				@if (title?.errors?.['minlength']) {
+					<mat-error>Your title is too short. Min length is 5 symbols</mat-error>
+				}
+				@if (title?.errors?.['maxlength']) {
+					<mat-error>Your title is too long. Max length is 40 symbols</mat-error>
+				}
+				@if (title?.errors?.['required']) {
+					<mat-error>This field is required</mat-error>
+				}
+				@if (title?.errors?.['cyrillic']) {
+					<mat-error>You can use only latin symbols</mat-error>
+				}
+			}
+		</div>
+		<div class="flex flex-col">
+		<textarea [formControlName]="'description'"
+							[label]="'Event description'"
+							[placeholder]="'Event description'"
+							[version]="NgxInputVersionEnum.GLOBY"
+							b2bNgxInput></textarea>
+			@if (form.touched) {
+				@if (description?.errors?.['minlength']) {
+					<mat-error>Your description is too short. Min length is 40 symbols</mat-error>
+				}
+				@if (description?.errors?.['maxlength']) {
+					<mat-error>Your description is too long. Max length is 1000 symbols</mat-error>
+				}
+				@if (description?.errors?.['required']) {
+					<mat-error>This field is required</mat-error>
+				}
+				@if (description?.errors?.['cyrillic']) {
+					<mat-error>You can use only latin symbols</mat-error>
+				}
+			}
+		</div>
+		@if (videoLink) {
+			<div class="flex flex-col">
+				<input [formControlName]="'videoLink'"
+							 [label]="'Youtube video link'"
+							 [placeholder]="'Youtube video link'"
+							 [version]="NgxInputVersionEnum.GLOBY"
+							 b2bNgxInput>
+				@if (videoLink.touched) {
+					@if (videoLink?.errors?.['required']) {
+						<mat-error>This field is required</mat-error>
+					}
+					@if (videoLink?.errors?.['website']) {
+						<mat-error class="text-red-500 text-xs">Must be website link. E.g. "https://youtube.com"</mat-error>
+					}
+					@if (videoLink?.errors?.['invalidYoutubeLink']) {
+						<mat-error class="text-red-500 text-xs">Invalid youtube video link</mat-error>
+					}
+				}
+			</div>
+			@if (!validVideoLink && !videos?.value?.[0]) {
+				<div class="flex flex-row gap-3 w-full items-center">
+					<div class="border-bottom"></div>
+					<span class="text-sm">OR</span>
+					<div class="border-bottom"></div>
+				</div>
+			}
+		}
+		<div [ngClass]="{'hidden': videos?.value?.[0] || validVideoLink}" class="flex flex-col gap-2">
+			<globy-file [buttonLabel]="'Choose' + (data.type === 'image' ? ' Photos' : ' Video')"
+									[customListClass]="'grid-cols-2 md:grid-cols-5 lg:grid-cols-7'"
+									[description]="fileUploadDescription"
+									[formControlName]="data.type === 'image' ? 'images' : 'videos'"
+									[handleItem]="handleItem"
+									[accept]="data.type === 'video' ? VIDEO_TYPES : IMAGE_TYPES"
+									[maxFileWeight]="100"
+									[multiple]="multiple"
+									[showResulList]="data.type === 'image'"
+									class="h-fit"/>
+		</div>
+		@if (validVideoLink || videos?.value?.length) {
+			<div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-7">
+				<globy-file-card [showDelete]="true"
+												 [data]="videoLink?.value ? video : videos?.value?.[0]"
+												 [handleItem]="handleItem"
+												 (deleteItem)="clearVideoLink()"/>
+			</div>
+		}
+		<div class="flex flex-row justify-center items-center">
+			<button
+				[disabled]="data?.type === 'image' ? form?.invalid : form?.invalid || !validVideoLink && !videos?.value?.length"
+				b2bNgxButton
+				[ngClass]="{'md:mb-0 mb-20': images?.value?.[0] || videos?.value?.[0]}"
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				type="submit">
+				Save changes
+			</button>
+		</div>
+	</form>
+</b2b-client-profile-modal-container>

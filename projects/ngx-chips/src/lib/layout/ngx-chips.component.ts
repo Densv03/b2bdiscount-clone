@@ -90,12 +90,15 @@ export class B2bNgxChipsComponent implements OnChanges, ControlValueAccessor, On
 	}
 
 	public addChip(id: any) {
+		if (!id) {
+			return;
+		}
 		const newChip = (this.searchedOptions &&
 			this.searchedOptions.find((searchedOption) => searchedOption._id === id)) || { name: id };
 
-		const findedIndex = this.chips.findIndex((chip: { name: any; }) => chip.name === newChip.name);
+		const foundIndex = this.chips.findIndex((chip: { name: any; }) => chip.name === newChip.name);
 
-		if (findedIndex === -1) {
+		if (foundIndex === -1) {
 			this.chips.push(newChip);
 			this.formControl.reset("");
 			this.onChange(this.chips);

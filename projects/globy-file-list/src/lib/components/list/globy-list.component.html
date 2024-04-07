@@ -1,0 +1,13 @@
+<div [ngClass]="customClass" class="grid grid-flow-row gap-3">
+	@for (item of items; track $index) {
+		@if (item) {
+			<globy-file-card (deleteItem)="delete($event)"
+											 (editItem)="edit($event)"
+											 [showDelete]="showDelete"
+											 [showEdit]="showEdit"
+											 [handleItem]="handleItem"
+											 [data]="item"
+											 [index]="$index"/>
+		}
+	}
+</div>

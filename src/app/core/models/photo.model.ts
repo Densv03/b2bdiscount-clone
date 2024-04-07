@@ -1,7 +1,6 @@
-export interface Photo {
-	_id: string;
-	path: string;
-	name: string;
+import {Media} from "./media.model";
+
+export interface Photo extends Media {
 	serialNumber?: number;
 	imageName?: string;
 	sm?: string;

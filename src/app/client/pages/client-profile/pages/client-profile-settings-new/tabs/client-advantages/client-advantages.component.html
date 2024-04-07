@@ -4,18 +4,11 @@
 	<span class="font-secondary text-lg font-medium"
 	>Highlight up to three (3) advantages of your company so that buyers can
 		learn more about you.</span>
-		<div class="flex flex-row justify-center items-center">
-			<button [disabled]="advantages?.length === 3" type="button" (click)="addForm()" mat-flat-button
-							class="px-3 !bg-[#EEEEEE]">
-				<mat-icon>add</mat-icon>
-				<span>Add</span>
-			</button>
-		</div>
 	</div>
 	<form [formGroup]="form"
 				(ngSubmit)="onSubmit()"
 				class="flex flex-col gap-10">
-		<div formArrayName="advantages" class="flex flex-col gap-10">
+		<div formArrayName="advantages" class="flex flex-col gap-8">
 			@for (item of controls; track $index) {
 				<div class="flex flex-row items-center gap-1">
 					<div class="flex flex-col gap-3 w-full" [formGroup]="item">
@@ -26,20 +19,22 @@
 											 [version]="NgxInputVersionEnum.GLOBY"
 											 placeholder="{{$index + 1}}. Advanced and efficient production process"
 											 type="text">
-								@if (item.get('title').errors?.['required']) {
-									<mat-error class="text-red-500 text-xs">This field is required</mat-error>
-								}
-								@if (item.get('title').errors?.['cyrillic']) {
-									<mat-error class="text-red-500 text-xs">Please, use only latin letters</mat-error>
-								}
-								@if (item.get('title').errors?.['maxlength']) {
-									<mat-error class="text-red-500 text-xs">Title is to long. Title length must be no longer then 300
-										symbols
-									</mat-error>
-								}
-								@if (item.get('title').errors?.['minlength']) {
-									<mat-error class="text-red-500 text-xs">Title is to short. Title must contain at least 10 symbols
-									</mat-error>
+								@if (item.touched) {
+									@if (item.get('title').errors?.['required']) {
+										<mat-error class="text-red-500 text-xs">This field is required</mat-error>
+									}
+									@if (item.get('title').errors?.['cyrillic']) {
+										<mat-error class="text-red-500 text-xs">Please, use only latin letters</mat-error>
+									}
+									@if (item.get('title').errors?.['maxlength']) {
+										<mat-error class="text-red-500 text-xs">Title is to long. Title length must be no longer then 300
+											symbols
+										</mat-error>
+									}
+									@if (item.get('title').errors?.['minlength']) {
+										<mat-error class="text-red-500 text-xs">Title is to short. Title must contain at least 10 symbols
+										</mat-error>
+									}
 								}
 							</div>
 						</div>
@@ -49,22 +44,23 @@
 										formControlName="content"
 										placeholder="{{$index + 1}}. e.g. Our advanced manufacturing processes, combined with a commitment to sustainable practices, position us at the forefront of innovation and environmental stewardship in the industry."
 										[version]="NgxInputVersionEnum.GLOBY"></textarea>
-							@if (item.get('title').errors?.['required']) {
-								<mat-error class="text-red-500 text-xs">This field is required</mat-error>
-							}
-							@if (item.get('content').errors?.['cyrillic']) {
-								<mat-error class="text-red-500 text-xs">Please, use only latin letters</mat-error>
-							}
-							@if (item.get('content').errors?.['maxlength']) {
-								<mat-error class="text-red-500 text-xs">Description is to long. Description length must be no longer
-									then
-									1000 symbols
-								</mat-error>
-							}
-							@if (item.get('content').errors?.['minlength']) {
-								<mat-error class="text-red-500 text-xs">Description is to short. Description must contain at least 40
-									symbols
-								</mat-error>
+							@if (item?.get('content').touched) {
+								@if (item.get('content').errors?.['required']) {
+									<mat-error class="text-red-500 text-xs">This field is required</mat-error>
+								}
+								@if (item.get('content').errors?.['cyrillic']) {
+									<mat-error class="text-red-500 text-xs">Please, use only latin letters</mat-error>
+								}
+								@if (item.get('content').errors?.['maxlength']) {
+									<mat-error class="text-red-500 text-xs">Description is to long. Description length must be no longer
+										then 1000 symbols
+									</mat-error>
+								}
+								@if (item.get('content').errors?.['minlength']) {
+									<mat-error class="text-red-500 text-xs">Description is to short. Description must contain at least 40
+										symbols
+									</mat-error>
+								}
 							}
 						</div>
 					</div>
@@ -75,7 +71,15 @@
 					</button>
 				</div>
 			}
+			<div class="flex flex-row justify-start items-baseline">
+				<button [disabled]="advantages?.length === 3" type="button" (click)="addForm()" mat-flat-button
+								class="px-3 !bg-[#EEEEEE]">
+					<mat-icon>add</mat-icon>
+					<span>Add</span>
+				</button>
+			</div>
 		</div>
+
 		<div class="hidden md:flex flex-row justify-center items-center">
 			<button
 				[disabled]="form.invalid || isEqual"

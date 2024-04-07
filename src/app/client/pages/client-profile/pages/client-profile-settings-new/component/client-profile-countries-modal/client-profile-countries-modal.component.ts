@@ -17,8 +17,8 @@ import {ClientProfileCountriesModalData} from "./client-profile-countries-modal.
 import {B2bNgxSelectThemeEnum} from "@b2b/ngx-select";
 import {B2bNgxButtonModule} from "@b2b/ngx-button";
 import {
-	ClientProfileModalContainerService
-} from "../client-profile-modal-container/client-profile-modal-container.service";
+	ModalContainerService
+} from "../client-profile-modal-container/modal-container.service";
 
 @Component({
 	selector: 'b2b-client-profile-countries-modal',
@@ -36,15 +36,14 @@ import {
 	styleUrl: './client-profile-countries-modal.component.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientProfileCountriesModalComponent extends ClientProfileModalContainerService<ClientProfileCountriesModalComponent, string[]> implements OnInit {
+export class ClientProfileCountriesModalComponent extends ModalContainerService<ClientProfileCountriesModalComponent, string[]> implements OnInit {
 
 	control = new FormControl([] as string[]);
 	protected readonly NgxInputVersionEnum = NgxInputVersionEnum;
 	protected readonly NgxSelectVariantEnum = NgxSelectVariantEnum;
 	protected readonly B2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 
-	constructor(@Inject(MAT_DIALOG_DATA) private data: ClientProfileCountriesModalData,
-							private matDialogRef: MatDialogRef<ClientProfileCountriesModalComponent>) {
+	constructor(@Inject(MAT_DIALOG_DATA) private data: ClientProfileCountriesModalData) {
 		super()
 	}
 

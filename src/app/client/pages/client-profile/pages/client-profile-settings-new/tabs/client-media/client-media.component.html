@@ -1,0 +1,61 @@
+<div class="flex flex-col gap-8">
+	<div class="description__border rounded-md p-3 font-secondary text-sm text-black">
+		Add photos and videos that represent your business in the best view. We recommend to upload high-quality images and
+		videos to appear more trustworthy.
+	</div>
+	<div class="flex flex-col gap-6">
+		@for (section of mediaSections; track $index) {
+			<div class="flex flex-row gap-2 items-center justify-start">
+				<div class="text-lg font-medium w-28">{{ section.label }}</div>
+				<button b2bNgxButton
+								(click)="openModal(section.type)"
+								class="!bg-[#EEEEEE] rounded-md px-3 py-1 text-sm flex flex-row items-center justify-start">
+					<mat-icon class="scale-75">add</mat-icon>
+					<span>{{ section.button | titlecase }}</span>
+				</button>
+			</div>
+			@defer (when folderService.folders$ | async) {
+				@if (showFolders) {
+					<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+						@for (item of folderService.folders$ | async; track $index) {
+							@if (section.type === 'image' && item?.images?.length) {
+								<globy-file-card class="h-fit"
+																 [data]="item?.images[0]"
+																 [showEdit]="true"
+																 [showDelete]="true"
+																 [length]="item?.images?.length"
+																 [title]="item.title"
+																 (deleteItem)="deleteItem(item)"
+																 (editItem)="openModal(section.type, item)"
+																 [handleItem]="handleImage"
+								/>
+							}
+							@if (section.type === 'video' && item?.videos?.length) {
+								<globy-file-card [data]="item?.videos[0]"
+																 [showEdit]="true"
+																 [showDelete]="true"
+																 class="h-fit"
+																 [title]="item.title"
+																 (deleteItem)="deleteItem(item)"
+																 (editItem)="openModal(section.type, item)"
+																 [handleItem]="handleVideo"
+								/>
+							}
+						}
+					</div>
+				}
+			} @loading (minimum 300ms) {
+				<ng-container *ngTemplateOutlet="spinner"/>
+			}
+			@if ($index === 0) {
+				<div class="section__border"></div>
+			}
+		}
+	</div>
+</div>
+
+<ng-template #spinner>
+	<div class="flex flex-row justify-center items-center">
+		<mat-spinner diameter="24"></mat-spinner>
+	</div>
+</ng-template>

@@ -1,0 +1,40 @@
+@import 'projects/shared/src/styles';
+
+.articles {
+	flex: 1 0 33%;
+	margin-top: 40px;
+
+	@include breakpoint('3') {
+		flex-direction: column;
+	}
+
+	.article {
+		@include breakpoint('3') {
+			padding-bottom: 16px;
+			border-bottom: 1px solid #CFDEFF;
+
+			&:not(:first-of-type) {
+				padding-top: 16px;
+
+				.article-image {
+					display: none;
+				}
+			}
+
+			&-category-link {
+				display: none;
+			}
+		}
+
+		&-image {
+			width: 100%;
+			height: 200px;
+			border-radius: 8px;
+			margin-bottom: 16px;
+		}
+
+		&-title {
+			padding: 8px 0;
+		}
+	}
+}

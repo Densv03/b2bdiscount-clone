@@ -14,9 +14,7 @@
 			@if (companyInfo.logo && companyInfo.banner) {
 				<div *ngIf="companyInfo.logo"
 						 class="company__logo">
-					<b2b-client-profile-image-container class="!h-52"
-																							[hideButtons]="true"
-																							[path]="companyInfo?.logo?.path"/>
+					<img class="aspect-square object-cover" [src]="getMediaSrc(companyInfo?.logo?.path)">
 				</div>
 			}
 
@@ -34,7 +32,7 @@
 								<a
 									[routerLink]="'/b2bmarket/supplier-listing/' + companyInfo.user"
 									class="company__products">
-									{{supplierProductsAmount + (supplierProductsAmount > 1 ? ' products' : ' product')}}
+									{{ supplierProductsAmount + (supplierProductsAmount > 1 ? ' products' : ' product') }}
 								</a>
 							}
 						</div>
@@ -105,6 +103,7 @@
 		<div class="container">
 			<div class="company__body">
 				<div class="company__content">
+
 					<section id="section1" class="company__information">
 						<b2b-market-company-information
 							[companyInfo]="companyInfo"></b2b-market-company-information>
@@ -115,9 +114,9 @@
 							[userId]="companyInfo.user"></b2b-company-products>
 					</section>
 
-						<section id="section3" class="company__information">
-							<b2b-company-shipping-info [companyInfo]="companyInfo"></b2b-company-shipping-info>
-						</section>
+					<section id="section3" class="company__information">
+						<b2b-company-shipping-info [companyInfo]="companyInfo"></b2b-company-shipping-info>
+					</section>
 
 					@if (companyInfo.documents.length) {
 						<section id="section4" class="company__information">
@@ -130,9 +129,24 @@
 					<!--						<b2b-company-certificates></b2b-company-certificates>-->
 					<!--					</section>-->
 
-										<section id="section6" class="company__information">
-											<b2b-company-advantages [advantages]="companyInfo.advantages"></b2b-company-advantages>
-										</section>
+					<section id="section6" class="company__information">
+						<b2b-company-advantages [advantages]="companyInfo.advantages"></b2b-company-advantages>
+					</section>
+
+					<section id="section7" class="company__information">
+						<b2b-company-exhibitions [tradeShows]="companyTradeShows$ | async"></b2b-company-exhibitions>
+					</section>
+
+					<section id="section9" class="company__information">
+						<b2b-company-videos [folders]="folders$ | async"></b2b-company-videos>
+					</section>
+
+					<section id="section10" class="company__information">
+						<b2b-company-folders [folders]="folders$ | async"></b2b-company-folders>
+					</section>
+
+
+
 				</div>
 				<div class="company__contacts">
 					<b2b-company-contact-card

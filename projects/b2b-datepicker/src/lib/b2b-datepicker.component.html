@@ -1,26 +1,33 @@
 <div [class]="classPrefix + 'input-wrapper'">
-
-	@if (label) {
-		<span class="globy-ngx-input-label">{{label}}</span>
-	}
-	<input [placeholder]="placeholder ? placeholder : 'Choose a date'" [matDatepicker]="picker"
-				 [formControl]="datePicker" [class.has-value]="datePicker.value"
+	<input [placeholder]="placeholder"
+				 [matDatepicker]="picker"
+				 [formControl]="formControl"
+				 [class.has-value]="version === NgxInputVersionEnum.B2B ? formControl.value : false"
 				 [min]="today"
-				 (click)="picker.open()" readonly [class]="inputClassName">
-
+				 [version]="version"
+				 [label]="label"
+				 (click)="picker.open();"
+				 b2bNgxInput
+				 readonly
+				 [class]="inputClassName">
 	@if (iconName) {
 		<img matDatepickerToggleIcon
 				 b2bNgxIcon [name]="iconName"
-				 [style.top]="iconPosition.top"
-				 [style.left]="iconPosition.left"
-				 [style.right]="iconPosition.right"
-				 [style.bottom]="iconPosition.bottom">
+				 [style.top]="iconPosition?.top"
+				 [style.left]="iconPosition?.left"
+				 [style.right]="iconPosition?.right"
+				 [style.bottom]="iconPosition?.bottom">
 	}
 </div>
-
-<mat-datepicker #picker [calendarHeaderComponent]="customHeader" [touchUi]="mobileSize$ | async">
+<mat-datepicker #picker
+								(closed)="formControl.markAsTouched()"
+								[calendarHeaderComponent]="customHeader"
+								[touchUi]="mobileSize$ | async">
 	<mat-datepicker-actions>
-		<button mat-button matDatepickerCancel class="">Cancel</button>
-		<button mat-raised-button matDatepickerApply class="b2b-ngx-button background background-blue">Apply</button>
+		<button mat-button matDatepickerCancel>Cancel</button>
+		<button mat-raised-button
+						matDatepickerApply
+						class="b2b-ngx-button background background-blue">Apply
+		</button>
 	</mat-datepicker-actions>
 </mat-datepicker>

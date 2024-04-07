@@ -21,6 +21,9 @@ import { CompanyAdvantagesComponent } from './components/company-advantages/comp
 import {
     ClientProfileImageContainerComponent
 } from "../../../client-profile/pages/client-profile-settings-new/component/client-profile-image-container/client-profile-image-container.component";
+import {CompanyExhibitionsComponent} from "./components/company-exhibitions/company-exhibitions.component";
+import {CompanyFoldersComponent} from "./components/company-folders/company-folders.component";
+import {CompanyVideosComponent} from "./components/company-videos/company-videos.component";
 
 const routes: Routes = [
 	{ path: '', component: ClientMarketCompanyPageComponent },
@@ -50,6 +53,9 @@ const routes: Routes = [
         CompanyCertificatesComponent,
         CompanyAdvantagesComponent,
         ClientProfileImageContainerComponent,
+        CompanyExhibitionsComponent,
+        CompanyFoldersComponent,
+        CompanyVideosComponent,
     ],
 })
 export class ClientMarketCompanyPageModule {}

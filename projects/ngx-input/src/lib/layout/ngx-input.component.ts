@@ -1,21 +1,18 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  forwardRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	forwardRef,
+	Input,
+	OnChanges,
+	OnInit,
+	SimpleChanges,
 } from "@angular/core";
-import { idGenerator } from "@b2b/id-generator";
+import {idGenerator} from "@b2b/id-generator";
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors} from "@angular/forms";
-// TODO: uncomment code below when libs will be inserted in b2b
-// import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 import {B2bNgxInputThemeEnum} from "../enum/ngx-input-theme.enum";
-import { NgxInputVersionEnum } from "../enum/ngx-input-version.enum";
+import {NgxInputVersionEnum} from "../enum/ngx-input-version.enum";
 
-// @UntilDestroy()
 @Component({
 	selector: "b2b-ngx-input",
 	templateUrl: "./ngx-input.component.html",
@@ -39,18 +36,14 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 	@Input() public placeholder: string;
 	@Input() public theme: B2bNgxInputThemeEnum;
 	@Input() public label: string = '';
-	@Input() public errors: string | ValidationErrors= '';
+	@Input() public errors: string | ValidationErrors = '';
 	@Input() public version: NgxInputVersionEnum = NgxInputVersionEnum.B2B;
 
 	public readonly formControl: FormControl<string | null>;
 	public readonly id: string;
-
+	protected readonly NgxInputVersionEnum = NgxInputVersionEnum;
 	private onChange: (value: string | null) => void;
 	private onTouched: () => void;
-
-	get inputClass() {
-		return this.version === NgxInputVersionEnum.B2B ? 'b2b-ngx-input' : 'globy-ngx-input';
-	}
 
 	constructor(private readonly _changeDetectionRef: ChangeDetectorRef) {
 		this.type = "input";
@@ -62,14 +55,18 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 
 		this.formControl = new FormControl<string | null>('');
 		this.id = idGenerator();
-    	this.id = 'id'
+		this.id = 'id'
+	}
+
+	get inputClass() {
+		return this.version === NgxInputVersionEnum.B2B ? 'b2b-ngx-input' : 'globy-ngx-input';
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (!changes['errors']) {
 			return;
 		}
-    this.formControl.setErrors(changes['errors']);
+		this.formControl.setErrors(changes['errors']);
 	}
 
 	ngOnInit(): void {
@@ -78,12 +75,6 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 
 	public validate(): ValidationErrors | null {
 		return this.formControl.errors;
-	}
-
-	private subscribeOnValueChanges(): void {
-		this.formControl.valueChanges.pipe().subscribe((value) => {
-			this.onChange(value);
-		});
 	}
 
 	public registerOnChange(fn: (value: string | null) => void): void {
@@ -106,5 +97,9 @@ export class B2bNgxInputComponent implements ControlValueAccessor, OnInit, OnCha
 		}
 	}
 
-	protected readonly NgxInputVersionEnum = NgxInputVersionEnum;
+	private subscribeOnValueChanges(): void {
+		this.formControl.valueChanges.pipe().subscribe((value) => {
+			this.onChange(value);
+		});
+	}
 }
