@@ -1,0 +1,76 @@
+@import 'projects/shared/src/styles';
+
+.blog-category-grid-wrapper {
+
+	.first-article {
+		gap: 40px;
+
+		@include breakpoint('3') {
+			flex-direction: column-reverse;
+			gap: 16px;
+			padding-bottom: 16px;
+			border-bottom: 1px solid #CFDEFF;
+
+			.large-article-image {
+				width: 100% !important;
+				height: 200px;
+				object-fit: cover;
+			}
+		}
+
+		&-title {
+			font-size: 32px;
+			font-weight: 500;
+			line-height: 38.73px;
+			padding: 16px 0 8px;
+
+			@include breakpoint('3') {
+				font-size: 18px;
+				line-height: 21px;
+				padding: 8px 0;
+			}
+		}
+	}
+
+	.articles {
+		margin-top: 40px;
+
+		@include breakpoint('3') {
+			flex-direction: column;
+			margin-top: 0;
+
+			.article {
+				padding: 0 0 16px;
+				border-bottom: 1px solid #CFDEFF;
+
+				&:first-of-type {
+					padding-top: 24px;
+				}
+			}
+		}
+
+		.article {
+			cursor: pointer;
+
+			&-image {
+				width: 100%;
+				height: 200px;
+				border-radius: 8px;
+				margin-bottom: 16px;
+				object-fit: cover;
+			}
+
+			&-title {
+				padding: 8px 0;
+
+				@include breakpoint('3') {
+					padding: 0 0 8px;
+				}
+			}
+		}
+	}
+
+	.mr-7 {
+		margin-right: 7px;
+	}
+}

@@ -4,7 +4,7 @@ import {DocumentModel} from './document.model';
 import {B2bAuthRoleInterface} from '../../../../projects/shared/src/interfaces/b2b-auth-role.interface';
 import {
 	TradeShow
-} from "../../client/pages/client-profile/pages/client-profile-settings-new/tabs/client-trade-shows/client-trade-shows.interface";
+} from "./trade-show.interface";
 
 export interface PublicCompanyInfoModel {
 	fullName: string;

@@ -1,0 +1,13 @@
+::ng-deep {
+	input.datepicker {
+		height: 64px;
+		border: none;
+		border-radius: 14px;
+		padding: 0 16px;
+		width: 100%;
+
+		&::placeholder {
+			padding-left: 20px;
+		}
+	}
+}

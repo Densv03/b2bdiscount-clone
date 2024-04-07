@@ -1,0 +1,21 @@
+<div class="news-articles-wrapper">
+	<a class="d-flex align-items-center article-section-header" [routerLink]="'/blog/news'">
+		<h2 class="blog-section-title">
+			NEWs
+		</h2>
+
+		<div class="article-section-header-icon-block">
+			<svg-icon class="article-section-header-icon" src="assets/icons/arrow-right-2.svg"></svg-icon>
+		</div>
+	</a>
+
+	<div class="news-section-wrapper d-flex flex-wrap blog-lg-gap">
+		@for (article of posts; track article._id) {
+			<a class="w33 pointer" [routerLink]="['/blog', (article?.path || article._id)]">
+				<h3 class="article-title-in-section">{{ article?.title }}</h3>
+
+				<span class="article-author-and-date">{{ article?.dateUpdate | date: 'MMM dd, yyyy' }}</span>
+			</a>
+		}
+	</div>
+</div>

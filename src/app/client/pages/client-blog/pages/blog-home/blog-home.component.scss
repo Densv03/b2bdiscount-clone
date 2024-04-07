@@ -1,0 +1,18 @@
+@import 'projects/shared/src/styles';
+
+.home-container {
+	padding: 0 99px 80px;
+
+	@include breakpoint('3') {
+		padding: 0 18px 80px;
+	}
+
+	.home-wrapper {
+		gap: 124px;
+		max-width: 1170px;
+
+		@include breakpoint('3') {
+			gap: 64px;
+		}
+	}
+}

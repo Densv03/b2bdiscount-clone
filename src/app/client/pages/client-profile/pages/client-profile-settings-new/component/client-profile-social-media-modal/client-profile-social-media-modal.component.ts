@@ -8,8 +8,8 @@ import {MatIcon} from "@angular/material/icon";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {SocialMediaForm} from "../../tabs/client-company-information/social-medias.const";
 import {
-	ClientProfileModalContainerService
-} from "../client-profile-modal-container/client-profile-modal-container.service";
+	ModalContainerService
+} from "../client-profile-modal-container/modal-container.service";
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgxInputVersionEnum} from "../../../../../../../../../projects/ngx-input/src/lib/enum/ngx-input-version.enum";
 import {B2bNgxButtonModule} from "@b2b/ngx-button";
@@ -29,7 +29,7 @@ import {socialLink} from "../../../../../../../core/helpers/validator/social-lin
 	templateUrl: './client-profile-social-media-modal.component.html',
 	styleUrl: './client-profile-social-media-modal.component.scss'
 })
-export class ClientProfileSocialMediaModalComponent extends ClientProfileModalContainerService<ClientProfileSocialMediaModalComponent, string> implements OnInit {
+export class ClientProfileSocialMediaModalComponent extends ModalContainerService<ClientProfileSocialMediaModalComponent, string> implements OnInit {
 
 	control = new FormControl('', [Validators.required, socialLink()]);
 	protected readonly NgxInputVersionEnum = NgxInputVersionEnum;

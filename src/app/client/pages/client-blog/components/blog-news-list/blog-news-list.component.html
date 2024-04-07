@@ -1,0 +1,39 @@
+<div class="articles-list-wrapper d-flex flex-column justify-content-between blog-lg-gap">
+	@for (article of articles; track article._id) {
+		<a class="d-flex flex-column article-wrapper" [routerLink]="['/blog', (article?.path || article._id)]">
+			<div class="d-flex article">
+				@if (article?.images?.length > 0) {
+					<img
+						class="article-image"
+						b2bNgxImage
+						[name]="article?.images[0]?.lg" alt="" />
+
+				} @else {
+					<svg-icon class="article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+				}
+
+				<div class="article-text d-flex flex-column">
+					<h3 class="article-title">{{ article.title }}</h3>
+
+					<span class="large-article-author-and-date">{{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+
+					@if (article.tags?.length > 0) {
+						<div class="tags flex-wrap">
+							@for (tag of article.tags; track tag._id) {
+								<p class="tag">{{ tag.name }}</p>
+							}
+						</div>
+					}
+				</div>
+			</div>
+
+			@if (article.tags?.length > 0) {
+				<div class="mobile-tags flex-wrap">
+					@for (tag of article.tags; track tag._id) {
+						<p class="tag">{{ tag.name }}</p>
+					}
+				</div>
+			}
+		</a>
+	}
+</div>

@@ -1,1 +1,136 @@
-<p>company-exhibitions works!</p>
+<!--@if (tradeShows.length) {-->
+	<div
+		[class.d-none]="!tradeShows.length"
+		class="exhibitions">
+		<div class="exhibitions__title">Exhibitions & Trade shows</div>
+
+		<div
+			[class.d-none]="!filterTradeShowsByType(tradeShows, 'participated').length"
+			class="exhibitions__section">
+			<div class="exhibitions__subtitle">Participated</div>
+			<div class="exhibitions__list">
+				<swiper-container #swiperRef init="false">
+					@for(tradeShow of filterTradeShowsByType(tradeShows, 'participated'); track tradeShow.company) {
+						<swiper-slide (click)="openCompanyModal('tradeShow', tradeShow)">
+							<div class="exhibitions__item">
+								<img [src]="getExhibitionImageUrl(tradeShow.images[0]?.path)"
+										 class="exhibitions__item-image object-cover aspect-square">
+								<div class="exhibitions__item-title truncate">{{tradeShow.title}}</div>
+								<div class="exhibitions__item-dates">
+									@if (tradeShow.startedAt) {
+										{{tradeShow.startedAt | date: 'dd.MM.yyyy'}}
+									}
+									-
+									@if	(tradeShow.endedAt) {
+										{{tradeShow.endedAt | date: 'dd.MM.yyyy'}}
+									}
+								</div>
+								<div class="exhibitions__item-details">View details</div>
+							</div>
+						</swiper-slide>
+					}
+				</swiper-container>
+				<div id="prev-button-1" class="swiper-button-prev d-none">
+					<svg
+						width="40"
+						height="40"
+						viewBox="0 0 40 40"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M23.3333 10L13.3333 20L23.3333 30"
+							stroke="#005DFF"
+							stroke-width="3"
+							stroke-linecap="round"
+							stroke-linejoin="round"/>
+					</svg>
+				</div>
+				<div id="next-button-1" class="swiper-button-next d-none">
+					<svg
+						width="40"
+						height="40"
+						viewBox="0 0 40 40"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M16.6667 10L26.6667 20L16.6667 30"
+							stroke="#005DFF"
+							stroke-width="3"
+							stroke-linecap="round"
+							stroke-linejoin="round"/>
+					</svg>
+				</div>
+				<div class="swiper-pagination swiper-pagination-1"></div>
+			</div>
+		</div>
+
+		<div [class.d-none]="!filterTradeShowsByType(tradeShows, 'upcoming').length" class="divider"></div>
+
+		<div
+			[class.d-none]="!filterTradeShowsByType(tradeShows, 'upcoming').length"
+			class="exhibitions__section">
+			<div class="exhibitions__subtitle">Upcoming</div>
+			<div class="exhibitions__list">
+				<swiper-container #swiperRef2 init="false">
+
+					@for(tradeShow of filterTradeShowsByType(tradeShows, 'upcoming'); track tradeShow.company) {
+						<swiper-slide (click)="openCompanyModal('tradeShow', tradeShow)" >
+							<div class="exhibitions__item">
+								<img [src]="getExhibitionImageUrl(tradeShow.images[0]?.path)"
+										 class="exhibitions__item-image object-cover aspect-square">
+								<div class="exhibitions__item-title truncate">{{tradeShow.title}}</div>
+								<div class="exhibitions__item-dates">
+									@if (tradeShow.startedAt) {
+										{{tradeShow.startedAt | date: 'dd.MM.yyyy'}}
+									}
+									-
+									@if (tradeShow.endedAt) {
+										{{tradeShow.endedAt | date: 'dd.MM.yyyy'}}
+									}
+								</div>
+								<div class="exhibitions__item-details">View details</div>
+							</div>
+						</swiper-slide>
+					}
+				</swiper-container>
+				<div id="prev-button-2" class="swiper-button-prev d-none">
+					<svg
+						width="40"
+						height="40"
+						viewBox="0 0 40 40"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M23.3333 10L13.3333 20L23.3333 30"
+							stroke="#005DFF"
+							stroke-width="3"
+							stroke-linecap="round"
+							stroke-linejoin="round"/>
+					</svg>
+				</div>
+				<div id="next-button-2" class="swiper-button-next d-none">
+					<svg
+						width="40"
+						height="40"
+						viewBox="0 0 40 40"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M16.6667 10L26.6667 20L16.6667 30"
+							stroke="#005DFF"
+							stroke-width="3"
+							stroke-linecap="round"
+							stroke-linejoin="round"/>
+					</svg>
+				</div>
+				<div class="swiper-pagination swiper-pagination-2"></div>
+			</div>
+		</div>
+
+	</div>
+<!--}-->
+
+
+
+
+

@@ -18,29 +18,35 @@ import { ClientBlogComponent } from './layout/client-blog.component';
 import { PaginationModule } from '../../shared/components/pagination/pagination.module';
 import { ClientBlogListItemComponent } from './client-trading-wiki-list/components/client-blog-list-item/client-blog-list-item.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { BlogHeaderMenuComponent } from './components/blog-header-menu/blog-header-menu.component';
+import { BlogDetailsNewsComponent } from "./pages/blog-details/blog-details-news/blog-details-news.component";
+import { BlogDetailsComponent } from "./pages/blog-details/layout/blog-details.component";
 
 @NgModule({
 	declarations: [
 		ClientBlogComponent,
 		ClientBlogListComponent,
 		ClientBlogListItemComponent,
+		BlogDetailsNewsComponent,
+		BlogDetailsComponent
 	],
-	imports: [
-		CommonModule,
-		ClientBlogRoutingModule,
-		ReactiveFormsModule,
-		B2bNgxInputModule,
-		B2bNgxButtonModule,
-		B2bNgxSkeletonModule,
-		B2bNgxLinkModule,
-		B2bNgxIconModule,
-		// B2bNgxTreeviewModule,
-		B2bNgxPaginationModule,
-		B2bNgxImageModule,
-		B2bNgxCountrySelectModule,
-		B2bNgxSelectModule,
-		PaginationModule,
-		TranslateModule,
-	],
+  imports: [
+    CommonModule,
+    ClientBlogRoutingModule,
+    ReactiveFormsModule,
+    B2bNgxInputModule,
+    B2bNgxButtonModule,
+    B2bNgxSkeletonModule,
+    B2bNgxLinkModule,
+    B2bNgxIconModule,
+    // B2bNgxTreeviewModule,
+    B2bNgxPaginationModule,
+    B2bNgxImageModule,
+    B2bNgxCountrySelectModule,
+    B2bNgxSelectModule,
+    PaginationModule,
+    TranslateModule,
+    BlogHeaderMenuComponent,
+  ],
 })
 export class ClientBlogModule {}

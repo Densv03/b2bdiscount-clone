@@ -1,0 +1,71 @@
+<div class="blog-category-grid-wrapper">
+		<a class="first-article d-flex justify-between pointer"
+			 [routerLink]="['/blog', (articles[0]?.path || articles[0]?._id)]">
+
+			<div class="d-flex flex-column w50 justify-content-center">
+					<h3 class="first-article-title">{{ articles[0]?.title }}</h3>
+
+				<div class="d-flex align-items-center w-100">
+					@if (isMarketExpertsPage) {
+						@if (articles[0]?.authorId?.photo) {
+							<img b2bNgxImage class="author-img mr-4" [class.mr-7]="articles[0]?.authorId?.photo"
+									 [name]="articles[0]?.authorId?.photo?.sm" alt="" width="32" height="32">
+						} @else {
+							<svg-icon class="author-img" src="/assets/icons/user.svg"></svg-icon>
+						}
+					}
+					<span
+						class="large-article-author-and-date" [class.w-100]="isMarketExpertsPage">
+						<a>{{ articles[0]?.authorId?.fullName }}</a> · {{ articles[0]?.updatedAt | date: 'MMM dd, yyyy' }}
+					</span>
+				</div>
+			</div>
+
+			@if (articles[0]?.images?.length > 0) {
+				<img
+					class="large-article-image w50"
+					b2bNgxImage
+					[name]="articles[0]?.images[0]?.lg" alt="" />
+
+			} @else {
+				<svg-icon class="large-article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+			}
+
+		</a>
+
+		<div class="articles d-flex flex-wrap blog-lg-gap">
+			@for (article of articles.slice(1); track article._id) {
+				<a class="article w33 d-flex flex-column justify-between pointer"
+					 [routerLink]="['/blog', (article?.path || article?._id)]">
+					<div>
+						@if (article?.images?.length > 0) {
+							<img
+								class="article-image"
+								b2bNgxImage
+								[name]="article?.images[0]?.lg" alt="" />
+
+						} @else {
+							<svg-icon class="article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+						}
+
+						<h3 class="article-title-in-section article-title">{{ article.title }}</h3>
+					</div>
+
+					<div class="d-flex align-items-center">
+						@if (isMarketExpertsPage) {
+							@if (article?.authorId?.photo) {
+								<img class="author-img" b2bNgxImage
+										 [class.mr-7]="articles[0]?.authorId?.photo"
+										 [name]="article?.authorId?.photo?.sm" alt="" width="32" height="32">
+							} @else {
+								<svg-icon class="author-img" src="/assets/icons/user.svg"></svg-icon>
+							}
+						}
+
+						<span
+							class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+					</div>
+				</a>
+			}
+		</div>
+</div>

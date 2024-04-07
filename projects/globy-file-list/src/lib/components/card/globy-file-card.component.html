@@ -1,0 +1,56 @@
+<div class="flex flex-col gap-3 justify-end content-end items-end">
+	<div class="grid grid-cols-3 grid-rows-3">
+		@if (length) {
+			<div
+				[style.align-items]="'end'"
+				class="z-10 p-2 flex justify-end flex-row col-start-3 col-end-4 row-start-3 row-end-4">
+				<div class="length z-20 flex items-center justify-center !h-[32px] !w-[32px] rounded-md">
+					<span class="text-black font-semibold">+{{ length }}</span>
+				</div>
+			</div>
+		}
+		@if (showEdit || showDelete) {
+			<div
+				class="z-10 flex flex-row items-baseline justify-end p-2 w-full col-start-1 col-end-4 row-start-1 row-end-2 gap-2">
+				@if (showEdit) {
+					<button type="button" (click)="edit()" b2bNgxButton class="top__button">
+						<img class="!h-[14px]" b2bNgxIcon [name]="'edit'" alt="Edit button icon">
+					</button>
+				}
+				@if (showDelete) {
+					<button type="button" (click)="delete()" b2bNgxButton class="top__button">
+						<img class="w-[16px]" b2bNgxIcon [name]="'close'" alt="Delete button icon">
+					</button>
+				}
+			</div>
+		}
+		@if (index === 0) {
+			<div
+				class="z-10 flex flex-row items-center justify-start col-start-1 col-end-2 row-start-1 row-end-2 w-full h-auto">
+				<span class="main-badge text-white text-[8px] !bg-red-500 p-1 px-2">main</span>
+			</div>
+		}
+		<div class="z-0 flex items-end justify-start h-full w-full col-start-1 col-end-4 row-start-1 row-end-4">
+			@if (url) {
+				@switch (type) {
+					@case ('image') {
+						<img [src]="url" class="aspect-square w-full h-full object-cover rounded-md"
+								 alt="{{index ? 'Image #' + index : 'Image' }}">
+					}
+					@case ('video') {
+						<video preload="auto" playsinline muted loop autoplay
+									 class="w-full h-full aspect-square bg-black rounded-md" [src]="url"></video>
+					}
+				}
+			}
+		</div>
+	</div>
+	<div class="flex flex-col">
+		@if (title) {
+			<span class="font-semibold truncate">{{ title }}</span>
+		}
+		@if (description) {
+			<span class="text-sm">{{ description }}</span>
+		}
+	</div>
+</div>

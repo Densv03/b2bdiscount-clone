@@ -54,7 +54,8 @@ export class ClientDocumentsComponent extends ClientDocumentsService {
 				title: 'Are you sure you want to delete the document?',
 				label: ''
 			},
-			panelClass: 'app-full-bleed-dialog'
+			panelClass: 'app-full-bleed-dialog',
+			backdropClass: 'modal__backdrop'
 		} as MatDialogConfig<DefaultModalData<boolean>>).afterClosed().subscribe(res => {
 			if (res) {
 				this.delete(index).subscribe(async (res) => {

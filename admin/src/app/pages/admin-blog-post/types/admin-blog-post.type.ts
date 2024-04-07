@@ -18,20 +18,38 @@ export const CreatingPostMessages = {
 	error: 'Post creation failed!',
 }
 
-export const UploadingImagesMessages = {
-	loading: 'Uploading images...',
-	success: 'Images uploaded successfully!',
-	error: 'Images uploading failed!',
+export const CreatingAuthorMessages = {
+	loading: 'Author creating...',
+	success: 'Author created successfully!',
+	error: 'Author creation failed!',
+}
+
+export const DeletingAuthorMessages = {
+	loading: 'Author deleting...',
+	success: 'Author deleted successfully!',
+	error: 'Author deletion failed!',
+}
+
+export const UpdatingAuthorMessages = {
+	loading: 'Author updating...',
+	success: 'Author updated successfully!',
+	error: 'Author updating failed!',
 }
 
 export const ArticleTypes = [
 	'News',
-	'Trade Guide',
+	'Trade guide',
 	'Analysis',
-	'Market Experts',
-	'Market Updates',
+	'Market experts',
+	'Market updates',
 	'Logistics & Supply chain'
-]
+];
+
+export const ArticleStatuses = [
+	'draft',
+	'planned',
+	'published'
+];
 
 
 export interface CreateBlogFormGroupData {
@@ -63,9 +81,10 @@ export interface BlogAuthor {
 	socialMedia?: {
 		facebook?: string;
 		twitter?: string;
-		instragram?: string;
+		instagram?: string;
 		linkedin?: string;
-	},
+	};
+	dateJoinedPlatform: string;
 	path: string;
 	__v?: number;
 	_id?: string;
@@ -92,5 +111,22 @@ export interface BlogArticle {
 	__v: number;
 }
 
-export type ArticleStatus = 'draft' | 'planned' | 'published';
+export type ArticleStatus = typeof ArticleStatuses[number];
 export type TypeArticle = typeof ArticleTypes[number];
+
+export interface CreateAuthorRequest {
+	fullName: string;
+	resume: string;
+	photo: File;
+	facebook: string;
+	twitter: string;
+	instagram: string;
+	linkedin: string;
+	dateJoinedPlatform: string;
+}
+
+export interface GetNewBlogResponse {
+	data: BlogArticle;
+	blogRecommendations: BlogArticle[];
+	footerRecommendations: BlogArticle[];
+}

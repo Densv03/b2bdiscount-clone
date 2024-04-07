@@ -1,0 +1,70 @@
+<!--@if (folders.length) {-->
+	<div
+		[class.d-none]="!folders.length"
+		class="folders">
+		<div class="folders__title">Photos</div>
+		<div class="carousel mt-3">
+			<swiper-container #swiperRef init="false">
+				@for(folder of getImages(folders); track folder.company) {
+					<swiper-slide (click)="openImageModal(folder)">
+						<div class="slide">
+							<div class="slide__image">
+								<img [src]="getMediaSrc(folder.images[0].path)" alt="slide-image" class="object-cover aspect-square">
+								<svg class="folder-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<g filter="url(#filter0_b_6069_53763)">
+										<rect width="32" height="32" rx="4" fill="white" fill-opacity="0.5"/>
+									</g>
+									<path d="M18.9998 25.9995H10.7998C9.1196 25.9995 8.27952 25.9995 7.63778 25.6725C7.0733 25.3849 6.61436 24.926 6.32674 24.3615C5.99976 23.7197 5.99976 22.8797 5.99976 21.1995V10.7995C5.99976 9.11935 5.99976 8.27928 6.32674 7.63754C6.61436 7.07305 7.0733 6.61411 7.63778 6.32649C8.27952 5.99951 9.1196 5.99951 10.7998 5.99951H11.7637C12.1325 5.99951 12.3169 5.99951 12.487 6.019C13.3747 6.12067 14.1709 6.61274 14.6588 7.36124C14.7524 7.5047 14.8348 7.66964 14.9998 7.99951V7.99951C15.1647 8.32939 15.2472 8.49432 15.3407 8.63778C15.8286 9.38629 16.6248 9.87835 17.5125 9.98002C17.6826 9.99951 17.867 9.99951 18.2358 9.99951H19.9995C20.9297 9.99951 21.3948 9.99951 21.7764 10.1018C22.8115 10.3792 23.6201 11.1877 23.8975 12.2229C23.9998 12.6045 23.9998 13.0696 23.9998 13.9998V13.9998M9.99976 26L11.3313 18.0109C11.5688 16.5859 11.6875 15.8735 12.0431 15.3388C12.3565 14.8675 12.7968 14.4945 13.3132 14.2628C13.8991 14 14.6214 14 16.066 14H23.2223C24.5219 14 25.1717 14 25.634 14.2651C26.0396 14.4978 26.3509 14.8653 26.5137 15.3036C26.6992 15.8032 26.5924 16.4441 26.3787 17.7261L25.6682 21.9891C25.4307 23.4141 25.312 24.1265 24.9565 24.6612C24.643 25.1325 24.2027 25.5055 23.6863 25.7372C23.1005 26 22.3782 26 20.9335 26H9.99976Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+									<defs>
+										<filter id="filter0_b_6069_53763" x="-40" y="-40" width="112" height="112" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+											<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+											<feGaussianBlur in="BackgroundImageFix" stdDeviation="20"/>
+											<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6069_53763"/>
+											<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_6069_53763" result="shape"/>
+										</filter>
+									</defs>
+								</svg>
+
+
+							</div>
+							<div class="slide__title truncate">{{folder.title}}</div>
+						</div>
+					</swiper-slide>
+
+				}
+			</swiper-container>
+			<div id="prev-button-images-folder" class="swiper-button-prev d-none">
+				<svg
+					width="40"
+					height="40"
+					viewBox="0 0 40 40"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M23.3333 10L13.3333 20L23.3333 30"
+						stroke="#005DFF"
+						stroke-width="3"
+						stroke-linecap="round"
+						stroke-linejoin="round"/>
+				</svg>
+			</div>
+			<div id="next-button-images-folder" class="swiper-button-next d-none">
+				<svg
+					width="40"
+					height="40"
+					viewBox="0 0 40 40"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M16.6667 10L26.6667 20L16.6667 30"
+						stroke="#005DFF"
+						stroke-width="3"
+						stroke-linecap="round"
+						stroke-linejoin="round"/>
+				</svg>
+			</div>
+			<div class="swiper-pagination swiper-pagination-3"></div>
+		</div>
+	</div>
+
+<!--}-->

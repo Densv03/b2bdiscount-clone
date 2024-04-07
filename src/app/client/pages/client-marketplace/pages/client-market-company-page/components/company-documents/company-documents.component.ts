@@ -47,7 +47,6 @@ export class CompanyDocumentsComponent implements OnInit {
 	}
 
 	private generatePreviewDocumentsArr(): DocumentPreviewModel[] {
-		console.log(this.documents)
 		return this.documents.map((document) => ({
 			...document,
 			fullPath: environment.apiUrl + document.path,

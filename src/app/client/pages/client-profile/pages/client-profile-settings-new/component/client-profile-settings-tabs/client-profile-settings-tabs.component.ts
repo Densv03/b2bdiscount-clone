@@ -15,6 +15,7 @@ import {ClientProfileSettingsTabsService} from "./client-profile-settings-tabs.s
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {debounceTime, first, tap} from "rxjs/operators";
 import {PageTab} from "../../client-profile-settings.type";
+import {ActivatedRoute} from "@angular/router";
 
 @UntilDestroy()
 @Component({
@@ -71,6 +72,7 @@ export class ClientProfileSettingsTabsComponent implements OnInit {
 			this.tabs[i].active = !this.tabs[i].active;
 		}
 		this.activeTab.emit(this.tabs[i]);
+		this.clientProfileSettingsTabsService.currentTab.next(this.tabs[i]);
 		this.clientProfileSettingsTabsService.activeTab = this.tabs[i];
 		this.cdr.detectChanges();
 	}
@@ -78,6 +80,7 @@ export class ClientProfileSettingsTabsComponent implements OnInit {
 	private initTab() {
 		const index = this.tabs.findIndex((x) => x.label === this.defaultTab.label);
 		this.clientProfileSettingsTabsService.activeTab = this.tabs[index];
+		this.clientProfileSettingsTabsService.currentTab.next(this.tabs[index]);
 		this.changeTab(index);
 	}
 }

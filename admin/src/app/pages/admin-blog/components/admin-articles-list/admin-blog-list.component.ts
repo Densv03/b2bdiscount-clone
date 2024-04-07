@@ -8,4 +8,16 @@ import { Component, Input } from '@angular/core';
 export class AdminBlogListComponent {
 	@Input() articles: any[];
 	@Input() menuOptions: any[];
+
+	public getArticleIconByStatus(status: string): {fontIcon: string, toolTip: string} {
+		if (status === 'draft') {
+			return {fontIcon: 'edit', toolTip: 'Draft'};
+		} else if (status === 'published') {
+			return {fontIcon: 'visibility', toolTip: 'Published'};
+		} else if (status === 'planned') {
+			return {fontIcon: 'schedule', toolTip: 'Planned'};
+		} else {
+			return {fontIcon: 'error', toolTip: 'Unknown status'};
+		}
+	}
 }

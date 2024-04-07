@@ -1,1 +1,2 @@
-export const fileUploadDescription = 'Image file size should be less than 5MB. Supported formats; .jpeg jpg .png. Recommended image size is more than 640px. * 640px. Imaged should be clear and easy for buyers to view at a glance.'
+export const imageUploadDescription = 'Image file size should be less than 5MB. Supported formats: .jpeg, .jpg, .png, .webp and .svg. Recommended image size is more than 640×640 px.';
+export const videoUploadDescription = 'To upload a video file, the user has to choose and upload files from the computer. Supported formats of the video: MP4, MOV, AVI, FLV, MKV, WMV, AVCHD, and WEBM. The maximum video size: 100MB.';

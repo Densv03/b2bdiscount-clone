@@ -1,0 +1,40 @@
+<div class="block-wrapper">
+	<a class="d-flex align-items-center article-section-header" [routerLink]="'/blog/market-updates'">
+		<h2 class="blog-section-title">
+			Market updates
+		</h2>
+
+		<div class="article-section-header-icon-block">
+			<svg-icon class="article-section-header-icon" src="assets/icons/arrow-right-2.svg"></svg-icon>
+		</div>
+	</a>
+
+	<div class="d-flex justify-between blog-lg-gap align-items-start market-updates-list">
+		<a class="w33 pointer" [routerLink]="['/blog', (posts[0]?.path || posts[0]._id)]">
+			@if (posts[0]?.images?.length > 0) {
+				<img
+					class="market-updates-image"
+					b2bNgxImage
+					[name]="posts[0]?.images[0]?.lg" alt="" />
+			} @else {
+				<svg-icon class="article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+			}
+
+			<h3 class="market-updates-title">{{posts[0]?.title}}</h3>
+
+			<span
+				class="large-article-author-and-date"><a>{{ posts[0]?.authorId?.fullName }}</a> · {{ posts[0].updatedAt | date: 'MMM dd, yyyy' }}</span>
+		</a>
+
+		<div class="d-flex flex-between blog-lg-gap flex-wrap w-66">
+			@for (article of posts.slice(1); track article._id) {
+				<a class="w50 pointer" [routerLink]="['/blog', (article?.path || article._id)]">
+					<h3 class="article-title-in-section pb-2">{{article.title}}</h3>
+
+					<span
+						class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+				</a>
+			}
+		</div>
+	</div>
+</div>

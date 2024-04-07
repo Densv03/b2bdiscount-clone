@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfe_b2b=self.webpackChunkfe_b2b||[]).push([[7014,4633],{34633:(s,r,n)=>{function t(){const u=/^[A-Za-z0-9!@#$%^&*+()_,./?=|\u2116:/;'\u2019" -]+$/;return e=>{if(!e.value)return null;const l=e.value.replace(/\s+/g,"");return u.test(String(l.trim()).toLowerCase())?null:{cyrillic:!0}}}n.d(r,{r:()=>t})}}]);

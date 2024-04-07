@@ -1,81 +1,101 @@
 <b2b-client-profile-modal-container (close)="onDismiss()"
 																		[label]="'Add ' + (tradeShow.type | titlecase) + ' exhibition'"
-																		class="md:max-w-[70vw] max-h-screen overflow-y-auto">
+																		class="p-2 md:max-w-[70vw] md:h-auto h-[100vh] overflow-y-auto md:mb-0 mb-20">
 	<form (ngSubmit)="onSubmit()"
 				[formGroup]="form"
 				class="flex flex-col gap-4 md:mb-0 mb-12">
 		<div class="flex flex-col">
-			<input [formControlName]="'title'" [label]="'Exhibition name'" [placeholder]="'Exhibition name'"
-						 [version]="NgxInputVersionEnum.GLOBY" b2bNgxInput
+			<input [formControlName]="'title'"
+						 [label]="'Exhibition name'"
+						 [placeholder]="'Exhibition name'"
+						 [version]="NgxInputVersionEnum.GLOBY"
+						 b2bNgxInput
 						 type="text">
-			@if (title?.errors?.['minlength']) {
-				<mat-error>Your title is too short. Min length is 10 symbols</mat-error>
-			}
-			@if (title?.errors?.['maxlength']) {
-				<mat-error>Your title is too long. Min length is 40 symbols</mat-error>
-			}
-			@if (title?.errors?.['required']) {
-				<mat-error>This field is required</mat-error>
-			}
-			@if (title?.errors?.['cyrillic']) {
-				<mat-error>You can use only latin symbols</mat-error>
+			@if (title.touched) {
+				@if (title?.errors?.['minlength']) {
+					<mat-error>Your title is too short. Min length is 5 symbols</mat-error>
+				}
+				@if (title?.errors?.['maxlength']) {
+					<mat-error>Your title is too long. Max length is 40 symbols</mat-error>
+				}
+				@if (title?.errors?.['required']) {
+					<ng-container *ngTemplateOutlet="required"/>
+				}
+				@if (title?.errors?.['cyrillic']) {
+					<ng-container *ngTemplateOutlet="cyrillic"/>
+				}
 			}
 		</div>
 		<div class="flex flex-col">
 		<textarea [formControlName]="'description'" [label]="'Event description'" [placeholder]="'Event description'"
 							[version]="NgxInputVersionEnum.GLOBY"
 							b2bNgxInput></textarea>
-			@if (description?.errors?.['minlength']) {
-				<mat-error>Your description is too short. Min length is 40 symbols</mat-error>
-			}
-			@if (description?.errors?.['maxlength']) {
-				<mat-error>Your description is too long. Min length is 1000 symbols</mat-error>
-			}
-			@if (description?.errors?.['required']) {
-				<mat-error>This field is required</mat-error>
-			}
-			@if (description?.errors?.['cyrillic']) {
-				<mat-error>You can use only latin symbols</mat-error>
+			@if (description?.touched) {
+				@if (description?.errors?.['minlength']) {
+					<mat-error>Your description is too short. Min length is 40 symbols</mat-error>
+				}
+				@if (description?.errors?.['maxlength']) {
+					<mat-error>Your description is too long. Max length is 1000 symbols</mat-error>
+				}
+				@if (description?.errors?.['required']) {
+					<ng-container *ngTemplateOutlet="required"/>
+				}
+				@if (description?.errors?.['cyrillic']) {
+					<ng-container *ngTemplateOutlet="cyrillic"/>
+				}
 			}
 		</div>
 		<div class="flex flex-col gap-2 w-full">
-			<span class="font-semibold text-sm">{{ tradeShow.type | titlecase }} period</span>
+			<span class="font-semibold text-sm mb-2">{{ tradeShow.type | titlecase }} period</span>
 			<div class="flex flex-col md:flex-row gap-2">
-				<b2b-datepicker
-					[label]="'Date from'"
-					[today]="today"
-					[version]="NgxInputVersionEnum.GLOBY"
-					class="md:w-1/2"
-					formControlName="startedAt"
-					inputClassName="datepicker">
-					Date from
-				</b2b-datepicker>
-				<b2b-datepicker
-					[label]="'Date to'"
-					[today]="today"
-					[version]="NgxInputVersionEnum.GLOBY"
-					class="md:w-1/2"
-					formControlName="endedAt"
-					inputClassName="datepicker">
-					Date to
-				</b2b-datepicker>
+				<div class="flex flex-col md:w-1/2 w-full">
+					<b2b-datepicker
+						[label]="'Date from'"
+						[today]="startedAt"
+						[inputClassName]="'text-xs'"
+						[version]="NgxInputVersionEnum.GLOBY"
+						[formControlName]="'startedAt'">
+						Date from
+					</b2b-datepicker>
+					@if (controls.startedAt?.errors?.['required']) {
+						<ng-container *ngTemplateOutlet="required"/>
+					}
+					<ng-container *ngTemplateOutlet="dateRange"></ng-container>
+				</div>
+				<div class="flex flex-col md:w-1/2	 w-full">
+					<b2b-datepicker
+						[label]="'Date to'"
+						[inputClassName]="'text-xs'"
+						[today]="controls.startedAt.value"
+						[version]="NgxInputVersionEnum.GLOBY"
+						[formControlName]="'endedAt'">
+						Date to
+					</b2b-datepicker>
+					@if (controls.endedAt?.errors?.['required']) {
+						<ng-container *ngTemplateOutlet="required"/>
+					}
+					<ng-container *ngTemplateOutlet="dateRange"></ng-container>
+				</div>
 			</div>
 		</div>
-		<div class="flex flex-col gap-2">
+		<div class="flex flex-col">
 			<globy-file [buttonLabel]="'Choose photos'"
 									[customListClass]="'grid-cols-2 md:grid-cols-5 lg:grid-cols-7'"
 									[description]="fileUploadDescription"
 									[formControlName]="'images'"
+									[noFileLabel]="'No file chosen'"
 									[handleItem]="handleImage"
 									[maxFileWeight]="5"
 									[multiple]="true"
 									[showResulList]="true"
+									[errors]="getFileErrors()"
 									class="h-fit"/>
 		</div>
 		<div class="flex flex-row justify-center items-center">
 			<button
 				[disabled]="form.invalid"
 				b2bNgxButton
+				[ngClass]="{'md:mb-0 mb-20': controls.images?.value?.[0]}"
 				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
 				type="submit">
 				Save changes
@@ -83,3 +103,19 @@
 		</div>
 	</form>
 </b2b-client-profile-modal-container>
+
+<ng-template #required>
+	<mat-error>This field is required</mat-error>
+</ng-template>
+
+<ng-template #cyrillic>
+	<mat-error>You can use only latin symbols</mat-error>
+</ng-template>
+
+<ng-template #dateRange>
+	@if (form.errors?.['dateRangeError']) {
+		<mat-error>
+			Start date must be before end date.
+		</mat-error>
+	}
+</ng-template>

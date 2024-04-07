@@ -1,0 +1,66 @@
+<form [formGroup]="formGroup">
+	<mat-form-field class="w-100">
+		<mat-label>Author full name</mat-label>
+		<input matInput formControlName="fullName" placeholder="Enter author full name">
+	</mat-form-field>
+
+	<mat-form-field class="w-100">
+		<mat-label>Author resume</mat-label>
+		<textarea matInput formControlName="resume" placeholder="Enter author resume (500 characters max)" rows="10"></textarea>
+		@if (formGroup.get('resume').hasError('maxlength')) {
+			<mat-error>Resume is too long. 500 characters is max</mat-error>
+		}
+	</mat-form-field>
+
+	<div class="mb-3">
+		<b2b-ngx-file
+			[isPhoto]="true"
+			[isClickable]="true"
+			formControlName="photo">
+			Image
+		</b2b-ngx-file>
+	</div>
+
+	<div class="mb-3">
+		<b2b-datepicker
+			placeholder="Author joining date"
+			formControlName="dateJoinedPlatform"
+			inputClassName="datepicker"
+			iconName="filled-calendar"
+			[iconPosition]="{ left: '10px', top: '20px' }"></b2b-datepicker>
+	</div>
+
+	<mat-form-field class="w-100">
+		<mat-label>Author facebook</mat-label>
+		<input matInput formControlName="facebook" placeholder="Enter author facebook">
+	</mat-form-field>
+
+	<mat-form-field class="w-100">
+		<mat-label>Author instagram</mat-label>
+		<input matInput formControlName="instagram" placeholder="Enter author instagram">
+	</mat-form-field>
+
+	<mat-form-field class="w-100">
+		<mat-label>Author linkedin</mat-label>
+		<input matInput formControlName="linkedin" placeholder="Enter author linkedin">
+	</mat-form-field>
+
+	<mat-form-field class="w-100">
+		<mat-label>Author twitter</mat-label>
+		<input matInput formControlName="twitter" placeholder="Enter author twitter">
+	</mat-form-field>
+
+	@if (!data) {
+		<div class="d-flex justify-content-between">
+			<button mat-flat-button color="primary" (click)="createAuthor()">Create author</button>
+			<button mat-flat-button color="primary" mat-dialog-close>Close</button>
+		</div>
+	} @else {
+		<div class="d-flex justify-content-between">
+			<button mat-flat-button color="primary" (click)="updateAuthor()">Update author</button>
+			<button mat-flat-button color="warn" (click)="deleteAuthor()">Delete author</button>
+			<button mat-flat-button color="primary" mat-dialog-close>Close</button>
+		</div>
+	}
+
+</form>

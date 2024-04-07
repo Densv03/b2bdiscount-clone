@@ -1,0 +1,12 @@
+@if (blog$ | async; as blog) {
+	@switch (blog.data.typeArticle) {
+		@case ('News') {
+			<b2b-blog-details-news [blog]="blog"></b2b-blog-details-news>
+		}
+		@case ('Market experts') {
+
+		}
+	}
+} @else {
+	<p>Loading...</p>
+}

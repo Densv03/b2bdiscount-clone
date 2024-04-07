@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {CustomInputService} from 'projects/shared/src/lib/services/custom-input/custom-input.service'
 import {B2bNgxButtonModule} from "@b2b/ngx-button";
 import {MatIcon} from "@angular/material/icon";
@@ -6,12 +6,14 @@ import {UntilDestroy} from "@ngneat/until-destroy";
 import _ from "lodash";
 import {HandleItem} from "./interfaces/handle.interface";
 import {JsonPipe, NgClass} from "@angular/common";
-import {ListComponent} from 'projects/globy-file-list/src/public-api';
 import {Custom, Doc, Image, Video} from "./interfaces/file.interface";
-import {IMAGE_TYPES} from "./globy-file.constants";
+import {IMAGE_TYPES, VIDEO_TYPES} from "./globy-file.constants";
 import {customInputProvider} from 'projects/shared/src/lib/utils/custom-input.provider';
 import {ReactiveFormsModule} from "@angular/forms";
 import {B2bNgxIconModule} from "@b2b/ngx-icon";
+import {GlobyList} from 'projects/globy-file-list/src/lib/components/list/globy-list.component';
+import {HotToastService} from "@ngneat/hot-toast";
+import {MatError} from "@angular/material/form-field";
 
 @UntilDestroy()
 @Component({
@@ -20,11 +22,12 @@ import {B2bNgxIconModule} from "@b2b/ngx-icon";
 	imports: [
 		B2bNgxButtonModule,
 		MatIcon,
-		ListComponent,
 		NgClass,
+		GlobyList,
 		JsonPipe,
 		ReactiveFormsModule,
-		B2bNgxIconModule
+		B2bNgxIconModule,
+		MatError
 	],
 	providers: [
 		customInputProvider(GlobyFile)
@@ -57,16 +60,16 @@ export class GlobyFile<T> extends CustomInputService<T[]> {
 	@Input() showDelete: boolean = true;
 	/** Handle object url. Use this to transform custom object to image **/
 	@Input() handleItem: (item: T) => HandleItem;
-
-	get value() {
-		return this.formControl?.value || [];
-	}
+	/** Show custom errors */
+	@Input() errors: string[];
+	hotToastService = inject(HotToastService);
 
 	constructor() {
 		super();
-		this.formControl.valueChanges.subscribe(res => {
-			console.log(res);
-		})
+	}
+
+	get value() {
+		return this.formControl?.value || [];
 	}
 
 	get acceptTypes() {
@@ -88,11 +91,37 @@ export class GlobyFile<T> extends CustomInputService<T[]> {
 	}
 
 	uploadFile($event: any) {
-		const files = ($event.target as HTMLInputElement).files;
-		if (this.multiple) {
-			this.formControl.patchValue([...this.value, ...files as any]);
-		} else {
-			this.formControl.patchValue([...files as any]);
+		let files = ($event.target as HTMLInputElement).files;
+		if (!this.checkFormat(files)) {
+			return;
 		}
+		const validFiles = this.checkFileSize(files);
+		if (this.multiple) {
+			this.formControl.patchValue([...this.value, ...validFiles as any]);
+		} else {
+			this.formControl.patchValue([...validFiles as any]);
+		}
+	}
+
+	checkFormat(files: FileList) {
+		const array = Array.from(files);
+		const types: string[] = array.map(x => x.name.split('.').pop());
+		const canAccept = types.every(val => this.accept.includes(val as never))
+		if (!canAccept) {
+			this.hotToastService.error('Wrong file type')
+		}
+		return canAccept;
+	}
+
+	checkFileSize(files: FileList) {
+		let array: File[] = Array.from(files);
+		for (let i = 0; i < array.length; i++) {
+			const item = array[i]
+			if (item.size / 1000000 > this.maxFileWeight) {
+				this.hotToastService.error(`File "${item.name}" is too big`)
+				array = array.filter(file => file.name !== item.name);
+			}
+		}
+		return array;
 	}
 }

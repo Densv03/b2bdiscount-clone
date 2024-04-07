@@ -1,0 +1,13 @@
+<div class="blog-menu-wrapper">
+	<div class="blog-menu-header d-flex justify-content-between">
+		<h1 class="blog-section-title">Industry insights</h1>
+
+		<mat-icon class="close-icon" mat-dialog-close>close</mat-icon>
+	</div>
+
+	<div class="dialog-body d-flex flex-column blog-lg-gap">
+		@for (item of menuLinks; track item.link) {
+			<a [routerLink]="item.link" routerLinkActive="active" (click)="closeDialogWithRouting()">{{ item.displayName }}</a>
+		}
+	</div>
+</div>
