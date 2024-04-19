@@ -51,6 +51,9 @@ export class LogisticSearchComponent implements OnInit, AfterViewInit {
 	public containerTypes: ContainerItem[] = this.getContainerTypes();
 	public ship: number = 1100;
 
+	public today = new Date();
+	public maxDate = new Date(this.today.setDate(this.today.getDate() + 60));
+
 	public shipmentTypes: any[] = this.getShipments();
 	public form: FormGroup = new FormGroup({
 		countryFrom: new FormControl<null | string>(null, Validators.required),

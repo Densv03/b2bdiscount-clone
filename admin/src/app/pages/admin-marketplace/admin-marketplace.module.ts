@@ -20,7 +20,7 @@ import { AdminProductDetailsComponent } from './components/admin-product-details
 import { B2bNgxCheckboxModule } from '@b2b/ngx-checkbox';
 import { B2bNgxCountrySelectModule } from '@b2b/ngx-country-select';
 import { B2bNgxTextareaModule } from '@b2b/ngx-textarea';
-import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragPreview, CdkDropList } from '@angular/cdk/drag-drop';
 import { ClientProfileAddOfferModule } from '../../../../../src/app/client/pages/client-profile/pages/client-profile-add-offer/client-profile-add-offer.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { B2bDatepickerModule } from '@b2b/datepicker';
@@ -35,31 +35,32 @@ import { SharedModule } from '../../../../../src/app/client/shared/components/sh
 		AdminCompaniesListComponent,
 		AdminProductDetailsComponent,
 	],
-	imports: [
-		AdminMarketplaceRoutingModule,
-		B2bNgxPaginationModule,
-		CommonModule,
-		B2bNgxImageModule,
-		B2bNgxDropdownModule,
-		B2bNgxButtonModule,
-		B2bNgxIconModule,
-		MatDialogModule,
-		SharedModule,
-		ReactiveFormsModule,
-		B2bNgxInputModule,
-		B2bNgxSelectModule,
-		CategoriesDialogModule,
-		PaginationModule,
-		B2bNgxCheckboxModule,
-		B2bNgxCountrySelectModule,
-		B2bNgxTextareaModule,
-		CdkDrag,
-		CdkDropList,
-		ClientProfileAddOfferModule,
-		TranslateModule,
-		B2bDatepickerModule,
-		B2bNgxRadioModule,
-		SharedModule,
-	],
+  imports: [
+    AdminMarketplaceRoutingModule,
+    B2bNgxPaginationModule,
+    CommonModule,
+    B2bNgxImageModule,
+    B2bNgxDropdownModule,
+    B2bNgxButtonModule,
+    B2bNgxIconModule,
+    MatDialogModule,
+    SharedModule,
+    ReactiveFormsModule,
+    B2bNgxInputModule,
+    B2bNgxSelectModule,
+    CategoriesDialogModule,
+    PaginationModule,
+    B2bNgxCheckboxModule,
+    B2bNgxCountrySelectModule,
+    B2bNgxTextareaModule,
+    CdkDrag,
+    CdkDropList,
+    ClientProfileAddOfferModule,
+    TranslateModule,
+    B2bDatepickerModule,
+    B2bNgxRadioModule,
+    SharedModule,
+    CdkDragPreview,
+  ],
 })
 export class AdminMarketplaceModule {}

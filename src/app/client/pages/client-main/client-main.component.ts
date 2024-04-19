@@ -157,8 +157,8 @@ export class ClientMainComponent implements AfterViewInit, OnInit {
 	}
 	private getArticles(): Observable<any[]> {
 		return this.blogService
-			.getArticles(`?limit=${window.innerWidth > 976 ? 6 : 4}`)
-			.pipe(map((item) => item.posts));
+			.getNewArticles(0, undefined, undefined, undefined, 6)
+			.pipe(map((item) => item.data));
 	}
 
 	private getSolutions(): any[] {

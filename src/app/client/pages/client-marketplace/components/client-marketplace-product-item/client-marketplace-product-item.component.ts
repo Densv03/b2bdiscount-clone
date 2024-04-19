@@ -55,7 +55,9 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		this.productPhoto =
 			this.product.photos.every((photo: any) => 'serialNumber' in photo) &&
 			checkSerialNumber(this.product.photos)
-				? this.product.photos.reduce((acc: any[], val: any) => {
+				? this.product.photos
+					.sort((a: Photo, b: Photo) => a.serialNumber - b.serialNumber)
+					.reduce((acc: any[], val: any) => {
 						acc[val?.serialNumber] = val?.lg;
 						return acc.filter((el) => !!el);
 					}, [])

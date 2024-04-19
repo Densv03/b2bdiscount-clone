@@ -56,6 +56,7 @@ import { PriceTypeEnum } from '../../../../../../shared/enums/price-type.enum';
 import moment from 'moment';
 import { certificationNames } from '../../../../../../../core/helpers/constant/certification-names';
 import { timeSpan } from '../../../../../../../core/helpers/constant/time-span';
+import { Photo } from '../../../../../../../core/models/photo.model';
 
 export enum EditMode {
 	ARCHIVE = 'archive',
@@ -351,6 +352,7 @@ export class ClientProfileMarketplaceEditProductComponent
 				1
 			)
 		);
+		this.filterCountryOptions();
 	}
 
 	public addPortsField(): void {
@@ -1039,7 +1041,9 @@ export class ClientProfileMarketplaceEditProductComponent
 						product.photos.every((photo) => 'serialNumber' in photo) &&
 						checkSerialNumber(product.photos)
 					) {
-						product.photos = product.photos.reduce((acc: any[], val: any) => {
+						product.photos = product.photos
+							.sort((a: Photo, b: Photo) => a.serialNumber - b.serialNumber)
+							.reduce((acc: any[], val: any) => {
 							acc[val?.serialNumber] = val;
 							return acc;
 						}, []);
@@ -1127,9 +1131,9 @@ export class ClientProfileMarketplaceEditProductComponent
 						if (index > 0) {
 							this.addPortsField();
 						}
+
 						this.getPortsByCountry(value.country, index, value.portName);
 					});
-
 					this.changeDetectorRef.detectChanges();
 				}
 			});
@@ -1312,6 +1316,7 @@ export class ClientProfileMarketplaceEditProductComponent
 					this.ports.at(index).setValue({ country, portName });
 				}
 				this.selectedPortCountries.push(country);
+				this.filterCountryOptions();
 			});
 	}
 
@@ -1337,16 +1342,23 @@ export class ClientProfileMarketplaceEditProductComponent
 	}
 
 	private getCountryOptions(): Observable<any[]> {
-		const selectedCountries = this.selectedPortCountries?.length > 0 ? this.selectedPortCountries : []
 		return this.portsService.getCountriesWithPorts().pipe(
-			filter(codes => selectedCountries.some(code => !codes.includes(code))),
 			map(codes => {
+
 				return codes.map(code => ({
 					label: getName(code),
-					icon: code,
+					icon: code.toUpperCase(),
 					code: code.toLowerCase(),
 				})).sort((a, b): number => a.label.localeCompare(b.label));
-		}));
+			}));
+	}
+
+	private filterCountryOptions(): void {
+		this.countryOptions$ = this.countryOptions$.pipe(map(options => {
+
+				return options.filter(option => !this.selectedPortCountries.includes(option.code));
+			})
+		);
 	}
 
     protected readonly open = open;

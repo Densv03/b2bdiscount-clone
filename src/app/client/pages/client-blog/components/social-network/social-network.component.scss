@@ -1,0 +1,26 @@
+@import 'projects/shared/src/styles';
+
+.social-networks-wrapper {
+	button svg-icon:hover {
+		color: #005DFF;
+	}
+
+	@include breakpoint('3') {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		background-color: white;
+		padding: 12px 18px;
+
+		h3 {
+			margin: 0;
+			font-size: 14px;
+			line-height: 18px;
+		}
+
+		div svg-icon {
+			width: 24px;
+			height: 24px;
+		}
+	}
+}

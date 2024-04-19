@@ -12,6 +12,7 @@ import {
 	BlogLogisticSupplyChainComponent
 } from './pages/blog-logistic-supply-chain/blog-logistic-supply-chain.component';
 import { BlogDetailsComponent } from "./pages/blog-details/layout/blog-details.component";
+import { BlogTaggedComponent } from "./pages/blog-tagged/blog-tagged.component";
 
 const routes: Routes = [
 	{
@@ -47,8 +48,30 @@ const routes: Routes = [
 				component: BlogLogisticSupplyChainComponent
 			},
 			{
+				path: 'tag',
+				children: [
+					{
+						path: ':tag',
+						component: BlogTaggedComponent
+					}
+				]
+			},
+			{
 				path: ':id',
 				component: BlogDetailsComponent,
+				data: {
+					meta: {
+						title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+						description: 'Globy - Trading Wiki'
+					},
+				},
+			},
+			{
+				path: ':id/:id',
+				loadChildren: () =>
+					import(
+						'../client-blog-authors-page/client-blog-authors-page.module'
+						).then((m) => m.ClientBlogAuthorsPageModule),
 				data: {
 					meta: {
 						title: 'Globy - Buy and Sell B2B Cargo with Discount!',

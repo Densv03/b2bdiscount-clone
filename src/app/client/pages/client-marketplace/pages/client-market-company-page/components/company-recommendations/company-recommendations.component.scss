@@ -1,0 +1,110 @@
+@import 'projects/shared/src/styles';
+
+
+:host {
+	.component {
+		position: relative;
+		padding-bottom: 80px;
+	}
+
+	.title {
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 32.16px;
+		letter-spacing: 0.01em;
+		padding-top: 80px;
+	}
+	.company-content {
+		width: 837px;
+		border-right: 1px solid #e3eaf1;
+		padding-right: 30px;
+		position: absolute;
+		top: 0;
+		height: 90%;
+		@include breakpoint('4') {
+			display: none;
+		}
+		@media (max-width: 768px) {
+			border: none;
+			width: 100%;
+			padding-right: 0;
+		}
+	}
+
+	.recommendations {
+		gap: 32px;
+		margin-top: 21px;
+		overflow: auto;
+		@include breakpoint('1') {
+			gap: 16px;
+		}
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		&__item {
+			border-radius: 4px;
+			border: 1px solid rgba(217, 217, 217, 1);
+			padding: 16px;
+			width: 369px;
+			background: white;
+			z-index: 1;
+			@include breakpoint('1') {
+				width: 304px;
+			}
+			&-header {
+				.header-logo {
+					width: 48px;
+					height: 48px;
+				}
+				.company-name {
+					font-size: 16px;
+					font-weight: 700;
+					letter-spacing: 0.01em;
+				}
+				.company-subinfo {
+					margin-top: 4px;
+					gap: 6px;
+					.business-type {
+						font-weight: 600;
+						font-size: 12px;
+					}
+				}
+			}
+			&-categories {
+				font-size: 12px;
+				font-weight: 600;
+				line-height: 16.8px;
+				letter-spacing: 0.01em;
+				margin-top: 16px;
+			}
+			&-description {
+				color: rgba(83, 83, 83, 1);
+				font-size: 12px;
+				line-height: 16.8px;
+				letter-spacing: 0.01em;
+				width: 300px;
+				margin-top: 8px;
+				height: 30px;
+				@include breakpoint('1') {
+					width: 280px;
+				}
+			}
+			&-buttons {
+				margin-top: 8px;
+				gap: 16px;
+				.view-all {
+					width: 124px;
+					height: 40px;
+					border-radius: 8px;
+				}
+				.message-button {
+					width: 82px;
+					border-radius: 8px;
+					svg {
+						margin: auto;
+					}
+				}
+			}
+		}
+	}
+}

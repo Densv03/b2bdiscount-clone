@@ -62,6 +62,13 @@
 			Create direction
 		</button>
 
+		<button
+			class="b2b-ngx-button background background-black"
+			[disabled]="!(countryOptions | async)"
+			(click)="editDirection()">
+			Edit country
+		</button>
+
 		<div class="search-wrapper">
 			<input
 				formControlName="name"

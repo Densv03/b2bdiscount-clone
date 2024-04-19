@@ -1,44 +1,118 @@
-<div class="page-wrapper">
-	<div class="authors-block">
-		<img ngSrc="./assets/icons/user.svg" priority width="168" height="168" />
-		<div class="authors-info">
-			<h2 class="authors-info-name">Samantha Greene</h2>
+<div class="author-page">
+	@if (authorInfo$ | async; as authorInfo) {
+		<div class="author-page__header">
+			<div class="container">
+				<div class="author-page__head d-flex">
+					<ng-container *ngTemplateOutlet="backButtonTemplate"></ng-container>
 
-			<p class="authors-info-text">
-				<span>Joined Jun 13, 2022 </span>
-				<b class="desktop">/</b>
-				<span> Articles 158</span>
-			</p>
+					<div class="social-medias">
+						<ng-container
+							*ngFor="
+								let socialMedia of convertObjectToArray(authorInfo.socialMedia)">
+							<a
+								*ngIf="socialMedia.value.trim()"
+								[href]="socialMedia.value"
+								target="_blank">
+								<b2b-svg-icon
+									[src]="
+										'/assets/icons/footer/' + socialMedia.key + '.svg'
+									"></b2b-svg-icon>
+							</a>
+						</ng-container>
+					</div>
+				</div>
+				<div class="author-page__info xl:mt-[40px] md:mt-[45px] sm:mt-[25px]">
+					@if (authorInfo?.photo) {
+						<img [src]="getMediaSrc(authorInfo?.photo.lg)" width="187" height="187"/>
+					} @else {
+						<img ngSrc="./assets/icons/user.svg" priority width="187" height="187"/>
+					}
+					<div class="author-page__info-wrapper">
+						<h1 class="author-page__info-name">{{ authorInfo.fullName }}</h1>
+						@if (authorBlogs$ | async; as authorBlogs) {
+							<div
+								class="author-page__info-count">
+								{{ authorBlogs.count }}
+								{{ 'article' | pluralize: authorBlogs.count }}
+							</div>
+						}
+						<div class="author-page__info-description">{{ authorInfo?.resume }}</div>
+					</div>
+				</div>
 
-			<p class="authors-info-text desktop">
-				Samantha Greene brings over a decade of experience in logistics and
-				global trade, working with leading multinational corporations. Her vast
-				understanding of supply chain dynamics and international compliance
-				makes her a valuable asset. Now, as a content marketer in Globy, she
-				leverages her industry knowledge to craft insightful articles for our
-				platform.
-			</p>
+				<div class="mobile">
+					<ng-container *ngTemplateOutlet="backButtonTemplate"></ng-container>
+
+					<div class="mobile__author">
+						@if (authorInfo?.photo) {
+							<img [src]="getMediaSrc(authorInfo?.photo.lg)"/>
+						} @else {
+							<img ngSrc="./assets/icons/user.svg" priority/>
+						}
+						<div class="mobile__author-info">
+							<h1 class="author-page__info-name">{{ authorInfo.fullName }}</h1>
+							@if (authorBlogs$ | async; as authorBlogs) {
+								<div
+									class="author-page__info-count">
+									{{ authorBlogs.count }}
+									{{ 'article' | pluralize: authorBlogs.count }}
+								</div>
+							}
+							<div class="social-medias">
+								<ng-container
+									*ngFor="
+								let socialMedia of convertObjectToArray(authorInfo.socialMedia)">
+									<a
+										*ngIf="socialMedia.value.trim()"
+										[href]="socialMedia.value"
+										target="_blank">
+										<b2b-svg-icon
+											[src]="
+										'/assets/icons/footer/' + socialMedia.key + '.svg'
+									"></b2b-svg-icon>
+									</a>
+								</ng-container>
+							</div>
+						</div>
+					</div>
+					<div class="author-page__info-description">{{ authorInfo?.resume }}</div>
+				</div>
+
+
+			</div>
 		</div>
-	</div>
+	}
+	@if (authorBlogs$ | async; as authorBlogs) {
+		<div class="latest-block">
+			<div class="container">
+				<b2b-blog-grid-list
+					[isBigger]="true"
+					[title]="'Latest'"
+					[getArticles]="authorBlogs.blogs"></b2b-blog-grid-list>
 
-	<p class="authors-info-text mobile">
-		Samantha Greene brings over a decade of experience in logistics and global
-		trade, working with leading multinational corporations. Her vast
-		understanding of supply chain dynamics and international compliance makes
-		her a valuable asset. Now, as a content marketer in Globy, she leverages her
-		industry knowledge to craft insightful articles for our platform.
-	</p>
+				<b2b-pagination
+					[length]="authorBlogs.count"
+					[perPage]="9"
+					(togglePageNumber)="togglePageBlogList($event)"
+					[currentPage]="currentPage$ | async"></b2b-pagination>
+			</div>
 
-	<div class="latest-block">
-		<b2b-blog-grid-list
-			[isBigger]="true"
-			[title]="'Latest'"
-			[getArticles]="articles$ | async"></b2b-blog-grid-list>
-
-		<b2b-pagination
-			[length]="totalBlogLength$ | async"
-			[perPage]="8"
-			(togglePageNumber)="togglePageBlogList($event)"
-			[currentPage]="currentPage$ | async"></b2b-pagination>
-	</div>
+		</div>
+	} @else {
+		<b2b-page-loader class="page-loader"></b2b-page-loader>
+	}
 </div>
+
+
+<ng-template #backButtonTemplate>
+	<div
+		(click)="window.history.back()"
+		class="author-page__back d-flex items-center cursor-pointer">
+		<b2b-svg-icon class="arrow-back" [src]="'/assets/icons/arrow-l.svg'"></b2b-svg-icon>
+		Back
+	</div>
+</ng-template>
+
+
+
+

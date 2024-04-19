@@ -1,57 +1,64 @@
-<div class="home-container w-100 bg-white d-flex justify-center">
-	@if (blogHomePageData$ | async; as blogHomepageData) {
-		<div class="home-wrapper d-flex justify-between flex-column align-items-center">
-			@if (blogHomepageData.lastFourPublication?.length > 0) {
-				<b2b-recently-published-articles
-					class="w-100"
-					[articles]="blogHomepageData?.lastFourPublication">
-				</b2b-recently-published-articles>
-			}
+	<div class="home-container w-100 bg-white d-flex justify-center">
+		@if (blogHomePageData$ | async; as blogHomepageData) {
+			<div class="home-wrapper d-flex justify-between flex-column align-items-center">
+				@if (blogHomepageData.lastFourPublication?.length > 0) {
+					<b2b-recently-published-articles
+						class="w-100"
+						[articles]="blogHomepageData?.lastFourPublication">
+					</b2b-recently-published-articles>
+				}
 
-			@if (blogHomepageData.lastSixNews?.length > 0) {
-				<b2b-news-articles-section
-					class="w-100"
-					[newsArticles]="blogHomepageData.lastSixNews"
-				></b2b-news-articles-section>
-			}
+				@if (blogHomepageData.lastSixNews?.length > 0) {
+					<b2b-news-articles-section
+						class="w-100"
+						[newsArticles]="blogHomepageData.lastSixNews"
+					></b2b-news-articles-section>
+				}
 
-			@if (blogHomepageData.lastTwoTradeGuide?.length > 0) {
-				<b2b-trade-guides-or-logistics
-					class="w-100"
+				@if (blogHomepageData.lastTwoTradeGuide?.length > 0) {
+					<b2b-trade-guides-or-logistics
+						class="w-100"
 
-					[articles]="blogHomepageData.lastTwoTradeGuide">
-				</b2b-trade-guides-or-logistics>
-			}
+						[articles]="blogHomepageData.lastTwoTradeGuide">
+					</b2b-trade-guides-or-logistics>
+				}
 
-			@if (blogHomepageData.lastThreeAnalysis?.length > 0) {
-				<b2b-analysis-section
-					class="w-100"
-					[articles]="blogHomepageData.lastThreeAnalysis">
-				</b2b-analysis-section>
-			}
+				@if (blogHomepageData.lastThreeAnalysis?.length > 0) {
+					<b2b-analysis-section
+						class="w-100"
+						[articles]="blogHomepageData.lastThreeAnalysis">
+					</b2b-analysis-section>
+				}
 
-			@if (blogHomepageData.lastFourMarketExperts?.length > 0) {
-				<b2b-recently-published-articles
-					class="w-100"
-					[isRecentlyPublished]="false"
-					[articles]="blogHomepageData?.lastFourMarketExperts">
-				</b2b-recently-published-articles>
-			}
+				@if (blogHomepageData.lastFourMarketExperts?.length > 0) {
+					<b2b-recently-published-articles
+						class="w-100"
+						[isRecentlyPublished]="false"
+						[articles]="blogHomepageData?.lastFourMarketExperts">
+					</b2b-recently-published-articles>
+				}
 
-			@if (blogHomepageData.lastFiveMarketUpdates?.length > 0) {
-				<b2b-market-updates-section
-					class="w-100"
-					[articles]="blogHomepageData?.lastFiveMarketUpdates">
-				</b2b-market-updates-section>
-			}
+				@if (blogHomepageData.lastFiveMarketUpdates?.length > 0) {
+					<b2b-market-updates-section
+						class="w-100"
+						[articles]="blogHomepageData?.lastFiveMarketUpdates">
+					</b2b-market-updates-section>
+				}
 
-			@if (blogHomepageData.lastTwoLogistics?.length > 0) {
-				<b2b-trade-guides-or-logistics
-					class="w-100"
-					[isGuides]="false"
-					[articles]="blogHomepageData.lastTwoLogistics">
-				</b2b-trade-guides-or-logistics>
-			}
+				@if (blogHomepageData.lastTwoLogistics?.length > 0) {
+					<b2b-trade-guides-or-logistics
+						class="w-100"
+						[isGuides]="false"
+						[articles]="blogHomepageData.lastTwoLogistics">
+					</b2b-trade-guides-or-logistics>
+				}
+			</div>
+		} @else {
+		<div class="loading-overlay">
+			<b2b-page-loader
+				class="page-loader"
+				style="z-index: 10000"></b2b-page-loader>
 		</div>
 	}
-</div>
+	</div>
+

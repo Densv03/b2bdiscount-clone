@@ -1,6 +1,7 @@
 @import 'projects/shared/src/styles';
 
 :host {
+
 	.company {
 		background: #ffffff;
 
@@ -90,6 +91,11 @@
 			@media (max-width: 576px) {
 				width: 70px;
 				height: 70px;
+			}
+
+			img {
+				width: 100%;
+				height: 100%;
 			}
 
 		}
@@ -243,7 +249,6 @@
 
 		&__body {
 			display: flex;
-			padding-bottom: 20px;
 		}
 		&__content {
 			width: 837px;
@@ -292,6 +297,13 @@
 				padding-left: 5%;
 			}
 		}
+	}
+	.bottom-divider {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 1px;
+		background: rgba(217, 217, 217, 1);
 	}
 }
 

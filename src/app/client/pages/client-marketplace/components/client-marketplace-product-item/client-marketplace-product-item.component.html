@@ -1,68 +1,59 @@
 <li
 	[ngStyle]="{ height: chatPossibilityIsHidden ? '350px' : '385px' }"
 	class="product">
-	<a
-		[routerLink]="[
+	<div>
+		<b2b-client-marketplace-images-carousel [images]="product.photos"></b2b-client-marketplace-images-carousel>
+		<a
+			[routerLink]="[
 			'/b2bmarket/listing/products/',
 			product?.path || product._id
 		]"
-		[queryParams]="params">
-		<div>
-			<img b2bNgxImage [src]="getImgUrl()" alt="" class="product-header" />
+			[queryParams]="params">
+			<!--			<img b2bNgxImage [src]="getImgUrl()" alt="" class="product-header" />-->
 			<div
 				*ngIf="product.hidden"
 				class="ngx-latest-offers-grid-item-image-container-overlay">
 				<p>HIDDEN</p>
 			</div>
+		</a>
+	</div>
+	<div class="product-title">{{ cutString(product.title, 20) }}</div>
+	<div class="product-description">
+		{{ cutDescription(product?.specifications) }}
+	</div>
+	<div class="supplier-info">
+		<div class="text">
+			{{
+				cutString(
+					product.company
+						? product.company[0]?.companyName
+						: product.contact.companyName,
+					17
+				)
+			}}
 		</div>
-		<div class="product-title">{{ cutString(product.title, 20) }}</div>
-		<div class="product-description">
-			{{ cutDescription(product?.specifications) }}
-		</div>
-		<div class="supplier-info">
-			<!--			<img *ngIf="getCompanyLogo() !== 'plug'; else iconPlug" b2bNgxImage [name]="getCompanyLogo()" alt="logo" />-->
-			<!--			<ng-template #iconPlug>-->
-			<!--				<img b2bNgxIcon name="company-logo-plug" />-->
-			<!--			</ng-template>-->
-			<div class="text">
-				{{
-					cutString(
-						product.company
-							? product.company[0]?.companyName
-							: product.contact.companyName,
-						17
-					)
-				}}
-			</div>
-		</div>
+	</div>
+	@if (product.company) {
 		<div
-			*ngIf="product.company; else productWithoutCompany"
 			class="supplier-info">
 			<img
 				b2bNgxIcon
 				group="flags/"
 				[name]="product.company[0]?.country | uppercase"
-				alt="" />
+				alt=""/>
 			<div class="text">{{ getCountryName(product.company[0]?.country) }}</div>
 		</div>
-		<ng-template #productWithoutCompany>
-			<div class="supplier-info">
-				<img
-					b2bNgxIcon
-					group="flags/"
-					[name]="product.country | uppercase"
-					alt="" />
-				<div class="text">{{ getCountryName(product.country) }}</div>
-			</div>
-		</ng-template>
+	} @else {
+		<div class="supplier-info">
+			<img
+				b2bNgxIcon
+				group="flags/"
+				[name]="product.country | uppercase"
+				alt=""/>
+			<div class="text">{{ getCountryName(product.country) }}</div>
+		</div>
+	}
 
-		<!--		<div class="supplier-info">-->
-		<!--			<img b2bNgxIcon name="tag" alt="" />-->
-		<!--			<div class="text">{{ product.suppliersType }}</div>-->
-		<!--		</div>-->
-
-		<!--		<div *ngIf="!chatPossibilityIsHidden" class="divider"></div>-->
-	</a>
 	<button
 		*ngIf="!chatPossibilityIsHidden"
 		b2bNgxButton
@@ -71,9 +62,9 @@
 		(click)="openChat($event)"
 		[id]="getIdForContactSupplierButton$() | async">
 		<span class="product-item-footer-button-text">{{
-			product.user === (user$ | async)?._id
-				? 'View my product'
-				: (buttonTitle$ | async)
-		}}</span>
+				product.user === (user$ | async)?._id
+					? 'View my product'
+					: (buttonTitle$ | async)
+			}}</span>
 	</button>
 </li>

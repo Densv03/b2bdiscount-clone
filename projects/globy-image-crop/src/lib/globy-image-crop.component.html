@@ -1,0 +1,12 @@
+<div class="flex flex-col cropper__container items-center justify-center">
+	<image-cropper
+		class="h-full"
+		[maintainAspectRatio]="true"
+		[aspectRatio]="aspectRatio"
+		[format]="outputFormat"
+		[imageURL]="imageURL"
+		[output]="'blob'"
+		[alignImage]="'center'"
+		(imageCropped)="imageCropped($event)"
+	/>
+</div>

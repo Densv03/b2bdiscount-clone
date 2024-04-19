@@ -24,6 +24,7 @@ import {
 import {CompanyExhibitionsComponent} from "./components/company-exhibitions/company-exhibitions.component";
 import {CompanyFoldersComponent} from "./components/company-folders/company-folders.component";
 import {CompanyVideosComponent} from "./components/company-videos/company-videos.component";
+import {CompanyRecommendationsComponent} from "./components/company-recommendations/company-recommendations.component";
 
 const routes: Routes = [
 	{ path: '', component: ClientMarketCompanyPageComponent },
@@ -56,6 +57,7 @@ const routes: Routes = [
         CompanyExhibitionsComponent,
         CompanyFoldersComponent,
         CompanyVideosComponent,
+        CompanyRecommendationsComponent,
     ],
 })
 export class ClientMarketCompanyPageModule {}

@@ -320,7 +320,7 @@ export class HeaderComponent implements OnInit {
 
 	private checkIsListingPage(url: string, allowMarketPage = true): boolean {
 		const listings = [
-			'b2bmarket',
+			'b2bmarket/',
 			'quick-logistics',
 			'unclaimed-cargo',
 			'sourcing-request',
@@ -335,7 +335,7 @@ export class HeaderComponent implements OnInit {
 	private checkIsMarketPage(url: string): boolean {
 		let u = url.replace(/\?.*$/, '');
 		return (
-			(u.includes('market') || u.includes('sourcing-request')) &&
+			(u.includes('/b2bmarket') || u.includes('sourcing-request')) &&
 			!u.includes('profile')
 		);
 	}

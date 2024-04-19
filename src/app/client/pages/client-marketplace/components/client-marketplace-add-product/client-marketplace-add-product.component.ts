@@ -562,11 +562,11 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 	}
 
 	public preview(): void {
-		// if (this.formGroup.invalid) {
-		// 	this.formGroup.markAllAsTouched();
-		// 	this.isBadgeInvalidSource.next(true);
-		// 	return;
-		// }
+		if (this.formGroup.invalid) {
+			this.formGroup.markAllAsTouched();
+			this.isBadgeInvalidSource.next(true);
+			return;
+		}
 
 		const selectedPorts = this.portsItems.map((el: any, index: number) => {
 			return el.ports.filter((ports: { _id: any }) =>
@@ -649,7 +649,13 @@ export class ClientMarketplaceAddProductComponent implements OnInit {
 			'set',
 			'liter',
 		]);
-		this.filterCountryOptions();
+
+		this.getCountryOptions()
+			.pipe(untilDestroyed(this))
+			.subscribe(options => {
+				this.countryOptions$ = of(options);
+				this.ports.patchValue(this.formGroup.value.ports)
+			});
 	}
 
 	public getCountryOptions(): Observable<any[]> {

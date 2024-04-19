@@ -21,6 +21,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BlogHeaderMenuComponent } from './components/blog-header-menu/blog-header-menu.component';
 import { BlogDetailsNewsComponent } from "./pages/blog-details/blog-details-news/blog-details-news.component";
 import { BlogDetailsComponent } from "./pages/blog-details/layout/blog-details.component";
+import { BlogDetailsArticleComponent } from './pages/blog-details/blog-details-article/blog-details-article.component';
+import { SocialNetworkComponent } from './components/social-network/social-network.component';
+import { PageLoaderModule } from '../../../core/components/page-loader/page-loader.module';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { AnalysisSectionComponent } from "./pages/blog-home/components/analysis-section/analysis-section.component";
 
 @NgModule({
 	declarations: [
@@ -30,23 +35,28 @@ import { BlogDetailsComponent } from "./pages/blog-details/layout/blog-details.c
 		BlogDetailsNewsComponent,
 		BlogDetailsComponent
 	],
-  imports: [
-    CommonModule,
-    ClientBlogRoutingModule,
-    ReactiveFormsModule,
-    B2bNgxInputModule,
-    B2bNgxButtonModule,
-    B2bNgxSkeletonModule,
-    B2bNgxLinkModule,
-    B2bNgxIconModule,
-    // B2bNgxTreeviewModule,
-    B2bNgxPaginationModule,
-    B2bNgxImageModule,
-    B2bNgxCountrySelectModule,
-    B2bNgxSelectModule,
-    PaginationModule,
-    TranslateModule,
-    BlogHeaderMenuComponent,
-  ],
+    imports: [
+        CommonModule,
+        ClientBlogRoutingModule,
+        ReactiveFormsModule,
+        B2bNgxInputModule,
+        B2bNgxButtonModule,
+        B2bNgxSkeletonModule,
+        B2bNgxLinkModule,
+        B2bNgxIconModule,
+        // B2bNgxTreeviewModule,
+        B2bNgxPaginationModule,
+        B2bNgxImageModule,
+        B2bNgxCountrySelectModule,
+        B2bNgxSelectModule,
+        PaginationModule,
+        TranslateModule,
+        BlogHeaderMenuComponent,
+        BlogDetailsArticleComponent,
+        SocialNetworkComponent,
+        PageLoaderModule,
+        SvgIconComponent,
+        AnalysisSectionComponent,
+    ],
 })
 export class ClientBlogModule {}

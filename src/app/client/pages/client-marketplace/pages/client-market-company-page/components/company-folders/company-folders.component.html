@@ -1,6 +1,6 @@
 <!--@if (folders.length) {-->
 	<div
-		[class.d-none]="!folders.length"
+		[class.d-none]="!getImages(folders).length"
 		class="folders">
 		<div class="folders__title">Photos</div>
 		<div class="carousel mt-3">

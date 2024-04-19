@@ -1,8 +1,12 @@
-<div class="d-flex align-items-center blog-menu-wrapper">
+<div class="d-flex justify-center ">
+	<div class="d-flex align-items-center blog-menu-wrapper w-100 max-w-[1170px]">
+
 	<div class="link-wrapper">
 		<div class="link-list d-flex" #menuList>
-			@for (item of menuLinks; track item.link) {
-				<a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" #listItem>{{ item.displayName }}</a>
+			@if (menuLinks$ | async; as menuLinks) {
+				@for (item of menuLinks; track item.link) {
+					<a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" #listItem>{{ item.displayName }}</a>
+				}
 			}
 		</div>
 	</div>
@@ -12,4 +16,5 @@
 		*ngIf="platformService.isBrowser"
 		(click)="openPopUp()"
 		[svgIcon]="'arrow-right'"></mat-icon>
+	</div>
 </div>

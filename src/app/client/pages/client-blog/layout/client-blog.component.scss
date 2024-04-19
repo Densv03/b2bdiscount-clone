@@ -1,5 +1,13 @@
 @import 'projects/shared/src/styles';
 
+.mob-none {
+	display: block;
+
+	@include breakpoint('2') {
+		display: none;
+	}
+}
+
 .wiki {
 	background-color: $color-gray-100;
 	padding-top: 30px;

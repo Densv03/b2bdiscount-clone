@@ -42,7 +42,7 @@
 	<div class="mb-3">
 		@if (blogAction === blogActionEnum.EDIT && (currentArticle$ | async)) {
 			<b2b-datepicker
-				[today]="(currentArticle$ | async)?.data?.datePublication"
+				[today]="$any((currentArticle$ | async)?.data?.datePublication)"
 				formControlName="datePublication"
 				inputClassName="datepicker"
 				iconName="filled-calendar"
@@ -115,7 +115,7 @@
 		[searchedOptions]="searchedOptions$ | async"></b2b-ngx-chips>
 
 	<ckeditor
-		[editor]="Editor"
+		[editor]="editor"
 		formControlName="description"
 	></ckeditor>
 	@if (formGroup.get('description').hasError('required') && formGroup.get('description').touched) {

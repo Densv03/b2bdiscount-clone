@@ -83,15 +83,6 @@ export class ClientProfileImageContainerComponent implements OnInit {
 		this.file.emit(undefined);
 	}
 
-	changeUrl($event: string) {
-		if (!$event.includes('data:image')) {
-			return;
-		}
-		this.url = 'url(' + $event + ')';
-		this.hideButtons = false;
-		this.cdr.detectChanges();
-	}
-
 	openModal() {
 		this.matDialog.open(ClientProfileImageUploadModalComponent, {
 			data: {

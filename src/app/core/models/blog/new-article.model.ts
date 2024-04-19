@@ -26,8 +26,6 @@ export interface NewArticleModel {
 		photo: Photo;
 },
 	path: string;
-
-
 	updatedAt:  Date | string;
 	createdAt:  Date | string;
 	__v: number;

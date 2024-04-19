@@ -46,9 +46,6 @@ export class CompanyContactCardComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.userService
-			.getPublicUserInfo(this.companyInfo.user)
-			.subscribe(console.log);
 		this.supplierName$ = this.userService
 			.getPublicUserInfo(this.companyInfo.user)
 			.pipe(map((info: PublicUserInfo) => info.fullName));

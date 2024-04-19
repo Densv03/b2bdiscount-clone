@@ -1,12 +1,15 @@
 @if (blog$ | async; as blog) {
-	@switch (blog.data.typeArticle) {
-		@case ('News') {
-			<b2b-blog-details-news [blog]="blog"></b2b-blog-details-news>
-		}
-		@case ('Market experts') {
-
-		}
+	@if (blog.data.typeArticle === BlogCategoriesEnum.News) {
+		<b2b-blog-details-news [blog]="blog"></b2b-blog-details-news>
+	} @else {
+		<b2b-blog-details-article [blog]="blog">
+		</b2b-blog-details-article>
 	}
 } @else {
-	<p>Loading...</p>
+	<div class="loading-overlay">
+		<b2b-page-loader
+			class="page-loader"
+			style="z-index: 10000"></b2b-page-loader>
+	</div>
 }
+

@@ -1,0 +1,12 @@
+
+.cropper__container {
+	height: 300px !important;
+}
+
+::ng-deep image-cropper div:has(img) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	justify-items: center;
+	align-content: center;
+}

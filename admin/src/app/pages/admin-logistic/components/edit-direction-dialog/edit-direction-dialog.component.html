@@ -1,0 +1,43 @@
+<div class="dialog-wrapper">
+	<h2 class="dialog-title" mat-dialog-title>
+		Add country names
+		<button class="close-button" mat-dialog-close mat-icon-button>
+			<mat-icon class="close-icon">close</mat-icon>
+		</button>
+	</h2>
+
+	<section [formGroup]="directionForm">
+		<b2b-ngx-country-select
+			formControlName="name"
+			[customOptions]="{value: countryOptions$, length: (countryOptions$ | async)?.length}"
+			class="admin-article__country"
+			placeholder="Select Country"></b2b-ngx-country-select>
+
+		<div formArrayName="countryNames">
+			@for (item of countryNames.controls; let i = $index; track item) {
+				<div class="d-flex gap-1 pt-4">
+					<input
+						[formControlName]="i"
+						class="b2b-ngx-input background background-gray"
+						placeholder="Input alternative country name" />
+
+					<img b2bNgxIcon (click)="deleteAlternativeName(i)" name="delete" />
+				</div>
+			}
+		</div>
+
+		<div class="d-flex justify-content-end w-100">
+			<button type="button" class="add-more bg-white" (click)="addField()">
+				+ Add more
+			</button>
+		</div>
+
+		<div class="button-wrapper mt-16">
+			<button
+				class="b2b-ngx-button background background-black"
+				(click)="save()">
+				Save
+			</button>
+		</div>
+	</section>
+</div>

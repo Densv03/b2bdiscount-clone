@@ -1,0 +1,19 @@
+<div class="social-networks-wrapper">
+	<h3 class="text-[16px] font-[600] mb-[16px] leading-[21.44px]">SHARE</h3>
+
+	<div class="d-flex gap-[8px]">
+		@for (item of socialIcons; track $index) {
+			<button
+				[shareButton]="item.share"
+				[description]="blog.shortDescription"
+				[title]="blog.title"
+				rel="nofollow"
+				(click)="processShareBtn(item.share)"
+			>
+				<svg-icon
+					[src]="item.icon">
+				</svg-icon>
+			</button>
+		}
+	</div>
+</div>

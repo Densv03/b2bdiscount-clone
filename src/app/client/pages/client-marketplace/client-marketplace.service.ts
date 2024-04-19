@@ -303,8 +303,10 @@ export class ClientMarketplaceService {
 			});
 	}
 
-	public getUserMarketProducts(): Observable<any> {
-		return this.apiService.get('products/my').pipe(
+	public getUserMarketProducts(params?: {offset?: number, limit?: number, dateFrom?: string, dateTo?: string, country?: string, categories?: string[], type?: string, sort?: 'asc'| 'desc', hideSold?: boolean, hide?: boolean, published?: boolean}): Observable<any> {
+		return this.apiService.get('products/my', {
+			params
+		}).pipe(
 			filter((data: any) => !!data),
 			map(({ products }) => products)
 		);

@@ -18,6 +18,12 @@
 				[length]="countSource.getValue()"
 				[perPage]="limit"
 				(togglePageNumber)="togglePage($event)"></b2b-pagination>
+		} @else {
+			<div class="loading-overlay">
+				<b2b-page-loader
+					class="page-loader"
+					style="z-index: 10000"></b2b-page-loader>
+			</div>
 		}
 	</div>
 </div>

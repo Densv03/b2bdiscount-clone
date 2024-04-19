@@ -1,21 +1,23 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ApiService } from '../../../core/services/api/api.service';
-import { first, tap } from 'rxjs/operators';
-import { BlogResponseModel } from '../../../core/models/blog/blog-response.model';
-import { BlogQuery } from '../../state/blog/blog.query';
-import { BlogHomepageModel } from '../../../core/models/blog/blog-homepage.model';
-import { BlogStore } from '../../state/blog/blog.store';
-import { BlogCategoriesEnum } from '../../../core/enums/blog-categories.enum';
-import { HttpParams } from '@angular/common/http';
-import { NewArticleModel } from '../../../core/models/blog/new-article.model';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, of, publish, share, shareReplay} from 'rxjs';
+import {ApiService} from '../../../core/services/api/api.service';
+import {first, tap, map} from 'rxjs/operators';
+import {BlogResponseModel} from '../../../core/models/blog/blog-response.model';
+import {BlogQuery} from '../../state/blog/blog.query';
+import {BlogHomepageModel} from '../../../core/models/blog/blog-homepage.model';
+import {BlogStore} from '../../state/blog/blog.store';
+import {BlogCategoriesEnum} from '../../../core/enums/blog-categories.enum';
+import {HttpParams} from '@angular/common/http';
+import {NewArticleModel} from '../../../core/models/blog/new-article.model';
 import {
 	ArticleStatus,
 	BlogArticle,
 	BlogAuthor, CreateAuthorRequest, CreateBlogRequest, GetNewBlogResponse,
 	Tag, TypeArticle
 } from "../../../../../admin/src/app/pages/admin-blog-post/types/admin-blog-post.type";
-import { getFormData } from "../../../core/helpers/function/get-form-data";
+import {getFormData} from "../../../core/helpers/function/get-form-data";
+import {PaginationParamsModel} from "../../../core/models/pagination-params.model";
+import {BlogAuthorResponse} from "../../../core/models/blog/blog-author.model";
 
 @Injectable({
 	providedIn: 'root',
@@ -25,6 +27,8 @@ export class BlogService {
 	public readonly _articles$: Observable<any>;
 	public readonly _endpoint: string;
 
+	private articleTypeSource: BehaviorSubject<BlogCategoriesEnum> = new BehaviorSubject<BlogCategoriesEnum>(null);
+	public articleType$ = this.articleTypeSource.asObservable();
 	private blogSource$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 	private blogLength: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
@@ -36,8 +40,17 @@ export class BlogService {
 		this._endpoint = 'blogs/';
 	}
 
+	public setArticleType(type: BlogCategoriesEnum): void {
+		this.articleTypeSource.next(type);
+	}
+
 	public getTags(str: any): Observable<Tag[]> {
 		return this.apiService.get(`tags?q=${str}`);
+	}
+
+	public getTagByName(name: string): Observable<Tag> {
+		return this.apiService.get<Tag[]>(`tags?q=${name}`)
+			.pipe(map(tags => tags[0]))
 	}
 
 	public createBlog(body: any) {
@@ -104,8 +117,21 @@ export class BlogService {
 			});
 	}
 
+	public getAuthorBlogs(id: string, paginationObj: PaginationParamsModel): Observable<Omit<BlogAuthorResponse, 'author'>> {
+		const {limit, offset} = paginationObj;
+
+		return this.apiService.get<BlogAuthorResponse>(`new-blog/author/${id}`, {params: {limit, offset}})
+			.pipe(
+				shareReplay(),
+				tap(response => this.updateAuthorStore(response)));
+	}
+
+	public getAuthorInfo(): Observable<BlogAuthor> {
+		return this.blogQuery.authorInfo$;
+	}
+
 	public getHomePage(): Observable<BlogHomepageModel> {
-		const { homepage } = this.blogQuery.getValue();
+		const {homepage} = this.blogQuery.getValue();
 
 		if (homepage) {
 			return of(homepage);
@@ -132,16 +158,20 @@ export class BlogService {
 		return this.apiService.post('new-blog/create', getFormData(data));
 	}
 
-	public getNewArticles(offset = 0, type: TypeArticle | TypeArticle[] = 'News', status: ArticleStatus | ArticleStatus[] = 'published', limit = 10): Observable<{
+	public getNewArticles(offset = 0, type?: TypeArticle | TypeArticle[], status?: ArticleStatus | ArticleStatus[], tags?: string, limit = 10): Observable<{
 		data: BlogArticle[],
 		count: number
 	}> {
+		const filteredObj: any = {};
+		const argument: any = {offset, type, status, limit, tags};
+		for (const key in argument) {
+			if (argument[key] !== undefined && argument[key] !== null) {
+				filteredObj[key] = argument[key];
+			}
+		}
 		return this.apiService.get('new-blogs', {
 			params: {
-				limit,
-				offset,
-				type,
-				status
+				...filteredObj
 			}
 		})
 	}
@@ -168,7 +198,7 @@ export class BlogService {
 		type: BlogCategoriesEnum,
 		status?: string,
 		tags?: string[]
-	): Observable<{count: number, data: NewArticleModel[]}> {
+	): Observable<{ count: number, data: NewArticleModel[] }> {
 		let params = new HttpParams();
 		params = params.append('limit', limit)
 			.append('offset', offset)
@@ -181,6 +211,16 @@ export class BlogService {
 		}
 
 		return this.apiService.get('new-blogs', {params});
+	}
+
+	public updateAuthorStore(response: BlogAuthorResponse | null): void {
+		if (!response) {
+			this.blogStore.update({authorBlogs: null, authorInfo: null});
+		} else {
+			const {author, blogs, count} = response;
+			this.blogStore.update({authorInfo: author, authorBlogs: {count: count, blogs: blogs}});
+		}
+
 	}
 
 	private updateHomepage(homepage: BlogHomepageModel): void {

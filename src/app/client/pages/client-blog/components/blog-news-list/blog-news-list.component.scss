@@ -56,35 +56,11 @@
 						padding-bottom: 0;
 					}
 				}
-
-				.tags {
-					display: flex;
-					gap: 16px;
-
-					@include breakpoint('3') {
-						display: none;
-					}
-				}
 			}
 		}
 
-		.mobile-tags {
-			display: none;
-
-			@include breakpoint('3') {
-				display: flex;
-				padding-top: 16px;
-				gap: 16px;
-			}
-		}
-
-		.tag {
-			background-color: #F3F6F8;
-			padding: 7px 10px;
-			font-size: 14px;
-			font-weight: 600;
-			line-height: 18.76px;
-			color: #556274;
+		.hover-icon {
+			bottom: 79px;
 		}
 	}
 }

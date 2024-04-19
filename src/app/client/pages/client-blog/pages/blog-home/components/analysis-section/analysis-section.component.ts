@@ -4,6 +4,7 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { B2bNgxImageModule } from '@b2b/ngx-image';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { BlogArticle } from '../../../../../../../../../admin/src/app/pages/admin-blog-post/types/admin-blog-post.type';
 
 @Component({
   selector: 'b2b-analysis-section',
@@ -18,11 +19,13 @@ import { RouterLink } from '@angular/router';
   styleUrl: './analysis-section.component.scss'
 })
 export class AnalysisSectionComponent {
-	@Input() set articles(value: NewArticleModel[]) {
+	@Input() isAnalysisSection: boolean = true;
+
+	@Input() set articles(value: NewArticleModel[] | BlogArticle[]) {
 		if (value?.length  > 0) {
 			this.posts = value;
 		}
 	}
 
-	public posts: NewArticleModel[];
+	public posts: NewArticleModel[] | BlogArticle[];
 }

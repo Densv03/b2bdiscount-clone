@@ -21,13 +21,13 @@ import {MatIcon} from "@angular/material/icon";
 import {getName} from "country-list";
 import {PaymentAndShipping} from "../../../../../../../core/models/public-company-info.model";
 import {AuthService} from "../../../../../../../auth/services/auth/auth.service";
-import {first} from "rxjs/operators";
+import {filter, first} from "rxjs/operators";
 import {toastMessages} from "../client-company-information/client-company-information.constants";
 import {SourcingRequestService} from "../../../../../client-sourcing-request/sourcing-request.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {TabOutputData} from "../../component/client-profile-settings-tabs/client-profile-settings-tabs.interface";
 import {Observable} from "rxjs";
-import _ from "lodash";
+import _, {pick} from "lodash";
 import {NgClass} from "@angular/common";
 import {
 	ClientProfileMobileToolbarComponent
@@ -40,6 +40,9 @@ import {
 	ClientProfileDefaultModalComponent
 } from "../../component/client-profile-default-modal/client-profile-default-modal.component";
 import {DefaultModalData} from "../../component/client-profile-default-modal/client-profile-default-modal.interface";
+import {ClientMarketplaceService} from "../../../../../client-marketplace/client-marketplace.service";
+import {MarketProductModel} from "../../../../../client-marketplace/models/market-product.model";
+import {capitalizeFirstLetter} from "../../../../../../../core/helpers/function/capitalize-first-letter";
 
 @UntilDestroy()
 @Component({
@@ -65,7 +68,8 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 							private cdr: ChangeDetectorRef,
 							private sourcingRequestService: SourcingRequestService,
 							private hotToastService: HotToastService,
-							private clientProfileSettingsTabsService: ClientProfileSettingsTabsService<PaymentAndShipping>) {
+							private clientProfileSettingsTabsService: ClientProfileSettingsTabsService<PaymentAndShipping>,
+							private clientMarketplaceService: ClientMarketplaceService) {
 	}
 
 	get company() {
@@ -73,8 +77,8 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 	}
 
 	get disabled() {
-		const data = _.omitBy(this.paymentAndShipping, (v) => v?.length === 0 || !v.length);
-		return !(data?.paymentMethods && data?.deliveryTerms && data?.tradingAreas);
+		const data = _.omitBy(this.paymentAndShipping, (v) => v?.length === 0 || !v?.length);
+		return !(data?.paymentMethods && data?.deliveryTerms && data?.tradingAreas) || _.isEqual(data, this.company.paymentAndShipping);
 	}
 
 	ngOnInit() {
@@ -91,7 +95,7 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 		this.cdr.detectChanges();
 	}
 
-	check(property: keyof PaymentAndShipping, value: string) {
+	check(property: keyof PaymentAndShipping, value: any) {
 		return this.paymentAndShipping[property].includes(value);
 	}
 
@@ -135,6 +139,7 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 			console.log(e);
 		}
 		this.updateTabsData();
+		this.updateProductsModal();
 	}
 
 	updateTabsData() {
@@ -147,26 +152,41 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 	updateProductsModal() {
 		this.matDialog.open(ClientProfileDefaultModalComponent, {
 			data: {
-				title: 'Update products',
-				label: 'Would you like to update this information for all your products?',
+				label: 'Update products',
+				title: '',
+				description: 'Would you like to update this information for all your products?',
 				buttons: [
 					{
-						label: 'Discard'
+						label: 'Discard',
+						result: false
 					},
 					{
-						label: 'Apply changes'
+						label: 'Apply changes',
+						result: true
 					}
 				]
 			}
-		} as MatDialogConfig<DefaultModalData<boolean>>);
+		} as MatDialogConfig<DefaultModalData<boolean>>).afterClosed().pipe(untilDestroyed(this)).subscribe(res => {
+			if (res) {
+				this.updateAllProducts();
+			}
+		})
 	}
 
-	private add(property: keyof PaymentAndShipping, value: string) {
+	toProductModel(paymentAndShipping: PaymentAndShipping): Partial<MarketProductModel> {
+		return {
+			paymentMethods: paymentAndShipping.paymentMethods,
+			tradingAreas: paymentAndShipping.tradingAreas,
+			shipping: paymentAndShipping.deliveryTerms,
+		};
+	}
+
+	add(property: keyof PaymentAndShipping, value: any) {
 		this.paymentAndShipping[property].push(value);
 	}
 
-	private remove(property: keyof PaymentAndShipping, value: string) {
-		this.paymentAndShipping[property] = this.paymentAndShipping[property].filter(x => x !== value)
+	remove(property: keyof PaymentAndShipping, value: any) {
+		this.paymentAndShipping[property] = this.paymentAndShipping[property].filter(x => x !== value) as any;
 	}
 
 	private saveListener() {
@@ -181,5 +201,71 @@ export class ClientPaymentAndShippingComponent implements OnInit {
 				}
 				this.cdr.detectChanges();
 			});
+	}
+
+	private updateAllProducts() {
+		const loading = this.hotToastService.loading('Updating products');
+		this.clientMarketplaceService
+			.getUserMarketProducts(
+				// Future me will be mad, but current me is happy :)
+				{
+					limit: 999999,
+				}
+			)
+			.subscribe(res => {
+				for (let i = 0; i < res.length; i++) {
+					try {
+						if (i === res.length - 1) {
+							this.updateProduct(pick(res[i], ['_id']));
+							loading.close()
+						}
+					} catch (e) {
+						console.error(e);
+						this.hotToastService.error('Can\'t update all products');
+						loading.close()
+					}
+				}
+			})
+	}
+
+	private updateProduct(product: Pick<MarketProductModel, '_id'>): void {
+		this.clientMarketplaceService
+			.updateProduct(
+				product?._id,
+				this.getFormData(
+					this.toProductModel(this.paymentAndShipping)
+				))
+			.pipe(this.hotToastService
+				.observe({error: `Can't update product with ID: ${product?._id}`}))
+			.subscribe(() => {
+			});
+	}
+
+	private getFormData(data: any):
+		FormData {
+		const formData = new FormData();
+		Object.entries(data)
+			.filter(([, value]) => !!value)
+			.forEach(([key, value]: [string, any]) => {
+				if (Array.isArray(value)) {
+					value
+						.filter((arrayItem) => !!arrayItem)
+						.forEach((arrayItem) => {
+							if (key === 'specificationList') {
+								formData.append(key, JSON.stringify(arrayItem));
+							} else {
+								formData.append(key, arrayItem);
+							}
+						});
+				} else if (typeof value === 'object' && value) {
+					for (const childKey in value) {
+						const fullKey = `${key}${capitalizeFirstLetter(childKey)}`;
+						formData.append(fullKey, value[childKey]);
+					}
+				} else {
+					formData.append(key, value);
+				}
+			});
+		return formData;
 	}
 }

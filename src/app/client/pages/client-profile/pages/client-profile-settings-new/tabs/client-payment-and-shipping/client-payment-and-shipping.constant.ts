@@ -47,6 +47,10 @@ export const deliveryTerms: CheckboxOption[] = [
 		label: 'FCA',
 	},
 	{
+		value: 'FAS',
+		label: 'FAS',
+	},
+	{
 		value: 'FOB',
 		label: 'FOB',
 	},

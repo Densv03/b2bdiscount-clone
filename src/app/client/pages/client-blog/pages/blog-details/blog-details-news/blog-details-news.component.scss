@@ -1,0 +1,59 @@
+@import 'projects/shared/src/styles';
+
+::ng-deep {
+	.recommendation-wrapper {
+		margin: 24px 0;
+		display: block;
+		padding: 24px;
+		background-color: #F3F6F8;
+		border-radius: 8px;
+
+		@include breakpoint('3') {
+			padding: 8px;
+		}
+
+		.recommendation-text {
+			font-size: 24px;
+			font-weight: 600;
+			line-height: 32.16px;
+			letter-spacing: 0.01em;
+			padding-bottom: 8px;
+
+			@include breakpoint('3') {
+				font-size: 18px;
+				line-height: 24.12px;
+			}
+		}
+
+		.recommendation-article {
+			gap: 26px;
+
+			@include breakpoint('3') {
+				flex-direction: column;
+				gap: 0;
+			}
+
+			&-image {
+				max-width: 259px;
+				height: 162px;
+				border-radius: 8px;
+
+				@include breakpoint('3') {
+					max-width: 322px;
+				}
+			}
+
+			&-title {
+				font-size: 20px;
+				font-weight: 600;
+				line-height: 26.8px;
+				letter-spacing: 0.01em;
+
+				@include breakpoint('3') {
+					font-size: 18px;
+					line-height: 24.12px;
+				}
+			}
+		}
+	}
+}

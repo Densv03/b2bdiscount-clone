@@ -1,6 +1,6 @@
 <b2b-client-profile-modal-container (close)="onDismiss()"
 																		[label]="'Add ' + (tradeShow.type | titlecase) + ' exhibition'"
-																		class="p-2 md:max-w-[70vw] md:h-auto h-[100vh] overflow-y-auto md:mb-0 mb-20">
+																		class="md:max-w-[70vw] p-2 min-w-[50vw] max-h-screen md:max-h-[90vh] overflow-y-auto">
 	<form (ngSubmit)="onSubmit()"
 				[formGroup]="form"
 				class="flex flex-col gap-4 md:mb-0 mb-12">

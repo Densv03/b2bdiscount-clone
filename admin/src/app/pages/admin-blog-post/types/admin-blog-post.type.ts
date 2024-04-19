@@ -1,5 +1,6 @@
 import { Photo } from "../../../../../../src/app/core/models/photo.model";
 import { Image } from "@ckeditor/ckeditor5-image";
+import { BlogCategoriesEnum } from '../../../../../../src/app/core/enums/blog-categories.enum';
 
 export interface Tag {
 	name: string;
@@ -100,7 +101,7 @@ export interface BlogArticle {
 	shortDescription: string;
 	datePublication: string;
 	readTime: string;
-	typeArticle: TypeArticle;
+	typeArticle: BlogCategoriesEnum;
 	articleStatus: ArticleStatus;
 	images: Photo[];
 	dateUpdate: string;

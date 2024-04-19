@@ -8,6 +8,7 @@ import { AdminManagerService } from '../shared/services/admin-manager.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { onlyNumber } from '../../../../../../src/app/core/helpers/validator/only-number';
 import { getName } from 'country-list';
+import { BehaviorSubject } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -16,14 +17,14 @@ import { getName } from 'country-list';
 	styleUrls: ['./admin-manager.component.scss'],
 })
 export class AdminManagerComponent implements OnInit {
-	public readonly pageSize = 25;
+	public readonly limit = 25;
 	public currentPage = 1;
+	public offset = 0;
 	public b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
 	public b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
 
 	public managersList: any[] = [];
 	public userList: any[] = [];
-	public userListByPage: any[] = [];
 	public displayedColumnsManagers: string[] = [
 		'refId',
 		'firstName',
@@ -47,6 +48,10 @@ export class AdminManagerComponent implements OnInit {
 	public usersByRefIdGroup: FormGroup = this.formBuilder.group({
 		refId: [null, [Validators.required, onlyNumber()]],
 	});
+
+	private totalCountSource: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	public totalCount$ = this.totalCountSource.asObservable();
+
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -88,7 +93,7 @@ export class AdminManagerComponent implements OnInit {
 		}
 
 		this.adminManagerService
-			.getUsersByRefId(parseInt(formGroup.value.refId))
+			.getUsersByRefId(parseInt(formGroup.value.refId), this.offset, this.limit)
 			.subscribe((data) => {
 				if (!data.length) {
 					this.hotToastService.show(
@@ -102,9 +107,8 @@ export class AdminManagerComponent implements OnInit {
 						}
 					);
 				}
-
+				this.totalCountSource.next(data[0].totalCount[0]?.total);
 				this.userList = data[0].users;
-				this.togglePage(1);
 				this.changeDetectionRef.detectChanges();
 			});
 	}
@@ -136,7 +140,8 @@ export class AdminManagerComponent implements OnInit {
 
 	public togglePage(page: number): void {
 		this.currentPage = page;
-		this.userListByPage = this.userList.slice((this.currentPage - 1) * this.pageSize, this.pageSize * this.currentPage);
+		this.offset = (page - 1) * this.limit;
+		this.getUsersByRefId(this.usersByRefIdGroup);
 	}
 
 	private updateManagerList(): void {

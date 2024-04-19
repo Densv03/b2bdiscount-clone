@@ -8,6 +8,7 @@
 			<button
 				class="cursor-pointer"
 				b2bNgxButton
+				(click)="fileInput.click()"
 				[theme]="theme"
 				[class]="classNamePrefix + 'ngx-file-button'"
 				[class.ng-invalid]="formControl.invalid"
@@ -18,16 +19,17 @@
 							 alt=""/>
 				}
 				<span [class]="classNamePrefix + 'ngx-file-button-text'">{{ label }}</span>
-				<input
-					#fileInput
-					[multiple]="!acceptSingle"
-					[accept]="isPhoto ? 'image/*': '*'"
-					[formControl]="formControl"
-					(change)="uploadFiles($event)"
-					[class]="classNamePrefix + 'ngx-file-input'"
-					type="file"
-					id="file"/>
 			</button>
+			<input
+				#fileInput
+				[multiple]="!acceptSingle"
+				[accept]="isPhoto ? 'image/*': '*'"
+				[formControl]="formControl"
+				(change)="uploadFiles($event)"
+				[class]="classNamePrefix + 'ngx-file-input'"
+				type="file"
+				class="scale-0 hidden"
+				id="file"/>
 
 			@if (!isB2BVersion || !files?.length) {
 				<div [class]="classNamePrefix + 'empty-file-label'">

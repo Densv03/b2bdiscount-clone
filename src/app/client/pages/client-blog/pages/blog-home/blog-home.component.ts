@@ -15,19 +15,21 @@ import {
 } from './components/trade-guides-or-logistics/trade-guides-or-logistics.component';
 import { AnalysisSectionComponent } from './components/analysis-section/analysis-section.component';
 import { MarketUpdatesSectionComponent } from './components/market-updates-section/market-updates-section.component';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @UntilDestroy()
 @Component({
   selector: 'b2b-blog-home',
   standalone: true,
-	imports: [
-		RecentlyPublishedArticlesComponent,
-		CommonModule,
-		NewsArticlesSectionComponent,
-		TradeGuidesOrLogisticsComponent,
-		AnalysisSectionComponent,
-		MarketUpdatesSectionComponent,
-	],
+  imports: [
+    RecentlyPublishedArticlesComponent,
+    CommonModule,
+    NewsArticlesSectionComponent,
+    TradeGuidesOrLogisticsComponent,
+    AnalysisSectionComponent,
+    MarketUpdatesSectionComponent,
+    PageLoaderModule,
+  ],
   templateUrl: './blog-home.component.html',
   styleUrl: './blog-home.component.scss'
 })
@@ -42,6 +44,9 @@ export class BlogHomeComponent implements OnInit {
 	}
 
 	private getArticles(): void {
-		this.blogHomePageData$ = this.blogService.getHomePage().pipe(map(data => data.data));
+		this.blogHomePageData$ = this.blogService.getHomePage().pipe(map(data => {
+
+			return data.data;
+		}));
 	}
 }

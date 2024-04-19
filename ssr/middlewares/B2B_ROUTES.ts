@@ -114,6 +114,11 @@ export const B2B_ROUTES: PathObject = {
 						validator: isValidBlogAuthor,
 					}
 				}
+			},
+			'tag': {
+				nestedPaths: {
+					':tag': {}
+				}
 			}
 		}
 	},
@@ -123,7 +128,8 @@ export const B2B_ROUTES: PathObject = {
 				nestedPaths: {
 					'settings': {
 						nestedPaths: {
-							'following-products': {}
+							'following-products': {},
+							'profile': {},
 						}
 					},
 					'company-information': {},

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, Observable, of } from 'rxjs';
+import {BehaviorSubject, firstValueFrom, Observable, of, shareReplay} from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 
 import { User } from '../../../core/models/user/user.model';
@@ -172,7 +172,7 @@ export class AuthService {
 		if (!this.authQuery.getValue().roles.length) {
 			this.apiService
 				.get('roles')
-				.pipe(take(1))
+				.pipe(take(1), shareReplay())
 				.subscribe((data: any) => {
 					this.authStore.update({
 						roles: data.roles,

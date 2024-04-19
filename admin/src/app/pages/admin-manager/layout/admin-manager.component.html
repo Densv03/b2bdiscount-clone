@@ -102,13 +102,13 @@
 		</button>
 	</form>
 
-	@if (userList?.length) {
-		<div>Total count: {{ userList.length }}</div>
+	@if (totalCount$ | async) {
+		<div>Total count: {{ totalCount$ | async }}</div>
 
 		<div>
 			<table
 				mat-table
-				[dataSource]="userListByPage"
+				[dataSource]="userList"
 				class="mat-elevation-z8 w-100">
 				<ng-container matColumnDef="email">
 					<th class="th-firstName" mat-header-cell *matHeaderCellDef>Email</th>
@@ -161,8 +161,8 @@
 			</table>
 
 			<b2b-pagination
-				[length]="userList?.length"
-				[perPage]="pageSize"
+				[length]="totalCount$ | async"
+				[perPage]="limit"
 				[shouldScroll]="false"
 				(togglePageNumber)="togglePage($event)"
 				[currentPage]="currentPage"></b2b-pagination>

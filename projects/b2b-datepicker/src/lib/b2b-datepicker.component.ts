@@ -10,7 +10,6 @@ import {fromEvent, map, Observable, startWith} from "rxjs";
 import {NgxInputVersionEnum} from "projects/ngx-input/src/lib/enum/ngx-input-version.enum";
 import {CustomInputService} from "projects/shared/src/lib/services/custom-input/custom-input.service";
 import {customInputProvider} from "projects/shared/src/lib/utils/custom-input.provider";
-import {FormControl, Validators} from "@angular/forms";
 
 interface IconPosition {
 	top: string;
@@ -49,12 +48,13 @@ const MY_DATE_FORMATS = {
 	],
 })
 export class B2bDatepickerComponent extends CustomInputService<Date> implements OnInit {
+	@Input() maxDate: Date;
 	@Input() inputClassName: string = '';
 	@Input() placeholder: string = 'Choose a date';
 	@Input() iconName?: string;
 	@Input() iconPosition?: Partial<IconPosition>;
 	@Input() customHeader?: ComponentType<any> = CalendarHeaderComponent;
-	@Input() today = new Date();
+	@Input() today: string | Date = new Date();
 	@Input() version = NgxInputVersionEnum.B2B;
 	@Input() label: string;
 

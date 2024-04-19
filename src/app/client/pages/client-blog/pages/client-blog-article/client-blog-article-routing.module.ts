@@ -7,20 +7,20 @@ const routes: Routes = [
 	{
 		path: '',
 		component: ClientBlogArticleComponent,
-	// },
-	// {
-	// 	path: ':id',
-	// 	canActivate: [DefaultRoleGuard],
-	// 	loadChildren: () =>
-	// 		import(
-	// 			'../client-blog-authors-page/client-blog-authors-page.module'
-	// 		).then((m) => m.ClientBlogAuthorsPageModule),
-	// 	data: {
-	// 		meta: {
-	// 			title: 'Globy - Buy and Sell B2B Cargo with Discount!',
-	// 			description: 'Globy - Trading Wiki',
-	// 		},
-	// 	},
+	},
+	{
+		path: ':id',
+		canActivate: [DefaultRoleGuard],
+		loadChildren: () =>
+			import(
+				'../../../client-blog-authors-page/client-blog-authors-page.module'
+			).then((m) => m.ClientBlogAuthorsPageModule),
+		data: {
+			meta: {
+				title: 'Globy - Buy and Sell B2B Cargo with Discount!',
+				description: 'Globy - Trading Wiki',
+			},
+		},
 	},
 ];
 

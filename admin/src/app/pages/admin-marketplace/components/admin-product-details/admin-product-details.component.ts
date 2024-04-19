@@ -178,8 +178,8 @@ export class AdminProductDetailsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.createFormGroup();
 		this.getLevel1Categories$();
+		this.createFormGroup();
 		this.detectEditMode();
 		this.patchForm();
 		if (this.platformService.isBrowser) {
@@ -598,6 +598,7 @@ export class AdminProductDetailsComponent implements OnInit {
 	}
 
 	private getPhotosOrder(arr: Array<File | any>): any[] {
+
 		return arr.reduce((acc, curr, index) => {
 			acc.push({
 				imageName: curr?.name || curr?.imageName,
@@ -756,6 +757,7 @@ export class AdminProductDetailsComponent implements OnInit {
 				switchMap(([prevId, curId]) => {
 					if (prevId) {
 						this.formGroup.get('category').reset();
+						this.formGroup.get('category').enable();
 						this.formGroup.updateValueAndValidity();
 					}
 
@@ -1029,7 +1031,9 @@ export class AdminProductDetailsComponent implements OnInit {
 						product.photos.every((photo) => 'serialNumber' in photo) &&
 						checkSerialNumber(product.photos)
 					) {
-						product.photos = product.photos.reduce((acc: any[], val: any) => {
+						product.photos = product.photos
+							.sort((a, b) => a.serialNumber - b.serialNumber)
+							.reduce((acc: any[], val: any) => {
 							acc[val?.serialNumber] = val;
 							return acc;
 						}, []);

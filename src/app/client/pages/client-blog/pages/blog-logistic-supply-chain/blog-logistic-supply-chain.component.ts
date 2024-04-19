@@ -8,16 +8,18 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { NewArticleModel } from '../../../../../core/models/blog/new-article.model';
 import { BlogService } from '../../../../services/blog/blog.service';
 import { take } from 'rxjs/operators';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @Component({
   selector: 'b2b-blog-logistic-supply-chain',
   standalone: true,
-	imports: [
-		AsyncPipe,
-		BlogCategoryGridComponent,
-		BlogSectionHeaderComponent,
-		PaginationModule,
-	],
+  imports: [
+    AsyncPipe,
+    BlogCategoryGridComponent,
+    BlogSectionHeaderComponent,
+    PaginationModule,
+    PageLoaderModule,
+  ],
   templateUrl: './blog-logistic-supply-chain.component.html',
   styleUrl: './blog-logistic-supply-chain.component.scss'
 })

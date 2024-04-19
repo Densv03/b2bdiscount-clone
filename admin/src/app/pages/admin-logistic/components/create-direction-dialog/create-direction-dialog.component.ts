@@ -39,16 +39,15 @@ export class CreateDirectionDialogComponent implements OnInit {
 	public showNameInput: boolean = false;
 	public b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
 	public directionCountryOptions: BehaviorSubject<
-		{ label: string; code: string }[]
-	> = new BehaviorSubject<{ label: string; code: string }[]>(null);
-	public countryOptions: BehaviorSubject<{ label: string; code: string }[]> =
-		new BehaviorSubject<{ label: string; code: string }[]>(null);
+		{ label: string; code: string; icon: string }[]
+	> = new BehaviorSubject<{ label: string; code: string; icon: string }[]>(null);
+	public countryOptions: BehaviorSubject<{ label: string; code: string; icon: string }[]> =
+		new BehaviorSubject<{ label: string; code: string; icon: string }[]>(null);
 	public cityOptions: BehaviorSubject<{ label: string; code: string }[]>;
 	public directions: any[];
 
 	constructor(
 		private readonly dialogRef: MatDialogRef<CreateDirectionDialogComponent>,
-		private readonly adminLogisticService: AdminLogisticService,
 		private readonly changeDetectorRef: ChangeDetectorRef
 	) {}
 

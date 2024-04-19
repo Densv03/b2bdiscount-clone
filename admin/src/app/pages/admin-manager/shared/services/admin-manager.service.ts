@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent } from '@angular/common/http';
+import { HttpEvent, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -29,8 +29,15 @@ export class AdminManagerService {
 		});
 	}
 
-	public getUsersByRefId(refId: number): Observable<any> {
-		return this.apiService.get(`statistics/get-users-list?refId=${refId}`);
+	public getUsersByRefId(refId: number, offset?: number, limit?: number): Observable<any> {
+		let params = new HttpParams();
+		if (offset) {
+			params = params.append('offset', offset);
+		}
+		if (limit) {
+			params = params.append('limit', limit);
+		}
+		return this.apiService.get(`statistics/get-users-list?refId=${refId}`, {params});
 	}
 
 	public deleteManagerById(refId: string): Observable<any> {

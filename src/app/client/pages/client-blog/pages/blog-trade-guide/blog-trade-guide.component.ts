@@ -8,17 +8,19 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
 import { NewArticleModel } from '../../../../../core/models/blog/new-article.model';
 import { BlogService } from '../../../../services/blog/blog.service';
 import { BlogCategoryGridComponent } from '../../components/blog-category-grid/blog-category-grid.component';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @Component({
   selector: 'b2b-blog-trade-guide',
   standalone: true,
-	imports: [
-		AsyncPipe,
-		BlogNewsListComponent,
-		BlogSectionHeaderComponent,
-		PaginationModule,
-		BlogCategoryGridComponent,
-	],
+  imports: [
+    AsyncPipe,
+    BlogNewsListComponent,
+    BlogSectionHeaderComponent,
+    PaginationModule,
+    BlogCategoryGridComponent,
+    PageLoaderModule,
+  ],
   templateUrl: './blog-trade-guide.component.html',
   styleUrl: './blog-trade-guide.component.scss'
 })

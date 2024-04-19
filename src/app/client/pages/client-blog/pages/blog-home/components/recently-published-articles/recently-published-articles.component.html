@@ -16,7 +16,7 @@
 	}
 
 	@if (posts?.length > 0) {
-		<a class="first-article d-flex justify-between pointer"
+		<a class="first-article d-flex justify-between pointer relative-parent"
 			 [class.flex-row-reverse]="!isRecentlyPublished"
 			 [routerLink]="['/blog', (posts[0]?.path || posts[0]._id)]">
 			@if (posts[0]?.images?.length > 0) {
@@ -29,7 +29,7 @@
 				<svg-icon class="large-article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
 			}
 
-			<div class="d-flex flex-column justify-between w50" [class.justify-content-center]="!isRecentlyPublished">
+			<div class="d-flex flex-column justify-between w50 relative-block" [class.justify-content-center]="!isRecentlyPublished">
 				<div>
 					@if (isRecentlyPublished) {
 						<a class="article-category-link"> {{ posts[0].typeArticle }}</a>
@@ -52,15 +52,18 @@
 					}
 					<span
 						class="large-article-author-and-date" [class.w-100]="!isRecentlyPublished">
-						<a>{{ posts[0]?.authorId?.fullName }}</a> · {{ posts[0].updatedAt | date: 'MMM dd, yyyy' }}
+						<a>{{ posts[0]?.authorId?.fullName }}</a> · {{ posts[0].dateUpdate | date: 'MMM dd, yyyy' }}
 					</span>
 				</div>
+
+				<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 			</div>
+
 		</a>
 
 		<div class="articles d-flex blog-lg-gap">
 			@for (article of posts.slice(1); track article._id) {
-				<a class="article w33 d-flex flex-column justify-between pointer"
+				<a class="article w33 d-flex flex-column justify-between pointer relative-full-block"
 					 [routerLink]="['/blog', (article?.path || article._id)]">
 					<div>
 						@if (article?.images?.length > 0) {
@@ -90,9 +93,10 @@
 						}
 
 						<span
-							class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+							class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.dateUpdate | date: 'MMM dd, yyyy' }}</span>
 					</div>
 
+					<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 				</a>
 			}
 		</div>

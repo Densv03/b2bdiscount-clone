@@ -21,7 +21,7 @@ import {
 } from 'rxjs/operators';
 import { B2bNgxInputThemeEnum } from 'projects/ngx-input/src/public-api';
 import { environment } from '../../../../../../src/environments/environment';
-import Editor from '../../../../../assets/ckeditor5-build/build/ckeditor.js';
+import * as Editor from '../../../../../assets/ckeditor5-build/build/ckeditor.js';
 import {
 	CreatingAuthorMessages,
 	CreatingPostMessages,
@@ -52,7 +52,7 @@ export class AdminBlogPostComponent implements OnInit {
 	public readonly b2bNgxSelectThemeEnum: typeof B2bNgxSelectThemeEnum;
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
 	public readonly b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
-	public Editor = Editor;
+	public editor = Editor as any;
 
 	public blogAction: BLOG_ACTION = this.activatedRoute.snapshot.params['id'] === 'create' ? BLOG_ACTION.CREATE : BLOG_ACTION.EDIT;
 	public formGroup: FormGroup = this.getFormGroup();
@@ -138,6 +138,7 @@ export class AdminBlogPostComponent implements OnInit {
 	public addAuthorDialog(): void {
 		this.dialog.open(AddAuthorDialogComponent, {
 			width: '600px',
+			maxHeight: '90vh',
 		})
 			.afterClosed()
 			.pipe(

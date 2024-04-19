@@ -1,6 +1,6 @@
 <div class="articles-list-wrapper d-flex flex-column justify-content-between blog-lg-gap">
 	@for (article of articles; track article._id) {
-		<a class="d-flex flex-column article-wrapper" [routerLink]="['/blog', (article?.path || article._id)]">
+		<a class="d-flex flex-column article-wrapper relative-full-block" [routerLink]="['/blog', (article?.path || article._id)]">
 			<div class="d-flex article">
 				@if (article?.images?.length > 0) {
 					<img
@@ -15,7 +15,7 @@
 				<div class="article-text d-flex flex-column">
 					<h3 class="article-title">{{ article.title }}</h3>
 
-					<span class="large-article-author-and-date">{{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+					<span class="large-article-author-and-date">{{ article.dateUpdate | date: 'MMM dd, yyyy' }}</span>
 
 					@if (article.tags?.length > 0) {
 						<div class="tags flex-wrap">
@@ -34,6 +34,8 @@
 					}
 				</div>
 			}
+
+			<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 		</a>
 	}
 </div>

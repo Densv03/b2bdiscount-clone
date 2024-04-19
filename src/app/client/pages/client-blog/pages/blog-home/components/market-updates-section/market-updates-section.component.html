@@ -10,7 +10,7 @@
 	</a>
 
 	<div class="d-flex justify-between blog-lg-gap align-items-start market-updates-list">
-		<a class="w33 pointer" [routerLink]="['/blog', (posts[0]?.path || posts[0]._id)]">
+		<a class="w33 pointer relative-full-block" [routerLink]="['/blog', (posts[0]?.path || posts[0]._id)]">
 			@if (posts[0]?.images?.length > 0) {
 				<img
 					class="market-updates-image"
@@ -23,16 +23,20 @@
 			<h3 class="market-updates-title">{{posts[0]?.title}}</h3>
 
 			<span
-				class="large-article-author-and-date"><a>{{ posts[0]?.authorId?.fullName }}</a> · {{ posts[0].updatedAt | date: 'MMM dd, yyyy' }}</span>
+				class="large-article-author-and-date"><a>{{ posts[0]?.authorId?.fullName }}</a> · {{ posts[0].dateUpdate | date: 'MMM dd, yyyy' }}</span>
+
+			<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 		</a>
 
 		<div class="d-flex flex-between blog-lg-gap flex-wrap w-66">
 			@for (article of posts.slice(1); track article._id) {
-				<a class="w50 pointer" [routerLink]="['/blog', (article?.path || article._id)]">
+				<a class="w50 pointer d-flex flex-column justify-between relative-full-block" [routerLink]="['/blog', (article?.path || article._id)]">
 					<h3 class="article-title-in-section pb-2">{{article.title}}</h3>
 
 					<span
-						class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+						class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.dateUpdate | date: 'MMM dd, yyyy' }}</span>
+
+					<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 				</a>
 			}
 		</div>

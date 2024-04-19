@@ -55,7 +55,7 @@ export class AdminBlogComponent {
 				error: 'Articles loading failed',
 			}),
 			switchMap(page =>
-				this._blogService.getNewArticles((page - 1) * 10, ArticleTypes, ArticleStatuses)
+				this._blogService.getNewArticles((page - 1) * 10)
 					.pipe(
 						tap(data => this.totalCount = data.count),
 						map(data => data.data))

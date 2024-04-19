@@ -71,7 +71,6 @@ export class CompanyExhibitionsComponent implements OnInit, AfterViewInit {
 	@HostListener('window:resize', ['$event'])
 	onResize(event: Event) {
 		const windowWidth = window.innerWidth;
-		console.log(windowWidth)
 		switch (windowWidth) {
 			case 976:
 				this.slidesPerView = 3;
@@ -178,7 +177,7 @@ export class CompanyExhibitionsComponent implements OnInit, AfterViewInit {
 			if (this.platformService.isBrowser) {
 				swiperInstance.nativeElement.initialize();
 			}
-		}, 500);
+		}, 1500);
 	}
 
 	toggleNavigationArrows(swiper: Swiper, prevButtonSelector: string, nextButtonSelector: string) {
@@ -196,7 +195,6 @@ export class CompanyExhibitionsComponent implements OnInit, AfterViewInit {
 		}
 
 		if (nextButton) {
-			console.log('toggle', isLastSlide, swiperInstance.activeIndex, swiperInstance.slides.length)
 			nextButton.classList.toggle('d-none', isLastSlide);
 		}
 	}

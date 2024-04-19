@@ -7,6 +7,7 @@ import { BlogCategoriesEnum } from '../../../../../core/enums/blog-categories.en
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { NewArticleModel } from '../../../../../core/models/blog/new-article.model';
 import { BlogService } from '../../../../services/blog/blog.service';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @Component({
   selector: 'b2b-blog-market-experts',
@@ -16,6 +17,7 @@ import { BlogService } from '../../../../services/blog/blog.service';
     BlogCategoryGridComponent,
     BlogSectionHeaderComponent,
     PaginationModule,
+    PageLoaderModule,
   ],
   templateUrl: './blog-market-experts.component.html',
   styleUrl: './blog-market-experts.component.scss'

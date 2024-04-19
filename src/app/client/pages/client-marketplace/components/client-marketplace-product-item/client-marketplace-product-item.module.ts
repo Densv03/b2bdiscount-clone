@@ -6,17 +6,21 @@ import { B2bNgxIconModule } from '@b2b/ngx-icon';
 import { B2bNgxButtonModule } from '@b2b/ngx-button';
 import { B2bNgxImageModule } from '@b2b/ngx-image';
 import { MatDialogModule } from '@angular/material/dialog';
+import {
+    ClientMarketplaceImagesCarouselComponent
+} from "../client-marketplace-images-carousel/client-marketplace-images-carousel.component";
 
 @NgModule({
 	declarations: [ClientMarketplaceProductItemComponent],
 	exports: [ClientMarketplaceProductItemComponent],
-	imports: [
-		CommonModule,
-		RouterModule,
-		B2bNgxIconModule,
-		B2bNgxButtonModule,
-		B2bNgxImageModule,
-		MatDialogModule,
-	],
+    imports: [
+        CommonModule,
+        RouterModule,
+        B2bNgxIconModule,
+        B2bNgxButtonModule,
+        B2bNgxImageModule,
+        MatDialogModule,
+        ClientMarketplaceImagesCarouselComponent,
+    ],
 })
 export class ClientMarketplaceProductItemModule {}

@@ -13,7 +13,7 @@ import { ApiService } from '../../../core/services/api/api.service';
 // import { AuthService } from "../../../auth/services/auth/auth.service";
 // import { io } from "socket.io-client";
 import { environment } from '../../../../environments/environment';
-import { PublicCompanyInfoModel } from '../../../core/models/public-company-info.model';
+import {CompanyInfoResponse, PublicCompanyInfoModel} from '../../../core/models/public-company-info.model';
 import { PublicCompanyInfoForSector } from '../../../core/models/public-company-info-for-sector.model';
 
 interface SelectItem {
@@ -92,9 +92,9 @@ export class SourcingRequestService {
 		);
 	}
 
-	public getCompanyInfoById(id: string): Observable<PublicCompanyInfoModel> {
+	public getCompanyInfoById(id: string): Observable<CompanyInfoResponse> {
 		return this.apiService
-			.get<PublicCompanyInfoModel>(`tradeBid/getCompany/${id}`)
+			.get<CompanyInfoResponse>(`tradeBid/getCompany/${id}`)
 			.pipe(filter((data) => !!data));
 	}
 

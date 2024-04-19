@@ -64,7 +64,11 @@
 			</div>
 		</div>
 
-		<div [class.d-none]="!filterTradeShowsByType(tradeShows, 'upcoming').length" class="divider"></div>
+		<div
+			[class.d-none]="
+			!filterTradeShowsByType(tradeShows, 'upcoming').length ||
+			!filterTradeShowsByType(tradeShows, 'participated').length"
+			class="divider"></div>
 
 		<div
 			[class.d-none]="!filterTradeShowsByType(tradeShows, 'upcoming').length"

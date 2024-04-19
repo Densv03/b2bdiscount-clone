@@ -1,37 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
-import { B2bNgxInputThemeEnum } from '@b2b/ngx-input';
-import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
-import { BlogService } from '../../../services/blog/blog.service';
-import { PaginationParamsModel } from '../../../../core/models/pagination-params.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SeoService } from '../../../../core/services/seo/seo.service';
-
-function generateQueryString(obj: any, initialValue: string = '?') {
-	return Object.entries(obj)
-		.filter(([, value]: any) => !!value)
-		.reduce((queryString: string, [key, value]: any) => {
-			return Array.isArray(value)
-				? `${queryString}${value.reduce(
-						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
-						''
-					)}`
-				: `${queryString}${key}=${value}&`;
-		}, initialValue);
-}
-
-function stripHtml(html: any) {
-	// Create a new div element
-	const temporalDivElement = document.createElement('div');
-	// Set the HTML content with the providen
-	temporalDivElement.innerHTML = html;
-	// Retrieve the text property of the element (cross-browser support)
-	return temporalDivElement.textContent || temporalDivElement.innerText || '';
-}
+import { BlogCategoriesEnum } from '../../../../core/enums/blog-categories.enum';
+import { filter } from 'rxjs/operators';
 
 @Component({
 	selector: 'b2b-client-blog',
@@ -40,225 +11,46 @@ function stripHtml(html: any) {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientBlogComponent implements OnInit {
-	public readonly socialMedias: any;
-	public readonly articles$: Observable<any>;
-	public readonly articlesSkeletonOptions: Partial<NgxSkeletonLoaderConfig>;
-
-	// public readonly searchControl: FormControl<string>;
-
-	public readonly b2bNgxInputThemeEnum: typeof B2bNgxInputThemeEnum;
-	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum;
-	public readonly b2bNgxSelectThemeEnum: typeof B2bNgxSelectThemeEnum;
-
-	public readonly formGroup: FormGroup;
-	// public readonly categories$: Observable<any>;
-	public readonly tags$: Observable<any>;
-
+	public isArticleRoute: boolean = false;
 	public loading: boolean;
-	public totalCount: any;
-
-	public pageSubject: Subject<any>;
-	public readonly searchSubject: BehaviorSubject<any>;
-	public readonly search$: Observable<any>;
-	public totalBlogLength$: Observable<number> = this._blogService.blogLength$;
-	public currentPageSource: BehaviorSubject<number> =
-		new BehaviorSubject<number>(1);
-
-	private filteredQueryObj: PaginationParamsModel = { limit: 7, offset: 0 };
 
 	constructor(
-		private readonly _blogService: BlogService,
-		private readonly _route: ActivatedRoute,
-		private readonly _router: Router,
-		private readonly _seoService: SeoService
+		private readonly router: Router,
+		private readonly _seoService: SeoService,
+		private readonly changeDetectorRef: ChangeDetectorRef
 	) {
-		this.b2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
-		this.b2bNgxButtonThemeEnum = B2bNgxButtonThemeEnum;
-		this.b2bNgxSelectThemeEnum = B2bNgxSelectThemeEnum;
-
-		this.pageSubject = new Subject();
-		this.searchSubject = new BehaviorSubject<any>('');
-
-		this.search$ = this.searchSubject.asObservable();
-
-		this.articlesSkeletonOptions = this.getArticlesSkeletonOptions();
-		this.socialMedias = this.getSocialMedias();
-		// this.searchControl = new FormControl<string>();
-		// this.categories$ = this.getCategories();
-
-		this.formGroup = this.getFormGroup();
-		this.articles$ = this.getArticles();
-		// this.tags$ = this.getTags();
 	}
 
 	ngOnInit() {
-		this.blogPageInit();
+		this.checkIsArticleRoute();
+
+		this.router.events.pipe(
+			filter(event => event instanceof NavigationEnd)
+		).subscribe(() => {
+			this.checkIsArticleRoute();
+		});
 		this.addMetaTags();
 	}
 
-	public get currentPage$(): Observable<number> {
-		return this.currentPageSource.asObservable();
-	}
 
-	public setPage(offset: number): void {
-		this.formGroup.patchValue({
-			offset,
-		});
-	}
+	private checkIsArticleRoute(): void {
+		const blogCategoriesEnum = Object.values(BlogCategoriesEnum).filter(value => typeof value === 'string');
+		const urlArr = this.router.url.split('/');
+		const isNotArticleTypePage = blogCategoriesEnum.filter(el => {
+		return urlArr[2]?.startsWith(el.toLowerCase().split(' ').join('-').replace('&', 'and'))
+		})?.length === 0;
 
-	public togglePageBlogList(page: number): void {
-		this.filteredQueryObj = {
-			...this.filteredQueryObj,
-			offset: (page - 1) * 7,
-		};
-		this._blogService.updateBlogList(
-			generateQueryString(this.filteredQueryObj)
-		);
-		this._router.navigate([], {
-			relativeTo: this._route,
-			queryParams: {
-				page: page === 1 ? undefined : page,
-			},
-			queryParamsHandling: 'merge',
-		});
-
-		this.currentPageSource.next(page);
-	}
-
-	// public clearFilters() {
-	// 	this.formGroup.reset();
-	// }
-
-	public getFormGroup() {
-		return new FormGroup<{
-			q: FormControl<string>;
-			offset: FormControl<number>;
-		}>({
-			q: new FormControl<string>(''),
-			// "categories[]": "",
-			// "countries[]": "",
-			// "tags[]": "",
-			offset: new FormControl<number>(0),
-		});
-	}
-
-	public searchTags(str: string) {
-		this.searchSubject.next(str);
-	}
-
-	// public getTags() {
-	// 	return this.search$.pipe(
-	// 		filter((term) => term.length > 1),
-	// 		debounceTime(1000),
-	// 		distinctUntilChanged(),
-	// 		switchMap((value) => this._blogService.getTags(value))
-	// 	);
-	// }
-
-	public getArticles() {
-		return this.formGroup.valueChanges.pipe(
-			startWith({ limit: 10 }),
-			tap(() => {
-				this.loading = true;
-			}),
-			switchMap((filters) => {
-				const queryString = generateQueryString(filters);
-
-				return this._blogService.getArticles(queryString);
-			}),
-			map((res) => {
-				this.loading = false;
-				this.totalCount = res.totalCount;
-
-				const posts = res.posts.map((post: any) => ({
-					...post,
-					preview: stripHtml(post.description),
-				}));
-
-				return posts;
-			})
-		);
-	}
-
-	public getArticlesSkeletonOptions(): Partial<NgxSkeletonLoaderConfig> {
-		return {
-			count: 4,
-			animation: 'progress',
-			theme: {
-				height: '230px',
-			},
-		};
-	}
-
-	public getSocialMedias() {
-		return [
-			{
-				icon: 'facebook-gray',
-				href: 'https://www.facebook.com/',
-			},
-			{
-				icon: 'twitter-gray',
-				href: 'https://twitter.com/',
-			},
-			{
-				icon: 'instagram-gray',
-				href: 'https://www.instagram.com/?hl=ru',
-			},
-			{
-				icon: 'pinterest-gray',
-				href: 'https://www.pinterest.com/',
-			},
-			{
-				icon: 'behance-gray',
-				href: 'https://www.behance.net/',
-			},
-			{
-				icon: 'google-gray',
-				href: 'https://www.google.com.ua/?hl=ru',
-			},
-		];
-	}
-
-	public groupValueFn(value: any, ...args: any) {
-		return value.value;
-	}
-
-	// public getCategories() {
-	// 	return this._categoriesService.getWikiCategories().pipe(
-	// 		map((categoris) =>
-	// 			categoris
-	// 				.map((category) => ({
-	// 					text: category.name,
-	// 					value: category._id,
-	// 					collapsed: true,
-	// 					checked: false,
-	// 					children: category.children.map((child) => ({
-	// 						text: child.name,
-	// 						value: child._id,
-	// 						collapsed: true,
-	// 						checked: false,
-	// 					})),
-	// 				}))
-	// 				.filter((category) => category.children?.length)
-	// 		)
-	// 	);
-	// }
-
-	public getPageOffers(pageNumber: number): void {
-		this.formGroup.patchValue({ offset: pageNumber * 10, limit: 10 });
-	}
-
-	private blogPageInit(): void {
-		let page = this._route.snapshot.queryParams['page'] || 1;
-		this.togglePageBlogList(+page);
+		this.isArticleRoute = urlArr.length > 2 && urlArr[1] === 'blog' && isNotArticleTypePage && !this.router.url.includes('/tag');
+		this.changeDetectorRef.detectChanges();
+		this.addMetaTags();
 	}
 
 	private addMetaTags(): void {
 		this._seoService.setTitle(
-			'Wholesale Trade & Logistics News | Trends and Tips | Globy Blog'
+			'Wholesale Trade & Logistics News | Trends and Tips | Globy Blog',
 		);
 		this._seoService.setDescription(
-			'An all-in-one resource to discover wholesale trade trends, industry tips and tricks, logistics news, and valuable advice for managing e-commerce'
+			'An all-in-one resource to discover wholesale trade trends, industry tips and tricks, logistics news, and valuable advice for managing e-commerce',
 		);
 	}
 }

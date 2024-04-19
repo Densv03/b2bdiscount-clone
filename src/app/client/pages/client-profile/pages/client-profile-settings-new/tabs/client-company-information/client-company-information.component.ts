@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {
 	ClientProfileSettingsImageUploaderComponent
 } from '../../component/client-profile-settings-image-uploader/client-profile-settings-image-uploader.component';
@@ -40,6 +40,7 @@ import {
 	ClientProfileSettingsTabsService
 } from "../../component/client-profile-settings-tabs/client-profile-settings-tabs.service";
 import {PageTab, TabLabel} from "../../client-profile-settings.type";
+import {TranslationService} from "../../../../../../../core/modules/translate/translation/translation.service";
 
 @UntilDestroy()
 @Component({
@@ -69,7 +70,7 @@ import {PageTab, TabLabel} from "../../client-profile-settings.type";
 	templateUrl: './client-company-information.component.html',
 	styleUrl: './client-company-information.component.scss',
 })
-export class ClientCompanyInformationComponent implements OnInit, AfterViewInit {
+export class ClientCompanyInformationComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	@Input() initSave$: Observable<Boolean> = new Observable<Boolean>();
 
@@ -91,6 +92,7 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 		protected clientCompanyInformationService: ClientCompanyInformationService,
 		private matDialog: MatDialog,
 		private cdr: ChangeDetectorRef,
+		private translationService: TranslationService,
 		private clientProfileSettingsTabsService: ClientProfileSettingsTabsService<PublicCompanyInfoModel>
 	) {
 		this.rootRoles$ = this.clientCompanyInformationService.rootRoles$;
@@ -120,6 +122,10 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 		this.detectChanges();
 		this.saveListener();
 		this.patchForm();
+	}
+
+	ngOnDestroy() {
+		this.form.reset();
 	}
 
 	canDeactivate(): boolean {
@@ -157,7 +163,8 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 			this.clientCompanyInformationService.onSubmit(this.form.value);
 			this.initialFormValue = this.form.value;
 			this.authService.updateCompany({...this.company, ...this.form.value});
-			this.updateTabasData();
+			this.translate(this.authService.company);
+			this.updateTabsData();
 		} catch (e) {
 			console.error(e);
 			this.initialFormValue = initialFormValueTmp;
@@ -172,6 +179,14 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 		if ($event.banner || $event.banner === undefined) {
 			this.form.get('banner').patchValue($event.banner);
 		}
+	}
+
+	private translate(company: PublicCompanyInfoModel) {
+		const obj = {
+			text: company.companyDescription,
+			key: this.translationService.generateKey<PublicCompanyInfoModel>('company', company._id, ['companyDescription']),
+		}
+		this.translationService.translateOne(obj)
 	}
 
 	private patchForm() {
@@ -197,7 +212,7 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 			.valueChanges
 			.pipe(debounceTime(100), untilDestroyed(this))
 			.subscribe((res) => {
-				this.updateTabasData();
+				this.updateTabsData();
 				this.cdr.detectChanges();
 			});
 	}
@@ -215,7 +230,7 @@ export class ClientCompanyInformationComponent implements OnInit, AfterViewInit 
 			})
 	}
 
-	private updateTabasData() {
+	private updateTabsData() {
 		this.clientProfileSettingsTabsService.data$.next({
 			first: this.form.value,
 			second: this.initialFormValue

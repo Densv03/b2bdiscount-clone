@@ -14,19 +14,11 @@
     [phoneValidation]="true"
     [searchCountryFlag]="true"
     [numberFormat]="phoneNumberFormat.National"
-    [selectedCountryISO]="selectedCountryISO"
+    [selectedCountryISO]="selectedCountryISO$ | async"
     [class]="inputClass"
 		(click)="setDropdownWidth()"
 
     #phoneField></ngx-intl-tel-input>
-
-  <!--	<input-->
-  <!--		pattern="\d*"-->
-  <!--		class="ngx-tel-input"-->
-  <!--		[ngStyle]="customInputStyles"-->
-  <!--		[placeholder]="placeholder"-->
-  <!--		[formControl]="inputFormControl"-->
-  <!--		[attr.disabled]="disabled ? '' : null"-->
-  <!--		type="text" />-->
 </div>
-<!--<p [@fadeInOut] class="error" *ngIf="inputFormControl?.errors?.phone && showErrorMessage">Please, use numbers</p>-->
+<p [@fadeInOut] class="error" *ngIf="selectFormControl.touched && selectFormControl?.errors">Incorrect number format</p>
+

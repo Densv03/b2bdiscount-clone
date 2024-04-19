@@ -7,16 +7,18 @@ import { BlogCategoriesEnum } from '../../../../../core/enums/blog-categories.en
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { NewArticleModel } from '../../../../../core/models/blog/new-article.model';
 import { BlogService } from '../../../../services/blog/blog.service';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @Component({
   selector: 'b2b-blog-market-updates',
   standalone: true,
-  imports: [
-    AsyncPipe,
-    BlogCategoryGridComponent,
-    BlogSectionHeaderComponent,
-    PaginationModule,
-  ],
+	imports: [
+		AsyncPipe,
+		BlogCategoryGridComponent,
+		BlogSectionHeaderComponent,
+		PaginationModule,
+		PageLoaderModule,
+	],
   templateUrl: './blog-market-updates.component.html',
   styleUrl: './blog-market-updates.component.scss'
 })

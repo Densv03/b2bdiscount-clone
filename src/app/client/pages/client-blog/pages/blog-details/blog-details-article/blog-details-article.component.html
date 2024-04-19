@@ -1,0 +1,103 @@
+<div class="article-wrapper" [class.bg-white]="!isMarketExpertsPage" [class.border-top]="isMarketExpertsPage">
+	<div class="">
+		<section class=" d-flex flex-column align-items-center bg-[#F3F6F8] " [class.bg-white]="!isMarketExpertsPage">
+			<div class="article-header">
+				<button class="d-flex button-back align-items-center" (click)="goBack()">
+					<svg-icon src="assets/icons/arrow-left-third.svg" class="back-icon"></svg-icon>
+
+					<span>Back</span>
+				</button>
+
+				<div class="article-header-content">
+					<p class="time-to-read">{{ blogArticle.data.readTime }} read</p>
+
+					<h1 class="article-title">{{ blogArticle.data.title }}</h1>
+
+					@if (isMarketExpertsPage) {
+						<span
+							class="article-header-author-and-date">Updated {{ blogArticle.data?.dateUpdate | date: 'MMM dd, yyyy' }}</span>
+
+						<div class="d-flex gap-[10px] align-items-center pt-[16px] pb-[8px]">
+
+							@if (blogArticle.data?.authorId?.photo) {
+								<img b2bNgxImage class="rounded-full w-[48px] h-[48px]" [class.mr-7]="blogArticle.data?.authorId?.photo"
+										 [name]="blogArticle.data.authorId?.photo?.sm" alt="">
+							} @else {
+								<svg-icon class="rounded-full w-[48px] h-[48px]" src="/assets/icons/user.svg"></svg-icon>
+							}
+							<span class="article-header-author-and-date">
+						<a
+							[routerLink]="['/blog/', (blogArticle.data?.path || blogArticle.data?._id), blogArticle.data?.authorId._id]">
+							{{ blogArticle.data?.authorId?.fullName }}</a>
+					</span>
+						</div>
+					}
+
+					<p class="article-header-description"
+						 [class.expert-description]="isMarketExpertsPage">
+						{{ blogArticle.data.shortDescription }}</p>
+
+					@if (!isMarketExpertsPage) {
+						<span
+							class="article-header-author-and-date" [class.w-100]="isMarketExpertsPage">
+						<a
+							[routerLink]="['/blog/', (blogArticle.data?.path || blogArticle.data?._id), blogArticle.data?.authorId._id]">
+							{{ blogArticle.data?.authorId?.fullName }}
+							· </a>Updated {{ blogArticle.data?.dateUpdate | date: 'MMM dd, yyyy' }}
+					</span>
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="d-flex justify-center bg-white">
+			<div class="article-body d-flex">
+
+				<div class="article-description ck-content"
+						 [innerHTML]="updatedArticleContent"></div>
+
+				<div class="justify-between flex-column article-right-block">
+					@if (articleHeaders?.length > 0) {
+						<div class="article-table">
+							<h3>Table of content</h3>
+
+							<div class="article-table-list d-flex flex-column">
+								@for (item of articleHeaders; track item.id; let i = $index) {
+									<a (click)="scrollToHeader(item.id, i)"
+										 [class.highlighted]="i === selectedTableItem">{{ item.text }}</a>
+								}
+							</div>
+						</div>
+					}
+
+					<b2b-social-network
+						[blog]="blogArticle.data"
+					></b2b-social-network>
+				</div>
+			</div>
+		</section>
+
+		<section class="d-flex justify-center bg-white">
+			<div class="footer-recommendations">
+				@if (blogArticle.data.tags?.length > 0) {
+					<div class="tags flex-wrap">
+						@for (tag of blogArticle.data.tags; track tag._id) {
+							<a [href]="'/blog/tag/' + tag.name" class="block tag">{{ tag.name }}</a>
+						}
+					</div>
+				}
+
+				<div class="category">
+					<p class="category-text category-title">Category:</p>
+
+					<p class="category-text">{{ blogArticle.data.typeArticle }}</p>
+				</div>
+
+				<b2b-analysis-section class="w-100"
+															[articles]="blogArticle.footerRecommendations.slice(0, 3)"
+															[isAnalysisSection]="false">
+				</b2b-analysis-section>
+			</div>
+		</section>
+	</div>
+</div>

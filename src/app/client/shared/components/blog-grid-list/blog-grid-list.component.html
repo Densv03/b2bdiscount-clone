@@ -1,44 +1,41 @@
 <div class="wrapper">
-	<h1 class="title">{{ title }}</h1>
+	<h1 class="title uppercase">{{ title }}</h1>
 
-	<div class="latest-block-content" [class.bigger]="isBigger">
-		<a
-			[routerLink]="['/blog/', blog?.path ? blog.path : blog._id]"
-			*ngFor="let blog of articles; let i = index"
-			class="latest-block-content-block">
-			<div class="latest-block-content-block-item">
-				<img
-					*ngIf="blog.image?.lg"
-					class="article-img"
-					[ngSrc]="domain + blog.image?.lg"
-					priority
-					width="464"
-					height="188" />
+	<div class="articles d-flex flex-wrap blog-lg-gap mt-3">
+		@for (article of articles; track article._id) {
+			<a class="article w33 d-flex flex-column justify-between pointer relative-full-block"
+				 [routerLink]="['/blog', (article?.path || article._id)]">
+				<div>
+					@if (article?.images?.length > 0) {
+						<img
+							class="article-image"
+							b2bNgxImage
+							[name]="article?.images[0]?.lg" alt="" />
 
-				<h3>{{ blog.title }}</h3>
+					} @else {
+						<svg-icon class="article-image" src="assets/icons/no-image-icon.svg"></svg-icon>
+					}
 
-				<p class="article-description">{{ blog?.shortDescription }}</p>
+					<a class="article-category-link">{{ article.typeArticle }}</a>
 
-				<div class="latest-block-content-block-item-footer">
-					<p>
-						<a
-							(click)="$event.stopPropagation()"
-							b2bNgxLink
-							[theme]="b2bNgxLinkThemeEnum.TEXT_BLACK"
-							[routerLink]="[
-								isAuthorsPage ? '../samantha-greene' : 'samantha-greene'
-							]"
-							>Samantha Greene</a
-						>
-						/
-						<span>{{ blog.createdAt | date }}</span>
-					</p>
-
-					<a b2bNgxLink [theme]="b2bNgxLinkThemeEnum.TEXT_BLUE">{{
-						blog?.category
-					}}</a>
+					<h3 class="article-title-in-section article-title">{{ article.title }}</h3>
 				</div>
-			</div>
-		</a>
+
+				<div class="d-flex align-items-center">
+<!--					@if (!isRecentlyPublished) {-->
+<!--						@if (article?.authorId?.photo) {-->
+<!--							<img class="author-img mr-7" b2bNgxImage [name]="article?.authorId?.photo?.sm" alt="" width="32" height="32">-->
+<!--						} @else {-->
+<!--							<svg-icon class="author-img" src="/assets/icons/user.svg"></svg-icon>-->
+<!--						}-->
+<!--					}-->
+
+					<span
+						class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+				</div>
+
+				<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
+			</a>
+		}
 	</div>
 </div>

@@ -16,6 +16,7 @@
       align-items: center;
       column-gap: 15px;
 
+
       .globy-ngx-file-button {
         display: flex;
         align-items: center;
@@ -24,12 +25,20 @@
         padding: 8px 20px;
         background: #EEEEEE;
         border-radius: 0.25rem;
+				z-index: 10;
 
 				&:hover {
 					background: #d7d7d7;
 				}
         .globy-ngx-file-input {
-					display: none;
+					position: absolute;
+					left: 0;
+					top: 0;
+					opacity: 0;
+					height: 100%;
+					width: 100%;
+					cursor: pointer !important;
+					z-index: 0;
         }
         .globy-ngx-file-button-text {
           margin-left: 8px;

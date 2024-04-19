@@ -101,7 +101,7 @@
 		</div>
 
 		<div class="container">
-			<div class="company__body">
+			<div class="company__body relative">
 				<div class="company__content">
 
 					<section id="section1" class="company__information">
@@ -144,15 +144,19 @@
 					<section id="section10" class="company__information">
 						<b2b-company-folders [folders]="folders$ | async"></b2b-company-folders>
 					</section>
-
-
-
 				</div>
 				<div class="company__contacts">
 					<b2b-company-contact-card
 						[companyInfo]="companyInfo"></b2b-company-contact-card>
 				</div>
+				<div class="bottom-divider"></div>
 			</div>
+
+			@if (companyRecommendations$ | async; as recommendations) {
+				<div class="company__recommendations">
+					<b2b-company-recommendations [recommendations]="recommendations"></b2b-company-recommendations>
+				</div>
+			}
 		</div>
 	</div>
 

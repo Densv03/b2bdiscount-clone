@@ -1,9 +1,12 @@
+
+
 <div [class]="classPrefix + 'input-wrapper'">
 	<input [placeholder]="placeholder"
 				 [matDatepicker]="picker"
 				 [formControl]="formControl"
 				 [class.has-value]="version === NgxInputVersionEnum.B2B ? formControl.value : false"
 				 [min]="today"
+				 [max]="maxDate ? maxDate : null"
 				 [version]="version"
 				 [label]="label"
 				 (click)="picker.open();"

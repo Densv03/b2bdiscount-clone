@@ -1369,6 +1369,39 @@
           }
         }
       }
+    },
+    "globy-image-crop": {
+      "projectType": "library",
+      "root": "projects/globy-image-crop",
+      "sourceRoot": "projects/globy-image-crop/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/globy-image-crop/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/globy-image-crop/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/globy-image-crop/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/globy-image-crop/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
     }
 	},
 	"cli": {

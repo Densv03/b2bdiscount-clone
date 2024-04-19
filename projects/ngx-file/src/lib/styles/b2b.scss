@@ -21,6 +21,7 @@
         position: relative;
         overflow: hidden;
         padding: 11px 24px;
+				z-index: 10;
         .ngx-file-input {
           position: absolute;
           left: 0;
@@ -28,7 +29,8 @@
           opacity: 0;
           height: 100%;
           width: 100%;
-          cursor: pointer;
+					z-index: 0;
+          cursor: pointer !important;
         }
         .ngx-file-button-text {
           margin-left: 8px;

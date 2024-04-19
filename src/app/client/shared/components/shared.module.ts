@@ -19,6 +19,8 @@ import { MatOption, MatRippleModule } from '@angular/material/core';
 import { CustomCarouselDialogComponent } from './custom-carousel-dialog/custom-carousel-dialog.component';
 import { MultipleDropdownComponent } from './multiple-dropdown/multiple-dropdown.component';
 import { MatFormField, MatSelect } from '@angular/material/select';
+import {B2bNgxImageModule} from "@b2b/ngx-image";
+import {SvgIconComponent} from "angular-svg-icon";
 
 @NgModule({
 	declarations: [
@@ -32,22 +34,24 @@ import { MatFormField, MatSelect } from '@angular/material/select';
 		ParentCategoriesMobileListComponent,
 		CustomCarouselDialogComponent,
 	],
-	imports: [
-		CommonModule,
-		B2bNgxButtonModule,
-		NgOptimizedImage,
-		RouterLinkWithHref,
-		B2bNgxLinkModule,
-		B2bNgxIconModule,
-		B2bNgxInputModule,
-		ReactiveFormsModule,
-		MatIconModule,
-		MatDialogModule,
-		MatRippleModule,
-		MatSelect,
-		MatOption,
-		MatFormField,
-	],
+    imports: [
+        CommonModule,
+        B2bNgxButtonModule,
+        NgOptimizedImage,
+        RouterLinkWithHref,
+        B2bNgxLinkModule,
+        B2bNgxIconModule,
+        B2bNgxInputModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatDialogModule,
+        MatRippleModule,
+        MatSelect,
+        MatOption,
+        MatFormField,
+        B2bNgxImageModule,
+        SvgIconComponent,
+    ],
 	exports: [
 		BlogGridListComponent,
 		ClientSubheaderComponent,

@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CreateDirectionDialogComponent } from './components/create-direction-dialog/create-direction-dialog.component';
 import { B2bNgxSelectThemeEnum } from 'projects/ngx-select/src/public-api';
+import { EditDirectionDialogComponent } from './components/edit-direction-dialog/edit-direction-dialog.component';
 
 @UntilDestroy()
 @Component({
@@ -42,8 +43,8 @@ export class AdminLogisticComponent implements OnInit {
 	public pointsGroup: FormGroup;
 	public itemOptions: any[];
 	public currentPage: number = 1;
-	public countryOptions: BehaviorSubject<{ label: string; code: string }[]> =
-		new BehaviorSubject<{ label: string; code: string }[]>(null);
+	public countryOptions: BehaviorSubject<{ label: string; code: string; icon: string; countryNames?: string[] }[]> =
+		new BehaviorSubject<{ label: string; code: string; icon: string; countryNames?: string[] }[]>(null);
 	public cityOptions: BehaviorSubject<{ label: string; code: string }[]> =
 		new BehaviorSubject<{ label: string; code: string }[]>(null);
 
@@ -88,6 +89,8 @@ export class AdminLogisticComponent implements OnInit {
 						contactPhoneDialCode: form.phone.dialCode,
 					};
 
+					delete model['email'];
+
 					if (company) {
 						return this.adminLogisticService.updateCompanyProfile(
 							model,
@@ -125,6 +128,29 @@ export class AdminLogisticComponent implements OnInit {
 			.pipe(
 				filter((data) => !!data),
 				switchMap((data) => this.adminLogisticService.createDirection(data)),
+				untilDestroyed(this)
+			)
+			.subscribe(() => {
+				this.countryOptions.next(null);
+				this.getDirectionOptions();
+				this.hotToastService.success('Direction was successfully created');
+			});
+	}
+
+	public editDirection(): void {
+		const directionDialog = this.dialog.open(EditDirectionDialogComponent, {
+			width: '500px',
+			minHeight: '400px',
+		});
+
+		directionDialog.componentInstance.directionCountryOptions =
+			this.countryOptions;
+
+		directionDialog
+			.afterClosed()
+			.pipe(
+				filter((data) => !!data),
+				switchMap((data) => this.adminLogisticService.editDirection(data.id, data.model)),
 				untilDestroyed(this)
 			)
 			.subscribe(() => {
@@ -262,6 +288,7 @@ export class AdminLogisticComponent implements OnInit {
 						label: country.name,
 						icon: getCode(country.name),
 						code: country._id,
+						countryNames: country?.countryNames
 					}))
 				);
 

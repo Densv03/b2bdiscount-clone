@@ -121,6 +121,9 @@
       "globy-file-list": [
         "./dist/globy-file-list"
       ],
+      "globy-image-crop": [
+        "./dist/globy-image-crop"
+      ],
       "image-uploader": [
         "./dist/image-uploader"
       ],

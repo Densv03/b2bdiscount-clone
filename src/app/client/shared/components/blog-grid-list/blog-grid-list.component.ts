@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { Router } from '@angular/router';
+import {BlogArticle} from "../../../../../../admin/src/app/pages/admin-blog-post/types/admin-blog-post.type";
 
 @Component({
 	selector: 'b2b-blog-grid-list',
@@ -9,13 +10,13 @@ import { Router } from '@angular/router';
 	styleUrls: ['./blog-grid-list.component.scss'],
 })
 export class BlogGridListComponent {
-	@Input() set getArticles(value: any[]) {
+	@Input() set getArticles(value: BlogArticle[]) {
 		this.articles = value;
 	}
 	@Input() title: string;
 	@Input() isBigger = false;
 	isAuthorsPage: boolean;
-	articles: any[];
+	articles: BlogArticle[];
 	public readonly domain = environment.apiUrl;
 	public readonly b2bNgxLinkThemeEnum: typeof B2bNgxLinkThemeEnum;
 

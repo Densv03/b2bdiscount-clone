@@ -7,7 +7,6 @@ import { B2bNgxSelectThemeEnum } from '@b2b/ngx-select';
 import { ClientMarketplaceService } from '../../../../../../shared/services/client-marketplace-service/client-marketplace.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { filter } from 'rxjs/operators';
-import { Sort } from '@angular/material/sort';
 
 @Component({
 	selector: 'b2b-client-profile-marketplace-products',

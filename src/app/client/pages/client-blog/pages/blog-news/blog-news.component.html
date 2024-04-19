@@ -8,15 +8,21 @@
 
 		@if ((newsList$ | async)?.length > 0) {
 			<b2b-blog-news-list
-			class="w-100"
-			[articleList]="newsList$ | async"
-		></b2b-blog-news-list>
+				class="w-100"
+				[articleList]="newsList$ | async"
+			></b2b-blog-news-list>
 
-		<b2b-pagination
-			[currentPage]="currentPage"
-			[length]="countSource.getValue()"
-			[perPage]="limit"
-			(togglePageNumber)="togglePage($event)"></b2b-pagination>
+			<b2b-pagination
+				[currentPage]="currentPage"
+				[length]="countSource.getValue()"
+				[perPage]="limit"
+				(togglePageNumber)="togglePage($event)"></b2b-pagination>
+		} @else {
+			<div class="loading-overlay">
+				<b2b-page-loader
+					class="page-loader"
+					style="z-index: 10000"></b2b-page-loader>
+			</div>
 		}
 	</div>
 </div>

@@ -108,6 +108,10 @@ export class AdminLogisticService {
 		return this.apiService.post(`${this.endpoint}directions/create`, model);
 	}
 
+	public editDirection(directionId: string, model: CreateDirectionInterface): Observable<any> {
+		return this.apiService.put(`${this.endpoint}directions/${directionId}`, model);
+	}
+
 	public deleteTariff(id: string, type: string): Observable<ArrayBuffer> {
 		return this.apiService.delete(
 			`${this.endpoint}tariffs/${id}/delete?type=${type}`

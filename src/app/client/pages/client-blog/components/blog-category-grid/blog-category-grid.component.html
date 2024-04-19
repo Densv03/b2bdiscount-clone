@@ -1,8 +1,8 @@
 <div class="blog-category-grid-wrapper">
-		<a class="first-article d-flex justify-between pointer"
-			 [routerLink]="['/blog', (articles[0]?.path || articles[0]?._id)]">
-
-			<div class="d-flex flex-column w50 justify-content-center">
+		<a class="first-article d-flex justify-between pointer relative-parent"
+			 [routerLink]="['/blog', (articles[0]?.path || articles[0]?._id)]"
+			 >
+			<div class="d-flex flex-column w50 justify-content-center relative-block">
 					<h3 class="first-article-title">{{ articles[0]?.title }}</h3>
 
 				<div class="d-flex align-items-center w-100">
@@ -16,9 +16,13 @@
 					}
 					<span
 						class="large-article-author-and-date" [class.w-100]="isMarketExpertsPage">
-						<a>{{ articles[0]?.authorId?.fullName }}</a> · {{ articles[0]?.updatedAt | date: 'MMM dd, yyyy' }}
+						<a
+						[routerLink]="['/blog/', (articles[0]?.path || articles[0]?._id), articles[0]?.authorId._id]"
+						>{{ articles[0]?.authorId?.fullName }}</a> · {{ articles[0]?.dateUpdate | date: 'MMM dd, yyyy' }}
 					</span>
 				</div>
+
+				<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 			</div>
 
 			@if (articles[0]?.images?.length > 0) {
@@ -35,7 +39,7 @@
 
 		<div class="articles d-flex flex-wrap blog-lg-gap">
 			@for (article of articles.slice(1); track article._id) {
-				<a class="article w33 d-flex flex-column justify-between pointer"
+				<a class="article w33 d-flex flex-column justify-between pointer relative-full-block"
 					 [routerLink]="['/blog', (article?.path || article?._id)]">
 					<div>
 						@if (article?.images?.length > 0) {
@@ -63,8 +67,10 @@
 						}
 
 						<span
-							class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.updatedAt | date: 'MMM dd, yyyy' }}</span>
+							class="article-author-and-date"><a>{{ article?.authorId?.fullName }}</a> · {{ article.dateUpdate | date: 'MMM dd, yyyy' }}</span>
 					</div>
+
+					<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 				</a>
 			}
 		</div>

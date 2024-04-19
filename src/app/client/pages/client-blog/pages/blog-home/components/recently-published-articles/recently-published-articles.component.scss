@@ -62,6 +62,7 @@
 		@include breakpoint('3') {
 			flex-direction: column;
 			margin-top: 0;
+			gap: 0;
 
 			.article {
 				padding: 24px 0 16px;

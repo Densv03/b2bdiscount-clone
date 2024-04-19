@@ -1,0 +1,18 @@
+<b2b-client-profile-modal-container (close)="onDismiss()"
+																		[label]="'Crop images'" class="overflow-y-auto max-h-screen md:max-h-[90vh]">
+	<div class="flex flex-col gap-2">
+		<globy-image-crop
+			[imageURL]="data.imageURL"
+			[aspectRatio]="data?.aspectRatio || 1"
+			(croppedResult)="onCrop($event)"/>
+		<div class="flex flex-row justify-center items-center">
+			<button
+				(click)="save()"
+				b2bNgxButton
+				class="bg-[#1C5BFE] px-10 py-3 rounded-[0.25rem] text-white"
+				type="submit">
+				Save changes
+			</button>
+		</div>
+	</div>
+</b2b-client-profile-modal-container>

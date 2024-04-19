@@ -55,9 +55,14 @@ export class AdminBlogPostService {
 	}
 
 	private getArticleStatus(body: CreateBlogFormGroupData, initialData?: BlogArticle): ArticleStatus {
+		if (body.isDraft && initialData.articleStatus !== 'draft') {
+			return 'draft';
+		}
+
 		if (initialData) {
 			return initialData.articleStatus;
 		}
+
 		const {isDraft, timePublication, datePublication} = body;
 		if (!timePublication && !datePublication && !isDraft) {
 			return 'published';

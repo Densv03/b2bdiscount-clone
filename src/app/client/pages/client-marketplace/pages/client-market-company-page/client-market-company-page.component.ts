@@ -52,6 +52,7 @@ import {FolderService} from "../../../../services/folder/folder.service";
 export class ClientMarketCompanyPageComponent
 	implements OnInit, AfterViewInit, AfterViewChecked {
 	public companyInfo$: BehaviorSubject<PublicCompanyInfoModel> = new BehaviorSubject<PublicCompanyInfoModel>(null);
+	public companyRecommendations$: BehaviorSubject<PublicCompanyInfoModel[]> = new BehaviorSubject<PublicCompanyInfoModel[]>(null);
 	public companyTradeShows$: BehaviorSubject<TradeShow[]> = new BehaviorSubject([]);
 	public folders$: BehaviorSubject<Folder[]> = new BehaviorSubject<Folder[]>([]);
 	public companyInfo: PublicCompanyInfoModel;
@@ -63,18 +64,12 @@ export class ClientMarketCompanyPageComponent
 	private socket: any;
 	private token: string;
 
-	private isPhoneNumberVisible = false;
-	private businessTypeSource: BehaviorSubject<string> =
-		new BehaviorSubject<string>('');
-	public businessType$: Observable<string> =
-		this.businessTypeSource.asObservable();
-	companyDescriptionIsLong: boolean;
-	@ViewChild('description', {static: false})
-	companyDescriptionElement: ElementRef;
+	public companyDescriptionIsLong: boolean;
 	public showDescriptionViewButton$: Observable<'more' | 'less'>;
 	public navigationOptions: Array<any> = this.getNavigationOptions();
-
 	public activeNavigationIndex: number = null;
+
+	@ViewChild('description', {static: false}) companyDescriptionElement: ElementRef;
 
 	public sections: any[] = [];
 	public supplierProductsAmount$: Observable<number>;
@@ -86,9 +81,7 @@ export class ClientMarketCompanyPageComponent
 		private readonly sourcingRequestService: SourcingRequestService,
 		private readonly userService: UserService,
 		private readonly route: ActivatedRoute,
-		private readonly dialog: MatDialog,
 		private readonly router: Router,
-		private readonly authService: AuthService,
 		private readonly seoService: SeoService,
 		private readonly clipboard: Clipboard,
 		private readonly hotToastService: HotToastService,
@@ -341,10 +334,10 @@ export class ClientMarketCompanyPageComponent
 			.getCompanyInfoById(this.route.snapshot.params['companyId'])
 			.pipe(
 				first(),
-				tap(companyInfo => {
-					this.companyInfo = companyInfo;
+				tap(({company}) => {
+					this.companyInfo = company;
 				}),
-				tap(({companyName, _id, user}) => {
+				tap(({company: {companyName, _id, user}}) => {
 					this.getCompanyTradeShows(_id);
 					this.getCompanyFolders(_id);
 					this.findSupplierProductsAmount(user);
@@ -355,8 +348,9 @@ export class ClientMarketCompanyPageComponent
 						`Get an exclusive wholesale deal from ${companyName}. Reach out to the supplier to buy the original products.`
 					);
 				})
-			).subscribe(companyInfo => {
-			this.companyInfo$.next(companyInfo);
+			).subscribe(({company, recommendations}) => {
+			this.companyInfo$.next(company);
+			this.companyRecommendations$.next(recommendations);
 			setTimeout(() => {
 				this.calculateSectionOffsets();
 			},)

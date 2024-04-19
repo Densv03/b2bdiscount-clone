@@ -1,54 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, mergeMap, Observable, of, Subject} from 'rxjs';
 import { BlogService } from '../../../services/blog/blog.service';
-import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { PaginationParamsModel } from '../../../../core/models/pagination-params.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from '../../../../../environments/environment';
-import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
+import {BlogAuthorResponse} from "../../../../core/models/blog/blog-author.model";
+import {first} from "rxjs/operators";
+import {BlogAuthor} from "../../../../../../admin/src/app/pages/admin-blog-post/types/admin-blog-post.type";
+import {environment} from "../../../../../environments/environment";
+import {SocialMedia} from "../../../../core/models/public-company-info.model";
 
-function generateQueryString(obj: any, initialValue: string = '?') {
-	return Object.entries(obj)
-		.filter(([, value]: any) => !!value)
-		.reduce((queryString: string, [key, value]: any) => {
-			return Array.isArray(value)
-				? `${queryString}${value.reduce(
-						(str, arrayItem) => `${str}${key}=${arrayItem}&`,
-						''
-					)}`
-				: `${queryString}${key}=${value}&`;
-		}, initialValue);
-}
-
-function stripHtml(html: any) {
-	// Create a new div element
-	const temporalDivElement = document.createElement('div');
-	// Set the HTML content with the providen
-	temporalDivElement.innerHTML = html;
-	// Retrieve the text property of the element (cross-browser support)
-	return temporalDivElement.textContent || temporalDivElement.innerText || '';
-}
 
 @Component({
-	selector: 'app-layout',
+	selector: 'blog-authors-page',
 	templateUrl: './client-blog-authors-page.component.html',
 	styleUrls: ['./client-blog-authors-page.component.scss'],
 })
-export class ClientBlogAuthorsPageComponent implements OnInit {
+export class ClientBlogAuthorsPageComponent implements OnInit, OnDestroy {
 	public articles$: Observable<any>;
-
-	public readonly formGroup: FormGroup;
-
-	public totalCount: any;
+	public authorBlogs$: Observable<Omit<BlogAuthorResponse, 'author'>>;
+	public authorInfo$: Observable<BlogAuthor> = this.blogService.getAuthorInfo();
 
 	public pageSubject: Subject<any>;
-	public totalBlogLength$: Observable<number> = this.blogService.blogLength$;
 	public currentPageSource: BehaviorSubject<number> =
 		new BehaviorSubject<number>(1);
+	protected readonly window = window;
 
-	private filteredQueryObj: PaginationParamsModel = { limit: 8, offset: 0 };
+	private filteredQueryObj: PaginationParamsModel = { limit: 9, offset: 0 };
 
 	constructor(
 		private readonly blogService: BlogService,
@@ -59,8 +37,30 @@ export class ClientBlogAuthorsPageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getArticles();
-		this.blogPageInit();
+		this.togglePageBlogList(1);
+	}
+
+	public getMediaSrc(url: string): string {
+		return environment.apiUrl + url;
+	}
+	public convertObjectToArray(objectToConvert: {
+		facebook?: string;
+		twitter?: string;
+		instagram?: string;
+		linkedin?: string
+	}): any[] {
+		return Object.entries(objectToConvert).map(([key, value]) => ({
+			key,
+			value,
+		}));
+	}
+	private getAuthorInfo(): void {
+		this.route.params
+			.pipe(first())
+			.subscribe(params => {
+				this.authorBlogs$ = this.blogService.getAuthorBlogs(params['id'], this.filteredQueryObj);
+			});
+
 	}
 
 	public get currentPage$(): Observable<number> {
@@ -70,40 +70,12 @@ export class ClientBlogAuthorsPageComponent implements OnInit {
 	public togglePageBlogList(page: number): void {
 		this.filteredQueryObj = {
 			...this.filteredQueryObj,
-			offset: (page - 1) * 8,
+			offset: (page - 1) * 9,
 		};
-		this.getArticles();
-		this.blogService.updateBlogList(generateQueryString(this.filteredQueryObj));
-
-		this.router.navigate([], {
-			relativeTo: this.route,
-			queryParams: {
-				page: page > 1 ? page : null,
-			},
-			queryParamsHandling: 'merge',
-		});
-
+		this.getAuthorInfo();
 		this.currentPageSource.next(page);
 	}
-
-	private blogPageInit(): void {
-		let page = this.route.snapshot.queryParams['page'];
-		if (!page) {
-			this.router.navigate([], {
-				relativeTo: this.route,
-				queryParams: {
-					page: 1,
-				},
-				queryParamsHandling: 'merge',
-			});
-			page = 1;
-		}
-
-		this.togglePageBlogList(+page);
-	}
-
-	private getArticles(): void {
-		this.blogService.getArticles(generateQueryString(this.filteredQueryObj));
-		this.articles$ = this.blogService.blog$;
+	ngOnDestroy() {
+		this.blogService.updateAuthorStore(null);
 	}
 }

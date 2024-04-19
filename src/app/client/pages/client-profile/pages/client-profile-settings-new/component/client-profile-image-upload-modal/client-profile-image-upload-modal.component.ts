@@ -2,10 +2,8 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} f
 import {
 	ClientProfileModalContainerComponent
 } from "../client-profile-modal-container/client-profile-modal-container.component";
-import {
-	ModalContainerService
-} from "../client-profile-modal-container/modal-container.service";
-import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS} from "@angular/material/dialog";
+import {ModalContainerService} from "../client-profile-modal-container/modal-container.service";
+import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {
 	ClientProfileImageContainerComponent
 } from "../client-profile-image-container/client-profile-image-container.component";
@@ -21,7 +19,8 @@ import {NgxInputVersionEnum} from "../../../../../../../../../projects/ngx-input
 import {ImageDismissData} from "./client-profile-image-upload-modal.interface";
 import {IMAGE_TYPES} from "../client-profile-image-container/client-profile-image-container.constants";
 import {HotToastService} from "@ngneat/hot-toast";
-import {MAT_MENU_DEFAULT_OPTIONS} from "@angular/material/menu";
+import {ImageCropperData, ImageCropperModalComponent} from "../image-cropper-modal/image-cropper-modal.component";
+import {ImageCroppedEvent} from "ngx-image-cropper";
 
 @UntilDestroy()
 @Component({
@@ -62,6 +61,7 @@ export class ClientProfileImageUploadModalComponent extends ModalContainerServic
 								image: string
 							},
 							private cdr: ChangeDetectorRef,
+							private matDialog: MatDialog,
 							private hotToastService: HotToastService) {
 		super();
 	}
@@ -82,7 +82,7 @@ export class ClientProfileImageUploadModalComponent extends ModalContainerServic
 
 	get dismissObj(): ImageDismissData {
 		return {
-			file: this.file as unknown as any,
+			file: this.file,
 			url: this.url,
 			image: this.image
 		}
@@ -94,10 +94,11 @@ export class ClientProfileImageUploadModalComponent extends ModalContainerServic
 			.valueChanges
 			.pipe(untilDestroyed(this))
 			.subscribe((res: any) => {
-				if(!res) {
+				if (!res) {
 					return;
 				}
 				if (this.checkType(res[0])) {
+					console.log(res);
 					this.file = res
 					this.readFile();
 					this.cdr.detectChanges();
@@ -118,6 +119,25 @@ export class ClientProfileImageUploadModalComponent extends ModalContainerServic
 		this.cdr.detectChanges();
 	}
 
+	cropImage() {
+		this.matDialog.open(ImageCropperModalComponent, {
+			data: {
+				imageURL: this.image,
+				aspectRatio: this.data?.mode === 'logo' ? 1 : 16 / 5
+			}
+		} as MatDialogConfig<ImageCropperData>)
+			.afterClosed()
+			.pipe(untilDestroyed(this))
+			.subscribe(async (res: ImageCroppedEvent) => {
+				if (res.blob) {
+					this.image = res.objectUrl;
+					this.url = 'url(' + this.image + ')';
+					this.file = [new File([res.blob], this.file.name || 'image.png', {type: 'image/png'})] as unknown as File;
+					this.cdr.detectChanges();
+				}
+			});
+	}
+
 	private checkType(res: any) {
 		const type = res?.name?.split('.')?.pop();
 		if (!res || !type) {
@@ -134,7 +154,7 @@ export class ClientProfileImageUploadModalComponent extends ModalContainerServic
 		const fileReader = new FileReader();
 		fileReader.onload = () => {
 			this.image = fileReader.result as string;
-			this.url = 'url(' + this.image + ')';
+			this.cropImage();
 			this.cdr.detectChanges();
 		}
 		fileReader.readAsDataURL((this.file as unknown as any)[0]);

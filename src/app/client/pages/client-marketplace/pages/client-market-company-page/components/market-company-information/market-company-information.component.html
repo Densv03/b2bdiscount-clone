@@ -52,8 +52,7 @@
 							<div class="social-media-list">
 								<ng-container
 									*ngFor="
-								let socialMedia of convertObjectToArray(companyInfo.socialMedia)
-							">
+								let socialMedia of convertObjectToArray(companyInfo.socialMedia)">
 									<a
 										*ngIf="socialMedia.value.trim()"
 										[href]="socialMedia.value"

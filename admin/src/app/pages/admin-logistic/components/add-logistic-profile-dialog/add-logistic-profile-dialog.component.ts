@@ -46,7 +46,7 @@ export class AddLogisticProfileDialogComponent implements OnInit {
 		// 	return;
 		// }
 
-		this.dialogRef.close({...this.profileForm.value, email: this.emailsList});
+		this.dialogRef.close({...this.profileForm.value, emails: this.emailsList});
 	}
 
 	public setTransportType(event: Event, value: string): void {

@@ -7,16 +7,18 @@ import { Observable, map, BehaviorSubject } from 'rxjs';
 import { NewArticleModel } from '../../../../../core/models/blog/new-article.model';
 import { CommonModule } from '@angular/common';
 import { PaginationModule } from '../../../../shared/components/pagination/pagination.module';
+import { PageLoaderModule } from '../../../../../core/components/page-loader/page-loader.module';
 
 @Component({
 	selector: 'b2b-blog-news',
 	standalone: true,
-	imports: [
-		BlogSectionHeaderComponent,
-		BlogNewsListComponent,
-		CommonModule,
-		PaginationModule,
-	],
+  imports: [
+    BlogSectionHeaderComponent,
+    BlogNewsListComponent,
+    CommonModule,
+    PaginationModule,
+    PageLoaderModule,
+  ],
 	templateUrl: './blog-news.component.html',
 	styleUrl: './blog-news.component.scss',
 })

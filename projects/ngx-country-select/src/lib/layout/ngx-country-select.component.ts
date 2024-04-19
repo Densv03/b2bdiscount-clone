@@ -41,7 +41,7 @@ import {BehaviorSubject, map, Observable, of} from "rxjs";
 		},
 	],
 })
-export class B2bNgxCountrySelectComponent implements ControlValueAccessor, AfterViewInit, OnChanges {
+export class B2bNgxCountrySelectComponent implements ControlValueAccessor, OnInit, OnChanges {
 	@Input() errors: ValidationErrors = {};
 
 	@Input() public customParentClass: string = '';
@@ -103,7 +103,7 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, After
 		return this.errors[firstErrorKey] as string;
 	}
 
-	public ngAfterViewInit(): void {
+	public ngOnInit(): void {
 		if (this.optionLength === 0) {
 			this.options$ = this.getOptions();
 			this.cdr.detectChanges();
@@ -176,7 +176,6 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, After
 						code: "In transit"
 					})
 				}
-
 				return updatedList;
 			}));
 		} else {
@@ -184,6 +183,9 @@ export class B2bNgxCountrySelectComponent implements ControlValueAccessor, After
 		}
 	}
 
+	public compareFunc(item: { code: any; }, selected: { code: any; }): boolean {
+		return item.code === selected;
+	}
 
 	get selectClass() {
 		return this.version === NgxSelectVariantEnum.B2B ? this.className : 'globy-ngx-select';

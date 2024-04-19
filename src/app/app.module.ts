@@ -15,6 +15,14 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { translateBrowserLoaderFactory } from './core/loaders/translate-browser.loader';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { environment } from '../environments/environment';
+import {TranslationModule} from "./core/modules/translate/translation.module";
+import {DevTools, FormatSimple, Tolgee, TOLGEE_INSTANCE, TolgeeOptions} from "@tolgee/ngx";
+
+const tolgeeOptions: TolgeeOptions = {
+	language: 'en',
+	apiUrl: environment.tolgeeApiUrl,
+	apiKey: environment.tolgeeApiKey,
+}
 
 @NgModule({
 	imports: [
@@ -30,6 +38,7 @@ import { environment } from '../environments/environment';
 		NgxPasswordModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
+		TranslationModule,
 		TranslateModule.forRoot({
 			defaultLanguage: 'en',
 			loader: {
@@ -39,6 +48,17 @@ import { environment } from '../environments/environment';
 			},
 		}),
 		environment.production ? [] : AkitaNgDevtools.forRoot(),
+	],
+	providers: [
+		{
+			provide: TOLGEE_INSTANCE,
+			useFactory: () => {
+				return Tolgee()
+					.use(DevTools())
+					.use(FormatSimple())
+					.init(tolgeeOptions);
+			},
+		},
 	],
 	exports: [TranslateModule],
 	bootstrap: [AppComponent],

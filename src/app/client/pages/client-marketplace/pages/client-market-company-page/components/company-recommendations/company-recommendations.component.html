@@ -1,0 +1,55 @@
+<div class="component">
+	<div class="title">Similar suppliers</div>
+
+	<div class="company-content"></div>
+
+	<div class="recommendations d-flex">
+		@for (recommendation of recommendations; track recommendation.companyName; let i = $index) {
+			<div class="recommendations__item">
+				<div class="recommendations__item-header d-flex justify-between">
+					<div class="header-info">
+						<div class="company-name">{{ recommendation.companyName }}</div>
+						<div class="company-subinfo d-flex items-center">
+							<img
+								b2bNgxIcon
+								group="flags/"
+								[name]="recommendation.country | uppercase"
+								alt=""/>
+							<div class="business-type">{{ getBusinessType(recommendation.businessType) | async }}</div>
+						</div>
+					</div>
+					@if (recommendation.logo) {
+						<div class="header-logo">
+							<img class="aspect-square object-cover" [src]="getMediaSrc(recommendation?.logo?.path)">
+						</div>
+					}
+				</div>
+				@if (recommendationsCategories$ | async; as categories) {
+					<div class="recommendations__item-categories">
+						Product categories: {{ (categories)[i] }}
+					</div>
+				}
+				<div class="recommendations__item-description truncate">{{ recommendation.companyDescription }}</div>
+
+				<div class="recommendations__item-buttons d-flex">
+					<a [routerLink]="'/b2bmarket/supplier-listing/' + recommendation._id">
+						<button mat-flat-button=""
+										class="view-all !bg-[#EEEEEE] cursor-pointer hover:opacity-80 px-3 !text-xs mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-unthemed mat-mdc-button-base ng-star-inserted"
+										mat-ripple-loader-class-name="mat-mdc-button-ripple">
+							All products
+						</button>
+					</a>
+					<button
+						(click)="openChat($event, recommendation.user)"
+						mat-flat-button=""
+						class="message-button !bg-[#EEEEEE] cursor-pointer hover:opacity-80 px-3 !text-xs mdc-button mdc-button--unelevated mat-mdc-unelevated-button mat-unthemed mat-mdc-button-base ng-star-inserted"
+						mat-ripple-loader-class-name="mat-mdc-button-ripple">
+						<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M12.7514 2.75C7.68054 2.75 3.56201 6.88706 3.56201 12C3.56201 13.3886 3.8658 14.7037 4.40908 15.8836C4.43619 15.9425 4.46389 16.002 4.49191 16.0622L4.49192 16.0622L4.49193 16.0623C4.91741 16.9765 5.41592 18.0477 5.0286 19.4037C4.94869 19.6835 4.81687 19.9688 4.71567 20.1878L4.71565 20.1879C4.69348 20.2358 4.67277 20.2807 4.65441 20.3215C4.53428 20.5889 4.47454 20.7633 4.46268 20.9085C4.44895 21.0767 4.5945 21.2013 4.74513 21.176C5.12369 21.1126 5.39508 20.9731 5.75841 20.7863L5.75844 20.7863L5.75846 20.7863C5.88633 20.7206 6.02559 20.649 6.18491 20.5728C6.77834 20.2891 7.49431 20.0521 8.47673 20.2846L8.30404 21.0144L8.47674 20.2846C8.6827 20.3333 9.13125 20.4948 9.8696 20.7606L9.8699 20.7607L9.86995 20.7607L9.99998 20.8075C10.8102 21.0991 11.6941 21.25 12.7514 21.25C17.8223 21.25 21.9408 17.1129 21.9408 12C21.9408 6.88706 17.8223 2.75 12.7514 2.75ZM2.06201 12C2.06201 6.06724 6.84352 1.25 12.7514 1.25C18.6593 1.25 23.4408 6.06724 23.4408 12C23.4408 17.9328 18.6593 22.75 12.7514 22.75C11.5438 22.75 10.4854 22.5764 9.49203 22.2189C8.60376 21.8992 8.24056 21.7701 8.13136 21.7443C7.60505 21.6197 7.25372 21.7244 6.83196 21.9261C6.75253 21.9641 6.66362 22.0103 6.56602 22.061C6.16829 22.2676 5.62626 22.5493 4.99311 22.6554L4.87033 21.9229L4.9931 22.6554C3.8664 22.8443 2.87539 21.9166 2.96766 20.7864C3.00214 20.364 3.16068 19.9861 3.28618 19.7068C3.31878 19.6342 3.34905 19.5682 3.37706 19.5072L3.37707 19.5072C3.47228 19.2997 3.54125 19.1494 3.58628 18.9918L4.30442 19.1969L3.58628 18.9918C3.81706 18.1838 3.54498 17.5931 3.07017 16.5622L3.04657 16.511L3.72782 16.1973L3.04657 16.511C2.41452 15.1382 2.06201 13.6094 2.06201 12ZM8.02565 10C8.02565 9.58579 8.36143 9.25 8.77565 9.25H16.7272C17.1414 9.25 17.4772 9.58579 17.4772 10C17.4772 10.4142 17.1414 10.75 16.7272 10.75H8.77565C8.36143 10.75 8.02565 10.4142 8.02565 10ZM8.77565 13.25C8.36143 13.25 8.02565 13.5858 8.02565 14C8.02565 14.4142 8.36143 14.75 8.77565 14.75H12.7514C13.1656 14.75 13.5014 14.4142 13.5014 14C13.5014 13.5858 13.1656 13.25 12.7514 13.25H8.77565Z" fill="#292D32"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+		}
+	</div>
+</div>

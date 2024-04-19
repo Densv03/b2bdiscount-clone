@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper d-flex flex-column align-items-center w-100">
 	<div *ngIf="formType === 'add-rfq'" class="rfq-header">
 		<h1>Tell the vendors what are you looking to buy</h1>
 		<img b2bNgxImage name="tradebid_rfq-header" imageExtension="webp"/>
@@ -210,8 +210,9 @@
 		(click)="onSave()"
 		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK"
 		b2bNgxButton
-		class="next-step-btn">
+		class="next-step-btn d-flex align-baseline gap-[6px]">
 		<span>1/2 Next step </span>
+
 		<svg
 			width="16"
 			height="16"

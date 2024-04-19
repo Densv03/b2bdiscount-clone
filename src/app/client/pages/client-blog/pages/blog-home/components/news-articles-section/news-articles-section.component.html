@@ -11,10 +11,12 @@
 
 	<div class="news-section-wrapper d-flex flex-wrap blog-lg-gap">
 		@for (article of posts; track article._id) {
-			<a class="w33 pointer" [routerLink]="['/blog', (article?.path || article._id)]">
+			<a class="w33 pointer relative-full-block d-flex flex-column justify-between" [routerLink]="['/blog', (article?.path || article._id)]">
 				<h3 class="article-title-in-section">{{ article?.title }}</h3>
 
 				<span class="article-author-and-date">{{ article?.dateUpdate | date: 'MMM dd, yyyy' }}</span>
+
+				<svg-icon class="hover-icon" src="assets/icons/blog/arrow-hover-right.svg"></svg-icon>
 			</a>
 		}
 	</div>

@@ -15,24 +15,9 @@ import {
 } from 'rxjs';
 import { filter, first, map, startWith, switchMap } from 'rxjs/operators';
 
-<<<<<<< HEAD
-import {Component, ViewChild, AfterViewInit, ChangeDetectionStrategy, inject} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {UserService} from "../../../../../../src/app/client/pages/client-profile/services/user/user.service";
-import {BehaviorSubject, Observable} from "rxjs";
-import { FormBuilder, Validators } from "@angular/forms";
-import { B2bNgxButtonThemeEnum } from "@b2b/ngx-button";
-import { first } from "rxjs/operators";
-import { HotToastService } from "@ngneat/hot-toast";
-import {OnInit} from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-// import {AdminUser} from "../../../shared/models/AdminUser.model";
-=======
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { HotToastService } from '@ngneat/hot-toast';
 import { B2bNgxButtonThemeEnum } from 'projects/ngx-button/src/public-api';
->>>>>>> e83f9aaec7b4e8ab1e8d4a7c15e6aaec388ad07e
 
 import { UserService } from '../../../../../../src/app/client/pages/client-profile/services/user/user.service';
 import { ApiService } from '../../../../../../src/app/core/services/api/api.service';

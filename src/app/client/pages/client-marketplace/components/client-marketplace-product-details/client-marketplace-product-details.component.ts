@@ -135,7 +135,7 @@ export class ClientMarketplaceProductDetailsComponent
 							photosUrl:
 								product.photos.every((photo: any) => 'serialNumber' in photo) &&
 								checkSerialNumber(product.photos)
-									? product.photos.reduce((acc: any[], val: any) => {
+									? product.photos.sort((a, b) => a.serialNumber - b.serialNumber).reduce((acc: any[], val: any) => {
 											acc[val?.serialNumber] = this.apiAddress + val.lg;
 											return acc.filter((el) => !!el);
 										}, [])

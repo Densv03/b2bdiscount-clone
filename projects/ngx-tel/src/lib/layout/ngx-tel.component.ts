@@ -1,34 +1,30 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component, ElementRef,
-  forwardRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	forwardRef, inject,
+	Input,
+	OnChanges,
+	OnInit,
+	SimpleChanges,
+	ViewChild,
 } from "@angular/core";
 import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors,
-  Validators
+	ControlValueAccessor,
+	FormControl,
+	NG_VALIDATORS,
+	NG_VALUE_ACCESSOR,
+	ValidationErrors,
+	Validators
 } from "@angular/forms";
-import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
-// import { FormControl } from "@ngneat/reactive-forms";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
-import { B2bNgxInputThemeEnum} from "@b2b/ngx-input";
-import { CountryISO, PhoneNumberFormat } from "ngx-intl-tel-input";
-import { animate, style, transition, trigger } from "@angular/animations";
-
-const placeholders: any = {
-  "Bangladesh (বাংলাদেশ)": "0000-000000",
-  "Peru (Perú)": "00-000000",
-};
+import {B2bNgxInputThemeEnum} from "@b2b/ngx-input";
+import {CountryISO, PhoneNumberFormat} from "ngx-intl-tel-input";
+import {animate, style, transition, trigger} from "@angular/animations";
+import {LocationService} from "../../../../../src/app/client/shared/services/location.service";
+import {BehaviorSubject, first} from "rxjs";
 
 @UntilDestroy()
 @Component({
@@ -74,23 +70,19 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
   @Input() searchCountryFlag: boolean = true;
   @Input() separateDialCode: boolean = true;
   @Input() phoneValidation: boolean = true;
-  @Input() selectedCountryISO: CountryISO = CountryISO.UnitedStates;
 
   @Input() defaultNumber: string = "";
-
   @Input() disabled: boolean = false;
-
   @Input() placeholder: string = '';
-
   @Input() inputClass: string = '';
 
   public readonly type: string = "tel";
   public phoneNumberFormat = PhoneNumberFormat;
   public readonly selectFormControl: FormControl<string | null> = new FormControl<string>("", Validators.required);
-  // public readonly inputFormControl: FormControl<string> = new FormControl<string>("", [b2bNgxTel()]);
   public readonly options: any[] = [];
-
   public readonly b2bNgxInputThemeEnum: typeof B2bNgxInputThemeEnum = B2bNgxInputThemeEnum;
+
+	public selectedCountryISO$: BehaviorSubject<CountryISO> = new BehaviorSubject<CountryISO>(null);
 
   public mask: string = "";
   public invalid: boolean = false;
@@ -98,6 +90,7 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
 
   private onChange: (value: string | null) => void = () => null;
   private onTouched: () => void = () => null;
+	private locationService = inject(LocationService);
 
   constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
@@ -109,46 +102,36 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // this.touched = this.inputFormControl.touched || this.selectFormControl.touched;
     this.invalid = changes['errors'] && changes['errors'].currentValue;
   }
 
   ngOnInit(): void {
     this.subscribeOnValueChanges();
-    // this.inputFormControl.setValue(this.defaultNumber, { emitEvent: false });
+		this.getUserCountryCode();
   }
 
-  public validate(): ValidationErrors | null{
+  public validate(): ValidationErrors | null {
+		if (this.selectFormControl.invalid) {
+			return this.selectFormControl.errors;
+		}
     return null;
   }
 
   private subscribeOnValueChanges(): void {
     const selectValue$ = this.selectFormControl.valueChanges;
-    // const inputValue$ = this.inputFormControl.valueChanges;
 
     selectValue$.pipe(untilDestroyed(this)).subscribe((selectValue) => {
       this.onChange(selectValue);
       this.onTouched();
     });
-
-    // inputValue$.pipe(untilDestroyed(this)).subscribe((inputValue) => {
-    // 	this.selectFormControl.setValue(inputValue);
-    // });
   }
 
   public changeMask(country: any): void {
     if (!country) {
       return;
     }
-
-    const { name, dialCode } = country;
-
-    const placeHolder = placeholders[name] || country.placeHolder;
-
-    // this.placeholder = placeHolder.replace(`+${dialCode} `, "").replace(/[0-9]/g, "0");
     this.mask = this.placeholder;
 
-    // this.selectFormControl.setValue(this.inputFormControl.value);
   }
 
   public registerOnChange(fn: (value: string| null) => void): void {
@@ -164,21 +147,12 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
       return;
     }
 
-    this.selectedCountryISO = value.countryCode;
-
-    // this.inputFormControl.setValue(value.number, { emitEvent: false });
     this.selectFormControl.setValue(value.number, { emitEvent: false });
 
     this.changeDetectorRef.detectChanges();
   }
 
-  public setDisabledState(isDisabled: boolean): void {
-    if (isDisabled) {
-      // this.inputFormControl.disable();
-    } else {
-      // this.inputFormControl.enable();
-    }
-  }
+  public setDisabledState(isDisabled: boolean): void {}
 
 	public setDropdownWidth() {
 		const inputField: any = document.querySelector('#phone');
@@ -189,5 +163,13 @@ export class B2bNgxTelComponent implements ControlValueAccessor, OnInit, OnChang
 			inputField.style.width = commonWidth + 'px';
 			countryDropdown.style.width = commonWidth + 'px';
 		}
+	}
+
+	private getUserCountryCode(): void {
+		this.locationService.getCountryCodeFromIp()
+			.pipe(first())
+			.subscribe(code => {
+			this.selectedCountryISO$.next(code as CountryISO);
+		})
 	}
 }

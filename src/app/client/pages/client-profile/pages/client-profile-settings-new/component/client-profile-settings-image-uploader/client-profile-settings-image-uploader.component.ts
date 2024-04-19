@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output,} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {PublicCompanyInfoModel} from '../../../../../../../core/models/public-company-info.model';
@@ -9,7 +9,6 @@ import {B2bNgxIconModule} from '@b2b/ngx-icon';
 import {B2bNgxLogoModule} from '@b2b/ngx-logo';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {UploadResult} from './client-profile-settings-image-uploader.interface';
-import {AuthService} from '../../../../../../../auth/services/auth/auth.service';
 import {
 	ClientProfileImageContainerComponent
 } from "../client-profile-image-container/client-profile-image-container.component";
@@ -34,7 +33,7 @@ import {
 	styleUrl: './client-profile-settings-image-uploader.component.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClientProfileSettingsImageUploaderComponent {
+export class ClientProfileSettingsImageUploaderComponent implements OnInit {
 	@Input() company: PublicCompanyInfoModel;
 	@Output() data = new EventEmitter<UploadResult>();
 
@@ -46,36 +45,35 @@ export class ClientProfileSettingsImageUploaderComponent {
 	});
 
 	constructor(
-		private fb: FormBuilder,
-		private authService: AuthService
+		private fb: FormBuilder
 	) {
-		this.company = this.authService.company;
 		this.initFormListener();
 	}
 
+	ngOnInit() {
+		console.log('company::', this.company);
+	}
+
 	initFormListener() {
-		this.form.valueChanges.pipe(untilDestroyed(this)).subscribe((res) => {
-			if (!res.logo) {
-				this.logo = undefined;
-			}
-			if (!res.banner) {
-				this.banner = undefined;
-			}
-			this.data.emit(res as UploadResult);
-		});
+		this.form
+			.valueChanges
+			.pipe(untilDestroyed(this))
+			.subscribe((res) => {
+				if (!res.logo) {
+					this.logo = undefined;
+				}
+				if (!res.banner) {
+					this.banner = undefined;
+				}
+				this.data.emit(res as UploadResult);
+			});
 	}
 
 	patchLogo($event: File | undefined) {
 		this.form.get('logo').patchValue($event);
-		if (this.company?.logo) {
-			this.company.logo = undefined;
-		}
 	}
 
 	patchBanner($event: File) {
 		this.form.get('banner').patchValue($event);
-		if (this.company?.banner) {
-			this.company.banner = undefined;
-		}
 	}
 }

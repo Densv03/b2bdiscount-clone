@@ -37,6 +37,11 @@ export interface PublicCompanyInfoModel {
 	paymentAndShipping: PaymentAndShipping
 }
 
+export interface CompanyInfoResponse {
+	company: PublicCompanyInfoModel,
+	recommendations: PublicCompanyInfoModel[]
+}
+
 export interface PaymentAndShipping {
 	paymentMethods: string[];
 	tradingAreas: string[];
