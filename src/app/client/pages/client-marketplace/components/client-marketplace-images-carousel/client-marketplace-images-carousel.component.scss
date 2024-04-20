@@ -3,12 +3,27 @@
 	background-color: #000000;
 	display: flex;
 	justify-content: space-between;
-	gap: 10px;
 	align-items: center;
 	overflow: hidden;
+	position: relative;
+
+
+	&__left {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 10px;
+		z-index: 9;
+	}
+
+	&__right {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 189px;
+	}
 
 	mat-icon {
-		z-index: 1;
 		width: 36px;
 		height: 36px;
 		font-size: 36px;
@@ -23,16 +38,20 @@
 		justify-content: space-between;
 		transition: 0.5s ease-in-out;
 
+
 		&::-webkit-scrollbar {
 			display: none;
 		}
 
-		.slide-wrapper {
+		.slide-wrapper__img {
 			background-color: #f4f8f8;
 			object-fit: contain;
 			width: 100%;
-			max-width: 715px;
+			height: 235px;
+			//max-width: 715px;
 			flex: 0 0 100%;
+			position: relative;
+
 
 			&.hidden-slide {
 				height: 0;

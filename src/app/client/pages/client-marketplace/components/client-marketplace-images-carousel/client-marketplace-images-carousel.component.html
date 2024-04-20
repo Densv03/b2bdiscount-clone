@@ -1,20 +1,20 @@
 <div class="custom-carousel" [class.m-0]="images.length === 1">
 		@if (images.length && current === 0) {
-			<img (click)="previousSlide()" b2bNgxIcon group="market-listing-slider/" name="arrow-left-disabled">
+			<img (click)="previousSlide()" b2bNgxIcon group="market-listing-slider/" name="arrow-left-disabled" class="custom-carousel__left">
 		} @else if (images.length && current) {
-			<img (click)="previousSlide()" b2bNgxIcon group="market-listing-slider/" name="arrow-left-active">
+			<img (click)="previousSlide()" b2bNgxIcon group="market-listing-slider/" name="arrow-left-active" class="custom-carousel__left">
 		}
 
 	<div class="slider-wrapper" #carousel>
 		@for (image of images; track $index) {
-			<img [ngClass]="{ 'hidden-slide': $index !== current }" [src]="getImgUrl(image.md)" class="slide-wrapper"/>
+			<img [ngClass]="{ 'hidden-slide': $index !== current }" [src]="getImgUrl(image.md)" class="slide-wrapper__img"/>
 		}
 	</div>
 
 	@if (images.length > 1 && current !== images.length - 1) {
-		<img (click)="nextSlide()" b2bNgxIcon name="arrow-right-active" group="market-listing-slider/">
+		<img (click)="nextSlide()" b2bNgxIcon name="arrow-right-active" group="market-listing-slider/" class="custom-carousel__right">
 	} @else if (current === images.length - 1) {
-		<img (click)="nextSlide()" b2bNgxIcon name="arrow-right-disabled" group="market-listing-slider/">
+		<img (click)="nextSlide()" b2bNgxIcon name="arrow-right-disabled" group="market-listing-slider/" class="custom-carousel__right">
 	}
 </div>
 
