@@ -1,44 +1,70 @@
-<ng-container *ngIf="marketplaceProducts?.length; else noMarketplaceProducts">
+@if (marketplaceProducts?.length) {
 	<div class="marketplace-grid" [class.grid-between]="classGridBetween">
-		<ng-container *ngIf="(isMobileView$ | async) === true; else desktopView">
-			<ng-container
-				*ngIf="marketplaceProducts?.length; else noMarketplaceProducts">
-				<ng-container *ngFor="let item of mobileMarketplaceProducts">
-					<ng-container *ngIf="item === 'divider'; else product">
-						<b2b-client-marketplace-banner
-							*ngIf="showBanner"
-							[siteSection]="siteSections.B2B_MARKET"
-							class="divider"></b2b-client-marketplace-banner>
-					</ng-container>
-					<ng-template #product>
-						<b2b-client-marketplace-product-item
-							[isListing]="showBanner"
-							[product]="item"></b2b-client-marketplace-product-item>
-					</ng-template>
-				</ng-container>
-			</ng-container>
-		</ng-container>
-		<ng-template #desktopView>
-			<ng-container *ngFor="let item of desktopMarketplaceProducts">
-				<ng-container *ngIf="item === 'divider'; else product">
-					<b2b-client-marketplace-banner
-						*ngIf="showBanner"
-						[siteSection]="siteSections.B2B_MARKET"
-						class="divider"></b2b-client-marketplace-banner>
-				</ng-container>
-				<ng-template #product>
-					<b2b-client-marketplace-product-item
-						[isListing]="showBanner"
-						[product]="item"></b2b-client-marketplace-product-item>
-				</ng-template>
-			</ng-container>
-		</ng-template>
+		@if (currentView$ | async; as currentView) {
+			@switch (currentView) {
+				@case ('mobile') {
+					@if (marketplaceProducts?.length) {
+						@for (item of mobileMarketplaceProducts; track $index) {
+							@if (item === 'divider') {
+								<b2b-client-marketplace-banner
+									*ngIf="showBanner"
+									[siteSection]="siteSections.B2B_MARKET"
+									class="divider"></b2b-client-marketplace-banner>
+							} @else {
+								<b2b-client-marketplace-product-item
+									[isListing]="showBanner"
+									[product]="item"></b2b-client-marketplace-product-item>
+							}
+						}
+					} @else {
+						<b2b-no-products></b2b-no-products>
+					}
+				}
+				@case ('tablet') {
+					@if (marketplaceProducts?.length) {
+						@for (item of tabletMarketplaceProducts; track $index) {
+							@if (item === 'divider') {
+								<b2b-client-marketplace-banner
+									*ngIf="showBanner"
+									[siteSection]="siteSections.B2B_MARKET"
+									class="divider"></b2b-client-marketplace-banner>
+							} @else {
+								<b2b-client-marketplace-product-item
+									[isListing]="showBanner"
+									[product]="item"></b2b-client-marketplace-product-item>
+							}
+						}
+					} @else {
+						<b2b-no-products></b2b-no-products>
+					}
+				}
+				@case ('desktop') {
+					@if (marketplaceProducts?.length) {
+						@for (item of desktopMarketplaceProducts; track $index) {
+							@if (item === 'divider') {
+								<b2b-client-marketplace-banner
+									*ngIf="showBanner"
+									[siteSection]="siteSections.B2B_MARKET"
+									class="divider"></b2b-client-marketplace-banner>
+							} @else {
+								<b2b-client-marketplace-product-item
+									[isListing]="showBanner"
+									[product]="item"></b2b-client-marketplace-product-item>
+							}
+						}
+					} @else {
+						<b2b-no-products></b2b-no-products>
+					}
+				}
+			}
+		}
 	</div>
-</ng-container>
-<b2b-ngx-skeleton
-	*ngIf="loading$ | async"
-	[option]="marketplaceSkeletonOptions"></b2b-ngx-skeleton>
-
-<ng-template #noMarketplaceProducts>
+} @else {
 	<b2b-no-products></b2b-no-products>
-</ng-template>
+}
+
+@if (loading$ | async) {
+	<b2b-ngx-skeleton
+		[option]="marketplaceSkeletonOptions"></b2b-ngx-skeleton>
+}
+

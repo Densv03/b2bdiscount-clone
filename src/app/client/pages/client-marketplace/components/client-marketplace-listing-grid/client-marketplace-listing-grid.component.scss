@@ -20,7 +20,13 @@
 }
 
 .marketplace-grid .divider {
-	grid-column: span 3;
+	grid-column: span 4;
+}
+
+@media (max-width: 1516px) {
+	.marketplace-grid .divider {
+		grid-column: span 3;
+	}
 }
 
 @media (max-width: 1311px) {

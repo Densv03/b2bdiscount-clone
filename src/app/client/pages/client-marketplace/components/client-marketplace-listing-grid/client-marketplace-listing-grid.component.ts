@@ -3,21 +3,22 @@ import {
 	EventEmitter,
 	Input,
 	OnChanges,
-	OnInit,
 	Output,
 	SimpleChanges,
 } from '@angular/core';
 import { B2bNgxLinkService, B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { B2bNgxButtonThemeEnum } from '@b2b/ngx-button';
 import { getName } from 'country-list';
-import { fromEvent, Observable } from 'rxjs';
+import {BehaviorSubject, fromEvent, Observable} from 'rxjs';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
 import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
-import { map, startWith } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PlatformService } from 'src/app/client/services/platform/platform.service';
 import { ApplicationSectionsEnum } from '../../../../shared/enums/application-sections.enum';
 import { User } from 'src/app/core/models/user/user.model';
+
+type CurrentView = 'mobile' | 'tablet' | 'desktop'
 
 @UntilDestroy()
 @Component({
@@ -26,7 +27,7 @@ import { User } from 'src/app/core/models/user/user.model';
 	styleUrls: ['./client-marketplace-listing-grid.component.scss'],
 })
 export class ClientMarketplaceListingGridComponent
-	implements OnChanges, OnInit
+	implements OnChanges
 {
 	@Output() public readonly starClicked: EventEmitter<string> =
 		new EventEmitter<string>();
@@ -44,9 +45,15 @@ export class ClientMarketplaceListingGridComponent
 	public marketplaceSkeletonOptions: Partial<NgxSkeletonLoaderConfig>;
 	public loading$: Observable<boolean>;
 
-	public isMobileView$: Observable<boolean> = this.getIsMobileView();
+	public currentView$: Observable<CurrentView> = this.getCurrentView();
 
 	public desktopMarketplaceProducts: Array<'divider' | any> = [
+		...this.marketplaceProducts.slice(0, 4),
+		'divider',
+		...this.marketplaceProducts.slice(4),
+	];
+
+	public tabletMarketplaceProducts: Array<'divider' | any> = [
 		...this.marketplaceProducts.slice(0, 3),
 		'divider',
 		...this.marketplaceProducts.slice(3),
@@ -60,6 +67,11 @@ export class ClientMarketplaceListingGridComponent
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['marketplaceProducts']) {
 			this.desktopMarketplaceProducts = [
+				...this.marketplaceProducts.slice(0, 8),
+				'divider',
+				...this.marketplaceProducts.slice(8),
+			];
+			this.tabletMarketplaceProducts = [
 				...this.marketplaceProducts.slice(0, 6),
 				'divider',
 				...this.marketplaceProducts.slice(6),
@@ -71,7 +83,6 @@ export class ClientMarketplaceListingGridComponent
 			];
 		}
 	}
-	ngOnInit() {}
 
 	constructor(
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
@@ -85,14 +96,6 @@ export class ClientMarketplaceListingGridComponent
 		}
 	}
 
-	private getIsMobileView(): Observable<boolean> {
-		return fromEvent(window, 'resize').pipe(
-			startWith(window.innerWidth < 1312),
-			map(() => window.innerWidth < 1312),
-			untilDestroyed(this)
-		);
-	}
-
 	public getCountryName(countryCode: string): string {
 		if (!countryCode) {
 			return '';
@@ -104,9 +107,19 @@ export class ClientMarketplaceListingGridComponent
 		event.stopImmediatePropagation();
 	}
 
-	public emitStarClick(id: string, event: Event): void {
-		event.preventDefault();
-		event.stopImmediatePropagation();
-		this.starClicked.emit(id);
+	private getCurrentView(): Observable<CurrentView> {
+		return fromEvent(window, 'resize').pipe(
+			map(() => {
+				if(window.innerWidth >= 1516) {
+					return 'desktop'
+				} else if (window.innerWidth < 1516 && window.innerWidth > 1312) {
+					return 'tablet'
+				} else {
+					return 'mobile'
+				}
+			}),
+			untilDestroyed(this)
+		);
 	}
+
 }
