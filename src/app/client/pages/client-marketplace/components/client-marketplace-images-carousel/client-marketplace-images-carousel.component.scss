@@ -61,3 +61,13 @@
 		margin: 0;
 	}
 }
+
+@media (max-width: 535px) {
+	.custom-carousel {
+		.slider-wrapper {
+			.slide-wrapper__img {
+				height: 146px;
+			}
+		}
+	}
+}

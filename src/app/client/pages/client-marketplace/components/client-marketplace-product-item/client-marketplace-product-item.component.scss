@@ -31,6 +31,14 @@
 		position: relative;
 		z-index: 4;
 
+		&__desktop-carousel {
+			display: block;
+		}
+		&__mobile-img {
+			display: none;
+		}
+
+
 		.save {
 			fill: rgba(255, 255, 255, 0.2);
 			backdrop-filter: blur(20px);
@@ -125,6 +133,33 @@
 			&-text {
 				text-shadow: 0 0 0.5px rgba(0, 0, 0, 0.25);
 				margin-left: 8px;
+			}
+		}
+	}
+}
+
+@media (max-width: 535px) {
+	:host {
+		.product {
+			width: 162px;
+			height: 295px;
+			&__desktop-carousel {
+				display: none;
+			}
+			&__mobile-img {
+				display: block;
+				width: 146px;
+				height: 146px;
+				border-radius: 4px;
+			}
+
+			&-item-footer-button {
+				width: 146px;
+				height: 32px;
+				&-text {
+					font-weight: 400;
+					font-size: 14px;
+				}
 			}
 		}
 	}

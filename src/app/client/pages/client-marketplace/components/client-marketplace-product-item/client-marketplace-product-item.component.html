@@ -1,8 +1,12 @@
 <li
-	[ngStyle]="{ height: chatPossibilityIsHidden ? '350px' : '414px' }"
 	class="product">
 	<div>
-		<b2b-client-marketplace-images-carousel [images]="product.photos"></b2b-client-marketplace-images-carousel>
+<!--		@if (isMobile) {-->
+			<b2b-client-marketplace-images-carousel class="product__desktop-carousel" [images]="product.photos"></b2b-client-marketplace-images-carousel>
+<!--		} @else {-->
+		<img class="product__mobile-img" [src]="getImgUrl()">
+<!--		}-->
+
 		<a
 			[routerLink]="[
 			'/b2bmarket/listing/products/',
@@ -18,9 +22,9 @@
 		</a>
 	</div>
 	<div class="product-title">{{ cutString(product.title, 20) }}</div>
-	<div class="product-description">
-		{{ cutDescription(product?.specifications) }}
-	</div>
+<!--	<div class="product-description">-->
+<!--		{{ cutDescription(product?.specifications) }}-->
+<!--	</div>-->
 	<div class="supplier-info">
 		<div class="text">
 			{{
@@ -55,7 +59,6 @@
 	}
 
 	<button
-		*ngIf="!chatPossibilityIsHidden"
 		b2bNgxButton
 		[theme]="b2bNgxButtonThemeEnum.BACKGROUND_GRAY"
 		class="product-item-footer-button"

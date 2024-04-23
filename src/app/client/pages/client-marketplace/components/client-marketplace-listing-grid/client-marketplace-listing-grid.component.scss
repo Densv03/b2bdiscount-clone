@@ -31,24 +31,51 @@
 
 @media (max-width: 1311px) {
 	.marketplace-grid {
-		grid-template-columns: repeat(2, 1fr);
+		grid-column: span 3;
+	}
+
+	.marketplace-grid .divider {
+		grid-column: span 3;
+	}
+}
+
+@media (max-width: 1087px) {
+	.marketplace-grid {
+		grid-column: span 2;
 	}
 
 	.marketplace-grid .divider {
 		grid-column: span 2;
 	}
 }
-@media (max-width: 576px) {
+@media (max-width: 889px) {
+	.marketplace-grid .divider {
+		grid-column: span 3;
+	}
+}
+@media (max-width: 768px) {
 	.marketplace-grid {
-		grid-template-columns: repeat(1, 1fr);
+		grid-column: span 2;
 	}
 
 	.marketplace-grid .divider {
-		grid-column: span 1;
+		grid-column: span 2;
+	}
+}
+@media (max-width: 535px) {
+	.marketplace-grid {
+		grid-column: span 2;
+		gap: 10px;
+		grid-template-columns: repeat(auto-fill, 162px);
+	}
+
+
+	.marketplace-grid .divider {
+		grid-column: span 2;
 
 		.grid-item {
 			margin-bottom: 15px;
-			width: 274px;
+			width: 162px;
 			@include breakpoint('1') {
 				margin-bottom: 0;
 			}

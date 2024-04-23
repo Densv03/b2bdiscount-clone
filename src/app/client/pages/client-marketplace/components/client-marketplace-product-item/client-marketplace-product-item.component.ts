@@ -32,7 +32,6 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 	@Input() logoLink: string;
 	@Input() isListing: boolean = false;
 	public params: Params;
-	public chatPossibilityIsHidden: boolean = false;
 	public buttonTitle$: Observable<string> = of('');
 	public readonly b2bNgxButtonThemeEnum: typeof B2bNgxButtonThemeEnum =
 		B2bNgxButtonThemeEnum;
@@ -40,6 +39,7 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 	public productPhoto: string[];
 	private _socket: any;
 	private token: string = '';
+
 
 	constructor(
 		public readonly b2bNgxLinkService: B2bNgxLinkService,
@@ -93,7 +93,6 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 			this.token = token;
 		});
 
-		this.checkCardForOpenChatPossibility();
 	}
 
 	public getImgUrl(): string | null {
@@ -212,13 +211,6 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 		}
 	}
 
-	private checkCardForOpenChatPossibility(): void {
-		URLS_WITHOUT_CHATS.forEach((url) => {
-			if (this.router.url.includes(url)) {
-				this.chatPossibilityIsHidden = true;
-			}
-		});
-	}
 
 	private openConnection(token: string): void {
 		if (this._socket) {
@@ -262,4 +254,6 @@ export class ClientMarketplaceProductItemComponent implements OnInit {
 			})
 		);
 	}
+
+	protected readonly environment = environment;
 }
