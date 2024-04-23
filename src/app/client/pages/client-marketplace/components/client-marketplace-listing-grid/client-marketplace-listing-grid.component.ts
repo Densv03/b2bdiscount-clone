@@ -12,7 +12,7 @@ import { getName } from 'country-list';
 import {BehaviorSubject, fromEvent, Observable} from 'rxjs';
 import { ClientMarketplaceService } from '../../client-marketplace.service';
 import { NgxSkeletonLoaderConfig } from 'ngx-skeleton-loader/lib/ngx-skeleton-loader-config.types';
-import {map} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PlatformService } from 'src/app/client/services/platform/platform.service';
 import { ApplicationSectionsEnum } from '../../../../shared/enums/application-sections.enum';
@@ -109,6 +109,7 @@ export class ClientMarketplaceListingGridComponent
 
 	private getCurrentView(): Observable<CurrentView> {
 		return fromEvent(window, 'resize').pipe(
+			startWith(window.innerWidth),
 			map(() => {
 				if(window.innerWidth >= 1516) {
 					return 'desktop'
