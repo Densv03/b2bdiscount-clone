@@ -58,6 +58,7 @@ export interface NavigationOption {
 	queryParamsHandling?: QueryParamsHandling;
 	relativeTo?: ActivatedRoute;
 }
+type ChooseListing = 'grid' | 'list'
 
 @UntilDestroy()
 @Component({
@@ -154,7 +155,6 @@ export class ClientMarketplaceListingComponent
 			}, 200);
 		});
 	}
-
 	public getTitleByCategoryPath(): string {
 		const { childCategory, category } = this.route.snapshot.params;
 		if (childCategory) {

@@ -191,30 +191,49 @@
 				Clear all
 			</button>
 		</div>
-		<div class="listing">
-			<div
-				class="chips-wrapper"
-				[style.padding-bottom]="chipsService.getChipsLength() ? '32px' : '0'">
-				<app-filter-chips
-					(removeFilter)="removeFilter($event)"></app-filter-chips>
+		@if (marketplaceProductView$ | async; as marketplaceProductView) {
+			<div class="listing">
+				<div
+					class="chips-wrapper"
+					[style.padding-bottom]="chipsService.getChipsLength() ? '32px' : '0'">
+					<app-filter-chips
+						(removeFilter)="removeFilter($event)"></app-filter-chips>
+				</div>
+				<ul class="choose-listing-wrapper">
+					<li (click)="changeListingView('grid')">
+						@if (marketplaceProductView === 'grid') {
+							<img b2bNgxIcon name="listing-grid-active" group="market-listing/">
+						} @else {
+							<img b2bNgxIcon name="listing-grid" group="market-listing/">
+						}
+					</li>
+					<li (click)="changeListingView('list')">
+						@if (marketplaceProductView === 'list') {
+							<img b2bNgxIcon name="listing-list-active" group="market-listing/">
+						} @else {
+							<img b2bNgxIcon name="listing-list" group="market-listing/">
+						}
+					</li>
+				</ul>
+
+				@if (marketplaceProductView === 'grid') {
+					<b2b-client-marketplace-listing-grid
+						[marketplaceProducts]="marketplaceProducts$ | async"
+						[user]="user$ | async"></b2b-client-marketplace-listing-grid>
+				} @else {
+					<b2b-client-marketplace-listing-list
+						[marketplaceProducts]="marketplaceProducts$ | async"
+						[user]="user$ | async"></b2b-client-marketplace-listing-list>
+				}
+
+				<b2b-pagination
+					(togglePageNumber)="togglePage($event)"
+					[length]="totalMarketplaceProductsLength$ | async"
+					[perPage]="PRODUCTS_LIMIT"
+					[currentPage]="currentPage$ | async"></b2b-pagination>
 			</div>
+		}
 
-			<b2b-client-marketplace-listing-grid
-				*ngIf="(marketplaceProductView$ | async) === 'grid'"
-				[marketplaceProducts]="marketplaceProducts$ | async"
-				[user]="user$ | async"></b2b-client-marketplace-listing-grid>
-
-			<!--		<b2b-client-marketplace-listing-list-->
-			<!--			*ngIf="(marketplaceProductView$ | async) === 'list'"-->
-			<!--			[marketplaceProducts]="marketplaceProducts$ | async"-->
-			<!--			[user]="user$ | async"></b2b-client-marketplace-listing-list>-->
-
-			<b2b-pagination
-				(togglePageNumber)="togglePage($event)"
-				[length]="totalMarketplaceProductsLength$ | async"
-				[perPage]="PRODUCTS_LIMIT"
-				[currentPage]="currentPage$ | async"></b2b-pagination>
-		</div>
 	</div>
 	<div
 		*ngIf="chipsService.selectedMarketCategory$ | async as category"

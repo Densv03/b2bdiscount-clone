@@ -312,6 +312,13 @@ label {
 			width: 100%;
 		}
 
+		.choose-listing-wrapper {
+			display: flex;
+			justify-content: flex-end;
+			gap: 15px;
+			margin-bottom: 10px;
+		}
+
 		.chips-wrapper {
 			//margin-bottom: 32px;
 			@include breakpoint('3') {
