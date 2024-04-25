@@ -2,54 +2,74 @@
 	<ul class="market-list">
 		<li
 			*ngFor="let product of marketplaceProducts"
-			[routerLink]="
+
+			class="list-item">
+				<div class="photo">
+					<b2b-client-marketplace-images-carousel [images]="product.photos" class="list-item__carousel"></b2b-client-marketplace-images-carousel>
+				</div>
+				<a class="list-product" [routerLink]="
 				b2bNgxLinkService.getLink(
 					product?.path
-						? '/b2bmarket/products/' + product.path
-						: '/b2bmarket/products/' + product._id
+						? '/b2bmarket/listing/products/' + product.path
+						: '/b2bmarket/listing/products/' + product._id
 				) | async
-			"
-			class="list-item">
-			<div class="photo">
-				<img b2bNgxImage [name]="product.photos[0]?.lg" />
-			</div>
-			<div class="item-description">
-				<div class="title">{{ cutString(product.title, 9) }}</div>
-				<div class="info">
-					<div class="supplier-info">
-						<div class="supplier-title">Supplier</div>
-						<div class="supplier-descr">
-							<img b2bNgxIcon [name]="'tag'" alt="" />
-							<div class="text">
-								{{ cutString(product.contact.companyName) }}
+				">
+					<div>
+						<div class="product-title">{{ cutString(product.title, 20) }}</div>
+						<div class="product-description">
+							{{ cutDescription(product?.specifications) }}
+						</div>
+						<!--				<div class="supplier-info">-->
+						<!--					<div class="text">-->
+						<!--						{{-->
+						<!--							cutString(-->
+						<!--								product.company-->
+						<!--									? product.company[0]?.companyName-->
+						<!--									: product.contact.companyName,-->
+						<!--								17-->
+						<!--							)-->
+						<!--						}}-->
+						<!--					</div>-->
+						<!--				</div>-->
+						@if (product.company) {
+							<div
+								class="supplier-info">
+								<img
+									b2bNgxIcon
+									group="flags/"
+									[name]="product.company[0]?.country | uppercase"
+									alt=""/>
+								<div class="text">{{ getCountryName(product.company[0]?.country) }}</div>
 							</div>
+						} @else {
+							<div class="supplier-info">
+								<img
+									b2bNgxIcon
+									group="flags/"
+									[name]="product.country | uppercase"
+									alt=""/>
+								<div class="text">{{ getCountryName(product.country) }}</div>
+							</div>
+						}
+
+						<div class="product-price">
+							<span>USD</span>{{product.price?.old}}
 						</div>
+
+						<button
+							b2bNgxButton
+							[theme]="b2bNgxButtonThemeEnum.BACKGROUND_GRAY"
+							class="product-item-footer-button"
+							(click)="openChat($event, product)"
+							[id]="getIdForContactSupplierButton$(product) | async">
+							<span class="product-item-footer-button-text">{{
+							product.user === (user$ | async)?._id
+								? 'View my product'
+								: (buttonTitle$ | async)
+						}}</span>
+						</button>
 					</div>
-					<div class="supplier-info">
-						<div class="supplier-title">Country of origin</div>
-						<div class="supplier-descr">
-							<img
-								b2bNgxIcon
-								group="flags/"
-								[name]="product.country | uppercase"
-								alt="" />
-							<div class="text">{{ getCountryName(product.country) }}</div>
-						</div>
-					</div>
-					<div class="supplier-info">
-						<div class="supplier-title">Supplier type</div>
-						<div class="supplier-descr">
-							<img b2bNgxIcon [name]="'tag'" alt="" />
-							<div class="text">{{ product.suppliersType }}</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="contact">
-				<button b2bNgxButton [theme]="b2bNgxButtonThemeEnum.BACKGROUND_BLACK">
-					Contact supplier
-				</button>
-			</div>
+				</a>
 		</li>
 	</ul>
 </div>

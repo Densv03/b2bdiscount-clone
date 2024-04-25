@@ -1,11 +1,8 @@
 <li
 	class="product">
 	<div>
-<!--		@if (isMobile) {-->
 			<b2b-client-marketplace-images-carousel class="product__desktop-carousel" [images]="product.photos"></b2b-client-marketplace-images-carousel>
-<!--		} @else {-->
 		<img class="product__mobile-img" [src]="getImgUrl()">
-<!--		}-->
 
 		<a
 			[routerLink]="[
