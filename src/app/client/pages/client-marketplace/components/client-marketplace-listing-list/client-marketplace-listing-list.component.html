@@ -6,6 +6,7 @@
 			class="list-item">
 				<div class="photo">
 					<b2b-client-marketplace-images-carousel [images]="product.photos" class="list-item__carousel"></b2b-client-marketplace-images-carousel>
+					<img class="product__mobile-img" [src]="getImgUrl(product)">
 				</div>
 				<a class="list-product" [routerLink]="
 				b2bNgxLinkService.getLink(
@@ -53,7 +54,7 @@
 						}
 
 						<div class="product-price">
-							<span>USD</span>{{product.price?.old}}
+							<span class="product-price__txt">USD</span><span class="product-price__numbers">{{product.price?.old}}</span>
 						</div>
 
 						<button

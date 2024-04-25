@@ -307,9 +307,10 @@ label {
 
 	.listing {
 		width: 75%;
-		padding: 25px 0;
+		//padding: 0 25px;
 		@include breakpoint('3') {
 			width: 100%;
+			padding: 0 20px;
 		}
 
 		.choose-listing-wrapper {
@@ -339,11 +340,11 @@ label {
 			display: none;
 		}
 	}
-	@include breakpoint('2') {
-		.listing {
-			padding-left: 0;
-		}
-	}
+	//@include breakpoint('2') {
+	//	.listing {
+	//		padding-left: 0;
+	//	}
+	//}
 	@include breakpoint('1') {
 		.filters {
 			width: 25%;
@@ -409,6 +410,7 @@ label {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	padding: 7px 22px;
+	z-index: 15;
 	@include breakpoint('3') {
 		display: flex;
 	}

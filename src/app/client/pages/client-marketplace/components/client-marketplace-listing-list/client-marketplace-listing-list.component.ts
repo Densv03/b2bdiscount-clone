@@ -216,4 +216,15 @@ export class ClientMarketplaceListingListComponent {
 			})
 		);
 	}
+
+	public getImgUrl(product: any): string | null {
+		const apiUrl = environment.apiUrl.includes('staging')
+			? 'https://api.globy.com/'
+			: environment.apiUrl;
+		if (product && product.photos && product.photos.length > 0) {
+			return `${apiUrl}${product.photos[0].lg}`;
+		} else {
+			return null;
+		}
+	}
 }

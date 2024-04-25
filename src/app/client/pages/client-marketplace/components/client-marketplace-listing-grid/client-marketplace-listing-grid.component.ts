@@ -64,6 +64,7 @@ export class ClientMarketplaceListingGridComponent
 		...this.marketplaceProducts.slice(2),
 	];
 
+
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['marketplaceProducts']) {
 			this.desktopMarketplaceProducts = [
