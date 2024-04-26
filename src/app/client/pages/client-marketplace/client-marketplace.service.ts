@@ -67,6 +67,10 @@ export class ClientMarketplaceService {
 		private hotToastService: HotToastService
 	) {}
 
+	public get marketplaceProductView(): 'list' | 'grid' {
+		return this.marketplaceProductViewSource.value;
+	}
+
 	public get marketplaceProducts$(): Observable<any> {
 		return this.marketplaceProductsSource.asObservable();
 	}

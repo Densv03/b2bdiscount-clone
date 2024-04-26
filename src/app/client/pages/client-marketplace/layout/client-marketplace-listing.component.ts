@@ -16,8 +16,8 @@ import { B2bNgxLinkThemeEnum } from '@b2b/ngx-link';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../../../auth/services/auth/auth.service';
 import { ActivatedRoute, QueryParamsHandling, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable, tap } from 'rxjs';
-import { debounceTime, first, map } from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, fromEvent, Observable, tap} from 'rxjs';
+import {debounceTime, first, map, startWith} from 'rxjs/operators';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { InitialCategoryState } from '../shared/models/initial-category-state.model';
 import { SlideInOutAnimation } from '../shared/animations/slide-in-out.animation';
@@ -30,6 +30,8 @@ import { WindowScrollingService } from '../../../../core/services/window-scrolli
 import { Title } from '@angular/platform-browser';
 import { SeoService } from '../../../../core/services/seo/seo.service';
 import { HeaderService } from '../../../components/header/header.service';
+
+type CurrentView = 'grid' | 'list'
 
 function generateQueryString(obj: any, initialValue: string = '?') {
 	const filteredState = obj;
@@ -81,6 +83,7 @@ export class ClientMarketplaceListingComponent
 		this.clientMarketplaceService.marketplaceProductsLength$;
 	public marketplaceProductView$ =
 		this.clientMarketplaceService.marketplaceProductView$;
+	public isMobile$: Observable<boolean> = this.getIsMobile$();
 
 	public PRODUCTS_LIMIT: number = this.clientMarketplaceService.PRODUCTS_LIMIT;
 	public readonly user$: Observable<User>;
@@ -658,5 +661,13 @@ export class ClientMarketplaceListingComponent
 		this.title.setTitle('Globy');
 		this.headerService.searchFormControl.setValue('');
 		this.headerService.searchFormControl.updateValueAndValidity();
+	}
+
+	private getIsMobile$(): Observable<boolean> {
+		return fromEvent(window, 'resize').pipe(
+			startWith(window.innerWidth),
+			map(() => window.innerWidth < 557),
+			untilDestroyed(this)
+		);
 	}
 }

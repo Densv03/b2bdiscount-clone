@@ -24,6 +24,9 @@
 }
 
 @media (max-width: 1516px) {
+	.marketplace-grid {
+		justify-content: center;
+	}
 	.marketplace-grid .divider {
 		grid-column: span 3;
 	}
@@ -42,6 +45,7 @@
 @media (max-width: 1087px) {
 	.marketplace-grid {
 		grid-column: span 2;
+		justify-content: center;
 	}
 
 	.marketplace-grid .divider {

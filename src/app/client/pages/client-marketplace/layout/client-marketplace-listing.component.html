@@ -200,20 +200,50 @@
 						(removeFilter)="removeFilter($event)"></app-filter-chips>
 				</div>
 				<ul class="choose-listing-wrapper">
-					<li (click)="changeListingView('grid')">
+<!--					<li (click)="changeListingView('grid')">-->
+<!--						@if (marketplaceProductView === 'grid' && (isMobile$ | async) === null) {-->
+<!--							<img b2bNgxIcon name="listing-grid-active" group="market-listing/">-->
+<!--						} @else if (marketplaceProductView === 'list' && (isMobile$ | async) === null){-->
+<!--							<img b2bNgxIcon name="listing-grid" group="market-listing/">-->
+<!--						} @else if (marketplaceProductView === 'list' && (isMobile$ | async) === 'grid') {-->
+<!--							<img b2bNgxIcon name="listing-list" group="market-listing/">-->
+<!--						}-->
+<!--					</li>-->
+<!--					<li (click)="changeListingView('list')">-->
+<!--						@if (marketplaceProductView === 'list' && (isMobile$ | async) === null) {-->
+<!--							<img b2bNgxIcon name="listing-list-active" group="market-listing/">-->
+<!--						} @else if (marketplaceProductView === 'grid' && (isMobile$ | async) === null){-->
+<!--							<img b2bNgxIcon name="listing-list" group="market-listing/">-->
+<!--						} @else if (marketplaceProductView === 'list' && (isMobile$ | async) === 'list') {-->
+<!--							<img b2bNgxIcon name="listing-grid" group="market-listing/">-->
+<!--						}-->
+<!--					</li>-->
+					@if ((isMobile$ | async) === true) {
 						@if (marketplaceProductView === 'grid') {
-							<img b2bNgxIcon name="listing-grid-active" group="market-listing/">
-						} @else {
-							<img b2bNgxIcon name="listing-grid" group="market-listing/">
-						}
-					</li>
-					<li (click)="changeListingView('list')">
-						@if (marketplaceProductView === 'list') {
-							<img b2bNgxIcon name="listing-list-active" group="market-listing/">
-						} @else {
+							<li (click)="changeListingView('list')">
 							<img b2bNgxIcon name="listing-list" group="market-listing/">
+							</li>
+						} @else {
+							<li (click)="changeListingView('grid')">
+							<img b2bNgxIcon name="listing-grid" group="market-listing/">
+							</li>
 						}
-					</li>
+					} @else {
+						<li (click)="changeListingView('grid')">
+							@if (marketplaceProductView === 'grid') {
+								<img b2bNgxIcon name="listing-grid-active" group="market-listing/">
+							} @else {
+								<img b2bNgxIcon name="listing-grid" group="market-listing/">
+							}
+						</li>
+						<li (click)="changeListingView('list')">
+							@if (marketplaceProductView === 'list') {
+								<img b2bNgxIcon name="listing-list-active" group="market-listing/">
+							} @else {
+								<img b2bNgxIcon name="listing-list" group="market-listing/">
+							}
+						</li>
+					}
 				</ul>
 
 				@if (marketplaceProductView === 'grid') {
