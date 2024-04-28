@@ -7,7 +7,7 @@
 			<div class="my-[20px] text-[16px]">
 				{{articleBlog.data.readTime}} read
 			</div>
-			<h1 class="title md:text-[32px] sm:text-[24px] xs:text-[24px] font-[800] mb-[30px]">{{ articleBlog.data.title }}</h1>
+			<h1 class="title md:text-[32px] sm:text-[32px] xs:text-[24px] font-[600] mb-[30px]">{{ articleBlog.data.title }}</h1>
 			<div class="flex flex-wrap mb-[30px]">
 				@for (tag of articleBlog.data.tags; track $index) {
 					<a [href]="'/blog/tag/' + tag.name" class="block rounded-[4px] py-[7px] px-[10px] mb-[1rem] mr-[1rem] bg-[#F3F6F8]">{{ tag.name }}</a>
@@ -16,7 +16,7 @@
 			<div class="updated-at mb-[40px]">Updated {{ articleBlog.data.dateUpdate | date }}</div>
 			<hr class="border-[#CFDEEF] mb-[40px]">
 			<div class="flex sm:flex-wrap xs:flex-wrap relative">
-				<div class="blog-details-news__content md:w-[65%] mb-[50px] xl:text-[18px] lg:text-[18px] md:text-[18px] sm:text-[16px] xs:text-[16px]" [innerHTML]="updatedArticleContent"></div>
+				<div class="blog-details-news__content md:w-[65%] mb-[50px] xl:text-[18px] lg:text-[18px] md:text-[18px] sm:text-[18px] xs:text-[14px]" [innerHTML]="updatedArticleContent"></div>
 				<div
 					class="blog-recommendation sticky top-[5rem] md:w-[35%] xl:h-[max-content] lg:h-[max-content] md:h-[max-content]
 					xl:pl-[30px] lg:pl-[30px] md:pl-[30px] sm:pl-0 xs:pl-0  sm:h-0 xs:h-0">
